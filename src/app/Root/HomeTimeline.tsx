@@ -1,11 +1,12 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useVirtualizer } from "@tanstack/react-virtual";
+import { Spinner } from "@camome/core/Spinner";
 import { bsky } from "@/src/lib/atp";
 import React from "react";
 import clsx from "clsx";
+import Post from "@/src/components/Post";
 
 import styles from "./HomeTimeline.module.scss";
-import Post from "@/src/components/Post";
 
 export function HomeTimeline() {
   const {
@@ -63,7 +64,13 @@ export function HomeTimeline() {
     rowVirtualizer.getVirtualItems(),
   ]);
 
-  if (status === "error") {
+  if (status === "loading") {
+    return (
+      <div className={styles.spinner}>
+        <Spinner />
+      </div>
+    );
+  } else if (status === "error") {
     return <span>Error: {(error as Error).message}</span>;
   }
 

@@ -14,6 +14,8 @@ type Props = {
 
 export default function Post({ data }: Props) {
   const { post, reason, reply } = data;
+  // TODO: `encodeURIComponent()` causes 404 error
+  const threadHref = `/posts/${btoa(post.uri)}`;
   const profileHref = `/${post.author.handle.replace(".bsky.social", "")}`;
   return (
     <article className={styles.container}>
@@ -62,7 +64,7 @@ export default function Post({ data }: Props) {
                 `@${reply.parent.author.handle}`}
             </Tag>
           )}
-          <div className={styles.body}>{(post.record as any).text}</div>
+          <p className={styles.body}>{(post.record as any).text}</p>
         </div>
       </div>
     </article>

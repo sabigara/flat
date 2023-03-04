@@ -8,6 +8,7 @@ import "@/src/styles/globals.scss";
 import * as Login from "@/src/app/Login";
 import * as Root from "@/src/app/Root";
 import * as Profile from "@/src/app/Root/Profile";
+import * as Post from "@/src/app/Root/Post";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
         // <userId>.bsky.social
         path: "/:userId",
         ...Profile,
+      },
+      {
+        path: "/posts/:postUri",
+        ...Post,
       },
     ],
   },

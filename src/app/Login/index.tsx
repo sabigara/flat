@@ -4,9 +4,14 @@ import {
   Form,
   LoaderFunction,
   redirect,
+  useNavigation,
 } from "react-router-dom";
 import { TextInput } from "@camome/core/TextInput";
 import { Button } from "@camome/core/Button";
+import { Spinner } from "@camome/core/Spinner";
+import LogoIcon from "@/src/assets/logo-icon.svg";
+
+import styles from "./index.module.scss";
 
 export const loader = (async () => {
   // TODO: always !atp.hasSession for first visit
@@ -29,7 +34,6 @@ export const action = (async ({ request }) => {
   if (!resp.success) {
     throw new Error("Login failed.");
   }
-  localStorage.setItem("session", JSON.stringify(resp.data));
   // TODO: redirect has response?
   redirect("/");
   return null;
@@ -38,16 +42,35 @@ export const action = (async ({ request }) => {
 export const element = <LoginRoute />;
 
 function LoginRoute() {
+  const { state } = useNavigation();
+
   return (
-    <Form method="post">
-      <TextInput
-        label="Email"
-        name="email"
-        type="email"
-        placeholder="you@example.com"
-      />
-      <TextInput label="Password" name="password" type="password" />
-      <Button type="submit">ログイン</Button>
-    </Form>
+    <div className={styles.container}>
+      <div className={styles.logo}>
+        <LogoIcon />
+        <span className={styles.logo__text}>Flat</span>
+      </div>
+      <Form method="post" className={styles.form}>
+        <TextInput
+          label="Email"
+          name="email"
+          type="email"
+          placeholder="you@example.com"
+        />
+        <TextInput label="Password" name="password" type="password" />
+        <Button
+          type="submit"
+          disabled={state === "submitting"}
+          startDecorator={
+            state === "submitting" ? <Spinner size="sm" /> : undefined
+          }
+        >
+          ログイン
+        </Button>
+        <small className={styles.notice}>
+          Flatはまだ開発中です。セキュリティなどに不安を覚える人はログインしないでください。
+        </small>
+      </Form>
+    </div>
   );
 }

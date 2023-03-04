@@ -1,0 +1,46 @@
+.container {
+  background: var(--cmm-color-surface-2);
+  height: 100dvh;
+  padding-block-start: 4rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  margin-inline: auto;
+  width: fit-content;
+  gap: 0.2rem;
+
+  svg {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  &__text {
+    font-weight: var(--cmm-font-weight-bold);
+    font-size: calc(var(--cmm-font-size-6xl) * 0.9);
+    margin-block-start: 0.15em;
+    line-height: 1;
+  }
+}
+
+.form {
+  max-width: 30rem;
+  margin-inline: auto;
+  margin-block-start: 2rem;
+  padding: 2rem;
+  background: var(--cmm-color-surface-0);
+  border: 1px solid var(--cmm-color-border-base);
+  border-radius: var(--cmm-radius-2xl);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  button {
+    align-self: center;
+  }
+}
+
+.notice {
+  color: var(--cmm-color-font-subtle);
+}
