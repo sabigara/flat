@@ -20,7 +20,7 @@ export function HomeTimeline() {
     queryKey: ["home-timeline"],
     queryFn: async ({ pageParam }) => {
       const resp = await bsky.feed.getTimeline({
-        limit: 10,
+        limit: 25,
         // passing `undefined` breaks the query somehow
         ...(pageParam ? { before: pageParam.cursor } : {}),
       });

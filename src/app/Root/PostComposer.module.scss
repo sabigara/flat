@@ -1,0 +1,30 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  > button {
+    align-self: flex-end;
+  }
+}
+
+.dialog {
+  :global {
+    .Dialog__content {
+      margin: 0;
+      padding-top: 1rem;
+    }
+  }
+}
+
+.composeBtn {
+  position: absolute;
+  right: calc(1rem + 2rem);
+  bottom: 2rem;
+  z-index: 50;
+  border-radius: var(--cmm-radius-full);
+
+  > svg {
+    stroke-width: 1.7;
+  }
+}

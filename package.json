@@ -12,6 +12,7 @@
     "@atproto/api": "^0.1.3",
     "@camome/core": "^0.0.28",
     "@camome/system": "^0.1.24",
+    "@headlessui/react": "^1.7.13",
     "@tanstack/react-query": "^4.24.10",
     "@tanstack/react-virtual": "3.0.0-beta.52",
     "clsx": "^1.2.1",

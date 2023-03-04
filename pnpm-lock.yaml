@@ -5,6 +5,7 @@ specifiers:
   '@camome/core': ^0.0.28
   '@camome/system': ^0.1.24
   '@camome/utils': ^0.1.10
+  '@headlessui/react': ^1.7.13
   '@tanstack/react-query': ^4.24.10
   '@tanstack/react-virtual': 3.0.0-beta.52
   '@types/react': ^18.0.27
@@ -29,6 +30,7 @@ dependencies:
   '@atproto/api': 0.1.3
   '@camome/core': 0.0.28_react@18.2.0
   '@camome/system': 0.1.24
+  '@headlessui/react': 1.7.13_biqbaboplfbrettd7655fr4n2y
   '@tanstack/react-query': 4.24.10_biqbaboplfbrettd7655fr4n2y
   '@tanstack/react-virtual': 3.0.0-beta.52_react@18.2.0
   clsx: 1.2.1
@@ -513,6 +515,18 @@ packages:
     dev: true
     optional: true
 
+  /@headlessui/react/1.7.13_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-9n+EQKRtD9266xIHXdY5MfiXPDfYwl7zBM7KOx2Ae3Gdgxy8QML1FkCMjq6AsOf0l6N9uvI4HcFtuFlenaldKg==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: ^16 || ^17 || ^18
+      react-dom: ^16 || ^17 || ^18
+    dependencies:
+      client-only: 0.0.1
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
+
   /@heroicons/react/2.0.14_react@18.2.0:
     resolution: {integrity: sha512-eFL4if6L7woL1fUvk/jjXx4z9NxVESHHrQnEd2qKVelTFTIr/3VLGWdPb0biia9ZVe26P0JSs/xmOlRNur3SrQ==}
     peerDependencies:
@@ -962,6 +976,10 @@ packages:
 
   /chroma-js/2.4.2:
     resolution: {integrity: sha512-U9eDw6+wt7V8z5NncY2jJfZa+hUH8XEj8FQHgFJTrUFnJfXYf4Ml4adI2vXZOjqRDpFWtYVWypDfZwnJ+HIR4A==}
+
+  /client-only/0.0.1:
+    resolution: {integrity: sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==}
+    dev: false
 
   /clsx/1.2.1:
     resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
