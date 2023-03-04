@@ -1,12 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+import "@camome/system/dist/theme.css";
+import "@/src/styles/globals.scss";
 
 import * as Root from "@/src/app/Root";
-import * as Home from "@/src/app/Root/HomeTimeline";
 import * as Login from "@/src/app/Login";
-
-import "./index.css";
 
 const router = createBrowserRouter([
   {

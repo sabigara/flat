@@ -4,13 +4,19 @@ import { LoaderFunction, Outlet, redirect } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { HomeTimeline } from "@/src/app/Root/HomeTimeline";
 
+import styles from "./index.module.scss";
+import Header from "@/src/app/Root/Header";
+
 export const loader = (async () => {
   if (!atp.hasSession) {
     const sessionStr = localStorage.getItem("session");
     if (!sessionStr) return redirect("/login");
     const session = JSON.parse(sessionStr) as AtpSessionData;
-    const resp = await atp.resumeSession(session);
-    if (!resp.success) return redirect("/login");
+    try {
+      await atp.resumeSession(session);
+    } catch (e) {
+      console.log(e);
+    }
   }
   return null;
 }) satisfies LoaderFunction;
@@ -29,10 +35,12 @@ const queryClient = new QueryClient({
 function RootRoute() {
   return (
     <QueryClientProvider client={queryClient}>
-      <header>Header</header>
-      <main>
-        <HomeTimeline />
-      </main>
+      <div className={styles.container}>
+        <Header />
+        <main>
+          <HomeTimeline />
+        </main>
+      </div>
     </QueryClientProvider>
   );
 }

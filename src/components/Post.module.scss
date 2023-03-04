@@ -1,0 +1,71 @@
+.container {
+  padding: 1rem 1rem;
+  border-bottom: 1px solid var(--cmm-color-border-base);
+  background: var(--cmm-color-surface-0);
+
+  &:hover {
+    background: var(--cmm-color-surface-1);
+  }
+
+  :global {
+    .Avatar {
+      --cmm-Avatar-size: 2.5rem;
+    }
+  }
+}
+
+.reason {
+  margin-inline-start: 3.5rem;
+  margin-block-end: 0.5rem;
+  font-weight: var(--cmm-font-weight-normal);
+}
+
+.main {
+  display: flex;
+  gap: 1rem;
+  min-height: 3rem;
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.header {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+  align-items: baseline;
+  line-height: 1.1;
+}
+
+.displayName {
+  font-weight: var(--cmm-font-weight-bold);
+}
+
+.name {
+  font-size: var(--cmm-font-size-sm);
+  color: var(--cmm-color-font-subtle);
+}
+
+.time {
+  font-size: var(--cmm-font-size-sm);
+  color: var(--cmm-color-font-subtle);
+
+  &::before {
+    content: "·";
+    margin-inline-start: 0.1em;
+    margin-inline-end: 0.25em;
+    font-weight: var(--cmm-font-weight-bold);
+  }
+}
+
+.body {
+  flex: 1;
+  display: inline-block;
+  word-wrap: break-word;
+  word-break: break-all;
+  white-space: pre-wrap;
+}

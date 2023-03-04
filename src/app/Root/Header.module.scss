@@ -1,0 +1,25 @@
+.container {
+  height: var(--header-height);
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--cmm-color-border-base);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: var(--cmm-font-weight-semibold);
+  font-size: var(--cmm-font-size-2xl);
+  line-height: 1;
+
+  > svg {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  &__text {
+    margin-block-start: 0.1em;
+  }
+}

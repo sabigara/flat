@@ -1,7 +1,11 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { bsky } from "@/src/lib/atp";
+import { atp, bsky } from "@/src/lib/atp";
 import React from "react";
+import clsx from "clsx";
+
+import styles from "./HomeTimeline.module.scss";
+import Post from "@/src/components/Post";
 
 export function HomeTimeline() {
   const {
@@ -66,20 +70,11 @@ export function HomeTimeline() {
   }
 
   return (
-    <div
-      ref={parentRef}
-      className="List"
-      style={{
-        height: `100dvh`,
-        width: `100%`,
-        overflow: "auto",
-      }}
-    >
+    <div ref={parentRef} className={clsx(styles.container, "scrollbar")}>
       <div
+        className={styles.inner}
         style={{
           height: `${rowVirtualizer.getTotalSize()}px`,
-          width: "100%",
-          position: "relative",
         }}
       >
         {rowVirtualizer.getVirtualItems().map((virtualRow) => {
@@ -87,21 +82,15 @@ export function HomeTimeline() {
           const item = allRows[virtualRow.index];
           // this happens
           if (!item) return null;
-          const { post, reason } = item;
 
           return (
             <div
               key={virtualRow.index}
-              className={virtualRow.index % 2 ? "ListItemOdd" : "ListItemEven"}
               data-index={virtualRow.index}
               ref={rowVirtualizer.measureElement}
+              className={styles.row}
               style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
                 transform: `translateY(${virtualRow.start}px)`,
-                padding: "1rem",
               }}
             >
               {isLoaderRow ? (
@@ -111,18 +100,7 @@ export function HomeTimeline() {
                   "Nothing more to load"
                 )
               ) : (
-                <article>
-                  {reason && (
-                    <div>
-                      {reason?.$type as string} by{" "}
-                      {(reason?.by as any)?.displayName}
-                    </div>
-                  )}
-                  <div>
-                    {post.author.displayName} - {post.author.handle}
-                  </div>
-                  <div>{(post.record as any).text}</div>
-                </article>
+                <Post data={item} />
               )}
             </div>
           );

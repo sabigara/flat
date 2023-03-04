@@ -1,0 +1,21 @@
+.container {
+  height: calc(100dvh - var(--header-height));
+  width: 100%;
+  overflow: auto;
+}
+
+.inner {
+  width: 100%;
+  position: relative;
+}
+
+.row {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.post {
+  padding: 0.75rem;
+}

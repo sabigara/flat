@@ -5,6 +5,8 @@ import {
   LoaderFunction,
   redirect,
 } from "react-router-dom";
+import { TextInput } from "@camome/core/TextInput";
+import { Button } from "@camome/core/Button";
 
 export const loader = (async () => {
   // TODO: always !atp.hasSession for first visit
@@ -38,9 +40,14 @@ export const element = <LoginRoute />;
 function LoginRoute() {
   return (
     <Form method="post">
-      <input name="email" type="email" placeholder="you@example.com" />
-      <input name="password" type="password" />
-      <button type="submit">ログイン</button>
+      <TextInput
+        label="Email"
+        name="email"
+        type="email"
+        placeholder="you@example.com"
+      />
+      <TextInput label="Password" name="password" type="password" />
+      <Button type="submit">ログイン</Button>
     </Form>
   );
 }

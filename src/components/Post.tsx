@@ -1,0 +1,62 @@
+import { formatDistanceShort } from "@/src/lib/time";
+import { AppBskyFeedFeedViewPost } from "@atproto/api";
+import { IconHeart } from "@tabler/icons-react";
+import { Avatar } from "@camome/core/Avatar";
+import { Tag } from "@camome/core/Tag";
+import { IconButton } from "@camome/core/IconButton";
+
+import styles from "./Post.module.scss";
+
+type Props = {
+  data: AppBskyFeedFeedViewPost.Main;
+};
+
+export default function Post({ data }: Props) {
+  const { post, reason, reply } = data;
+  return (
+    <article className={styles.container}>
+      {reason && AppBskyFeedFeedViewPost.isReasonRepost(reason) && (
+        <Tag colorScheme="neutral" size="sm" className={styles.reason}>
+          Reposted by {reason.by.displayName}
+        </Tag>
+      )}
+      <div className={styles.main}>
+        <div className={styles.left}>
+          <Avatar
+            src={post.author.avatar}
+            alt={`Avatar of ${post.author?.displayName}`}
+            size="sm"
+          />
+        </div>
+        <div className={styles.right}>
+          <div className={styles.header}>
+            <span className={styles.displayName}>
+              {post.author.displayName}
+            </span>
+            <span className={styles.name}>@{post.author.handle}</span>
+            <time dateTime={post.indexedAt} className={styles.time}>
+              {formatDistanceShort(new Date(post.indexedAt))}
+            </time>
+          </div>
+          <div className={styles.body}>{(post.record as any).text}</div>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+type ReactionProps = {
+  icon: React.ReactNode;
+  count: number;
+  onClick: () => void;
+  ["aria-label"]: string;
+};
+
+function Reaction({ icon, count, onClick, ...props }: ReactionProps) {
+  return (
+    <button aria-label={props["aria-label"]} onClick={onClick}>
+      {icon}
+      <span aria-hidden>{count}</span>
+    </button>
+  );
+}
