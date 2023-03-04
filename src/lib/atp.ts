@@ -1,4 +1,4 @@
-import AtpAgent, { type ComAtprotoSessionCreate } from "@atproto/api";
+import { AtpAgent } from "@atproto/api";
 
 export const atp = new AtpAgent({
   service: "https://bsky.social",
