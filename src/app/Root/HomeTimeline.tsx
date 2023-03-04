@@ -63,9 +63,7 @@ export function HomeTimeline() {
     rowVirtualizer.getVirtualItems(),
   ]);
 
-  if (status === "loading") {
-    return <p>Loading...</p>;
-  } else if (status === "error") {
+  if (status === "error") {
     return <span>Error: {(error as Error).message}</span>;
   }
 

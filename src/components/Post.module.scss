@@ -6,17 +6,19 @@
   &:hover {
     background: var(--cmm-color-surface-1);
   }
-
-  :global {
-    .Avatar {
-      --cmm-Avatar-size: 2.5rem;
-    }
-  }
 }
 
-.tag {
+.repost {
   margin-inline-start: 3.5rem;
   margin-block-end: 0.5rem;
+}
+
+.reply {
+  width: fit-content;
+  background: none;
+  padding: 0;
+  margin-block-start: 0.3rem;
+  font-weight: var(--cmm-font-weight-normal);
 }
 
 .main {
@@ -28,7 +30,6 @@
 .right {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
   flex: 1;
 }
 
@@ -42,6 +43,11 @@
 
 .displayName {
   font-weight: var(--cmm-font-weight-bold);
+
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
 }
 
 .name {
@@ -67,4 +73,13 @@
   word-wrap: break-word;
   word-break: break-all;
   white-space: pre-wrap;
+  margin-block-start: 0.3rem;
+}
+
+.avatar {
+  --cmm-Avatar-size: 2.5rem;
+
+  &:hover {
+    filter: brightness(0.9);
+  }
 }

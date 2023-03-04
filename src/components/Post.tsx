@@ -6,6 +6,7 @@ import { Avatar } from "@camome/core/Avatar";
 import { Tag } from "@camome/core/Tag";
 
 import styles from "./Post.module.scss";
+import { Link } from "react-router-dom";
 
 type Props = {
   data: AppBskyFeedFeedViewPost.Main;
@@ -13,42 +14,35 @@ type Props = {
 
 export default function Post({ data }: Props) {
   const { post, reason, reply } = data;
+  const profileHref = `/${post.author.handle.replace(".bsky.social", "")}`;
   return (
     <article className={styles.container}>
-      {reply && (
-        <Tag
-          colorScheme="neutral"
-          size="sm"
-          startDecorator={<BsReplyFill />}
-          className={styles.tag}
-        >
-          Reply to{" "}
-          {reply.parent.author.displayName ?? `@${reply.parent.author.handle}`}
-        </Tag>
-      )}
       {reason && AppBskyFeedFeedViewPost.isReasonRepost(reason) && (
         <Tag
           colorScheme="neutral"
           size="sm"
           startDecorator={<FaRetweet />}
-          className={styles.tag}
+          className={styles.repost}
         >
-          Reposted by {reason.by.displayName}
+          Repost by {reason.by.displayName}
         </Tag>
       )}
       <div className={styles.main}>
         <div className={styles.left}>
           <Avatar
+            component={Link}
+            to={profileHref}
             src={post.author.avatar}
             alt={`Avatar of ${post.author?.displayName}`}
             size="sm"
+            className={styles.avatar}
           />
         </div>
         <div className={styles.right}>
           <div className={styles.header}>
-            <span className={styles.displayName}>
+            <Link to={profileHref} className={styles.displayName}>
               {post.author.displayName}
-            </span>
+            </Link>
             <span className={styles.name}>
               @{post.author.handle.replace(".bsky.social", "")}
             </span>
@@ -56,6 +50,18 @@ export default function Post({ data }: Props) {
               {formatDistanceShort(new Date(post.indexedAt))}
             </time>
           </div>
+          {reply && (
+            <Tag
+              colorScheme="neutral"
+              size="sm"
+              startDecorator={<BsReplyFill />}
+              className={styles.reply}
+            >
+              Reply to{" "}
+              {reply.parent.author.displayName ??
+                `@${reply.parent.author.handle}`}
+            </Tag>
+          )}
           <div className={styles.body}>{(post.record as any).text}</div>
         </div>
       </div>

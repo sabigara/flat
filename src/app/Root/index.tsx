@@ -1,6 +1,13 @@
 import { atp } from "@/src/lib/atp";
 import type { AtpSessionData } from "@atproto/api";
-import { LoaderFunction, Outlet, redirect } from "react-router-dom";
+import {
+  LoaderFunction,
+  Outlet,
+  redirect,
+  useLocation,
+  useMatch,
+  useResolvedPath,
+} from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { HomeTimeline } from "@/src/app/Root/HomeTimeline";
 
@@ -33,13 +40,12 @@ const queryClient = new QueryClient({
 });
 
 function RootRoute() {
+  const pathname = useLocation().pathname;
   return (
     <QueryClientProvider client={queryClient}>
       <div className={styles.container}>
         <Header />
-        <main>
-          <HomeTimeline />
-        </main>
+        <main>{pathname === "/" ? <HomeTimeline /> : <Outlet />}</main>
       </div>
     </QueryClientProvider>
   );

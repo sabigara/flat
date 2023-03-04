@@ -1,0 +1,77 @@
+.container {
+}
+
+.header {
+}
+
+.banner {
+  width: 100%;
+  height: 14rem;
+  background: var(--cmm-color-surface-2);
+
+  > img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.topRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 1rem 0 1rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.avatar {
+  --cmm-Avatar-size: 8rem;
+  margin-block-start: calc(-4rem - 1rem);
+  --cmm-Avatar-ring-size: 0.25rem;
+  // TODO: add --cmm--Avatar-ring-color
+  --cmm-color-surface-0: var(--cmm-color-surface-2);
+}
+
+.about {
+  padding: 1rem;
+}
+
+.displayName {
+  font-size: var(--cmm-font-size-4xl);
+  font-weight: var(--cmm-font-weight-bold);
+  line-height: 1;
+}
+
+.handle {
+  margin-block-start: 0.25rem;
+  color: var(--cmm-color-font-subtle);
+}
+
+.dl {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-block-start: 0.5rem;
+  font-size: var(--cmm-font-size-sm);
+
+  > div {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 0.25rem;
+  }
+
+  dd {
+    font-weight: var(--cmm-font-weight-bold);
+  }
+
+  dt {
+    color: var(--cmm-color-font-subtle);
+  }
+}
+
+.description {
+  margin-block-start: 1rem;
+}
