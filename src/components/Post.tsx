@@ -1,9 +1,9 @@
 import { formatDistanceShort } from "@/src/lib/time";
 import { AppBskyFeedFeedViewPost } from "@atproto/api";
-import { IconHeart } from "@tabler/icons-react";
+import { BsReplyFill } from "react-icons/bs";
+import { FaRetweet } from "react-icons/fa";
 import { Avatar } from "@camome/core/Avatar";
 import { Tag } from "@camome/core/Tag";
-import { IconButton } from "@camome/core/IconButton";
 
 import styles from "./Post.module.scss";
 
@@ -15,8 +15,24 @@ export default function Post({ data }: Props) {
   const { post, reason, reply } = data;
   return (
     <article className={styles.container}>
+      {reply && (
+        <Tag
+          colorScheme="neutral"
+          size="sm"
+          startDecorator={<BsReplyFill />}
+          className={styles.tag}
+        >
+          Reply to{" "}
+          {reply.parent.author.displayName ?? `@${reply.parent.author.handle}`}
+        </Tag>
+      )}
       {reason && AppBskyFeedFeedViewPost.isReasonRepost(reason) && (
-        <Tag colorScheme="neutral" size="sm" className={styles.reason}>
+        <Tag
+          colorScheme="neutral"
+          size="sm"
+          startDecorator={<FaRetweet />}
+          className={styles.tag}
+        >
           Reposted by {reason.by.displayName}
         </Tag>
       )}
@@ -33,7 +49,9 @@ export default function Post({ data }: Props) {
             <span className={styles.displayName}>
               {post.author.displayName}
             </span>
-            <span className={styles.name}>@{post.author.handle}</span>
+            <span className={styles.name}>
+              @{post.author.handle.replace(".bsky.social", "")}
+            </span>
             <time dateTime={post.indexedAt} className={styles.time}>
               {formatDistanceShort(new Date(post.indexedAt))}
             </time>
