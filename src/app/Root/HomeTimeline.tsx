@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { atp, bsky } from "@/src/lib/atp";
+import { bsky } from "@/src/lib/atp";
 import React from "react";
 import clsx from "clsx";
 

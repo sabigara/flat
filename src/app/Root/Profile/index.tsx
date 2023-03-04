@@ -1,10 +1,5 @@
-import { atp, bsky } from "@/src/lib/atp";
-import React from "react";
-import {
-  LoaderFunction,
-  useLoaderData,
-  useRouteLoaderData,
-} from "react-router-dom";
+import { bsky } from "@/src/lib/atp";
+import { LoaderFunction, useLoaderData } from "react-router-dom";
 import { Avatar } from "@camome/core/Avatar";
 import { Button } from "@camome/core/Button";
 

@@ -4,9 +4,9 @@ import { BsReplyFill } from "react-icons/bs";
 import { FaRetweet } from "react-icons/fa";
 import { Avatar } from "@camome/core/Avatar";
 import { Tag } from "@camome/core/Tag";
+import { Link } from "react-router-dom";
 
 import styles from "./Post.module.scss";
-import { Link } from "react-router-dom";
 
 type Props = {
   data: AppBskyFeedFeedViewPost.Main;
