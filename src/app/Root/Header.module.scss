@@ -3,6 +3,7 @@
   padding: 0 0.5rem;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   border-bottom: 1px solid var(--cmm-color-border-base);
 }
 
@@ -21,5 +22,11 @@
 
   &__text {
     margin-block-start: 0.1em;
+  }
+}
+
+.avatar {
+  &:hover {
+    filter: brightness(0.9);
   }
 }

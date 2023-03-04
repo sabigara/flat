@@ -1,12 +1,11 @@
-import { atp } from "@/src/lib/atp";
-import type { AtpSessionData } from "@atproto/api";
+import { atp, bsky } from "@/src/lib/atp";
+import type { AtpSessionData, AppBskyActorProfile } from "@atproto/api";
 import {
   LoaderFunction,
   Outlet,
   redirect,
+  useLoaderData,
   useLocation,
-  useMatch,
-  useResolvedPath,
 } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { HomeTimeline } from "@/src/app/Root/HomeTimeline";
@@ -19,13 +18,12 @@ export const loader = (async () => {
     const sessionStr = localStorage.getItem("session");
     if (!sessionStr) return redirect("/login");
     const session = JSON.parse(sessionStr) as AtpSessionData;
-    try {
-      await atp.resumeSession(session);
-    } catch (e) {
-      console.log(e);
-    }
+    await atp.resumeSession(session);
   }
-  return null;
+  const resp = await bsky.actor.getProfile({
+    actor: atp.session!.handle,
+  });
+  return resp.data;
 }) satisfies LoaderFunction;
 
 export const element = <RootRoute />;
@@ -40,11 +38,13 @@ const queryClient = new QueryClient({
 });
 
 function RootRoute() {
+  // TODO: can't use ReturnType as the loader is returning `redirect()`
+  const profile = useLoaderData() as AppBskyActorProfile.View;
   const pathname = useLocation().pathname;
   return (
     <QueryClientProvider client={queryClient}>
       <div className={styles.container}>
-        <Header />
+        <Header profile={profile} />
         <main>{pathname === "/" ? <HomeTimeline /> : <Outlet />}</main>
       </div>
     </QueryClientProvider>
