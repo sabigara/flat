@@ -3,7 +3,7 @@ import { AppBskyFeedGetPostThread } from "@atproto/api";
 import { bsky } from "@/src/lib/atp";
 import { LoaderFunction, useLoaderData } from "react-router-dom";
 
-export const loader = (async ({ params }) => {
+export const loader = (async ({ params, request }) => {
   if (!params.postUri) {
     throw new Error("Invalid params");
   }

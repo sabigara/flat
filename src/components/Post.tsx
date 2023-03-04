@@ -1,5 +1,6 @@
 import { formatDistanceShort } from "@/src/lib/time";
 import { AppBskyFeedFeedViewPost } from "@atproto/api";
+import { TbMessageCircle2, TbStar, TbStarFilled } from "react-icons/tb";
 import { BsReplyFill } from "react-icons/bs";
 import { FaRetweet } from "react-icons/fa";
 import { Avatar } from "@camome/core/Avatar";
@@ -14,9 +15,48 @@ type Props = {
 
 export default function Post({ data }: Props) {
   const { post, reason, reply } = data;
+  // const { mutate } = useMutation(async () => {
+  //   await bsky.feed.setVote({
+  //     direction: "up",
+  //     subject: {
+  //       cid: post.cid,
+  //       uri: post.uri,
+  //     },
+  //   });
+  // });
+
   // TODO: `encodeURIComponent()` causes 404 error
-  const threadHref = `/posts/${btoa(post.uri)}`;
+  const uriBase64 = btoa(post.uri);
+  const threadHref = `/posts/${uriBase64}`;
   const profileHref = `/${post.author.handle.replace(".bsky.social", "")}`;
+
+  const reactions: ReactionProps[] = [
+    {
+      type: "reply",
+      count: post.replyCount,
+      icon: <TbMessageCircle2 />,
+      iconReacted: <TbMessageCircle2 />,
+      "aria-label": `${post.replyCount}件の返信`,
+      reacted: false,
+    },
+    {
+      type: "repost",
+      count: post.repostCount,
+      icon: <FaRetweet />,
+      iconReacted: <FaRetweet style={{ color: "#22c55e" }} />,
+      "aria-label": `${post.replyCount}件のリポスト`,
+      reacted: false,
+    },
+    {
+      type: "upvote",
+      count: post.upvoteCount,
+      icon: <TbStar />,
+      iconReacted: <TbStarFilled style={{ color: "#eab308" }} />,
+      "aria-label": `${post.replyCount}件のいいね`,
+      reacted: false,
+    },
+  ];
+
   return (
     <article className={styles.container}>
       {reason && AppBskyFeedFeedViewPost.isReasonRepost(reason) && (
@@ -64,7 +104,14 @@ export default function Post({ data }: Props) {
                 `@${reply.parent.author.handle}`}
             </Tag>
           )}
-          <p className={styles.body}>{(post.record as any).text}</p>
+          <Link to={threadHref} className={styles.body}>
+            {(post.record as any).text}
+          </Link>
+          <ul className={styles.reactionList}>
+            {reactions.map((reaction) => (
+              <Reaction {...reaction} />
+            ))}
+          </ul>
         </div>
       </div>
     </article>
@@ -72,16 +119,35 @@ export default function Post({ data }: Props) {
 }
 
 type ReactionProps = {
+  type: "reply" | "repost" | "upvote";
   icon: React.ReactNode;
+  iconReacted: React.ReactNode;
   count: number;
-  onClick: () => void;
+  onClick?: () => void;
   ["aria-label"]: string;
+  reacted: boolean;
 };
 
-function Reaction({ icon, count, onClick, ...props }: ReactionProps) {
+function Reaction({
+  type,
+  icon,
+  iconReacted,
+  count,
+  onClick,
+  reacted,
+  ...props
+}: ReactionProps) {
   return (
-    <button aria-label={props["aria-label"]} onClick={onClick}>
-      {icon}
+    <button
+      aria-label={props["aria-label"]}
+      onClick={onClick}
+      disabled={reacted}
+      className={styles.reaction}
+    >
+      <input type="hidden" name="type" value={type} />
+      <span className={styles.reaction__icon}>
+        {reacted ? iconReacted : icon}
+      </span>
       <span aria-hidden>{count}</span>
     </button>
   );
