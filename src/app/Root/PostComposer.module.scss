@@ -17,6 +17,24 @@
   }
 }
 
+.action {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.kbd {
+  font-family: var(--cmm-font-family-base);
+  font-size: var(--cmm-font-size-xs);
+}
+
+.postBtnWrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .composeBtn {
   position: absolute;
   right: calc(1rem + 2rem);
