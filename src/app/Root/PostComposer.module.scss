@@ -18,15 +18,24 @@
 }
 
 .action {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  display: grid;
+  grid-template-columns: 1fr auto;
   gap: 1rem;
 }
 
-.kbd {
-  font-family: var(--cmm-font-family-base);
+.keybinding {
   font-size: var(--cmm-font-size-xs);
+  color: var(--cmm-color-font-muted);
+  place-self: end start;
+
+  kbd {
+    font-family: var(--cmm-font-family-base);
+    border: 1px solid var(--cmm-color-border-base);
+    border-radius: var(--cmm-radius-sm);
+    padding: 0.2em 0.3em;
+    margin-inline-end: 0.25em;
+    font-weight: var(--cmm-font-weight-medium);
+  }
 }
 
 .postBtnWrap {

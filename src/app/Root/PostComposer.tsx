@@ -68,18 +68,23 @@ export default function PostComposer({ profile }: Props) {
       >
         <div className={styles.container}>
           <div>
-            <kbd className={styles.kbd}>{modKeyLabel}+Enterで投稿</kbd>
-            <Textarea
-              label={<span className="visually-hidden">投稿内容</span>}
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              rows={6}
-              fill
-              onKeyDown={handleKeyDown}
-              autoFocus
-            />
+            <label>
+              <div className="visually-hidden">投稿内容</div>
+              <Textarea
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                rows={6}
+                fill
+                onKeyDown={handleKeyDown}
+                autoFocus
+              />
+            </label>
           </div>
           <div className={styles.action}>
+            <p className={styles.keybinding}>
+              <kbd>{modKeyLabel}+Enter</kbd>
+              <span>で投稿</span>
+            </p>
             <div className={styles.postBtnWrap}>
               <Button
                 onClick={() => mutate()}
