@@ -1,5 +1,5 @@
 import type { AppBskyActorProfile } from "@atproto/api";
-import { Link } from "react-router-dom";
+import { Link, useNavigation } from "react-router-dom";
 import { TbReload } from "react-icons/tb";
 import { Avatar } from "@camome/core/Avatar";
 import LogoIcon from "@/src/assets/logo-icon.svg";
@@ -13,6 +13,7 @@ type Props = {
 };
 
 export default function Header({ profile }: Props) {
+  const { state } = useNavigation();
   const queryClient = useQueryClient();
   const isFetching = useIsFetching(["home-timeline"]);
   const handleClickReload = () => {
@@ -21,7 +22,7 @@ export default function Header({ profile }: Props) {
   return (
     <header className={styles.container}>
       <div className={styles.progressBar}>
-        {isFetching && (
+        {(state === "loading" || isFetching) && (
           <div role="status">
             <span className="visually-hidden">データを取得中・・・</span>
           </div>
