@@ -69,3 +69,11 @@
 .description {
   margin-block-start: 1rem;
 }
+
+.followUnfollowBtn {
+  font-weight: var(--cmm-font-weight-bold);
+
+  &:hover {
+    cursor: not-allowed;
+  }
+}
