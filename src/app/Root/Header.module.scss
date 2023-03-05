@@ -5,23 +5,65 @@
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--cmm-color-border-base);
+  position: relative;
+}
+
+.progressBar {
+  position: absolute;
+  height: 3px;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  width: 100%;
+
+  > [role="status"] {
+    background-color: var(--cmm-color-primary-muted);
+
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    width: 50%;
+    height: 100%;
+
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-name: indeterminate-progress-bar;
+  }
+
+  @keyframes indeterminate-progress-bar {
+    from {
+      left: -50%;
+    }
+    to {
+      left: 100%;
+    }
+  }
 }
 
 .logo {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-weight: var(--cmm-font-weight-semibold);
+  font-weight: var(--cmm-font-weight-bold);
   font-size: var(--cmm-font-size-2xl);
   line-height: 1;
 
   > svg {
     width: 2rem;
     height: 2rem;
+    margin-block-start: -0.1em;
   }
+}
 
-  &__text {
-    margin-block-start: 0.1em;
+.reloadBtn {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  color: var(--cmm-color-font-subtle);
+
+  &:hover {
+    color: var(--cmm-color-font-base);
   }
 }
 

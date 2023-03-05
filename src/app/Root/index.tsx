@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { HomeTimeline } from "@/src/app/Root/HomeTimeline";
+import PostComposer from "@/src/app/Root/PostComposer";
 
 import styles from "./index.module.scss";
 import Header from "@/src/app/Root/Header";
@@ -45,6 +46,7 @@ function RootRoute() {
     <QueryClientProvider client={queryClient}>
       <div className={styles.container}>
         <Header profile={profile} />
+        <PostComposer profile={profile} />
         <main>{pathname === "/" ? <HomeTimeline /> : <Outlet />}</main>
       </div>
     </QueryClientProvider>

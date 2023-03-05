@@ -1,23 +1,47 @@
 import type { AppBskyActorProfile } from "@atproto/api";
 import { Link } from "react-router-dom";
-import LogoIcon from "@/src/assets/logo-icon.svg";
+import { TbReload } from "react-icons/tb";
 import { Avatar } from "@camome/core/Avatar";
+import LogoIcon from "@/src/assets/logo-icon.svg";
+import { useIsFetching, useQueryClient } from "@tanstack/react-query";
+import { IconButton } from "@camome/core/IconButton";
 
 import styles from "./Header.module.scss";
-import PostComposer from "@/src/app/Root/PostComposer";
 
 type Props = {
   profile: AppBskyActorProfile.View;
 };
 
 export default function Header({ profile }: Props) {
+  // const queryClient = useQueryClient();
+  const isFetching = useIsFetching(["home-timeline"]);
+  // const handleClickReload = () => {
+  //   queryClient.invalidateQueries(["home-timeline"]);
+  // };
   return (
     <header className={styles.container}>
+      <div className={styles.progressBar}>
+        {isFetching && (
+          <div role="status">
+            <span className="visually-hidden">データを取得中・・・</span>
+          </div>
+        )}
+      </div>
       <Link to="/" className={styles.logo}>
         <LogoIcon />
         <span className={styles.logo__text}>Flat</span>
       </Link>
-      <PostComposer profile={profile} />
+      {/* <IconButton
+        variant="ghost"
+        size="sm"
+        aria-label="更新"
+        onClick={handleClickReload}
+        colorScheme="neutral"
+        disabled={!!isFetching}
+        className={styles.reloadBtn}
+      >
+        <TbReload />
+      </IconButton> */}
       <Avatar
         component={Link}
         size="sm"

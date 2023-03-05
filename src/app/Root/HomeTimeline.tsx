@@ -20,7 +20,7 @@ export function HomeTimeline() {
     queryKey: ["home-timeline"],
     queryFn: async ({ pageParam }) => {
       const resp = await bsky.feed.getTimeline({
-        limit: 25,
+        limit: 50,
         // passing `undefined` breaks the query somehow
         ...(pageParam ? { before: pageParam.cursor } : {}),
       });
@@ -31,6 +31,7 @@ export function HomeTimeline() {
     getNextPageParam: (lastPage) => {
       return { cursor: lastPage.cursor };
     },
+    refetchInterval: 60 * 1 * 1000, // 1 minute
   });
   const parentRef = React.useRef<HTMLDivElement>(null!);
   const allRows = data?.pages.flatMap((p) => p.feed) ?? [];
