@@ -13,11 +13,11 @@ type Props = {
 };
 
 export default function Header({ profile }: Props) {
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
   const isFetching = useIsFetching(["home-timeline"]);
-  // const handleClickReload = () => {
-  //   queryClient.invalidateQueries(["home-timeline"]);
-  // };
+  const handleClickReload = () => {
+    queryClient.invalidateQueries(["home-timeline"]);
+  };
   return (
     <header className={styles.container}>
       <div className={styles.progressBar}>
@@ -31,7 +31,7 @@ export default function Header({ profile }: Props) {
         <LogoIcon />
         <span className={styles.logo__text}>Flat</span>
       </Link>
-      {/* <IconButton
+      <IconButton
         variant="ghost"
         size="sm"
         aria-label="更新"
@@ -41,7 +41,7 @@ export default function Header({ profile }: Props) {
         className={styles.reloadBtn}
       >
         <TbReload />
-      </IconButton> */}
+      </IconButton>
       <Avatar
         component={Link}
         size="sm"
