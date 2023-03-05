@@ -100,7 +100,7 @@
   font-size: var(--cmm-font-size-sm);
   width: fit-content;
   padding: 0.2em 0.75em;
-  margin: 0 -0.75em;
+  margin: 0 0 -0.2em -0.75em;
 
   &:where(:hover, :focus-visible):not(.reacted) {
     color: var(--cmm-color-font-base);
