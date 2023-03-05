@@ -1,0 +1,13 @@
+.container {
+  word-wrap: break-word;
+  word-break: break-all;
+  white-space: pre-wrap;
+
+  a {
+    color: var(--cmm-color-link);
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

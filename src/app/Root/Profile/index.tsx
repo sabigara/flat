@@ -37,11 +37,15 @@ function ProfileRoute() {
           />
           <div className={styles.actions}>
             {profile.myState?.follow ? (
-              <Button colorScheme="neutral" variant="soft">
-                Unfollow
+              <Button
+                colorScheme="neutral"
+                variant="soft"
+                className={styles.followUnfollowBtn}
+              >
+                フォロー解除
               </Button>
             ) : (
-              <Button>Follow</Button>
+              <Button className={styles.followUnfollowBtn}>フォローする</Button>
             )}
           </div>
         </div>
