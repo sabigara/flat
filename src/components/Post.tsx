@@ -104,9 +104,7 @@ export default function Post({ data }: Props) {
                 `@${reply.parent.author.handle}`}
             </Tag>
           )}
-          <Link to={threadHref} className={styles.body}>
-            {(post.record as any).text}
-          </Link>
+          <p className={styles.body}>{(post.record as any).text}</p>
           <ul className={styles.reactionList}>
             {reactions.map((reaction) => (
               <Reaction {...reaction} />
