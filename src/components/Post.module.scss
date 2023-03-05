@@ -69,12 +69,9 @@
   }
 }
 
-.body {
+.prose {
   flex: 1;
   display: inline-block;
-  word-wrap: break-word;
-  word-break: break-all;
-  white-space: pre-wrap;
   margin-block-start: 0.3rem;
 }
 

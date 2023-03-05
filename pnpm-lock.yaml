@@ -13,6 +13,8 @@ specifiers:
   '@vitejs/plugin-react-swc': ^3.0.0
   clsx: ^1.2.1
   date-fns: ^2.29.3
+  linkify-react: ^4.1.0
+  linkifyjs: ^4.1.0
   localforage: ^1.10.0
   match-sorter: ^6.3.1
   react: ^18.2.0
@@ -35,6 +37,8 @@ dependencies:
   '@tanstack/react-virtual': 3.0.0-beta.52_react@18.2.0
   clsx: 1.2.1
   date-fns: 2.29.3
+  linkify-react: 4.1.0_w5fbl633f7mujs73uwm6v5bhhm
+  linkifyjs: 4.1.0
   localforage: 1.10.0
   match-sorter: 6.3.1
   react: 18.2.0
@@ -1230,6 +1234,20 @@ packages:
   /lines-and-columns/1.2.4:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
     dev: true
+
+  /linkify-react/4.1.0_w5fbl633f7mujs73uwm6v5bhhm:
+    resolution: {integrity: sha512-PG+ulIQkrHHDluuH/YgvRZDX1GFi0sarb7jNL4BdFOBH+muoiIVvBVwHkP9K7lSn7OmC6k8JEXKe+QvwBUsuOg==}
+    peerDependencies:
+      linkifyjs: ^4.0.0
+      react: '>= 15.0.0'
+    dependencies:
+      linkifyjs: 4.1.0
+      react: 18.2.0
+    dev: false
+
+  /linkifyjs/4.1.0:
+    resolution: {integrity: sha512-Ffv8VoY3+ixI1b3aZ3O+jM6x17cOsgwfB1Wq7pkytbo1WlyRp6ZO0YDMqiWT/gQPY/CmtiGuKfzDIVqxh1aCTA==}
+    dev: false
 
   /localforage/1.10.0:
     resolution: {integrity: sha512-14/H1aX7hzBBmmh7sGPd+AOMkkIrHM3Z1PAyGgZigA1H1p5O5ANnMyWzvpAETtG68/dC4pC0ncy3+PPGzXZHPg==}

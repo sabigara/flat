@@ -6,6 +6,7 @@ import { FaRetweet } from "react-icons/fa";
 import { Avatar } from "@camome/core/Avatar";
 import { Tag } from "@camome/core/Tag";
 import { Link } from "react-router-dom";
+import Prose from "@/src/components/Prose";
 
 import styles from "./Post.module.scss";
 
@@ -104,7 +105,7 @@ export default function Post({ data }: Props) {
                 `@${reply.parent.author.handle}`}
             </Tag>
           )}
-          <p className={styles.body}>{(post.record as any).text}</p>
+          <Prose className={styles.prose} text={(post.record as any).text} />
           <ul className={styles.reactionList}>
             {reactions.map((reaction) => (
               <Reaction {...reaction} />
