@@ -20,7 +20,25 @@ export default function Header({ profile }: Props) {
   const isFetchingGlobal = useIsFetching();
   const isFetchingHomeFeed = useIsFetching(queryKeys.feed.home);
   const handleClickReload = () => {
-    queryClient.invalidateQueries(queryKeys.feed.home);
+    // must scroll to top to prevent refetch at the bottom.
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+    const refetchOnTop = () => {
+      if (window.scrollY !== 0) {
+        window.requestAnimationFrame(refetchOnTop);
+        return;
+      }
+      // 1. remove all the pages except for the first.
+      // 2. refetch the first page.
+      queryClient.setQueryData(queryKeys.feed.home, (data: any) => ({
+        pages: data.pages.slice(0, 1),
+        pageParams: data.pageParams.slice(0, 1),
+      }));
+      queryClient.invalidateQueries(queryKeys.feed.home);
+    };
+    window.requestAnimationFrame(refetchOnTop);
   };
   return (
     <header className={styles.container}>

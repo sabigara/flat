@@ -61,7 +61,7 @@ function RootRoute() {
         <PostComposer profile={profile} />
         <main>
           {pathname === "/" ? (
-            <Feed queryKey={queryKey} queryFn={queryFn} maxPages={4} />
+            <Feed queryKey={queryKey} queryFn={queryFn} />
           ) : (
             <Outlet />
           )}
