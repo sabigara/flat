@@ -6,9 +6,9 @@ import { FaRetweet } from "react-icons/fa";
 import { Tag } from "@camome/core/Tag";
 import { Link } from "react-router-dom";
 import Prose from "@/src/components/Prose";
+import Avatar from "@/src/components/Avatar";
 
 import styles from "./Post.module.scss";
-import Avatar from "@/src/components/Avatar";
 
 type Props = {
   data: AppBskyFeedFeedViewPost.Main;
