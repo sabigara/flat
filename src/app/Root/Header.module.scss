@@ -5,7 +5,9 @@
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--cmm-color-border-base);
-  position: relative;
+  position: sticky;
+  top: 0;
+  background: var(--cmm-color-surface-0);
 }
 
 .progressBar {
