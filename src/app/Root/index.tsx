@@ -32,7 +32,7 @@ export const element = <RootRoute />;
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: import.meta.env.DEV ? false : true,
+      refetchOnWindowFocus: false,
       retry: 0,
     },
   },
