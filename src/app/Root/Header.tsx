@@ -2,7 +2,7 @@ import type { AppBskyActorProfile } from "@atproto/api";
 import { Link, useNavigation } from "react-router-dom";
 import { TbReload } from "react-icons/tb";
 import { Avatar } from "@camome/core/Avatar";
-import LogoIcon from "@/src/assets/logo-icon.svg";
+import LogoIcon from "@/src/assets/icon.svg";
 import { useIsFetching, useQueryClient } from "@tanstack/react-query";
 import { IconButton } from "@camome/core/IconButton";
 

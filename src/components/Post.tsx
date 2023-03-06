@@ -106,6 +106,7 @@ export default function Post({ data }: Props) {
             </Tag>
           )}
           <Prose className={styles.prose} text={(post.record as any).text} />
+          {/* if (AppBskyEmbedImages.isPresented(post.embed)) ... */}
           <ul className={styles.reactionList}>
             {reactions.map((reaction) => (
               <Reaction {...reaction} />

@@ -9,7 +9,7 @@ import {
 import { TextInput } from "@camome/core/TextInput";
 import { Button } from "@camome/core/Button";
 import { Spinner } from "@camome/core/Spinner";
-import LogoIcon from "@/src/assets/logo-icon.svg";
+import LogoIcon from "@/src/assets/icon.svg";
 
 import styles from "./index.module.scss";
 
