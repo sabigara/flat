@@ -82,7 +82,7 @@ function ProfileRoute() {
           <Prose className={styles.description}>{profile.description}</Prose>
         </div>
       </header>
-      <main>
+      <main className={styles.main}>
         <Feed queryKey={queryKey} queryFn={queryFn} />
       </main>
     </article>
