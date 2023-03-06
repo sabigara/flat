@@ -51,7 +51,7 @@ export function Feed<K extends QueryKey>({
       if (maxPages && allPages.length >= maxPages) return undefined;
       return lastPage.cursor ? { cursor: lastPage.cursor } : undefined;
     },
-    staleTime: 60 * 3 * 1000,
+    staleTime: 60 * 10 * 1000,
   });
   const queryClient = useQueryClient();
 
@@ -62,10 +62,13 @@ export function Feed<K extends QueryKey>({
     : undefined;
   const { data: isNewAvailable } = useQuery(
     queryKeys.feed.new.$(queryKey, latestDate, fetchLatestOne),
-    async () => {
-      if (!latestDate) return false;
-      const latest = await fetchLatestOne();
-      return new Date(latest.post.indexedAt).getTime() > latestDate.getTime();
+    async ({ queryKey }) => {
+      const params = queryKey[1];
+      if (!params.latestDate) return false;
+      const latest = await params.fetchLatestOne();
+      return (
+        new Date(latest.post.indexedAt).getTime() > params.latestDate.getTime()
+      );
     },
     {
       refetchInterval: 30 * 1000, // 30 seconds
