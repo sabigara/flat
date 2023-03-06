@@ -1,6 +1,6 @@
 import React from "react";
 import Dialog from "@/src/components/Dialog";
-import { bsky } from "@/src/lib/atp";
+import { bsky } from "@/src/lib/atp/atp";
 import { AppBskyActorProfile } from "@atproto/api";
 import { Button } from "@camome/core/Button";
 import { Spinner } from "@camome/core/Spinner";
@@ -35,8 +35,8 @@ export default function PostComposer({ profile }: Props) {
     },
     {
       onSuccess() {
-        queryClient.invalidateQueries(queryKeys.feed.home);
-        queryClient.invalidateQueries(queryKeys.feed.author(profile.handle));
+        queryClient.invalidateQueries(queryKeys.feed.home.$);
+        queryClient.invalidateQueries(queryKeys.feed.author.$(profile.handle));
         setText("");
         setOpen(false);
       },

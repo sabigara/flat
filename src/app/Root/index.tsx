@@ -1,4 +1,4 @@
-import { atp, bsky } from "@/src/lib/atp";
+import { atp, bsky } from "@/src/lib/atp/atp";
 import type { AtpSessionData, AppBskyActorProfile } from "@atproto/api";
 import {
   LoaderFunction,
@@ -7,7 +7,11 @@ import {
   useLoaderData,
   useLocation,
 } from "react-router-dom";
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import {
+  QueryClientProvider,
+  QueryClient,
+  useQuery,
+} from "@tanstack/react-query";
 import { Feed, FeedQueryFn } from "@/src/app/Root/Feed";
 import PostComposer from "@/src/app/Root/PostComposer";
 import Header from "@/src/app/Root/Header";
@@ -43,7 +47,7 @@ function RootRoute() {
   // TODO: can't use ReturnType as the loader is returning `redirect()`
   const profile = useLoaderData() as AppBskyActorProfile.View;
   const pathname = useLocation().pathname;
-  const queryKey = queryKeys.feed.home;
+  const queryKey = queryKeys.feed.home.$;
   const queryFn: FeedQueryFn<typeof queryKey> = async ({ pageParam }) => {
     const resp = await bsky.feed.getTimeline({
       limit: 25,
@@ -54,6 +58,9 @@ function RootRoute() {
     if (!resp.success) throw new Error("Fetch error");
     return resp.data;
   };
+  const fetchLatest = async () =>
+    (await bsky.feed.getTimeline({ limit: 1 })).data.feed[0];
+
   return (
     <QueryClientProvider client={queryClient}>
       <div className={styles.container}>
@@ -61,7 +68,11 @@ function RootRoute() {
         <PostComposer profile={profile} />
         <main>
           {pathname === "/" ? (
-            <Feed queryKey={queryKey} queryFn={queryFn} />
+            <Feed
+              queryKey={queryKey}
+              queryFn={queryFn}
+              fetchLatestOne={fetchLatest}
+            />
           ) : (
             <Outlet />
           )}

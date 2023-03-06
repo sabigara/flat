@@ -32,3 +32,11 @@
   color: var(--cmm-color-font-muted);
   text-align: center;
 }
+
+.newItemBtn {
+  position: fixed;
+  top: 0.75rem;
+  left: 50%;
+  translate: -50%;
+  z-index: 60;
+}
