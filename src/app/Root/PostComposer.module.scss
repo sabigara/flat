@@ -46,7 +46,7 @@
 
 .composeBtn {
   position: fixed;
-  right: 1.5rem;
+  right: max(calc((100vw - var(--container-width)) / 2 + 1.5rem), 1.5rem);
   bottom: 1.5rem;
   z-index: 50;
   border-radius: var(--cmm-radius-full);
