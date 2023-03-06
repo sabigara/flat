@@ -1,4 +1,4 @@
-import { atp } from "@/src/lib/atp";
+import { atp } from "@/src/lib/atp/atp";
 import {
   ActionFunction,
   Form,

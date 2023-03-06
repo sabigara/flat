@@ -1,4 +1,4 @@
-import { bsky } from "@/src/lib/atp";
+import { bsky } from "@/src/lib/atp/atp";
 import { LoaderFunction, useLoaderData } from "react-router-dom";
 import { Button } from "@camome/core/Button";
 import Prose from "@/src/components/Prose";
@@ -24,7 +24,7 @@ export const element = <ProfileRoute />;
 function ProfileRoute() {
   const profile = useLoaderData() as Awaited<ReturnType<typeof loader>>;
   const username = profile.displayName ?? profile.handle;
-  const queryKey = queryKeys.feed.author(profile.handle);
+  const queryKey = queryKeys.feed.author.$(profile.handle);
   const queryFn: FeedQueryFn<typeof queryKey> = async ({
     queryKey,
     pageParam,
@@ -39,6 +39,13 @@ function ProfileRoute() {
     if (!resp.success) throw new Error("Fetch error");
     return resp.data;
   };
+  const fetchLatest = async () =>
+    (
+      await bsky.feed.getAuthorFeed({
+        author: profile.handle,
+        limit: 1,
+      })
+    ).data.feed[0];
 
   return (
     <article className={styles.container}>
@@ -83,7 +90,11 @@ function ProfileRoute() {
         </div>
       </header>
       <main className={styles.main}>
-        <Feed queryKey={queryKey} queryFn={queryFn} />
+        <Feed
+          queryKey={queryKey}
+          queryFn={queryFn}
+          fetchLatestOne={fetchLatest}
+        />
       </main>
     </article>
   );

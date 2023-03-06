@@ -1,5 +1,4 @@
 .container {
-  container-type: inline-size;
 }
 
 .banner {
@@ -26,7 +25,7 @@
 }
 
 .avatar {
-  --cmm-Avatar-size: max(20cqw, 6.5rem);
+  --cmm-Avatar-size: max(20%, 6.5rem);
   margin-block-start: calc(var(--cmm-Avatar-size) / -2 - 1rem);
   --cmm-Avatar-ring-size: 0.25rem;
   // TODO: add --cmm--Avatar-ring-color
