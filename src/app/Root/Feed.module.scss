@@ -25,3 +25,10 @@
   display: grid;
   place-items: center;
 }
+
+.noMore {
+  margin-block: 1rem;
+  font-size: var(--cmm-font-size-sm);
+  color: var(--cmm-color-font-muted);
+  text-align: center;
+}

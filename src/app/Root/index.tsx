@@ -44,10 +44,7 @@ function RootRoute() {
   const profile = useLoaderData() as AppBskyActorProfile.View;
   const pathname = useLocation().pathname;
   const queryKey = queryKeys.feed.home;
-  const queryFn: FeedQueryFn<typeof queryKey> = async ({
-    queryKey,
-    pageParam,
-  }) => {
+  const queryFn: FeedQueryFn<typeof queryKey> = async ({ pageParam }) => {
     const resp = await bsky.feed.getTimeline({
       limit: 25,
       // passing `undefined` breaks the query somehow
@@ -64,7 +61,7 @@ function RootRoute() {
         <PostComposer profile={profile} />
         <main>
           {pathname === "/" ? (
-            <Feed queryKey={queryKey} queryFn={queryFn} />
+            <Feed queryKey={queryKey} queryFn={queryFn} maxPages={4} />
           ) : (
             <Outlet />
           )}

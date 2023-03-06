@@ -22,9 +22,14 @@ export type FeedQueryFn<K extends QueryKey> = QueryFunction<
 type Props<K extends QueryKey> = {
   queryKey: K;
   queryFn: FeedQueryFn<K>;
+  maxPages?: number;
 };
 
-export function Feed<K extends QueryKey>({ queryKey, queryFn }: Props<K>) {
+export function Feed<K extends QueryKey>({
+  queryKey,
+  queryFn,
+  maxPages,
+}: Props<K>) {
   const {
     status,
     data,
@@ -35,10 +40,10 @@ export function Feed<K extends QueryKey>({ queryKey, queryFn }: Props<K>) {
   } = useInfiniteQuery({
     queryKey,
     queryFn,
-    getNextPageParam: (lastPage) => {
-      return { cursor: lastPage.cursor };
+    getNextPageParam: (lastPage, allPages) => {
+      if (maxPages && allPages.length >= maxPages) return undefined;
+      return lastPage.cursor ? { cursor: lastPage.cursor } : undefined;
     },
-    refetchInterval: 60 * 3 * 1000, // 3 minutes
     staleTime: 60 * 3 * 1000,
   });
   const allItems = data?.pages.flatMap((p) => p.feed) ?? [];
@@ -60,9 +65,14 @@ export function Feed<K extends QueryKey>({ queryKey, queryFn }: Props<K>) {
       hasMore={hasNextPage}
       loader={<SpinnerFill />}
     >
-      {allItems.map((item) => (
-        <Post data={item} />
-      ))}
+      <>
+        {allItems.map((item) => (
+          <Post data={item} />
+        ))}
+        {!hasNextPage && (
+          <div className={styles.noMore}>nothing more to say...</div>
+        )}
+      </>
     </InfiniteScroll>
   );
 }
