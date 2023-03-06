@@ -72,7 +72,7 @@ export function Feed<K extends QueryKey>({
     },
     {
       refetchInterval: 30 * 1000, // 30 seconds
-      refetchOnWindowFocus: !import.meta.env.PROD,
+      refetchOnWindowFocus: import.meta.env.PROD,
     }
   );
 
