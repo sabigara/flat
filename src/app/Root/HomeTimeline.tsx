@@ -31,7 +31,8 @@ export function HomeTimeline() {
     getNextPageParam: (lastPage) => {
       return { cursor: lastPage.cursor };
     },
-    refetchInterval: 60 * 5 * 1000, // 5 minutes
+    refetchInterval: 60 * 3 * 1000, // 3 minutes
+    staleTime: 60 * 3 * 1000,
   });
   const parentRef = React.useRef<HTMLDivElement>(null!);
   const allRows = data?.pages.flatMap((p) => p.feed) ?? [];
