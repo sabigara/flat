@@ -8,11 +8,12 @@ import {
   useLocation,
 } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import { HomeTimeline } from "@/src/app/Root/HomeTimeline";
+import { Feed, FeedQueryFn } from "@/src/app/Root/Feed";
 import PostComposer from "@/src/app/Root/PostComposer";
+import Header from "@/src/app/Root/Header";
+import { queryKeys } from "@/src/lib/queries";
 
 import styles from "./index.module.scss";
-import Header from "@/src/app/Root/Header";
 
 export const loader = (async () => {
   if (!atp.hasSession) {
@@ -42,12 +43,32 @@ function RootRoute() {
   // TODO: can't use ReturnType as the loader is returning `redirect()`
   const profile = useLoaderData() as AppBskyActorProfile.View;
   const pathname = useLocation().pathname;
+  const queryKey = queryKeys.feed.home;
+  const queryFn: FeedQueryFn<typeof queryKey> = async ({
+    queryKey,
+    pageParam,
+  }) => {
+    const resp = await bsky.feed.getTimeline({
+      limit: 25,
+      // passing `undefined` breaks the query somehow
+      ...(pageParam ? { before: pageParam.cursor } : {}),
+    });
+    // TODO: ?????
+    if (!resp.success) throw new Error("Fetch error");
+    return resp.data;
+  };
   return (
     <QueryClientProvider client={queryClient}>
       <div className={styles.container}>
         <Header profile={profile} />
         <PostComposer profile={profile} />
-        <main>{pathname === "/" ? <HomeTimeline /> : <Outlet />}</main>
+        <main>
+          {pathname === "/" ? (
+            <Feed queryKey={queryKey} queryFn={queryFn} />
+          ) : (
+            <Outlet />
+          )}
+        </main>
       </div>
     </QueryClientProvider>
   );

@@ -1,3 +1,4 @@
+import React from "react";
 import Dialog from "@/src/components/Dialog";
 import { bsky } from "@/src/lib/atp";
 import { AppBskyActorProfile } from "@atproto/api";
@@ -6,10 +7,10 @@ import { Spinner } from "@camome/core/Spinner";
 import { Textarea } from "@camome/core/Textarea";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { TbPencilPlus } from "react-icons/tb";
-import React from "react";
+import { isModKey, modKeyLabel } from "@/src/lib/keybindings";
+import { queryKeys } from "@/src/lib/queries";
 
 import styles from "./PostComposer.module.scss";
-import { isModKey, modKeyLabel } from "@/src/lib/keybindings";
 
 type Props = {
   profile: AppBskyActorProfile.View;
@@ -34,7 +35,8 @@ export default function PostComposer({ profile }: Props) {
     },
     {
       onSuccess() {
-        queryClient.invalidateQueries(["home-timeline"]);
+        queryClient.invalidateQueries(queryKeys.feed.home);
+        queryClient.invalidateQueries(queryKeys.feed.author(profile.handle));
         setText("");
         setOpen(false);
       },

@@ -1,10 +1,12 @@
 import { bsky } from "@/src/lib/atp";
 import { LoaderFunction, useLoaderData } from "react-router-dom";
 import { Button } from "@camome/core/Button";
-
-import styles from "./index.module.scss";
 import Prose from "@/src/components/Prose";
 import Avatar from "@/src/components/Avatar";
+import { Feed, FeedQueryFn } from "@/src/app/Root/Feed";
+import { queryKeys } from "@/src/lib/queries";
+
+import styles from "./index.module.scss";
 
 export const loader = (async ({ params }) => {
   if (!params.userId) {
@@ -22,6 +24,22 @@ export const element = <ProfileRoute />;
 function ProfileRoute() {
   const profile = useLoaderData() as Awaited<ReturnType<typeof loader>>;
   const username = profile.displayName ?? profile.handle;
+  const queryKey = queryKeys.feed.author(profile.handle);
+  const queryFn: FeedQueryFn<typeof queryKey> = async ({
+    queryKey,
+    pageParam,
+  }) => {
+    const resp = await bsky.feed.getAuthorFeed({
+      author: queryKey[1].authorId,
+      limit: 20,
+      // passing `undefined` breaks the query somehow
+      ...(pageParam ? { before: pageParam.cursor } : {}),
+    });
+    // TODO: ?????
+    if (!resp.success) throw new Error("Fetch error");
+    return resp.data;
+  };
+
   return (
     <article className={styles.container}>
       <header className={styles.header}>
@@ -64,6 +82,9 @@ function ProfileRoute() {
           <Prose className={styles.description}>{profile.description}</Prose>
         </div>
       </header>
+      <main>
+        <Feed queryKey={queryKey} queryFn={queryFn} />
+      </main>
     </article>
   );
 }
