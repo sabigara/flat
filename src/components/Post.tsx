@@ -7,6 +7,9 @@ import { Tag } from "@camome/core/Tag";
 import { Link } from "react-router-dom";
 import Prose from "@/src/components/Prose";
 import Avatar from "@/src/components/Avatar";
+import { atp, bsky } from "@/src/lib/atp/atp";
+import { useMutation } from "@tanstack/react-query";
+import React from "react";
 
 import styles from "./Post.module.scss";
 
@@ -16,20 +19,60 @@ type Props = {
 
 export default function Post({ data }: Props) {
   const { post, reason, reply } = data;
-  // const { mutate } = useMutation(async () => {
-  //   await bsky.feed.setVote({
-  //     direction: "up",
-  //     subject: {
-  //       cid: post.cid,
-  //       uri: post.uri,
-  //     },
-  //   });
-  // });
+  const [upvoted, setUpvoted] = React.useState(false);
+  const [reposted, setReposted] = React.useState(false);
+  const [repostedUri, setRepostedUri] = React.useState<string>();
+
+  const { mutate: mutateVote } = useMutation(
+    async () => {
+      await bsky.feed.setVote({
+        direction: upvoted ? "none" : "up",
+        subject: {
+          cid: post.cid,
+          uri: post.uri,
+        },
+      });
+    },
+    {
+      onMutate() {
+        setUpvoted((curr) => !curr);
+      },
+    }
+  );
+  const { mutate: mutateRepost } = useMutation(
+    async () => {
+      if (reposted && repostedUri) {
+        await bsky.feed.repost.delete({
+          did: atp.session!.did,
+          rkey: repostedUri.split("/").pop(),
+        });
+      } else {
+        const resp = await bsky.feed.repost.create(
+          {
+            did: atp.session!.did,
+          },
+          {
+            createdAt: new Date().toISOString(),
+            subject: {
+              cid: post.cid,
+              uri: post.uri,
+            },
+          }
+        );
+        setRepostedUri(resp.uri);
+      }
+    },
+    {
+      onMutate() {
+        setReposted((curr) => !curr);
+      },
+    }
+  );
 
   // TODO: `encodeURIComponent()` causes 404 error
   const uriBase64 = btoa(post.uri);
-  const threadHref = `/posts/${uriBase64}`;
-  const profileHref = `/${post.author.handle.replace(".bsky.social", "")}`;
+  const profileHref = (handle: string) =>
+    `/${handle.replace(".bsky.social", "")}`;
 
   const reactions: ReactionProps[] = [
     {
@@ -42,19 +85,21 @@ export default function Post({ data }: Props) {
     },
     {
       type: "repost",
-      count: post.repostCount,
+      count: post.repostCount + (reposted ? 1 : 0),
       icon: <FaRetweet />,
       iconReacted: <FaRetweet style={{ color: "#22c55e" }} />,
       "aria-label": `${post.replyCount}件のリポスト`,
-      reacted: false,
+      reacted: reposted,
+      onClick: mutateRepost,
     },
     {
       type: "upvote",
-      count: post.upvoteCount,
+      count: post.upvoteCount + (upvoted ? 1 : 0),
       icon: <TbStar />,
       iconReacted: <TbStarFilled style={{ color: "#eab308" }} />,
       "aria-label": `${post.replyCount}件のいいね`,
-      reacted: false,
+      reacted: upvoted,
+      onClick: mutateVote,
     },
   ];
 
@@ -62,6 +107,8 @@ export default function Post({ data }: Props) {
     <article className={styles.container}>
       {reason && AppBskyFeedFeedViewPost.isReasonRepost(reason) && (
         <Tag
+          component={Link}
+          to={profileHref(reason.by.handle)}
           colorScheme="neutral"
           size="sm"
           startDecorator={<FaRetweet />}
@@ -81,7 +128,10 @@ export default function Post({ data }: Props) {
         </div>
         <div className={styles.right}>
           <div className={styles.header}>
-            <Link to={profileHref} className={styles.displayName}>
+            <Link
+              to={profileHref(post.author.handle)}
+              className={styles.displayName}
+            >
               {post.author.displayName}
             </Link>
             <span className={styles.name}>
@@ -107,7 +157,7 @@ export default function Post({ data }: Props) {
           {/* if (AppBskyEmbedImages.isPresented(post.embed)) ... */}
           <ul className={styles.reactionList}>
             {reactions.map((reaction) => (
-              <Reaction {...reaction} />
+              <Reaction {...reaction} key={reaction.type} />
             ))}
           </ul>
         </div>
@@ -139,7 +189,6 @@ function Reaction({
     <button
       aria-label={props["aria-label"]}
       onClick={onClick}
-      disabled={reacted}
       className={styles.reaction}
     >
       <input type="hidden" name="type" value={type} />
