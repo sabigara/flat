@@ -3,9 +3,9 @@ import Linkify from "linkify-react";
 
 import styles from "./Prose.module.scss";
 
-type Props = { text: string; className?: string };
+type Props = { children?: string; className?: string };
 
-export default function Prose({ text, className }: Props) {
+export default function Prose({ children, className }: Props) {
   return (
     <Linkify
       as="p"
@@ -25,7 +25,7 @@ export default function Prose({ text, className }: Props) {
         },
       }}
     >
-      {text}
+      {children}
     </Linkify>
   );
 }

@@ -105,7 +105,7 @@ export default function Post({ data }: Props) {
                 `@${reply.parent.author.handle}`}
             </Tag>
           )}
-          <Prose className={styles.prose} text={(post.record as any).text} />
+          <Prose className={styles.prose}>{(post.record as any).text}</Prose>
           {/* if (AppBskyEmbedImages.isPresented(post.embed)) ... */}
           <ul className={styles.reactionList}>
             {reactions.map((reaction) => (

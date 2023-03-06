@@ -4,6 +4,7 @@ import { Avatar } from "@camome/core/Avatar";
 import { Button } from "@camome/core/Button";
 
 import styles from "./index.module.scss";
+import Prose from "@/src/components/Prose";
 
 export const loader = (async ({ params }) => {
   if (!params.userId) {
@@ -64,7 +65,7 @@ function ProfileRoute() {
               <dd>{profile.followsCount}</dd>
             </div>
           </dl>
-          <p className={styles.description}>{profile.description}</p>
+          <Prose className={styles.description}>{profile.description}</Prose>
         </div>
       </header>
     </article>
