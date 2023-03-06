@@ -1,10 +1,10 @@
 import { bsky } from "@/src/lib/atp";
 import { LoaderFunction, useLoaderData } from "react-router-dom";
-import { Avatar } from "@camome/core/Avatar";
 import { Button } from "@camome/core/Button";
 
 import styles from "./index.module.scss";
 import Prose from "@/src/components/Prose";
+import Avatar from "@/src/components/Avatar";
 
 export const loader = (async ({ params }) => {
   if (!params.userId) {
@@ -31,11 +31,7 @@ function ProfileRoute() {
           )}
         </div>
         <div className={styles.topRow}>
-          <Avatar
-            src={profile.avatar}
-            alt={`${username}のアバター画像`}
-            className={styles.avatar}
-          />
+          <Avatar profile={profile} className={styles.avatar} />
           <div className={styles.actions}>
             {profile.myState?.follow ? (
               <Button

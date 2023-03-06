@@ -3,12 +3,12 @@ import { AppBskyFeedFeedViewPost } from "@atproto/api";
 import { TbMessageCircle2, TbStar, TbStarFilled } from "react-icons/tb";
 import { BsReplyFill } from "react-icons/bs";
 import { FaRetweet } from "react-icons/fa";
-import { Avatar } from "@camome/core/Avatar";
 import { Tag } from "@camome/core/Tag";
 import { Link } from "react-router-dom";
 import Prose from "@/src/components/Prose";
 
 import styles from "./Post.module.scss";
+import Avatar from "@/src/components/Avatar";
 
 type Props = {
   data: AppBskyFeedFeedViewPost.Main;
@@ -73,10 +73,8 @@ export default function Post({ data }: Props) {
       <div className={styles.main}>
         <div className={styles.left}>
           <Avatar
-            component={Link}
-            to={profileHref}
-            src={post.author.avatar}
-            alt={`Avatar of ${post.author?.displayName}`}
+            isLink
+            profile={post.author}
             size="sm"
             className={styles.avatar}
           />

@@ -1,12 +1,12 @@
 import type { AppBskyActorProfile } from "@atproto/api";
 import { Link, useNavigation } from "react-router-dom";
 import { TbReload } from "react-icons/tb";
-import { Avatar } from "@camome/core/Avatar";
 import LogoIcon from "@/src/assets/icon.svg";
 import { useIsFetching, useQueryClient } from "@tanstack/react-query";
 import { IconButton } from "@camome/core/IconButton";
 
 import styles from "./Header.module.scss";
+import Avatar from "@/src/components/Avatar";
 
 type Props = {
   profile: AppBskyActorProfile.View;
@@ -43,13 +43,7 @@ export default function Header({ profile }: Props) {
       >
         <TbReload />
       </IconButton>
-      <Avatar
-        component={Link}
-        size="sm"
-        to={`/${profile.handle.replace(".bsky.social", "")}`}
-        src={profile.avatar}
-        className={styles.avatar}
-      />
+      <Avatar size="sm" profile={profile} isLink className={styles.avatar} />
     </header>
   );
 }
