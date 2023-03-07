@@ -130,10 +130,15 @@ export function Feed<K extends QueryKey>({
         <Button
           size="sm"
           onClick={loadNewPosts}
+          variant="soft"
           className={styles.newItemBtn}
-          disabled={isFetching}
+          disabled={isFetching && !isFetchingNextPage}
         >
-          Load new posts
+          {isFetching && !isFetchingNextPage ? (
+            <Spinner size="sm" />
+          ) : (
+            "Load new posts"
+          )}
         </Button>
       )}
     </>
