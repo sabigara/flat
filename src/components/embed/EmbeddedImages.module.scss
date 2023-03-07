@@ -1,0 +1,41 @@
+.container {
+  height: 20rem;
+  border: 1px solid var(--cmm-color-border-base);
+  border-radius: var(--cmm-radius-2xl);
+  overflow: hidden;
+  background: var(--cmm-color-border-base);
+
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+
+    &:hover {
+      filter: brightness(0.8);
+    }
+  }
+}
+
+%grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5px;
+}
+
+.two {
+  @extend %grid;
+}
+
+.three {
+  @extend %grid;
+  grid-template-rows: repeat((2, 50%));
+
+  :first-child {
+    grid-row: 1 / -1;
+  }
+}
+
+.four {
+  grid-template-rows: repeat((2, 50%));
+  @extend %grid;
+}

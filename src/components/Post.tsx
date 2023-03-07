@@ -10,6 +10,7 @@ import Avatar from "@/src/components/Avatar";
 import { atp, bsky } from "@/src/lib/atp/atp";
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
+import Embed from "@/src/components/embed/Embed";
 
 import styles from "./Post.module.scss";
 
@@ -154,7 +155,7 @@ export default function Post({ data }: Props) {
             </Tag>
           )}
           <Prose className={styles.prose}>{(post.record as any).text}</Prose>
-          {/* if (AppBskyEmbedImages.isPresented(post.embed)) ... */}
+          {post.embed && <Embed embed={post.embed} className={styles.embed} />}
           <ul className={styles.reactionList}>
             {reactions.map((reaction) => (
               <Reaction {...reaction} key={reaction.type} />
