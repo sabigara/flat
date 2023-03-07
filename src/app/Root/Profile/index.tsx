@@ -1,13 +1,21 @@
-import { bsky } from "@/src/lib/atp/atp";
-import { LoaderFunction, useLoaderData } from "react-router-dom";
+import { AtUri } from "@atproto/uri";
+import { atp, bsky } from "@/src/lib/atp/atp";
+import {
+  LoaderFunction,
+  useLoaderData,
+  useRevalidator,
+} from "react-router-dom";
 import { Button } from "@camome/core/Button";
 import Prose from "@/src/components/Prose";
 import Avatar from "@/src/components/Avatar";
 import { Feed, FeedQueryFn } from "@/src/app/Root/Feed";
 import { queryKeys } from "@/src/lib/queries";
+import React from "react";
+import { useMutation } from "@tanstack/react-query";
+import { Spinner } from "@camome/core/Spinner";
+import { Tag } from "@camome/core/Tag";
 
 import styles from "./index.module.scss";
-import React from "react";
 
 export const loader = (async ({ params }) => {
   if (!params.handle) {
@@ -49,6 +57,37 @@ function ProfileRoute() {
       ).data.feed[0],
     []
   );
+  const revalidator = useRevalidator();
+  const { mutate: mutateFollowState, isLoading: isMutating } = useMutation(
+    async (isFollow: boolean) => {
+      // TODO: error handling
+      if (!atp.session) return;
+      if (isFollow) {
+        await bsky.graph.follow.create(
+          { did: atp.session.did },
+          {
+            subject: {
+              did: profile.did,
+              declarationCid: profile.declaration.cid,
+            },
+            createdAt: new Date().toISOString(),
+          }
+        );
+      } else {
+        if (!profile.myState?.follow) return;
+        const uri = new AtUri(profile.myState.follow);
+        await bsky.graph.follow.delete({
+          did: uri.hostname,
+          rkey: uri.rkey,
+        });
+      }
+      revalidator.revalidate();
+    }
+  );
+  const [hoverUnfollow, setHoverUnfollow] = React.useState(false);
+
+  const isMyself = atp.session && atp.session.did === profile.did;
+  const isLoadingFollow = isMutating || revalidator.state === "loading";
 
   return (
     <article className={styles.container}>
@@ -61,23 +100,58 @@ function ProfileRoute() {
         <div className={styles.topRow}>
           <Avatar profile={profile} className={styles.avatar} />
           <div className={styles.actions}>
-            {profile.myState?.follow ? (
-              <Button
-                colorScheme="neutral"
-                variant="soft"
-                className={styles.followUnfollowBtn}
-              >
-                フォロー解除
-              </Button>
-            ) : (
-              <Button className={styles.followUnfollowBtn}>フォローする</Button>
-            )}
+            {!isMyself &&
+              (profile.myState?.follow ? (
+                <Button
+                  colorScheme={
+                    hoverUnfollow || isLoadingFollow ? "danger" : "neutral"
+                  }
+                  variant="soft"
+                  className={styles.followUnfollowBtn}
+                  onMouseEnter={() => setHoverUnfollow(true)}
+                  onMouseLeave={() => setHoverUnfollow(false)}
+                  onFocus={() => setHoverUnfollow(true)}
+                  onBlur={() => setHoverUnfollow(false)}
+                  aria-describedby={UNFOLLOW_DESCRIBE_ID}
+                  onClick={() => mutateFollowState(false)}
+                  disabled={isLoadingFollow}
+                  startDecorator={
+                    isLoadingFollow ? <Spinner size="sm" /> : undefined
+                  }
+                >
+                  {hoverUnfollow || isLoadingFollow
+                    ? "フォロー解除"
+                    : "フォロー中"}
+                </Button>
+              ) : (
+                <Button
+                  className={styles.followUnfollowBtn}
+                  onClick={() => mutateFollowState(true)}
+                  disabled={isLoadingFollow}
+                  startDecorator={
+                    isLoadingFollow ? <Spinner size="sm" /> : undefined
+                  }
+                >
+                  フォローする
+                </Button>
+              ))}
+            <span id={UNFOLLOW_DESCRIBE_ID} className="visually-hidden">
+              クリックして{profile.displayName ?? profile.handle}
+              さんのフォローを解除
+            </span>
           </div>
         </div>
         <div className={styles.about}>
           <hgroup>
             <h1 className={styles.displayName}>{profile.displayName}</h1>
-            <p className={styles.handle}>@{profile.handle}</p>
+            <div className={styles.handleWrap}>
+              <span className={styles.handle}>@{profile.handle}</span>
+              {profile.viewer?.followedBy && (
+                <Tag size="sm" variant="soft" colorScheme="neutral">
+                  フォローされています
+                </Tag>
+              )}
+            </div>
           </hgroup>
           <dl className={styles.dl}>
             <div>
@@ -102,3 +176,5 @@ function ProfileRoute() {
     </article>
   );
 }
+
+const UNFOLLOW_DESCRIBE_ID = "unfollow-describe" as const;

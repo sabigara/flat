@@ -40,8 +40,15 @@
   line-height: 1;
 }
 
-.handle {
+.handleWrap {
   margin-block-start: 0.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.handle {
   color: var(--cmm-color-font-subtle);
 }
 
@@ -73,10 +80,6 @@
 
 .followUnfollowBtn {
   font-weight: var(--cmm-font-weight-bold);
-
-  &:hover {
-    cursor: not-allowed;
-  }
 }
 
 .main {
