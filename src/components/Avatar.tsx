@@ -15,7 +15,7 @@ type Props = {
 export default function Avatar({ profile, isLink, ...props }: Props) {
   const linkProps = {
     component: Link,
-    to: profile.handle,
+    to: `/${profile.handle}`,
   };
   return (
     // @ts-ignore
