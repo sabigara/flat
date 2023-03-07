@@ -119,7 +119,7 @@ export function Feed<K extends QueryKey>({
       >
         <>
           {allItems.map((item) => (
-            <Post data={item} />
+            <Post data={item} key={item.post.cid} />
           ))}
           {!hasNextPage && (
             <div className={styles.noMore}>nothing more to say...</div>
