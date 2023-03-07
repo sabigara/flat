@@ -16,8 +16,7 @@ const router = createBrowserRouter([
     ...Root,
     children: [
       {
-        // <userId>.bsky.social
-        path: "/:userId",
+        path: "/:handle",
         ...Profile,
       },
       {

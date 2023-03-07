@@ -9,13 +9,12 @@ import { queryKeys } from "@/src/lib/queries";
 import styles from "./index.module.scss";
 
 export const loader = (async ({ params }) => {
-  if (!params.userId) {
+  if (!params.handle) {
     throw new Error("Invalid params");
   }
   const resp = await bsky.actor.getProfile({
-    actor: `${params.userId}.bsky.social`,
+    actor: params.handle,
   });
-
   return resp.data;
 }) satisfies LoaderFunction;
 

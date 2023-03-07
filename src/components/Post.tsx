@@ -69,10 +69,8 @@ export default function Post({ data }: Props) {
     }
   );
 
-  // TODO: `encodeURIComponent()` causes 404 error
-  const uriBase64 = btoa(post.uri);
-  const profileHref = (handle: string) =>
-    `/${handle.replace(".bsky.social", "")}`;
+  // TODO: consider about encoding
+  const profileHref = (handle: string) => `/${handle}`;
 
   const reactions: ReactionProps[] = [
     {
