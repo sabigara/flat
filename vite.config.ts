@@ -1,3 +1,4 @@
+import fs from "fs";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import tsconfigPaths from "vite-tsconfig-paths";
@@ -11,6 +12,7 @@ export default defineConfig({
   plugins: [
     tsconfigPaths(),
     react(),
+    dotPathFixPlugin(),
     svgr({ exportAsDefault: true }),
     VitePWA({
       registerType: "autoUpdate",
@@ -49,3 +51,21 @@ export default defineConfig({
     },
   },
 });
+
+// fixes 404 on paths containing dots (only dev).
+// e.g.: /sabigara.bsky.social
+// borrowed from: https://github.com/vitejs/vite/issues/2415#issuecomment-1381196720
+function dotPathFixPlugin() {
+  return {
+    name: "dot-path-fix-plugin",
+    configureServer: (server) => {
+      server.middlewares.use((req, _, next) => {
+        const reqPath = req.url.split("?", 2)[0];
+        if (!req.url.startsWith("/@") && !fs.existsSync(`.${reqPath}`)) {
+          req.url = "/";
+        }
+        next();
+      });
+    },
+  };
+}
