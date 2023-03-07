@@ -60,6 +60,7 @@ function ProfileRoute() {
   const revalidator = useRevalidator();
   const { mutate: mutateFollowState, isLoading: isMutating } = useMutation(
     async (isFollow: boolean) => {
+      // TODO: error handling
       if (!atp.session) return;
       if (isFollow) {
         await bsky.graph.follow.create(

@@ -61,6 +61,8 @@ export function Feed<K extends QueryKey>({
   const latestDate = latestItem
     ? new Date(latestItem.post.indexedAt)
     : undefined;
+
+  // TODO: shouldn't use params from queryKey
   const { data: isNewAvailable } = useQuery(
     queryKeys.feed.new.$(queryKey, latestDate, fetchLatestOne),
     async ({ queryKey }) => {
