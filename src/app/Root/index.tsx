@@ -15,6 +15,7 @@ import Header from "@/src/app/Root/Header";
 import { queryKeys } from "@/src/lib/queries";
 
 import styles from "./index.module.scss";
+import React from "react";
 
 export const loader = (async () => {
   if (!atp.hasSession) {
@@ -55,8 +56,10 @@ function RootRoute() {
     if (!resp.success) throw new Error("Fetch error");
     return resp.data;
   };
-  const fetchLatest = async () =>
-    (await bsky.feed.getTimeline({ limit: 1 })).data.feed[0];
+  const fetchLatest = React.useCallback(
+    async () => (await bsky.feed.getTimeline({ limit: 1 })).data.feed[0],
+    []
+  );
 
   return (
     <QueryClientProvider client={queryClient}>

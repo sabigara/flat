@@ -7,6 +7,7 @@ import { Feed, FeedQueryFn } from "@/src/app/Root/Feed";
 import { queryKeys } from "@/src/lib/queries";
 
 import styles from "./index.module.scss";
+import React from "react";
 
 export const loader = (async ({ params }) => {
   if (!params.handle) {
@@ -38,13 +39,16 @@ function ProfileRoute() {
     if (!resp.success) throw new Error("Fetch error");
     return resp.data;
   };
-  const fetchLatest = async () =>
-    (
-      await bsky.feed.getAuthorFeed({
-        author: profile.handle,
-        limit: 1,
-      })
-    ).data.feed[0];
+  const fetchLatest = React.useCallback(
+    async () =>
+      (
+        await bsky.feed.getAuthorFeed({
+          author: profile.handle,
+          limit: 1,
+        })
+      ).data.feed[0],
+    []
+  );
 
   return (
     <article className={styles.container}>
