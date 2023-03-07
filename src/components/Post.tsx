@@ -141,6 +141,8 @@ export default function Post({ data }: Props) {
           </div>
           {reply && (
             <Tag
+              component={Link}
+              to={profileHref(reply.parent.author.handle)}
               colorScheme="neutral"
               size="sm"
               startDecorator={<BsReplyFill />}
