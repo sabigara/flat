@@ -115,7 +115,7 @@ export function Feed<K extends QueryKey>({
         pageStart={0}
         loadMore={() => !isFetchingNextPage && fetchNextPage()}
         hasMore={hasNextPage}
-        loader={<SpinnerFill />}
+        loader={<SpinnerFill key="__loader" />}
       >
         <>
           {allItems.map((item) => (
