@@ -119,10 +119,17 @@ export function Feed<K extends QueryKey>({
       >
         <>
           {allItems.map((item) => (
-            <Post data={item} key={item.post.cid} />
+            <Post
+              data={item}
+              key={`${item.post.cid}:${item.reason?.$type}:${
+                (item.reason?.by as any)?.did
+              }`}
+            />
           ))}
           {!hasNextPage && (
-            <div className={styles.noMore}>nothing more to say...</div>
+            <div className={styles.noMore} key="__noMore">
+              nothing more to say...
+            </div>
           )}
         </>
       </InfiniteScroll>
