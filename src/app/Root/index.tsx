@@ -6,12 +6,9 @@ import {
   redirect,
   useLoaderData,
   useLocation,
+  ScrollRestoration,
 } from "react-router-dom";
-import {
-  QueryClientProvider,
-  QueryClient,
-  useQuery,
-} from "@tanstack/react-query";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { Feed, FeedQueryFn } from "@/src/app/Root/Feed";
 import PostComposer from "@/src/app/Root/PostComposer";
 import Header from "@/src/app/Root/Header";
@@ -63,6 +60,7 @@ function RootRoute() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <ScrollRestoration />
       <div className={styles.container}>
         <Header profile={profile} />
         <PostComposer profile={profile} />
