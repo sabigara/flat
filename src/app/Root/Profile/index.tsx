@@ -33,7 +33,7 @@ export const loader = (async ({ params }) => {
 export const element = <ProfileRoute />;
 
 function ProfileRoute() {
-  const { composer } = useOutletContext<RootContext>();
+  const { myProfile, composer } = useOutletContext<RootContext>();
   const profile = useLoaderData() as Awaited<ReturnType<typeof loader>>;
   const username = profile.displayName ?? profile.handle;
   const queryKey = queryKeys.feed.author.$(profile.handle);
@@ -172,7 +172,7 @@ function ProfileRoute() {
       </header>
       <main className={styles.main}>
         <PostComposer
-          profile={profile}
+          myProfile={myProfile}
           open={composer.open}
           setOpen={composer.handleOpen}
           replyTarget={composer.replyTarget}

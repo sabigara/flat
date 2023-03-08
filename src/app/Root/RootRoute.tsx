@@ -7,7 +7,7 @@ import React from "react";
 import { useOutletContext } from "react-router-dom";
 
 export function RootRoute() {
-  const { profile, composer } = useOutletContext<RootContext>();
+  const { myProfile, composer } = useOutletContext<RootContext>();
   const queryKey = queryKeys.feed.home.$;
   const queryFn: FeedQueryFn<typeof queryKey> = async ({ pageParam }) => {
     const resp = await bsky.feed.getTimeline({
@@ -26,7 +26,7 @@ export function RootRoute() {
   return (
     <>
       <PostComposer
-        profile={profile}
+        myProfile={myProfile}
         open={composer.open}
         setOpen={composer.handleOpen}
         replyTarget={composer.replyTarget}

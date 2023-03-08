@@ -17,14 +17,14 @@ import clsx from "clsx";
 import { isIPhone } from "@/src/lib/platform";
 
 export type PostComposerProps = {
-  profile: AppBskyActorProfile.View;
+  myProfile: AppBskyActorProfile.View;
   open: boolean;
   setOpen: (val: boolean) => void;
   replyTarget?: AppBskyFeedFeedViewPost.Main;
 };
 
 export default function PostComposer({
-  profile,
+  myProfile,
   open,
   setOpen,
   replyTarget,
@@ -47,7 +47,7 @@ export default function PostComposer({
         };
       })();
       await bsky.feed.post.create(
-        { did: profile.did },
+        { did: myProfile.did },
         {
           text,
           createdAt: new Date().toISOString(),
@@ -58,7 +58,9 @@ export default function PostComposer({
     {
       onSuccess() {
         queryClient.invalidateQueries(queryKeys.feed.home.$);
-        queryClient.invalidateQueries(queryKeys.feed.author.$(profile.handle));
+        queryClient.invalidateQueries(
+          queryKeys.feed.author.$(myProfile.handle)
+        );
         setText("");
         setOpen(false);
       },
@@ -90,7 +92,7 @@ export default function PostComposer({
             <Post data={replyTarget} contentOnly className={styles.post} />
           )}
           <div className={styles.form}>
-            <Avatar profile={profile} className={styles.avatar} />
+            <Avatar profile={myProfile} className={styles.avatar} />
             {/* TODO: Textarea isn't passing id to textarea */}
             <label
               htmlFor="post"

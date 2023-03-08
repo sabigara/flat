@@ -49,7 +49,7 @@ function RootLayout() {
     React.useState<AppBskyFeedFeedViewPost.Main>();
 
   const appContext: RootContext = {
-    profile,
+    myProfile: profile,
     composer: {
       open: composerOpen,
       setOpen: setComposerOpen,
@@ -80,7 +80,7 @@ function RootLayout() {
 }
 
 export type RootContext = {
-  profile: AppBskyActorProfile.View;
+  myProfile: AppBskyActorProfile.View;
   composer: {
     open: boolean;
     setOpen: (val: boolean) => void;
