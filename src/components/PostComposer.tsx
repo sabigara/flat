@@ -1,0 +1,142 @@
+import React from "react";
+import Dialog from "@/src/components/Dialog";
+import { bsky } from "@/src/lib/atp/atp";
+import { AppBskyActorProfile, AppBskyFeedFeedViewPost } from "@atproto/api";
+import { Button } from "@camome/core/Button";
+import { Spinner } from "@camome/core/Spinner";
+import { Textarea } from "@camome/core/Textarea";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { TbPencilPlus } from "react-icons/tb";
+import { isModKey } from "@/src/lib/keybindings";
+import { queryKeys } from "@/src/lib/queries";
+
+import styles from "./PostComposer.module.scss";
+import Post from "@/src/components/Post";
+import Avatar from "@/src/components/Avatar";
+import clsx from "clsx";
+import { isIPhone } from "@/src/lib/platform";
+
+export type PostComposerProps = {
+  profile: AppBskyActorProfile.View;
+  open: boolean;
+  setOpen: (val: boolean) => void;
+  replyTarget?: AppBskyFeedFeedViewPost.Main;
+};
+
+export default function PostComposer({
+  profile,
+  open,
+  setOpen,
+  replyTarget,
+}: PostComposerProps) {
+  const queryClient = useQueryClient();
+  const [text, setText] = React.useState("");
+  // TODO: length
+  const isTextValid = !!text.trim();
+
+  const { mutate, isLoading } = useMutation(
+    async () => {
+      const reply = (() => {
+        if (!replyTarget) return undefined;
+        const parent = { cid: replyTarget.post.cid, uri: replyTarget.post.uri };
+        const root = replyTarget.reply?.root ? replyTarget.reply.root : parent;
+        return {
+          handle: replyTarget.post.author.handle,
+          parent,
+          root,
+        };
+      })();
+      await bsky.feed.post.create(
+        { did: profile.did },
+        {
+          text,
+          createdAt: new Date().toISOString(),
+          reply,
+        }
+      );
+    },
+    {
+      onSuccess() {
+        queryClient.invalidateQueries(queryKeys.feed.home.$);
+        queryClient.invalidateQueries(queryKeys.feed.author.$(profile.handle));
+        setText("");
+        setOpen(false);
+      },
+    }
+  );
+
+  const handleKeyDown: React.KeyboardEventHandler<HTMLTextAreaElement> = (
+    e
+  ) => {
+    if (!(isModKey(e.nativeEvent) && e.key === "Enter")) return;
+    if (!isTextValid) return;
+    mutate();
+  };
+
+  return (
+    <>
+      <Button
+        aria-label="投稿ツールを開く"
+        startDecorator={<TbPencilPlus />}
+        size="lg"
+        onClick={() => void setOpen(true)}
+        className={styles.composeBtn}
+      >
+        つぶやく
+      </Button>
+      <Dialog open={open} setOpen={setOpen} className={styles.dialog}>
+        <div className={styles.container}>
+          {replyTarget && (
+            <Post data={replyTarget} contentOnly className={styles.post} />
+          )}
+          <div className={styles.form}>
+            <Avatar profile={profile} className={styles.avatar} />
+            {/* TODO: Textarea isn't passing id to textarea */}
+            <label
+              htmlFor="post"
+              className={clsx(styles.label, {
+                ["visually-hidden"]: !replyTarget,
+              })}
+            >
+              {replyTarget
+                ? `返信先: @${replyTarget.post.author.handle}`
+                : "投稿内容"}
+            </label>
+            <Textarea
+              id="post"
+              value={text}
+              placeholder={replyTarget ? "なんていう？" : "なにしてる？"}
+              onChange={(e) => setText(e.target.value)}
+              rows={6}
+              fill
+              onKeyDown={handleKeyDown}
+              // focusing on textarea breaks scroll position on iPhone🫵
+              autoFocus={isIPhone ? false : true}
+            />
+          </div>
+          <div className={styles.action}>
+            <div />
+            <div className={styles.postBtnWrap}>
+              <Button
+                variant="soft"
+                colorScheme="neutral"
+                size="sm"
+                onClick={() => setOpen(false)}
+              >
+                キャンセル
+              </Button>
+              <Button
+                onClick={() => mutate()}
+                disabled={!isTextValid || isLoading}
+                size="sm"
+                startDecorator={isLoading ? <Spinner size="sm" /> : undefined}
+              >
+                つぶやく
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Dialog>
+    </>
+  );
+}

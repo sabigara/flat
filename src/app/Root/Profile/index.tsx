@@ -3,12 +3,13 @@ import { atp, bsky } from "@/src/lib/atp/atp";
 import {
   LoaderFunction,
   useLoaderData,
+  useOutletContext,
   useRevalidator,
 } from "react-router-dom";
 import { Button } from "@camome/core/Button";
 import Prose from "@/src/components/Prose";
 import Avatar from "@/src/components/Avatar";
-import { Feed, FeedQueryFn } from "@/src/app/Root/Feed";
+import { Feed, FeedQueryFn } from "@/src/components/Feed";
 import { queryKeys } from "@/src/lib/queries";
 import React from "react";
 import { useMutation } from "@tanstack/react-query";
@@ -16,6 +17,8 @@ import { Spinner } from "@camome/core/Spinner";
 import { Tag } from "@camome/core/Tag";
 
 import styles from "./index.module.scss";
+import { RootContext } from "@/src/app/Root/Layout";
+import PostComposer from "@/src/components/PostComposer";
 
 export const loader = (async ({ params }) => {
   if (!params.handle) {
@@ -30,6 +33,7 @@ export const loader = (async ({ params }) => {
 export const element = <ProfileRoute />;
 
 function ProfileRoute() {
+  const { composer } = useOutletContext<RootContext>();
   const profile = useLoaderData() as Awaited<ReturnType<typeof loader>>;
   const username = profile.displayName ?? profile.handle;
   const queryKey = queryKeys.feed.author.$(profile.handle);
@@ -167,10 +171,17 @@ function ProfileRoute() {
         </div>
       </header>
       <main className={styles.main}>
+        <PostComposer
+          profile={profile}
+          open={composer.open}
+          setOpen={composer.handleOpen}
+          replyTarget={composer.replyTarget}
+        />
         <Feed
           queryKey={queryKey}
           queryFn={queryFn}
           fetchLatestOne={fetchLatest}
+          onClickReply={composer.handleClickReply}
         />
       </main>
     </article>
