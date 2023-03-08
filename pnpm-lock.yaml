@@ -14,6 +14,7 @@ specifiers:
   '@vitejs/plugin-react-swc': ^3.0.0
   clsx: ^1.2.1
   date-fns: ^2.29.3
+  linkify-plugin-mention: ^4.1.0
   linkify-react: ^4.1.0
   linkifyjs: ^4.1.0
   localforage: ^1.10.0
@@ -41,6 +42,7 @@ dependencies:
   '@tanstack/react-query': 4.24.10_biqbaboplfbrettd7655fr4n2y
   clsx: 1.2.1
   date-fns: 2.29.3
+  linkify-plugin-mention: 4.1.0_linkifyjs@4.1.0
   linkify-react: 4.1.0_w5fbl633f7mujs73uwm6v5bhhm
   linkifyjs: 4.1.0
   localforage: 1.10.0
@@ -2897,6 +2899,14 @@ packages:
   /lines-and-columns/1.2.4:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
     dev: true
+
+  /linkify-plugin-mention/4.1.0_linkifyjs@4.1.0:
+    resolution: {integrity: sha512-DsPd5gQp1QkTTcv54xw2wK1qxgkyy+rNBUK4n5t3npQvIFoP71fmAuIfwOg/Jx3nNSCCbse040WpSLMUG8s+yA==}
+    peerDependencies:
+      linkifyjs: ^4.0.0
+    dependencies:
+      linkifyjs: 4.1.0
+    dev: false
 
   /linkify-react/4.1.0_w5fbl633f7mujs73uwm6v5bhhm:
     resolution: {integrity: sha512-PG+ulIQkrHHDluuH/YgvRZDX1GFi0sarb7jNL4BdFOBH+muoiIVvBVwHkP9K7lSn7OmC6k8JEXKe+QvwBUsuOg==}

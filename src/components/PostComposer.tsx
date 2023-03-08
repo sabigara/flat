@@ -9,12 +9,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { TbPencilPlus } from "react-icons/tb";
 import { isModKey } from "@/src/lib/keybindings";
 import { queryKeys } from "@/src/lib/queries";
-
-import styles from "./PostComposer.module.scss";
 import Post from "@/src/components/Post";
 import Avatar from "@/src/components/Avatar";
 import clsx from "clsx";
 import { isIPhone } from "@/src/lib/platform";
+import { find } from "linkifyjs";
+
+import styles from "./PostComposer.module.scss";
 
 export type PostComposerProps = {
   myProfile: AppBskyActorProfile.View;
@@ -46,10 +47,22 @@ export default function PostComposer({
           root,
         };
       })();
+      // TODO: Support mention
+      // `linkify-plugin-mention` doesn't support usernames that include dots
+      // https://github.com/Hypercontext/linkifyjs/issues/418#issuecomment-1370140269
+      const urls = find(text, "url");
       await bsky.feed.post.create(
         { did: myProfile.did },
         {
           text,
+          entities: urls.map((url) => ({
+            type: "link",
+            index: {
+              start: url.start,
+              end: url.end,
+            },
+            value: url.href,
+          })),
           createdAt: new Date().toISOString(),
           reply,
         }
