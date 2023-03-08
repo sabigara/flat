@@ -14,6 +14,7 @@ import { Button } from "@camome/core/Button";
 import { queryKeys } from "@/src/lib/queries";
 
 import styles from "./Feed.module.scss";
+import { PostComposerProps } from "@/src/components/PostComposer";
 
 export type FeedQueryFn<K extends QueryKey> = QueryFunction<
   {
@@ -28,6 +29,7 @@ type Props<K extends QueryKey> = {
   queryFn: FeedQueryFn<K>;
   fetchLatestOne: () => Promise<AppBskyFeedFeedViewPost.Main>;
   maxPages?: number;
+  onClickReply: (feedItem: AppBskyFeedFeedViewPost.Main) => void;
 };
 
 export function Feed<K extends QueryKey>({
@@ -35,6 +37,7 @@ export function Feed<K extends QueryKey>({
   queryFn,
   fetchLatestOne,
   maxPages,
+  onClickReply,
 }: Props<K>) {
   const {
     status,
@@ -123,9 +126,11 @@ export function Feed<K extends QueryKey>({
           {allItems.map((item) => (
             <Post
               data={item}
+              onClickReply={onClickReply}
               key={`${item.post.cid}:${item.reason?.$type}:${
                 (item.reason?.by as any)?.did
               }`}
+              className={styles.post}
             />
           ))}
           {!hasNextPage && (

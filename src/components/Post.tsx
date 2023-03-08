@@ -13,12 +13,21 @@ import React from "react";
 import Embed from "@/src/components/embed/Embed";
 
 import styles from "./Post.module.scss";
+import clsx from "clsx";
 
 type Props = {
   data: AppBskyFeedFeedViewPost.Main;
+  onClickReply?: (feedItem: AppBskyFeedFeedViewPost.Main) => void;
+  contentOnly?: boolean;
+  className?: string;
 };
 
-export default function Post({ data }: Props) {
+export default function Post({
+  data,
+  onClickReply,
+  contentOnly = false,
+  className,
+}: Props) {
   const { post, reason, reply } = data;
   const [upvoted, setUpvoted] = React.useState(false);
   const [reposted, setReposted] = React.useState(false);
@@ -81,6 +90,7 @@ export default function Post({ data }: Props) {
       iconReacted: <TbMessageCircle2 />,
       "aria-label": `${post.replyCount}件の返信`,
       reacted: false,
+      onClick: () => onClickReply?.(data),
     },
     {
       type: "repost",
@@ -103,19 +113,21 @@ export default function Post({ data }: Props) {
   ];
 
   return (
-    <article className={styles.container}>
-      {reason && AppBskyFeedFeedViewPost.isReasonRepost(reason) && (
-        <Tag
-          component={Link}
-          to={profileHref(reason.by.handle)}
-          colorScheme="neutral"
-          size="sm"
-          startDecorator={<FaRetweet />}
-          className={styles.repost}
-        >
-          Repost by {reason.by.displayName}
-        </Tag>
-      )}
+    <article className={clsx(styles.container, className)}>
+      {!contentOnly &&
+        reason &&
+        AppBskyFeedFeedViewPost.isReasonRepost(reason) && (
+          <Tag
+            component={Link}
+            to={profileHref(reason.by.handle)}
+            colorScheme="neutral"
+            size="sm"
+            startDecorator={<FaRetweet />}
+            className={styles.repost}
+          >
+            Repost by {reason.by.displayName}
+          </Tag>
+        )}
       <div className={styles.main}>
         <div className={styles.left}>
           <Avatar
@@ -140,7 +152,7 @@ export default function Post({ data }: Props) {
               {formatDistanceShort(new Date(post.indexedAt))}
             </time>
           </div>
-          {reply && (
+          {!contentOnly && reply && (
             <Tag
               component={Link}
               to={profileHref(reply.parent.author.handle)}
@@ -156,11 +168,13 @@ export default function Post({ data }: Props) {
           )}
           <Prose className={styles.prose}>{(post.record as any).text}</Prose>
           {post.embed && <Embed embed={post.embed} className={styles.embed} />}
-          <ul className={styles.reactionList}>
-            {reactions.map((reaction) => (
-              <Reaction {...reaction} key={reaction.type} />
-            ))}
-          </ul>
+          {!contentOnly && (
+            <ul className={styles.reactionList}>
+              {reactions.map((reaction) => (
+                <Reaction {...reaction} key={reaction.type} />
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     </article>
