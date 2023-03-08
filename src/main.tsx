@@ -9,6 +9,7 @@ import * as Login from "@/src/app/Login";
 import * as Root from "@/src/app/Root";
 import * as Profile from "@/src/app/Root/Profile";
 import * as Post from "@/src/app/Root/Post";
+import * as About from "@/src/app/Root/About";
 
 const router = createBrowserRouter([
   {
@@ -16,12 +17,16 @@ const router = createBrowserRouter([
     ...Root,
     children: [
       {
-        path: "/:handle",
-        ...Profile,
+        path: "/about",
+        ...About,
       },
       {
         path: "/posts/:postUri",
         ...Post,
+      },
+      {
+        path: "/:handle",
+        ...Profile,
       },
     ],
   },
