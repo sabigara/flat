@@ -1,5 +1,5 @@
 import { formatDistanceShort } from "@/src/lib/time";
-import { AppBskyFeedFeedViewPost } from "@atproto/api";
+import { AppBskyFeedFeedViewPost, AppBskyFeedGetTimeline } from "@atproto/api";
 import { TbMessageCircle2, TbStar, TbStarFilled } from "react-icons/tb";
 import { BsReplyFill } from "react-icons/bs";
 import { FaRetweet } from "react-icons/fa";
@@ -8,9 +8,16 @@ import { Link } from "react-router-dom";
 import Prose from "@/src/components/Prose";
 import Avatar from "@/src/components/Avatar";
 import { atp, bsky } from "@/src/lib/atp/atp";
-import { useMutation } from "@tanstack/react-query";
+import {
+  InfiniteData,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 import React from "react";
 import Embed from "@/src/components/embed/Embed";
+import { queryKeys } from "@/src/lib/queries";
+import { produce, Draft } from "immer";
+import { AtUri } from "@atproto/uri";
 
 import styles from "./Post.module.scss";
 
@@ -20,32 +27,24 @@ type Props = {
 
 export default function Post({ data }: Props) {
   const { post, reason, reply } = data;
-  const [upvoted, setUpvoted] = React.useState(false);
-  const [reposted, setReposted] = React.useState(false);
-  const [repostedUri, setRepostedUri] = React.useState<string>();
+  const queryClient = useQueryClient();
+  const [optimisticallyUpvoted, setOptimisticallyUpvoted] = React.useState<
+    boolean | undefined
+  >(undefined);
 
-  const { mutate: mutateVote } = useMutation(
-    async () => {
-      await bsky.feed.setVote({
-        direction: upvoted ? "none" : "up",
-        subject: {
-          cid: post.cid,
-          uri: post.uri,
-        },
-      });
-    },
-    {
-      onMutate() {
-        setUpvoted((curr) => !curr);
-      },
-    }
-  );
+  const upvoted =
+    optimisticallyUpvoted === undefined
+      ? !!post.viewer.upvote
+      : optimisticallyUpvoted;
+
   const { mutate: mutateRepost } = useMutation(
     async () => {
-      if (reposted && repostedUri) {
+      let repostUri: string | undefined = undefined;
+      if (post.viewer.repost) {
+        const uri = new AtUri(post.viewer.repost);
         await bsky.feed.repost.delete({
-          did: atp.session!.did,
-          rkey: repostedUri.split("/").pop(),
+          did: uri.hostname,
+          rkey: uri.rkey,
         });
       } else {
         const resp = await bsky.feed.repost.create(
@@ -60,12 +59,60 @@ export default function Post({ data }: Props) {
             },
           }
         );
-        setRepostedUri(resp.uri);
+        repostUri = resp.uri;
       }
+      return { repostUri };
+    },
+    {
+      onSuccess({ repostUri }) {
+        const updateRepost = (draft: Draft<AppBskyFeedFeedViewPost.Main>) => {
+          draft.post.repostCount += repostUri ? +1 : -1;
+          draft.post.viewer.repost = repostUri;
+        };
+        queryClient.setQueryData<TimelineInfiniteData>(
+          queryKeys.feed.home.$,
+          (data) => mutateTimelineItem(data, post.cid, updateRepost)
+        );
+        queryClient.setQueryData<TimelineInfiniteData>(
+          queryKeys.feed.author.$(atp.session!.handle),
+          (data) => mutateTimelineItem(data, post.cid, updateRepost)
+        );
+      },
+    }
+  );
+
+  // ideally cancel queries?
+  // https://tanstack.com/query/v4/docs/react/guides/optimistic-updates#updating-a-list-of-todos-when-adding-a-new-todo
+  const { mutate: mutateVote } = useMutation(
+    async () => {
+      const resp = await bsky.feed.setVote({
+        direction: upvoted ? "none" : "up",
+        subject: {
+          cid: post.cid,
+          uri: post.uri,
+        },
+      });
+      // TODO: error handling
+      return { upvoteUri: resp.data.upvote };
     },
     {
       onMutate() {
-        setReposted((curr) => !curr);
+        setOptimisticallyUpvoted(!upvoted);
+      },
+      onSuccess({ upvoteUri }) {
+        const updateVote = (draft: Draft<AppBskyFeedFeedViewPost.Main>) => {
+          draft.post.upvoteCount += upvoteUri ? +1 : -1;
+          draft.post.viewer.upvote = upvoteUri;
+        };
+        queryClient.setQueryData<TimelineInfiniteData>(
+          queryKeys.feed.home.$,
+          (data) => mutateTimelineItem(data, post.cid, updateVote)
+        );
+        queryClient.setQueryData<TimelineInfiniteData>(
+          queryKeys.feed.author.$(atp.session!.handle),
+          (data) => mutateTimelineItem(data, post.cid, updateVote)
+        );
+        setOptimisticallyUpvoted(undefined);
       },
     }
   );
@@ -76,27 +123,27 @@ export default function Post({ data }: Props) {
   const reactions: ReactionProps[] = [
     {
       type: "reply",
-      count: post.replyCount,
       icon: <TbMessageCircle2 />,
       iconReacted: <TbMessageCircle2 />,
       "aria-label": `${post.replyCount}件の返信`,
+      count: post.replyCount,
       reacted: false,
     },
     {
       type: "repost",
-      count: post.repostCount + (reposted ? 1 : 0),
       icon: <FaRetweet />,
       iconReacted: <FaRetweet style={{ color: "#22c55e" }} />,
       "aria-label": `${post.replyCount}件のリポスト`,
-      reacted: reposted,
+      count: post.repostCount,
+      reacted: !!post.viewer.repost,
       onClick: mutateRepost,
     },
     {
       type: "upvote",
-      count: post.upvoteCount + (upvoted ? 1 : 0),
       icon: <TbStar />,
       iconReacted: <TbStarFilled style={{ color: "#eab308" }} />,
       "aria-label": `${post.replyCount}件のいいね`,
+      count: post.upvoteCount + ternaryToCount(optimisticallyUpvoted),
       reacted: upvoted,
       onClick: mutateVote,
     },
@@ -192,7 +239,6 @@ function Reaction({
       onClick={onClick}
       className={styles.reaction}
     >
-      <input type="hidden" name="type" value={type} />
       <span className={styles.reaction__icon}>
         {reacted ? iconReacted : icon}
       </span>
@@ -200,3 +246,25 @@ function Reaction({
     </button>
   );
 }
+
+type TimelineInfiniteData = InfiniteData<AppBskyFeedGetTimeline.OutputSchema>;
+
+function mutateTimelineItem(
+  data: TimelineInfiniteData | undefined,
+  postCid: string,
+  fn: (draft: Draft<AppBskyFeedFeedViewPost.Main>) => void
+) {
+  if (!data) return { pageParams: [], pages: [] };
+  return produce(data, (draft) => {
+    const target = draft.pages
+      .flatMap((p) => p.feed)
+      .find((item) => item.post.cid === postCid);
+    if (!target) return data;
+    fn(target);
+  });
+}
+
+const ternaryToCount = (val: boolean | undefined) => {
+  if (val === undefined) return 0;
+  return val ? 1 : -1;
+};
