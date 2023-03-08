@@ -1,6 +1,7 @@
 import Avatar from "@/src/components/Avatar";
 import { AppBskyEmbedRecord, AppBskyFeedPost } from "@atproto/api";
 import clsx from "clsx";
+import { Link } from "react-router-dom";
 
 import styles from "./EmbeddedRecord.module.scss";
 
@@ -26,7 +27,9 @@ export default function EmbeddedRecord({ record, className }: Props) {
           <Avatar profile={author} className={styles.avatar} />
         </div>
         {author.displayName && (
-          <span className={styles.displayName}>{author.displayName}</span>
+          <Link to={`/${author.handle}`} className={styles.displayName}>
+            {author.displayName}
+          </Link>
         )}
         <span className={styles.handle}>@{author.handle}</span>
       </div>
