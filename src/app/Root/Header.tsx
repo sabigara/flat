@@ -1,13 +1,11 @@
 import type { AppBskyActorProfile } from "@atproto/api";
-import { Link, useLocation, useNavigation } from "react-router-dom";
+import { Link, useNavigation } from "react-router-dom";
 import { TbQuestionMark } from "react-icons/tb";
 import LogoIcon from "@/src/assets/icon.svg";
-import { useIsFetching, useQueryClient } from "@tanstack/react-query";
 import { IconButton } from "@camome/core/IconButton";
 
 import styles from "./Header.module.scss";
 import Avatar from "@/src/components/Avatar";
-import { queryKeys } from "@/src/lib/queries";
 
 type Props = {
   profile: AppBskyActorProfile.View;
