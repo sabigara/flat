@@ -1,6 +1,6 @@
 import type { AppBskyActorProfile } from "@atproto/api";
 import { Link, useLocation, useNavigation } from "react-router-dom";
-import { TbReload } from "react-icons/tb";
+import { TbQuestionMark } from "react-icons/tb";
 import LogoIcon from "@/src/assets/icon.svg";
 import { useIsFetching, useQueryClient } from "@tanstack/react-query";
 import { IconButton } from "@camome/core/IconButton";
@@ -21,7 +21,9 @@ export default function Header({ profile }: Props) {
       <div className={styles.progressBar}>
         {state === "loading" && (
           <div role="status">
-            <span className="visually-hidden">データを取得中・・・</span>
+            <span className="visually-hidden">
+              次のページのデータを取得中・・・
+            </span>
           </div>
         )}
       </div>
@@ -29,7 +31,20 @@ export default function Header({ profile }: Props) {
         <LogoIcon />
         <span className={styles.logo__text}>Flat</span>
       </Link>
-      <Avatar size="sm" profile={profile} isLink className={styles.avatar} />
+      <div className={styles.sectionEnd}>
+        <IconButton
+          component={Link}
+          to="/about"
+          aria-label="About"
+          size="sm"
+          colorScheme="neutral"
+          variant="soft"
+          className={styles.aboutBtn}
+        >
+          <TbQuestionMark />
+        </IconButton>
+        <Avatar size="sm" profile={profile} isLink className={styles.avatar} />
+      </div>
     </header>
   );
 }

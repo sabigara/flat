@@ -43,6 +43,12 @@
   }
 }
 
+.sectionEnd {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .logo {
   display: flex;
   align-items: center;
@@ -54,6 +60,10 @@
   > svg {
     width: 1.75rem;
     height: 1.75rem;
+  }
+
+  &__text {
+    margin-block-start: 0;
   }
 }
 
@@ -72,5 +82,15 @@
 .avatar {
   &:hover {
     filter: brightness(0.9);
+  }
+}
+
+.aboutBtn {
+  --cmm-IconButton-size: 1.25rem;
+  --cmm-IconButton-icon-size: 1rem;
+  margin-block-start: 0.2em;
+
+  > svg {
+    stroke-width: 2.5;
   }
 }
