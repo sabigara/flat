@@ -31,7 +31,7 @@ export function AboutRoute() {
         </p>
         <h3>If you're a non-developer...</h3>
         <p>
-          Reply to <a href={authorFlatUrl}>me (sabigara.bsky.social)</a> or{" "}
+          <a href={authorFlatUrl}>Reply to me (sabigara.bsky.social)</a> or{" "}
           <a href={authorEmail}>email me</a>.
         </p>
         <Message status="info">
