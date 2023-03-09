@@ -56,8 +56,7 @@ export function Feed<K extends QueryKey>({
       if (maxPages && allPages.length >= maxPages) return undefined;
       return lastPage.cursor ? { cursor: lastPage.cursor } : undefined;
     },
-    staleTime: 60 * 3 * 1000,
-    refetchOnWindowFocus: true,
+    refetchOnMount: false,
   });
   const queryClient = useQueryClient();
 

@@ -1,20 +1,41 @@
-import { AtUri } from "@atproto/uri";
+import { AppBskyFeedPost, AppBskyNotificationList } from "@atproto/api";
 
+import Prose from "@/src/components/Prose";
+import Post from "@/src/components/post/Post";
 import { usePostSingleQuery } from "@/src/lib/queries/usePostSingleQuery";
 
 import styles from "./NotificationSubject.module.scss";
 
+type Reason = AppBskyNotificationList.Notification["reason"];
+
 type Props = {
-  reasonSubject: string;
+  uri: string;
+  reason: Reason;
+  isSubject: boolean;
 };
 
-export default function NotificationSubject({ reasonSubject }: Props) {
-  const { host: user, rkey } = new AtUri(reasonSubject);
-  const { data } = usePostSingleQuery({ user, rkey });
+export default function NotificationPost({ uri, reason, isSubject }: Props) {
+  const { data } = usePostSingleQuery({ uri: uri });
   if (!data) return null;
+  switch (reason) {
+    case "mention":
+      return isSubject ? <SimplePost post={data.post} /> : <Post data={data} />;
+    case "reply":
+      return isSubject ? null : <Post data={data} />;
+    case "repost":
+      return <SimplePost post={data.post} />;
+    case "vote":
+      return <SimplePost post={data.post} />;
+  }
+  return <Post data={data} />;
+}
+
+function SimplePost({ post }: { post: AppBskyFeedPost.View }) {
+  if (!AppBskyFeedPost.isRecord(post.record)) return null;
+
   return (
-    <article>
-      <div className={styles.body}>{data.text}</div>
+    <article className={styles.simplePost}>
+      <Prose>{post.record.text}</Prose>
     </article>
   );
 }

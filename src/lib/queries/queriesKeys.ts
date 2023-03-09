@@ -19,7 +19,7 @@ export const queryKeys = {
   },
   posts: {
     single: {
-      $: (params: { user: string; rkey: string }) => ["posts", params] as const,
+      $: (params: { uri: string }) => ["posts", params] as const,
     },
   },
   notifications: {

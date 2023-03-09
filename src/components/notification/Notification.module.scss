@@ -1,13 +1,18 @@
 .container {
   display: grid;
+}
+
+.col2 {
   grid-template-columns: auto 1fr;
+  padding: 1rem;
   gap: 1rem;
-  padding: 0.75rem 1rem;
 }
 
 .startSection {
   display: grid;
-  place-items: center;
+  place-items: start center;
+  padding-block-start: 0.4rem;
+  width: 2.5rem;
 
   > svg {
     $size: 1.25rem;

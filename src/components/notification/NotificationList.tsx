@@ -15,7 +15,7 @@ export default function NotificationList() {
     queryKey: queryKeys.notifications.$,
     async queryFn({ pageParam }) {
       const resp = await bsky.notification.list({
-        limit: 25,
+        limit: 20,
         // passing `undefined` breaks the query somehow
         ...(pageParam ? { before: pageParam.cursor } : {}),
       });

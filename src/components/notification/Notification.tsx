@@ -1,11 +1,11 @@
-import { AppBskyFeedPost, AppBskyNotificationList } from "@atproto/api";
+import { AppBskyNotificationList } from "@atproto/api";
+import clsx from "clsx";
 import { FaRetweet, FaUserCircle } from "react-icons/fa";
-import { TbMessageCircle2Filled, TbStarFilled } from "react-icons/tb";
+import { TbStarFilled } from "react-icons/tb";
 import { Link } from "react-router-dom";
 
 import Avatar from "@/src/components/Avatar";
-import Prose from "@/src/components/Prose";
-import NotificationSubject from "@/src/components/notification/NotificationSubject";
+import NotificationPost from "@/src/components/notification/NotificationSubject";
 
 import styles from "./Notification.module.scss";
 
@@ -14,45 +14,61 @@ type Props = {
 };
 
 // TODO: support tap to navigate to subject
-// TODO: replace mention with Post component
 export default function Notification({ notification }: Props) {
+  const reason = notification.reason;
   const shouldFetchPost =
-    notification.reason === "reply" ||
-    notification.reason === "repost" ||
-    notification.reason === "vote";
+    reason === "reply" || reason === "repost" || reason === "vote";
+
+  const col2 = reason === "follow" || reason === "repost" || reason === "vote";
+
   return (
-    <div className={styles.container}>
-      <div className={styles.startSection}>
-        {reasonToIcon[notification.reason]}
-      </div>
+    <div
+      className={clsx(styles.container, {
+        [styles.col2]: col2,
+      })}
+    >
+      {col2 && (
+        <div className={styles.startSection}>
+          {reasonToIcon[notification.reason]}
+        </div>
+      )}
       <div className={styles.endSection}>
-        <div>
-          <Avatar
-            profile={notification.author}
-            isLink
-            className={styles.avatar}
-          />
-        </div>
-        <div>
-          <Link
-            to={`/${notification.author.handle}`}
-            className={styles.displayName}
-          >
-            {notification.author.displayName ?? notification.author.handle}
-          </Link>{" "}
-          <span className={styles.reason}>
-            {reasonToLabel[notification.reason]}
-          </span>
-        </div>
-        {shouldFetchPost && notification.reasonSubject && (
-          <NotificationSubject reasonSubject={notification.reasonSubject} />
+        {col2 && (
+          <>
+            <div>
+              <Avatar
+                profile={notification.author}
+                isLink
+                className={styles.avatar}
+              />
+            </div>
+            <div>
+              <Link
+                to={`/${notification.author.handle}`}
+                className={styles.displayName}
+              >
+                {notification.author.displayName ?? notification.author.handle}
+              </Link>{" "}
+              <span className={styles.reason}>
+                {reasonToLabel[notification.reason]}
+              </span>
+            </div>
+          </>
         )}
-        {notification.reason === "mention" &&
-          AppBskyFeedPost.isRecord(notification.record) && (
-            <article className={styles.mention}>
-              <Prose>{notification.record.text}</Prose>
-            </article>
-          )}
+        {shouldFetchPost && notification.reasonSubject && (
+          <NotificationPost
+            uri={notification.reasonSubject}
+            reason={notification.reason}
+            isSubject
+          />
+        )}
+        {(reason === "mention" || reason === "reply") && (
+          <NotificationPost
+            uri={notification.uri}
+            reason={notification.reason}
+            isSubject={false}
+          />
+        )}
       </div>
     </div>
   );
@@ -65,7 +81,7 @@ const reasonToIcon: Record<
   follow: <FaUserCircle className={styles.followIcon} />,
   invite: null,
   mention: null,
-  reply: <TbMessageCircle2Filled className={styles.replyIcon} />,
+  reply: null,
   repost: <FaRetweet className={styles.repostIcon} />,
   vote: <TbStarFilled className={styles.upvoteIcon} />,
 };
