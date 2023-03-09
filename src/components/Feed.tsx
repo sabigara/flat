@@ -11,8 +11,8 @@ import InfiniteScroll from "react-infinite-scroller";
 
 import type { AppBskyFeedFeedViewPost } from "@atproto/api";
 
-import Post from "@/src/components/Post";
 import SpinnerFill from "@/src/components/SpinnerFill";
+import Post from "@/src/components/post/Post";
 import { feedItemToUniqueKey } from "@/src/lib/post";
 import { queryKeys } from "@/src/lib/queries";
 

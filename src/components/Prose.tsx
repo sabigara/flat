@@ -23,6 +23,9 @@ export default function Prose({ children, className }: Props) {
           }
           return value;
         },
+        attributes: {
+          onClick: (e: MouseEvent) => e.stopPropagation(),
+        },
       }}
     >
       {children}

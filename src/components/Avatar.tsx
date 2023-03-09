@@ -23,6 +23,7 @@ export default function Avatar({ profile, isLink, ...props }: Props) {
       {...(isLink ? linkProps : {})}
       src={profile.avatar}
       alt={`${profile.displayName ?? profile.handle}のアバター画像`}
+      onClick={(e) => e.stopPropagation()}
       {...props}
       children={
         <span className={styles.fallback}>

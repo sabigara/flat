@@ -1,24 +1,22 @@
-import { AppBskyFeedGetPostThread } from "@atproto/api";
-import { LoaderFunction, useLoaderData } from "react-router-dom";
+import { LoaderFunction } from "react-router-dom";
 
-import Post from "@/src/components/Post";
+import PostRoute from "@/src/app/Root/Post/PostRoute";
 import { bsky } from "@/src/lib/atp/atp";
 
 export const loader = (async ({ params }) => {
-  if (!params.postUri) {
+  if (!params.handle || !params.rkey) {
     throw new Error("Invalid params");
   }
-  const resp = await bsky.feed.getPostThread({
-    uri: atob(params.postUri),
+  // TODO: can this be cached when transitioned?
+  const profileResp = await bsky.actor.getProfile({
+    actor: params.handle,
   });
-  return resp.data.thread;
+  const threadResp = await bsky.feed.getPostThread({
+    uri: `at://${profileResp.data.did}/app.bsky.feed.post/${params.rkey}`,
+  });
+  return threadResp.data.thread;
 }) satisfies LoaderFunction;
 
-export const element = <PostRoute />;
+export type PostRouteLoaderResult = Awaited<ReturnType<typeof loader>>;
 
-export default function PostRoute() {
-  const thread = useLoaderData() as Awaited<ReturnType<typeof loader>>;
-  // TODO: correct?
-  if (!AppBskyFeedGetPostThread.isThreadViewPost(thread)) return null;
-  return <Post data={thread} />;
-}
+export const element = <PostRoute />;

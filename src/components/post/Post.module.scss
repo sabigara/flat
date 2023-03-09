@@ -1,9 +1,11 @@
 .container {
   padding: 1rem 1rem;
   background: var(--cmm-color-surface-0);
+  position: relative;
 
   &:hover {
     background: var(--cmm-color-surface-1);
+    cursor: pointer;
   }
 }
 
