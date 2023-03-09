@@ -21,6 +21,7 @@ export type PostComposerProps = {
   myProfile: AppBskyActorProfile.View;
   open: boolean;
   setOpen: (val: boolean) => void;
+  onClickCompose: () => void;
   replyTarget?: AppBskyFeedFeedViewPost.Main;
 };
 
@@ -28,6 +29,7 @@ export default function PostComposer({
   myProfile,
   open,
   setOpen,
+  onClickCompose,
   replyTarget,
 }: PostComposerProps) {
   const queryClient = useQueryClient();
@@ -94,7 +96,7 @@ export default function PostComposer({
         aria-label="投稿ツールを開く"
         startDecorator={<TbPencilPlus />}
         size="lg"
-        onClick={() => void setOpen(true)}
+        onClick={onClickCompose}
         className={styles.composeBtn}
       >
         つぶやく
@@ -138,7 +140,7 @@ export default function PostComposer({
                 size="sm"
                 onClick={() => setOpen(false)}
               >
-                キャンセル
+                やめる
               </Button>
               <Button
                 onClick={() => mutate()}

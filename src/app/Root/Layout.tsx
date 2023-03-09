@@ -55,9 +55,9 @@ function RootLayout() {
       setOpen: setComposerOpen,
       replyTarget,
       setReplyTarget,
-      handleOpen: (val) => {
+      handleClickCompose: () => {
         setReplyTarget(undefined);
-        setComposerOpen(val);
+        setComposerOpen(true);
       },
       handleClickReply: (feedItem) => {
         setReplyTarget(feedItem);
@@ -86,7 +86,7 @@ export type RootContext = {
     setOpen: (val: boolean) => void;
     replyTarget?: AppBskyFeedFeedViewPost.Main;
     setReplyTarget: (feedItem: RootContext["composer"]["replyTarget"]) => void;
-    handleOpen: RootContext["composer"]["setOpen"];
+    handleClickCompose: () => void;
     handleClickReply: RootContext["composer"]["setReplyTarget"];
   };
 };

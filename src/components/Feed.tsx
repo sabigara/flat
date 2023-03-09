@@ -12,9 +12,9 @@ import InfiniteScroll from "react-infinite-scroller";
 import SpinnerFill from "@/src/components/SpinnerFill";
 import { Button } from "@camome/core/Button";
 import { queryKeys } from "@/src/lib/queries";
+import { feedItemToUniqueKey } from "@/src/lib/post";
 
 import styles from "./Feed.module.scss";
-import { PostComposerProps } from "@/src/components/PostComposer";
 
 export type FeedQueryFn<K extends QueryKey> = QueryFunction<
   {
@@ -127,9 +127,7 @@ export function Feed<K extends QueryKey>({
             <Post
               data={item}
               onClickReply={onClickReply}
-              key={`${item.post.cid}:${item.reason?.$type}:${
-                (item.reason?.by as any)?.did
-              }`}
+              key={feedItemToUniqueKey(item)}
               className={styles.post}
             />
           ))}

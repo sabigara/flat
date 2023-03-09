@@ -19,6 +19,7 @@ import { Tag } from "@camome/core/Tag";
 import styles from "./index.module.scss";
 import { RootContext } from "@/src/app/Root/Layout";
 import PostComposer from "@/src/components/PostComposer";
+import { feedItemToUniqueKey } from "@/src/lib/post";
 
 export const loader = (async ({ params }) => {
   if (!params.handle) {
@@ -174,8 +175,13 @@ function ProfileRoute() {
         <PostComposer
           myProfile={myProfile}
           open={composer.open}
-          setOpen={composer.handleOpen}
+          setOpen={composer.setOpen}
+          onClickCompose={composer.handleClickCompose}
           replyTarget={composer.replyTarget}
+          // keep it's internal state until replyTarget changes or removed.
+          key={
+            composer.replyTarget && feedItemToUniqueKey(composer.replyTarget)
+          }
         />
         <Feed
           queryKey={queryKey}

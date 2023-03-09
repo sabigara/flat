@@ -2,6 +2,7 @@ import { RootContext } from "@/src/app/Root/Layout";
 import { Feed, FeedQueryFn } from "@/src/components/Feed";
 import PostComposer from "@/src/components/PostComposer";
 import { bsky } from "@/src/lib/atp/atp";
+import { feedItemToUniqueKey } from "@/src/lib/post";
 import { queryKeys } from "@/src/lib/queries";
 import React from "react";
 import { useOutletContext } from "react-router-dom";
@@ -28,8 +29,11 @@ export function RootRoute() {
       <PostComposer
         myProfile={myProfile}
         open={composer.open}
-        setOpen={composer.handleOpen}
+        setOpen={composer.setOpen}
+        onClickCompose={composer.handleClickCompose}
         replyTarget={composer.replyTarget}
+        // keep it's internal state until replyTarget changes or removed.
+        key={composer.replyTarget && feedItemToUniqueKey(composer.replyTarget)}
       />
       <Feed
         queryKey={queryKey}
