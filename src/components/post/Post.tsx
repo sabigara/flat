@@ -96,7 +96,7 @@ export default function Post({
       iconReacted: <TbMessageCircle2 />,
       "aria-label": `${post.replyCount}件の返信`,
       onClick: () => onClickReply?.(data),
-      variables: { reacted: false },
+      reacted: false,
     },
     {
       type: "repost",
@@ -104,8 +104,8 @@ export default function Post({
       icon: <FaRetweet />,
       iconReacted: <FaRetweet style={{ color: "#22c55e" }} />,
       "aria-label": `${post.replyCount}件のリポスト`,
-      onClick: mutateRepost,
-      variables: { reacted: reposted, repostUri },
+      onClick: () => mutateRepost({ reacted: reposted, repostUri }),
+      reacted: reposted,
     },
     {
       type: "upvote",
@@ -113,8 +113,8 @@ export default function Post({
       icon: <TbStar />,
       iconReacted: <TbStarFilled style={{ color: "#eab308" }} />,
       "aria-label": `${post.replyCount}件のいいね`,
-      onClick: mutateVote,
-      variables: { reacted: upvoted },
+      onClick: () => mutateVote({ reacted: upvoted }),
+      reacted: upvoted,
     },
   ] satisfies ReactionProps[];
 
@@ -208,8 +208,8 @@ type ReactionProps = {
   icon: React.ReactNode;
   iconReacted: React.ReactNode;
   count: number;
-  onClick?: (variables: any) => void;
-  variables: any;
+  onClick?: () => void;
+  reacted: boolean;
   ["aria-label"]: string;
 };
 
@@ -219,7 +219,7 @@ function Reaction({
   iconReacted,
   count,
   onClick,
-  variables,
+  reacted,
   ...props
 }: ReactionProps) {
   return (
@@ -227,13 +227,13 @@ function Reaction({
       aria-label={props["aria-label"]}
       onClick={(e) => {
         e.stopPropagation();
-        onClick?.(variables);
+        onClick?.();
       }}
       className={styles.reaction}
     >
       <input type="hidden" name="type" value={type} />
       <span className={styles.reaction__icon}>
-        {variables.reacted ? iconReacted : icon}
+        {reacted ? iconReacted : icon}
       </span>
       <span aria-hidden>{count}</span>
     </button>
