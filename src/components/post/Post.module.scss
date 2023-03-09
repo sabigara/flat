@@ -7,6 +7,14 @@
     background: var(--cmm-color-surface-1);
     cursor: pointer;
   }
+
+  // disable hover effect on mobile devices
+  // 32rem is just a magic number...
+  @media screen and (max-width: 32rem) {
+    &:hover {
+      background: var(--cmm-color-surface-0);
+    }
+  }
 }
 
 .repost {
