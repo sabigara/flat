@@ -36,7 +36,7 @@ export function AboutRoute() {
         </p>
         <Message status="info">
           Before submitting an issue, check the{" "}
-          <a href="https://github.com/sabigara/flat/issues/5">TODO list</a> to
+          <a href="https://github.com/sabigara/flat/issues/5">roadmap</a> to
           know if your problem is already under consideration.
         </Message>
         <h2>Links</h2>
