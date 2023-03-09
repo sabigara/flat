@@ -3,9 +3,7 @@ import {
   AppBskyActorProfile,
   AppBskyFeedFeedViewPost,
 } from "@atproto/api";
-import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import React from "react";
 import {
   LoaderFunction,
@@ -40,17 +38,8 @@ const queryClient = new QueryClient({
     queries: {
       refetchOnWindowFocus: false,
       retry: 0,
-      cacheTime: 60 * 60 * 24 * 1000,
     },
   },
-});
-const localStoragePersister = createSyncStoragePersister({
-  storage: window.localStorage,
-});
-
-persistQueryClient({
-  queryClient,
-  persister: localStoragePersister,
 });
 
 function RootLayout() {
