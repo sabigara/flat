@@ -1,7 +1,8 @@
-import Post from "@/src/components/Post";
 import { AppBskyFeedGetPostThread } from "@atproto/api";
-import { bsky } from "@/src/lib/atp/atp";
 import { LoaderFunction, useLoaderData } from "react-router-dom";
+
+import Post from "@/src/components/Post";
+import { bsky } from "@/src/lib/atp/atp";
 
 export const loader = (async ({ params }) => {
   if (!params.postUri) {

@@ -6,11 +6,11 @@ import "@camome/system/dist/theme.css";
 import "@/src/styles/globals.scss";
 
 import * as Login from "@/src/app/Login";
-import * as RootLayout from "@/src/app/Root/Layout";
 import * as Root from "@/src/app/Root";
-import * as Profile from "@/src/app/Root/Profile";
-import * as Post from "@/src/app/Root/Post";
 import * as About from "@/src/app/Root/About";
+import * as RootLayout from "@/src/app/Root/Layout";
+import * as Post from "@/src/app/Root/Post";
+import * as Profile from "@/src/app/Root/Profile";
 
 const router = createBrowserRouter([
   {

@@ -1,4 +1,6 @@
+/* eslint-disable-next-line import/no-duplicates */
 import { formatDistanceToNowStrict } from "date-fns";
+/* eslint-disable-next-line import/no-duplicates */
 import locale from "date-fns/locale/en-US";
 
 export function formatDistanceShort(date: number | Date) {

@@ -1,19 +1,20 @@
-import { formatDistanceShort } from "@/src/lib/time";
 import { AppBskyFeedFeedViewPost } from "@atproto/api";
-import { TbMessageCircle2, TbStar, TbStarFilled } from "react-icons/tb";
+import { Tag } from "@camome/core/Tag";
+import { useMutation } from "@tanstack/react-query";
+import clsx from "clsx";
+import React from "react";
 import { BsReplyFill } from "react-icons/bs";
 import { FaRetweet } from "react-icons/fa";
-import { Tag } from "@camome/core/Tag";
+import { TbMessageCircle2, TbStar, TbStarFilled } from "react-icons/tb";
 import { Link } from "react-router-dom";
-import Prose from "@/src/components/Prose";
+
 import Avatar from "@/src/components/Avatar";
-import { atp, bsky } from "@/src/lib/atp/atp";
-import { useMutation } from "@tanstack/react-query";
-import React from "react";
+import Prose from "@/src/components/Prose";
 import Embed from "@/src/components/embed/Embed";
+import { atp, bsky } from "@/src/lib/atp/atp";
+import { formatDistanceShort } from "@/src/lib/time";
 
 import styles from "./Post.module.scss";
-import clsx from "clsx";
 
 type Props = {
   data: AppBskyFeedFeedViewPost.Main;

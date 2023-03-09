@@ -1,11 +1,12 @@
+import React from "react";
+import { useOutletContext } from "react-router-dom";
+
 import { RootContext } from "@/src/app/Root/Layout";
 import { Feed, FeedQueryFn } from "@/src/components/Feed";
 import PostComposer from "@/src/components/PostComposer";
 import { bsky } from "@/src/lib/atp/atp";
 import { feedItemToUniqueKey } from "@/src/lib/post";
 import { queryKeys } from "@/src/lib/queries";
-import React from "react";
-import { useOutletContext } from "react-router-dom";
 
 export function RootRoute() {
   const { myProfile, composer } = useOutletContext<RootContext>();

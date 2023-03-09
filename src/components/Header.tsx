@@ -1,11 +1,13 @@
-import type { AppBskyActorProfile } from "@atproto/api";
-import { Link, useNavigation } from "react-router-dom";
-import { TbQuestionMark } from "react-icons/tb";
-import LogoIcon from "@/src/assets/icon.svg";
 import { IconButton } from "@camome/core/IconButton";
+import { TbQuestionMark } from "react-icons/tb";
+import { Link, useNavigation } from "react-router-dom";
+
+import type { AppBskyActorProfile } from "@atproto/api";
+
+import LogoIcon from "@/src/assets/icon.svg";
+import Avatar from "@/src/components/Avatar";
 
 import styles from "./Header.module.scss";
-import Avatar from "@/src/components/Avatar";
 
 type Props = {
   profile: AppBskyActorProfile.View;

@@ -1,19 +1,20 @@
-import React from "react";
-import Dialog from "@/src/components/Dialog";
-import { bsky } from "@/src/lib/atp/atp";
 import { AppBskyActorProfile, AppBskyFeedFeedViewPost } from "@atproto/api";
 import { Button } from "@camome/core/Button";
 import { Spinner } from "@camome/core/Spinner";
 import { Textarea } from "@camome/core/Textarea";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { TbPencilPlus } from "react-icons/tb";
-import { isModKey } from "@/src/lib/keybindings";
-import { queryKeys } from "@/src/lib/queries";
-import Post from "@/src/components/Post";
-import Avatar from "@/src/components/Avatar";
 import clsx from "clsx";
-import { isIPhone } from "@/src/lib/platform";
 import { find } from "linkifyjs";
+import React from "react";
+import { TbPencilPlus } from "react-icons/tb";
+
+import Avatar from "@/src/components/Avatar";
+import Dialog from "@/src/components/Dialog";
+import Post from "@/src/components/Post";
+import { bsky } from "@/src/lib/atp/atp";
+import { isModKey } from "@/src/lib/keybindings";
+import { isIPhone } from "@/src/lib/platform";
+import { queryKeys } from "@/src/lib/queries";
 
 import styles from "./PostComposer.module.scss";
 

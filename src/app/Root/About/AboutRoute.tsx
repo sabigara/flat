@@ -1,5 +1,6 @@
 import { Markup } from "@camome/core/Markup";
 import { Message } from "@camome/core/Message";
+
 import styles from "./AboutRoute.module.scss";
 
 const ghUrl = "https://github.com/sabigara/flat" as const;

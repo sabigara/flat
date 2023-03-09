@@ -1,3 +1,5 @@
+import { Button } from "@camome/core/Button";
+import { Spinner } from "@camome/core/Spinner";
 import {
   useInfiniteQuery,
   type QueryKey,
@@ -5,14 +7,14 @@ import {
   useQueryClient,
   useQuery,
 } from "@tanstack/react-query";
-import type { AppBskyFeedFeedViewPost } from "@atproto/api";
-import { Spinner } from "@camome/core/Spinner";
-import Post from "@/src/components/Post";
 import InfiniteScroll from "react-infinite-scroller";
+
+import type { AppBskyFeedFeedViewPost } from "@atproto/api";
+
+import Post from "@/src/components/Post";
 import SpinnerFill from "@/src/components/SpinnerFill";
-import { Button } from "@camome/core/Button";
-import { queryKeys } from "@/src/lib/queries";
 import { feedItemToUniqueKey } from "@/src/lib/post";
+import { queryKeys } from "@/src/lib/queries";
 
 import styles from "./Feed.module.scss";
 

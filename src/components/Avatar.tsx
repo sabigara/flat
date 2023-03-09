@@ -1,11 +1,11 @@
+import { AppBskyActorProfile } from "@atproto/api";
 import {
   Avatar as CmmAvatar,
   type AvatarProps as CmmAvatarProps,
 } from "@camome/core/Avatar";
-import { AppBskyActorProfile } from "@atproto/api";
+import { Link } from "react-router-dom";
 
 import styles from "./Avatar.module.scss";
-import { Link } from "react-router-dom";
 
 type Props = {
   profile: Pick<AppBskyActorProfile.View, "avatar" | "displayName" | "handle">;

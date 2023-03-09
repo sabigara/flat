@@ -1,25 +1,26 @@
 import { AtUri } from "@atproto/uri";
-import { atp, bsky } from "@/src/lib/atp/atp";
+import { Button } from "@camome/core/Button";
+import { Spinner } from "@camome/core/Spinner";
+import { Tag } from "@camome/core/Tag";
+import { useMutation } from "@tanstack/react-query";
+import React from "react";
 import {
   LoaderFunction,
   useLoaderData,
   useOutletContext,
   useRevalidator,
 } from "react-router-dom";
-import { Button } from "@camome/core/Button";
-import Prose from "@/src/components/Prose";
+
+import { RootContext } from "@/src/app/Root/Layout";
 import Avatar from "@/src/components/Avatar";
 import { Feed, FeedQueryFn } from "@/src/components/Feed";
+import PostComposer from "@/src/components/PostComposer";
+import Prose from "@/src/components/Prose";
+import { atp, bsky } from "@/src/lib/atp/atp";
+import { feedItemToUniqueKey } from "@/src/lib/post";
 import { queryKeys } from "@/src/lib/queries";
-import React from "react";
-import { useMutation } from "@tanstack/react-query";
-import { Spinner } from "@camome/core/Spinner";
-import { Tag } from "@camome/core/Tag";
 
 import styles from "./index.module.scss";
-import { RootContext } from "@/src/app/Root/Layout";
-import PostComposer from "@/src/components/PostComposer";
-import { feedItemToUniqueKey } from "@/src/lib/post";
 
 export const loader = (async ({ params }) => {
   if (!params.handle) {

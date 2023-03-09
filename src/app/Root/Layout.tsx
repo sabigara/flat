@@ -1,10 +1,10 @@
-import React from "react";
-import { atp, bsky } from "@/src/lib/atp/atp";
 import {
   AtpSessionData,
   AppBskyActorProfile,
   AppBskyFeedFeedViewPost,
 } from "@atproto/api";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import React from "react";
 import {
   LoaderFunction,
   Outlet,
@@ -12,8 +12,9 @@ import {
   useLoaderData,
   ScrollRestoration,
 } from "react-router-dom";
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+
 import Header from "@/src/components/Header";
+import { atp, bsky } from "@/src/lib/atp/atp";
 
 import styles from "./Layout.module.scss";
 

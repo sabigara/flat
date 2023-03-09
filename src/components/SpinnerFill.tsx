@@ -1,5 +1,6 @@
 import { Spinner, SpinnerProps } from "@camome/core/Spinner";
 import clsx from "clsx";
+
 import styles from "./SpinnerFill.module.scss";
 
 type Props = SpinnerProps;

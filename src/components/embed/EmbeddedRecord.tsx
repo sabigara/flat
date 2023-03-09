@@ -1,7 +1,8 @@
-import Avatar from "@/src/components/Avatar";
 import { AppBskyEmbedRecord, AppBskyFeedPost } from "@atproto/api";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
+
+import Avatar from "@/src/components/Avatar";
 
 import styles from "./EmbeddedRecord.module.scss";
 
