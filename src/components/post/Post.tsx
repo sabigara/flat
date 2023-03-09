@@ -33,29 +33,21 @@ export default function Post({
   const { post, reason, reply } = data;
   const [upvoted, setUpvoted] = React.useState(false);
   const [reposted, setReposted] = React.useState(false);
-  const [repostedUri, setRepostedUri] = React.useState<string>();
+  const [repostUri, setRepostUri] = React.useState<string>();
   const navigate = useNavigate();
 
-  const { mutate: mutateVote } = useMutation({
-    mutationFn: async () => {
-      await bsky.feed.setVote({
-        direction: upvoted ? "none" : "up",
-        subject: {
-          cid: post.cid,
-          uri: post.uri,
-        },
-      });
-    },
-    onMutate() {
-      setUpvoted((curr) => !curr);
-    },
-  });
   const { mutate: mutateRepost } = useMutation({
-    mutationFn: async () => {
-      if (reposted && repostedUri) {
+    mutationFn: async ({
+      reacted,
+      repostUri,
+    }: {
+      reacted: boolean;
+      repostUri: string | undefined;
+    }) => {
+      if (reacted && repostUri) {
         await bsky.feed.repost.delete({
           did: atp.session!.did,
-          rkey: repostedUri.split("/").pop(),
+          rkey: repostUri.split("/").pop(),
         });
       } else {
         const resp = await bsky.feed.repost.create(
@@ -70,7 +62,7 @@ export default function Post({
             },
           }
         );
-        setRepostedUri(resp.uri);
+        setRepostUri(resp.uri);
       }
     },
     onMutate() {
@@ -78,18 +70,33 @@ export default function Post({
     },
   });
 
+  const { mutate: mutateVote } = useMutation({
+    mutationFn: async ({ reacted }: { reacted: boolean }) => {
+      await bsky.feed.setVote({
+        direction: reacted ? "none" : "up",
+        subject: {
+          cid: post.cid,
+          uri: post.uri,
+        },
+      });
+    },
+    onMutate() {
+      setUpvoted((curr) => !curr);
+    },
+  });
+
   // TODO: consider about encoding
   const profileHref = (handle: string) => `/${handle}`;
 
-  const reactions: ReactionProps[] = [
+  const reactions = [
     {
       type: "reply",
       count: post.replyCount,
       icon: <TbMessageCircle2 />,
       iconReacted: <TbMessageCircle2 />,
       "aria-label": `${post.replyCount}件の返信`,
-      reacted: false,
       onClick: () => onClickReply?.(data),
+      variables: { reacted: false },
     },
     {
       type: "repost",
@@ -97,8 +104,8 @@ export default function Post({
       icon: <FaRetweet />,
       iconReacted: <FaRetweet style={{ color: "#22c55e" }} />,
       "aria-label": `${post.replyCount}件のリポスト`,
-      reacted: reposted,
       onClick: mutateRepost,
+      variables: { reacted: reposted, repostUri },
     },
     {
       type: "upvote",
@@ -106,10 +113,10 @@ export default function Post({
       icon: <TbStar />,
       iconReacted: <TbStarFilled style={{ color: "#eab308" }} />,
       "aria-label": `${post.replyCount}件のいいね`,
-      reacted: upvoted,
       onClick: mutateVote,
+      variables: { reacted: upvoted },
     },
-  ];
+  ] satisfies ReactionProps[];
 
   const postUrl = buildPostUrl({
     handle: post.author.handle,
@@ -201,9 +208,9 @@ type ReactionProps = {
   icon: React.ReactNode;
   iconReacted: React.ReactNode;
   count: number;
-  onClick?: () => void;
+  onClick?: (variables: any) => void;
+  variables: any;
   ["aria-label"]: string;
-  reacted: boolean;
 };
 
 function Reaction({
@@ -212,7 +219,7 @@ function Reaction({
   iconReacted,
   count,
   onClick,
-  reacted,
+  variables,
   ...props
 }: ReactionProps) {
   return (
@@ -220,13 +227,13 @@ function Reaction({
       aria-label={props["aria-label"]}
       onClick={(e) => {
         e.stopPropagation();
-        onClick?.();
+        onClick?.(variables);
       }}
       className={styles.reaction}
     >
       <input type="hidden" name="type" value={type} />
       <span className={styles.reaction__icon}>
-        {reacted ? iconReacted : icon}
+        {variables.reacted ? iconReacted : icon}
       </span>
       <span aria-hidden>{count}</span>
     </button>
