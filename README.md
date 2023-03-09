@@ -1,5 +1,5 @@
 # Flat
 
-Web client for Bluesky (bsky.social)
+Web client for Bluesky (bsky.app)
 
 🚧🚧🚧🚧🚧 WIP 🚧🚧🚧🚧🚧
