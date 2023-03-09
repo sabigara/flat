@@ -1,13 +1,7 @@
-import { AppBskyFeedFeedViewPost, AppBskyFeedGetTimeline } from "@atproto/api";
-import { AtUri } from "@atproto/uri";
+import { AppBskyFeedFeedViewPost } from "@atproto/api";
 import { Tag } from "@camome/core/Tag";
-import {
-  InfiniteData,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
-import { produce, type Draft } from "immer";
 import React from "react";
 import { BsReplyFill } from "react-icons/bs";
 import { FaRetweet } from "react-icons/fa";
@@ -19,7 +13,6 @@ import Prose from "@/src/components/Prose";
 import Embed from "@/src/components/post/embed/Embed";
 import { atp, bsky } from "@/src/lib/atp/atp";
 import { buildPostUrl } from "@/src/lib/post";
-import { queryKeys } from "@/src/lib/queries";
 import { formatDistanceShort } from "@/src/lib/time";
 
 import styles from "./Post.module.scss";
@@ -38,17 +31,33 @@ export default function Post({
   className,
 }: Props) {
   const { post, reason, reply } = data;
+  const [upvoted, setUpvoted] = React.useState(false);
+  const [reposted, setReposted] = React.useState(false);
+  const [repostedUri, setRepostedUri] = React.useState<string>();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
 
+  const { mutate: mutateVote } = useMutation(
+    async () => {
+      await bsky.feed.setVote({
+        direction: upvoted ? "none" : "up",
+        subject: {
+          cid: post.cid,
+          uri: post.uri,
+        },
+      });
+    },
+    {
+      onMutate() {
+        setUpvoted((curr) => !curr);
+      },
+    }
+  );
   const { mutate: mutateRepost } = useMutation(
     async () => {
-      let repostUri: string | undefined = undefined;
-      if (post.viewer.repost) {
-        const uri = new AtUri(post.viewer.repost);
+      if (reposted && repostedUri) {
         await bsky.feed.repost.delete({
-          did: uri.hostname,
-          rkey: uri.rkey,
+          did: atp.session!.did,
+          rkey: repostedUri.split("/").pop(),
         });
       } else {
         const resp = await bsky.feed.repost.create(
@@ -63,56 +72,12 @@ export default function Post({
             },
           }
         );
-        repostUri = resp.uri;
+        setRepostedUri(resp.uri);
       }
-      return { repostUri };
     },
     {
-      onSuccess({ repostUri }) {
-        const updateRepost = (draft: Draft<AppBskyFeedFeedViewPost.Main>) => {
-          draft.post.repostCount += repostUri ? +1 : -1;
-          draft.post.viewer.repost = repostUri;
-        };
-        queryClient.setQueryData<TimelineInfiniteData>(
-          queryKeys.feed.home.$,
-          (data) => mutateTimelineItem(data, post.cid, updateRepost)
-        );
-        queryClient.setQueryData<TimelineInfiniteData>(
-          queryKeys.feed.author.$(atp.session!.handle),
-          (data) => mutateTimelineItem(data, post.cid, updateRepost)
-        );
-      },
-    }
-  );
-
-  // ideally cancel queries?
-  // https://tanstack.com/query/v4/docs/react/guides/optimistic-updates#updating-a-list-of-todos-when-adding-a-new-todo
-  const { mutate: mutateVote } = useMutation(
-    async () => {
-      const resp = await bsky.feed.setVote({
-        direction: post.viewer.upvote ? "none" : "up",
-        subject: {
-          cid: post.cid,
-          uri: post.uri,
-        },
-      });
-      // TODO: error handling
-      return { upvoteUri: resp.data.upvote };
-    },
-    {
-      onSuccess({ upvoteUri }) {
-        const updateVote = (draft: Draft<AppBskyFeedFeedViewPost.Main>) => {
-          draft.post.upvoteCount += upvoteUri ? +1 : -1;
-          draft.post.viewer.upvote = upvoteUri;
-        };
-        queryClient.setQueryData<TimelineInfiniteData>(
-          queryKeys.feed.home.$,
-          (data) => mutateTimelineItem(data, post.cid, updateVote)
-        );
-        queryClient.setQueryData<TimelineInfiniteData>(
-          queryKeys.feed.author.$(atp.session!.handle),
-          (data) => mutateTimelineItem(data, post.cid, updateVote)
-        );
+      onMutate() {
+        setReposted((curr) => !curr);
       },
     }
   );
@@ -132,20 +97,20 @@ export default function Post({
     },
     {
       type: "repost",
+      count: post.repostCount + (reposted ? 1 : 0),
       icon: <FaRetweet />,
       iconReacted: <FaRetweet style={{ color: "#22c55e" }} />,
       "aria-label": `${post.replyCount}件のリポスト`,
-      count: post.repostCount,
-      reacted: !!post.viewer.repost,
+      reacted: reposted,
       onClick: mutateRepost,
     },
     {
       type: "upvote",
+      count: post.upvoteCount + (upvoted ? 1 : 0),
       icon: <TbStar />,
       iconReacted: <TbStarFilled style={{ color: "#eab308" }} />,
       "aria-label": `${post.replyCount}件のいいね`,
-      count: post.upvoteCount,
-      reacted: !!post.viewer.upvote,
+      reacted: upvoted,
       onClick: mutateVote,
     },
   ];
@@ -271,25 +236,3 @@ function Reaction({
     </button>
   );
 }
-
-type TimelineInfiniteData = InfiniteData<AppBskyFeedGetTimeline.OutputSchema>;
-
-function mutateTimelineItem(
-  data: TimelineInfiniteData | undefined,
-  postCid: string,
-  fn: (draft: Draft<AppBskyFeedFeedViewPost.Main>) => void
-) {
-  if (!data) return { pageParams: [], pages: [] };
-  return produce(data, (draft) => {
-    const target = draft.pages
-      .flatMap((p) => p.feed)
-      .find((item) => item.post.cid === postCid);
-    if (!target) return data;
-    fn(target);
-  });
-}
-
-const ternaryToCount = (val: boolean | undefined) => {
-  if (val === undefined) return 0;
-  return val ? 1 : -1;
-};

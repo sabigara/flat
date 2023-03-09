@@ -20,7 +20,6 @@ specifiers:
   eslint-import-resolver-typescript: ^3.5.3
   eslint-plugin-import: ^2.27.5
   eslint-plugin-react: ^7.32.2
-  immer: ^9.0.19
   linkify-plugin-mention: ^4.1.0
   linkify-react: ^4.1.0
   linkifyjs: ^4.1.0
@@ -50,7 +49,6 @@ dependencies:
   '@tanstack/react-query': 4.26.1_biqbaboplfbrettd7655fr4n2y
   clsx: 1.2.1
   date-fns: 2.29.3
-  immer: 9.0.19
   linkify-plugin-mention: 4.1.0_linkifyjs@4.1.0
   linkify-react: 4.1.0_w5fbl633f7mujs73uwm6v5bhhm
   linkifyjs: 4.1.0
@@ -3311,10 +3309,6 @@ packages:
 
   /immediate/3.0.6:
     resolution: {integrity: sha512-XXOFtyqDjNDAQxVfYxuF7g9Il/IbWmmlQg2MYKOH8ExIT1qg6xc4zyS3HaEEATgs1btfzxq15ciUiY7gjSXRGQ==}
-    dev: false
-
-  /immer/9.0.19:
-    resolution: {integrity: sha512-eY+Y0qcsB4TZKwgQzLaE/lqYMlKhv5J9dyd2RhhtGhNo2njPXDqU9XPfcNfa3MIDsdtZt5KlkIsirlo4dHsWdQ==}
     dev: false
 
   /immutable/4.2.4:
