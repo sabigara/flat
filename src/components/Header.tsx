@@ -28,11 +28,11 @@ export default function Header({ profile }: Props) {
           </div>
         )}
       </div>
-      <Link to="/" className={styles.logo}>
-        <LogoIcon />
-        <span className={styles.logo__text}>Flat</span>
-      </Link>
-      <div className={styles.sectionEnd}>
+      <div className={styles.sectionStart}>
+        <Link to="/" className={styles.logo}>
+          <LogoIcon />
+          <span className={styles.logo__text}>Flat</span>
+        </Link>
         <IconButton
           component={Link}
           to="/about"
@@ -44,6 +44,8 @@ export default function Header({ profile }: Props) {
         >
           <TbQuestionMark />
         </IconButton>
+      </div>
+      <div className={styles.sectionEnd}>
         <NotificationButton />
         <Avatar size="sm" profile={profile} isLink className={styles.avatar} />
       </div>
