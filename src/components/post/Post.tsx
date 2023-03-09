@@ -36,8 +36,8 @@ export default function Post({
   const [repostedUri, setRepostedUri] = React.useState<string>();
   const navigate = useNavigate();
 
-  const { mutate: mutateVote } = useMutation(
-    async () => {
+  const { mutate: mutateVote } = useMutation({
+    mutationFn: async () => {
       await bsky.feed.setVote({
         direction: upvoted ? "none" : "up",
         subject: {
@@ -46,14 +46,12 @@ export default function Post({
         },
       });
     },
-    {
-      onMutate() {
-        setUpvoted((curr) => !curr);
-      },
-    }
-  );
-  const { mutate: mutateRepost } = useMutation(
-    async () => {
+    onMutate() {
+      setUpvoted((curr) => !curr);
+    },
+  });
+  const { mutate: mutateRepost } = useMutation({
+    mutationFn: async () => {
       if (reposted && repostedUri) {
         await bsky.feed.repost.delete({
           did: atp.session!.did,
@@ -75,12 +73,10 @@ export default function Post({
         setRepostedUri(resp.uri);
       }
     },
-    {
-      onMutate() {
-        setReposted((curr) => !curr);
-      },
-    }
-  );
+    onMutate() {
+      setReposted((curr) => !curr);
+    },
+  });
 
   // TODO: consider about encoding
   const profileHref = (handle: string) => `/${handle}`;
