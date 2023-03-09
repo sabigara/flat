@@ -142,6 +142,7 @@ export default function Post({
             colorScheme="neutral"
             size="sm"
             startDecorator={<FaRetweet />}
+            onClick={(e) => e.stopPropagation()}
             className={styles.repost}
           >
             Repost by {reason.by.displayName}
@@ -174,8 +175,6 @@ export default function Post({
           </div>
           {!contentOnly && reply && (
             <Tag
-              component={Link}
-              to={profileHref(reply.parent.author.handle)}
               colorScheme="neutral"
               size="sm"
               startDecorator={<BsReplyFill />}
