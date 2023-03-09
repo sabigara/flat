@@ -6,12 +6,13 @@ import React from "react";
 import { BsReplyFill } from "react-icons/bs";
 import { FaRetweet } from "react-icons/fa";
 import { TbMessageCircle2, TbStar, TbStarFilled } from "react-icons/tb";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import Avatar from "@/src/components/Avatar";
 import Prose from "@/src/components/Prose";
 import Embed from "@/src/components/embed/Embed";
 import { atp, bsky } from "@/src/lib/atp/atp";
+import { buildPostUrl } from "@/src/lib/post";
 import { formatDistanceShort } from "@/src/lib/time";
 
 import styles from "./Post.module.scss";
@@ -33,6 +34,7 @@ export default function Post({
   const [upvoted, setUpvoted] = React.useState(false);
   const [reposted, setReposted] = React.useState(false);
   const [repostedUri, setRepostedUri] = React.useState<string>();
+  const navigate = useNavigate();
 
   const { mutate: mutateVote } = useMutation(
     async () => {
@@ -113,8 +115,24 @@ export default function Post({
     },
   ];
 
+  const postUrl = buildPostUrl({
+    handle: post.author.handle,
+    uri: post.uri,
+  });
+
+  const handleClickBackground: React.MouseEventHandler = () => {
+    navigate(postUrl);
+  };
+
   return (
-    <article className={clsx(styles.container, className)}>
+    <article
+      className={clsx(styles.container, className)}
+      onClick={handleClickBackground}
+    >
+      {/* TODO: show on focus? */}
+      <Link to={postUrl} className="visually-hidden">
+        投稿の詳細
+      </Link>
       {!contentOnly &&
         reason &&
         AppBskyFeedFeedViewPost.isReasonRepost(reason) && (
@@ -142,6 +160,7 @@ export default function Post({
           <div className={styles.header}>
             <Link
               to={profileHref(post.author.handle)}
+              onClick={(e) => e.stopPropagation()}
               className={styles.displayName}
             >
               {post.author.displayName}
@@ -204,7 +223,10 @@ function Reaction({
   return (
     <button
       aria-label={props["aria-label"]}
-      onClick={onClick}
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick?.();
+      }}
       className={styles.reaction}
     >
       <input type="hidden" name="type" value={type} />

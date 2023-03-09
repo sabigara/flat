@@ -23,6 +23,7 @@ export default function EmbeddedImages({ embed, className }: Props) {
           href={img.fullsize}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={(e) => e.stopPropagation()}
         >
           <img src={img.thumb} alt={img.alt} />
         </a>

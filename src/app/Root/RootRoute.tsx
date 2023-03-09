@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom";
 
 import { RootContext } from "@/src/app/Root/Layout";
 import { Feed, FeedQueryFn } from "@/src/components/Feed";
-import PostComposer from "@/src/components/PostComposer";
+import PostComposer from "@/src/components/post/PostComposer";
 import { bsky } from "@/src/lib/atp/atp";
 import { feedItemToUniqueKey } from "@/src/lib/post";
 import { queryKeys } from "@/src/lib/queries";

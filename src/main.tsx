@@ -26,12 +26,12 @@ const router = createBrowserRouter([
         ...About,
       },
       {
-        path: "/posts/:postUri",
-        ...Post,
-      },
-      {
         path: "/:handle",
         ...Profile,
+      },
+      {
+        path: "/:handle/posts/:rkey",
+        ...Post,
       },
     ],
   },
