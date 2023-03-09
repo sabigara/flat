@@ -2,7 +2,6 @@ import {
   AtpSessionData,
   AppBskyActorProfile,
   AppBskyFeedFeedViewPost,
-  AppBskyNotificationList,
 } from "@atproto/api";
 import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";

@@ -1,2 +1,55 @@
 .container {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+}
+
+.startSection {
+  display: grid;
+  place-items: center;
+
+  > svg {
+    $size: 1.25rem;
+    width: $size;
+    height: $size;
+  }
+}
+
+.endSection {
+  &:has(.mention) {
+    grid-row: 1;
+    grid-column: 1 / -1;
+  }
+}
+
+.avatar {
+  --cmm-Avatar-size: 2rem;
+}
+
+.displayName {
+  font-weight: var(--cmm-font-weight-bold);
+}
+
+.reason {
+  font-size: var(--cmm-font-size-sm);
+}
+
+.mention {
+}
+
+.followIcon {
+  color: var(--cmm-color-font-muted);
+}
+
+.replyIcon {
+  color: var(--color-reply);
+}
+
+.repostIcon {
+  color: var(--color-repost);
+}
+
+.upvoteIcon {
+  color: var(--color-upvote);
 }

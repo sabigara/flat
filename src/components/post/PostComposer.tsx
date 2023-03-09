@@ -14,7 +14,7 @@ import Post from "@/src/components/post/Post";
 import { bsky } from "@/src/lib/atp/atp";
 import { isModKey } from "@/src/lib/keybindings";
 import { isIPhone } from "@/src/lib/platform";
-import { queryKeys } from "@/src/lib/queries";
+import { queryKeys } from "@/src/lib/queries/queriesKeys";
 
 import styles from "./PostComposer.module.scss";
 

@@ -1,9 +1,6 @@
 import { AtUri } from "@atproto/uri";
-import { useQuery } from "@tanstack/react-query";
-import React from "react";
 
-import { bsky } from "@/src/lib/atp/atp";
-import { queryKeys } from "@/src/lib/queries";
+import { usePostSingleQuery } from "@/src/lib/queries/usePostSingleQuery";
 
 import styles from "./NotificationSubject.module.scss";
 
@@ -13,25 +10,11 @@ type Props = {
 
 export default function NotificationSubject({ reasonSubject }: Props) {
   const { host: user, rkey } = new AtUri(reasonSubject);
-  const { data } = useQuery({
-    queryKey: queryKeys.posts.single.$({
-      user,
-      rkey,
-    }),
-    async queryFn() {
-      const resp = await bsky.feed.post.get({
-        user,
-        rkey,
-      });
-      return resp.value;
-    },
-    staleTime: 60 * 60 * 24,
-    cacheTime: 60 * 60 * 24,
-  });
+  const { data } = usePostSingleQuery({ user, rkey });
   if (!data) return null;
   return (
     <article>
-      <div>{data.text}</div>
+      <div className={styles.body}>{data.text}</div>
     </article>
   );
 }

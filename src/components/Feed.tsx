@@ -14,7 +14,7 @@ import type { AppBskyFeedFeedViewPost } from "@atproto/api";
 import SpinnerFill from "@/src/components/SpinnerFill";
 import Post from "@/src/components/post/Post";
 import { feedItemToUniqueKey } from "@/src/lib/post";
-import { queryKeys } from "@/src/lib/queries";
+import { queryKeys } from "@/src/lib/queries/queriesKeys";
 
 import styles from "./Feed.module.scss";
 

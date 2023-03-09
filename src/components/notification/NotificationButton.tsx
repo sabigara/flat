@@ -5,7 +5,7 @@ import { TbBell } from "react-icons/tb";
 import { Link } from "react-router-dom";
 
 import { bsky } from "@/src/lib/atp/atp";
-import { queryKeys } from "@/src/lib/queries";
+import { queryKeys } from "@/src/lib/queries/queriesKeys";
 
 import styles from "./NotificationButton.module.scss";
 
@@ -16,7 +16,7 @@ export default function NotificationButton() {
       const resp = await bsky.notification.getCount();
       return resp.data.count;
     },
-    refetchInterval: 60 * 3 * 1000,
+    refetchInterval: 60 * 1 * 1000,
   });
 
   return (
@@ -30,9 +30,11 @@ export default function NotificationButton() {
       className={styles.button}
     >
       <TbBell />
-      <span className={styles.badge}>
-        <span className="visually-hidden">{count}件の通知</span>
-      </span>
+      {!!count && count > 0 && (
+        <span className={styles.badge}>
+          <span className="visually-hidden">{count}件の通知</span>
+        </span>
+      )}
     </IconButton>
   );
 }

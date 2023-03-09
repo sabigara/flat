@@ -19,7 +19,7 @@ import Prose from "@/src/components/Prose";
 import PostComposer from "@/src/components/post/PostComposer";
 import { atp, bsky } from "@/src/lib/atp/atp";
 import { feedItemToUniqueKey } from "@/src/lib/post";
-import { queryKeys } from "@/src/lib/queries";
+import { queryKeys } from "@/src/lib/queries/queriesKeys";
 
 import styles from "./ProfileRoute.module.scss";
 
