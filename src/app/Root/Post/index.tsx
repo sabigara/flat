@@ -1,7 +1,6 @@
-import { AppBskyFeedGetPostThread } from "@atproto/api";
-import { LoaderFunction, useLoaderData } from "react-router-dom";
+import { LoaderFunction } from "react-router-dom";
 
-import Post from "@/src/components/Post";
+import PostRoute from "@/src/app/Root/Post/PostRoute";
 import { bsky } from "@/src/lib/atp/atp";
 
 export const loader = (async ({ params }) => {
@@ -14,11 +13,6 @@ export const loader = (async ({ params }) => {
   return resp.data.thread;
 }) satisfies LoaderFunction;
 
-export const element = <PostRoute />;
+export type PostRouteLoaderResult = Awaited<ReturnType<typeof loader>>;
 
-export default function PostRoute() {
-  const thread = useLoaderData() as Awaited<ReturnType<typeof loader>>;
-  // TODO: correct?
-  if (!AppBskyFeedGetPostThread.isThreadViewPost(thread)) return null;
-  return <Post data={thread} />;
-}
+export const element = <PostRoute />;
