@@ -6,6 +6,7 @@ import type { AppBskyActorProfile } from "@atproto/api";
 
 import LogoIcon from "@/src/assets/icon.svg";
 import Avatar from "@/src/components/Avatar";
+import NotificationButton from "@/src/components/notification/NotificationButton";
 
 import styles from "./Header.module.scss";
 
@@ -43,6 +44,7 @@ export default function Header({ profile }: Props) {
         >
           <TbQuestionMark />
         </IconButton>
+        <NotificationButton />
         <Avatar size="sm" profile={profile} isLink className={styles.avatar} />
       </div>
     </header>

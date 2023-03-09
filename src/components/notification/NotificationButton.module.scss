@@ -1,0 +1,28 @@
+.button {
+  position: relative;
+
+  > svg {
+    --cmm-IconButton-icon-size: 1.4rem;
+  }
+
+  &:hover {
+    .badge {
+      box-shadow: 0 0 0 2px var(--cmm-color-surface-2);
+    }
+  }
+}
+
+.badge {
+  $size: 0.55rem;
+  position: absolute;
+  top: 0.35rem;
+  right: 0.35rem;
+  width: $size;
+  height: $size;
+  border-radius: var(--cmm-radius-full);
+  display: grid;
+  place-items: center;
+  color: var(--cmm-color-font-on-emphasis);
+  background: var(--cmm-color-primary-emphasis);
+  box-shadow: 0 0 0 2px var(--cmm-color-surface-0);
+}

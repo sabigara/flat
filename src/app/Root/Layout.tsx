@@ -2,6 +2,7 @@ import {
   AtpSessionData,
   AppBskyActorProfile,
   AppBskyFeedFeedViewPost,
+  AppBskyNotificationList,
 } from "@atproto/api";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import React from "react";
