@@ -10,7 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import Avatar from "@/src/components/Avatar";
 import Prose from "@/src/components/Prose";
-import Embed from "@/src/components/embed/Embed";
+import Embed from "@/src/components/post/embed/Embed";
 import { atp, bsky } from "@/src/lib/atp/atp";
 import { buildPostUrl } from "@/src/lib/post";
 import { formatDistanceShort } from "@/src/lib/time";

@@ -4,8 +4,8 @@ import {
   AppBskyEmbedRecord,
 } from "@atproto/api";
 
-import EmbeddedImages from "@/src/components/embed/EmbeddedImages";
-import EmbeddedRecord from "@/src/components/embed/EmbeddedRecord";
+import EmbeddedImages from "@/src/components/post/embed/EmbeddedImages";
+import EmbeddedRecord from "@/src/components/post/embed/EmbeddedRecord";
 
 type Props = {
   embed:
