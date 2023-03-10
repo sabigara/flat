@@ -1,4 +1,5 @@
 import fs from "fs";
+import path from "path";
 
 import { generateScopedName, hash } from "@camome/utils";
 import react from "@vitejs/plugin-react-swc";
@@ -47,6 +48,11 @@ export default defineConfig({
         }
         return generateScopedName(name, filename);
       },
+    },
+  },
+  resolve: {
+    alias: {
+      "@/mixins": path.resolve("src/styles/mixins.scss"),
     },
   },
 });

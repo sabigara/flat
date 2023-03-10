@@ -1,3 +1,5 @@
+@use "@/mixins";
+
 .container {
   border: 1px solid var(--cmm-color-border-base);
   border-radius: var(--cmm-radius-2xl);
@@ -38,10 +40,7 @@
 }
 
 .body {
+  @include mixins.lineClamp(3);
   margin-block-start: 0.2em;
   font-size: var(--cmm-font-size-sm);
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
 }
