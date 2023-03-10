@@ -35,7 +35,6 @@ export function SettingsRoute() {
           size="md"
           value={theme.value}
           onChange={(e) => theme.set(e.target.value as Theme)}
-          className={styles.themeSelect}
         >
           <option value="light">ライト</option>
           <option value="dark">ダーク</option>
