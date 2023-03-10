@@ -24,6 +24,7 @@
 .handle {
   font-size: var(--cmm-font-size-sm);
   color: var(--cmm-color-font-subtle);
+  word-break: break-all;
 }
 
 .tag {
