@@ -1,4 +1,7 @@
-import { AppBskyFeedGetPostThread } from "@atproto/api";
+import {
+  AppBskyFeedFeedViewPost,
+  AppBskyFeedGetPostThread,
+} from "@atproto/api";
 import clsx from "clsx";
 
 import Post from "@/src/components/post/Post";
@@ -11,9 +14,10 @@ type Props = {
     | AppBskyFeedGetPostThread.NotFoundPost
     | { [k: string]: unknown; $type: string };
   isRoot?: boolean;
+  onClickReply?: (feedItem: AppBskyFeedFeedViewPost.Main) => void;
 };
 
-export default function Thread({ thread, isRoot }: Props) {
+export default function Thread({ thread, isRoot, onClickReply }: Props) {
   // TODO: consider other cases
   if (!AppBskyFeedGetPostThread.isThreadViewPost(thread)) return null;
   return (
@@ -21,6 +25,7 @@ export default function Thread({ thread, isRoot }: Props) {
       {thread.parent && <Thread thread={thread.parent} />}
       <Post
         data={thread}
+        onClickReply={onClickReply}
         className={clsx(styles.post, { [styles.root]: isRoot })}
       />
       {thread.replies?.map((reply) => (

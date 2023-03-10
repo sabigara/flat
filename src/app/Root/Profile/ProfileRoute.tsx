@@ -19,7 +19,7 @@ import Prose from "@/src/components/Prose";
 import PostComposer from "@/src/components/post/PostComposer";
 import { atp, bsky } from "@/src/lib/atp/atp";
 import { feedItemToUniqueKey } from "@/src/lib/post";
-import { queryKeys } from "@/src/lib/queries";
+import { queryKeys } from "@/src/lib/queries/queriesKeys";
 
 import styles from "./ProfileRoute.module.scss";
 
@@ -162,17 +162,6 @@ export function ProfileRoute() {
         </div>
       </header>
       <main className={styles.main}>
-        <PostComposer
-          myProfile={myProfile}
-          open={composer.open}
-          setOpen={composer.setOpen}
-          onClickCompose={composer.handleClickCompose}
-          replyTarget={composer.replyTarget}
-          // keep it's internal state until replyTarget changes or removed.
-          key={
-            composer.replyTarget && feedItemToUniqueKey(composer.replyTarget)
-          }
-        />
         <Feed
           queryKey={queryKey}
           queryFn={queryFn}

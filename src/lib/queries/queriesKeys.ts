@@ -17,4 +17,15 @@ export const queryKeys = {
       ) => [key, { latestDate, fetchLatestOne }] as const,
     },
   },
+  posts: {
+    single: {
+      $: (params: { uri: string }) => ["posts", params] as const,
+    },
+  },
+  notifications: {
+    $: ["notifications"] as const,
+    count: {
+      $: ["notifications", "count"] as const,
+    },
+  },
 };

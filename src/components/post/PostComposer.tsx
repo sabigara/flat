@@ -14,7 +14,7 @@ import Post from "@/src/components/post/Post";
 import { bsky } from "@/src/lib/atp/atp";
 import { isModKey } from "@/src/lib/keybindings";
 import { isIPhone } from "@/src/lib/platform";
-import { queryKeys } from "@/src/lib/queries";
+import { queryKeys } from "@/src/lib/queries/queriesKeys";
 
 import styles from "./PostComposer.module.scss";
 
@@ -24,6 +24,7 @@ export type PostComposerProps = {
   setOpen: (val: boolean) => void;
   onClickCompose: () => void;
   replyTarget?: AppBskyFeedFeedViewPost.Main;
+  showButton?: boolean;
 };
 
 export default function PostComposer({
@@ -32,6 +33,7 @@ export default function PostComposer({
   setOpen,
   onClickCompose,
   replyTarget,
+  showButton,
 }: PostComposerProps) {
   const queryClient = useQueryClient();
   const [text, setText] = React.useState("");
@@ -93,15 +95,17 @@ export default function PostComposer({
 
   return (
     <>
-      <Button
-        aria-label="投稿ツールを開く"
-        startDecorator={<TbPencilPlus />}
-        size="lg"
-        onClick={onClickCompose}
-        className={styles.composeBtn}
-      >
-        つぶやく
-      </Button>
+      {showButton && (
+        <Button
+          aria-label="投稿ツールを開く"
+          startDecorator={<TbPencilPlus />}
+          size="lg"
+          onClick={onClickCompose}
+          className={styles.composeBtn}
+        >
+          つぶやく
+        </Button>
+      )}
       <Dialog open={open} setOpen={setOpen} className={styles.dialog}>
         <div className={styles.container}>
           {replyTarget && (

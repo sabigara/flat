@@ -14,7 +14,7 @@ import type { AppBskyFeedFeedViewPost } from "@atproto/api";
 import SpinnerFill from "@/src/components/SpinnerFill";
 import Post from "@/src/components/post/Post";
 import { feedItemToUniqueKey } from "@/src/lib/post";
-import { queryKeys } from "@/src/lib/queries";
+import { queryKeys } from "@/src/lib/queries/queriesKeys";
 
 import styles from "./Feed.module.scss";
 
@@ -56,8 +56,7 @@ export function Feed<K extends QueryKey>({
       if (maxPages && allPages.length >= maxPages) return undefined;
       return lastPage.cursor ? { cursor: lastPage.cursor } : undefined;
     },
-    staleTime: 60 * 3 * 1000,
-    refetchOnWindowFocus: true,
+    refetchOnMount: false,
   });
   const queryClient = useQueryClient();
 
@@ -67,16 +66,12 @@ export function Feed<K extends QueryKey>({
     ? new Date(latestItem.post.indexedAt)
     : undefined;
 
-  // TODO: shouldn't use params from queryKey
   const { data: isNewAvailable } = useQuery(
     queryKeys.feed.new.$(queryKey, latestDate, fetchLatestOne),
-    async ({ queryKey }) => {
-      const params = queryKey[1];
-      if (!params.latestDate) return false;
-      const latest = await params.fetchLatestOne();
-      return (
-        new Date(latest.post.indexedAt).getTime() > params.latestDate.getTime()
-      );
+    async () => {
+      if (!latestDate) return false;
+      const latest = await fetchLatestOne();
+      return new Date(latest.post.indexedAt).getTime() > latestDate.getTime();
     },
     {
       refetchInterval: 30 * 1000, // 30 seconds

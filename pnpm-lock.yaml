@@ -7,7 +7,9 @@ specifiers:
   '@camome/system': ^0.1.24
   '@camome/utils': ^0.1.10
   '@headlessui/react': ^1.7.13
+  '@tanstack/query-sync-storage-persister': ^4.26.1
   '@tanstack/react-query': ^4.24.10
+  '@tanstack/react-query-persist-client': ^4.26.1
   '@types/react': ^18.0.27
   '@types/react-dom': ^18.0.10
   '@types/react-infinite-scroller': ^1.2.3
@@ -46,7 +48,9 @@ dependencies:
   '@camome/core': 0.0.28_react@18.2.0
   '@camome/system': 0.1.24
   '@headlessui/react': 1.7.13_biqbaboplfbrettd7655fr4n2y
+  '@tanstack/query-sync-storage-persister': 4.26.1
   '@tanstack/react-query': 4.26.1_biqbaboplfbrettd7655fr4n2y
+  '@tanstack/react-query-persist-client': 4.26.1_vohxj3xpfxn57cw32hqo6tozmq
   clsx: 1.2.1
   date-fns: 2.29.3
   linkify-plugin-mention: 4.1.0_linkifyjs@4.1.0
@@ -1987,6 +1991,27 @@ packages:
 
   /@tanstack/query-core/4.26.1:
     resolution: {integrity: sha512-Zrx2pVQUP4ndnsu6+K/m8zerXSVY8QM+YSbxA1/jbBY21GeCd5oKfYl92oXPK0hPEUtoNuunIdiq0ZMqLos+Zg==}
+    dev: false
+
+  /@tanstack/query-persist-client-core/4.26.1:
+    resolution: {integrity: sha512-gKO5VQuvNlMMTNSxRtB4tm3zGSx3/U9YluFkdumsHana9YMh3ngc76gUCbQZsnf5DDCwdI673F7A7oSphp/vgA==}
+    dependencies:
+      '@tanstack/query-core': 4.26.1
+    dev: false
+
+  /@tanstack/query-sync-storage-persister/4.26.1:
+    resolution: {integrity: sha512-Mt7Z+PKbdEiYt6KGTciLivHvsEQf2Q/G3lpGvLzqEP0S8VULJeUB3pqt6jvZBMgj4nKWBbyH3HZDtDw7pFyg2g==}
+    dependencies:
+      '@tanstack/query-persist-client-core': 4.26.1
+    dev: false
+
+  /@tanstack/react-query-persist-client/4.26.1_vohxj3xpfxn57cw32hqo6tozmq:
+    resolution: {integrity: sha512-efS2hPz8z+ySCTIy1DJ4uuT7LSi8F0E4bMXwP/aj2dDuMRFn6AV3z7LItInpp0Em3JKhi90GP2vxDyvQTOhO2A==}
+    peerDependencies:
+      '@tanstack/react-query': 4.26.1
+    dependencies:
+      '@tanstack/query-persist-client-core': 4.26.1
+      '@tanstack/react-query': 4.26.1_biqbaboplfbrettd7655fr4n2y
     dev: false
 
   /@tanstack/react-query/4.26.1_biqbaboplfbrettd7655fr4n2y:

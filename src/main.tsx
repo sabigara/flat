@@ -9,6 +9,7 @@ import * as Login from "@/src/app/Login";
 import * as Root from "@/src/app/Root";
 import * as About from "@/src/app/Root/About";
 import * as RootLayout from "@/src/app/Root/Layout";
+import * as Notifications from "@/src/app/Root/Notifications";
 import * as Post from "@/src/app/Root/Post";
 import * as Profile from "@/src/app/Root/Profile";
 
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       {
         path: "/about",
         ...About,
+      },
+      {
+        path: "/notifications",
+        ...Notifications,
       },
       {
         path: "/:handle",
