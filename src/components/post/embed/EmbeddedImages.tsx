@@ -3,6 +3,7 @@ import clsx from "clsx";
 import React from "react";
 import { createPortal } from "react-dom";
 import Lightbox from "yet-another-react-lightbox";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
 
 import "yet-another-react-lightbox/styles.css";
 import styles from "./EmbeddedImages.module.scss";
@@ -61,9 +62,14 @@ export default function EmbeddedImages({ embed, className }: Props) {
                 easing: "linear",
               },
             }}
-            controller={{ closeOnBackdropClick: true }}
+            controller={{ closeOnBackdropClick: true, touchAction: "pan-y" }}
             carousel={{ finite: true }}
-            className={clsx(styles.yarl, "no-nav")}
+            render={{
+              buttonZoomIn: () => null,
+              buttonZoomOut: () => null,
+            }}
+            plugins={[Zoom]}
+            className={styles.yarl}
           />
         </div>,
         document.body
