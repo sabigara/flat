@@ -43,15 +43,40 @@
 .yarl {
   :global {
     .yarl {
+      $btnSize: 3rem;
+      $padSize: 0.5rem;
+
+      &__container {
+        --yarl__navigation_button_padding: 0.5rem;
+        --yarl__toolbar_padding: 0;
+      }
+
+      &__toolbar {
+        right: 1.5rem;
+        top: 0.75rem;
+      }
+
       &__button {
+        border-radius: var(--cmm-radius-full);
+
         &:focus-visible {
           outline: 2px solid var(--cmm-outline-color-primary);
         }
+        &[aria-label="Close"] {
+          border-radius: var(--cmm-radius-full);
+          padding: $padSize;
+        }
       }
+
+      &__navigation_prev {
+        left: 0.75rem;
+      }
+      &__navigation_next {
+        right: 1.5rem;
+      }
+
       &__navigation_prev,
       &__navigation_next {
-        height: 100dvh;
-
         &[disabled] {
           display: none;
         }
