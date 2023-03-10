@@ -8,6 +8,8 @@ import "@/src/styles/globals.scss";
 import * as Login from "@/src/app/Login";
 import * as Root from "@/src/app/Root";
 import * as About from "@/src/app/Root/About";
+import * as Followers from "@/src/app/Root/Followers";
+import * as Following from "@/src/app/Root/Following";
 import * as RootLayout from "@/src/app/Root/Layout";
 import * as Notifications from "@/src/app/Root/Notifications";
 import * as Post from "@/src/app/Root/Post";
@@ -37,6 +39,14 @@ const router = createBrowserRouter([
       {
         path: "/:handle/posts/:rkey",
         ...Post,
+      },
+      {
+        path: "/:handle/followers",
+        ...Followers,
+      },
+      {
+        path: "/:handle/following",
+        ...Following,
       },
     ],
   },

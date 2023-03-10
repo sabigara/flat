@@ -22,6 +22,14 @@ export const queryKeys = {
       $: (params: { uri: string }) => ["posts", params] as const,
     },
   },
+  users: {
+    followers: {
+      $: (params: { user: string }) => ["users", "followers", params] as const,
+    },
+    following: {
+      $: (params: { user: string }) => ["users", "following", params] as const,
+    },
+  },
   notifications: {
     $: ["notifications"] as const,
     count: {

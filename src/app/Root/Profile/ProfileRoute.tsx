@@ -1,10 +1,10 @@
-import { AtUri } from "@atproto/uri";
 import { Button } from "@camome/core/Button";
 import { Spinner } from "@camome/core/Spinner";
 import { Tag } from "@camome/core/Tag";
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import {
+  Link,
   useLoaderData,
   useOutletContext,
   useRevalidator,
@@ -16,15 +16,14 @@ import { RootContext } from "@/src/app/Root/Layout";
 import Avatar from "@/src/components/Avatar";
 import { Feed, FeedQueryFn } from "@/src/components/Feed";
 import Prose from "@/src/components/Prose";
-import PostComposer from "@/src/components/post/PostComposer";
 import { atp, bsky } from "@/src/lib/atp/atp";
-import { feedItemToUniqueKey } from "@/src/lib/post";
+import { followUser, unfollowUser } from "@/src/lib/atp/graph";
 import { queryKeys } from "@/src/lib/queries/queriesKeys";
 
 import styles from "./ProfileRoute.module.scss";
 
 export function ProfileRoute() {
-  const { myProfile, composer } = useOutletContext<RootContext>();
+  const { composer } = useOutletContext<RootContext>();
   const profile = useLoaderData() as ProfileRouteLoaderResult;
   const username = profile.displayName ?? profile.handle;
   const queryKey = queryKeys.feed.author.$(profile.handle);
@@ -58,23 +57,16 @@ export function ProfileRoute() {
       // TODO: error handling
       if (!atp.session) return;
       if (isFollow) {
-        await bsky.graph.follow.create(
-          { did: atp.session.did },
-          {
-            subject: {
-              did: profile.did,
-              declarationCid: profile.declaration.cid,
-            },
-            createdAt: new Date().toISOString(),
-          }
-        );
+        await followUser({
+          did: atp.session.did,
+          subject: {
+            did: profile.did,
+            declarationCid: profile.declaration.cid,
+          },
+        });
       } else {
         if (!profile.myState?.follow) return;
-        const uri = new AtUri(profile.myState.follow);
-        await bsky.graph.follow.delete({
-          did: uri.hostname,
-          rkey: uri.rkey,
-        });
+        await unfollowUser({ uri: profile.myState.follow });
       }
       revalidator.revalidate();
     }
@@ -142,22 +134,27 @@ export function ProfileRoute() {
             <div className={styles.handleWrap}>
               <span className={styles.handle}>@{profile.handle}</span>
               {profile.viewer?.followedBy && (
-                <Tag size="sm" variant="soft" colorScheme="neutral">
+                <Tag
+                  size="sm"
+                  variant="soft"
+                  colorScheme="neutral"
+                  className={styles.followedTag}
+                >
                   フォローされています
                 </Tag>
               )}
             </div>
           </hgroup>
-          <dl className={styles.dl}>
-            <div>
-              <dt>Followers</dt>
-              <dd>{profile.followersCount}</dd>
-            </div>
-            <div>
-              <dt>Following</dt>
-              <dd>{profile.followsCount}</dd>
-            </div>
-          </dl>
+          <div className={styles.dl}>
+            <Link to="followers">
+              <div className={styles.term}>Followers</div>
+              <div className={styles.data}>{profile.followersCount}</div>
+            </Link>
+            <Link to="following">
+              <div className={styles.term}>Following</div>
+              <div className={styles.data}>{profile.followsCount}</div>
+            </Link>
+          </div>
           <Prose className={styles.description}>{profile.description}</Prose>
         </div>
       </header>

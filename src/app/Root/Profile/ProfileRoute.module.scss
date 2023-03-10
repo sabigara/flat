@@ -59,17 +59,21 @@
   margin-block-start: 0.5rem;
   font-size: var(--cmm-font-size-sm);
 
-  > div {
+  > a {
     display: flex;
     flex-direction: row-reverse;
     gap: 0.25rem;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
-  dd {
+  .data {
     font-weight: var(--cmm-font-weight-bold);
   }
 
-  dt {
+  .term {
     color: var(--cmm-color-font-subtle);
   }
 }
@@ -80,6 +84,10 @@
 
 .followUnfollowBtn {
   font-weight: var(--cmm-font-weight-bold);
+}
+
+.followedTag {
+  font-size: calc(var(--cmm-font-size-xs) * 0.9);
 }
 
 .main {
