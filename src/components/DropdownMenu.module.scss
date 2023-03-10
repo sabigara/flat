@@ -1,0 +1,13 @@
+.button {
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--cmm-radius-full);
+  outline-offset: 2px;
+  display: block;
+}
+
+.link {
+  &[aria-current="page"] {
+    font-weight: var(--cmm-font-weight-bold);
+  }
+}

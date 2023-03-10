@@ -13,6 +13,7 @@ type Props = {
 };
 
 // TODO: calling updateSeen every mount is too frequent.
+// TODO: support infinite scroll
 export default function NotificationList({ onClickReply }: Props) {
   const queryClient = useQueryClient();
   const mounted = React.useRef(false);

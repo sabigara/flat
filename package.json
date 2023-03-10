@@ -18,6 +18,7 @@
     "@atproto/uri": "^0.0.1",
     "@camome/core": "^0.0.28",
     "@camome/system": "^0.1.24",
+    "@floating-ui/react": "^0.20.1",
     "@headlessui/react": "^1.7.13",
     "@tanstack/query-sync-storage-persister": "^4.26.1",
     "@tanstack/react-query": "^4.24.10",
