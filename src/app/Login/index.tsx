@@ -55,7 +55,7 @@ function LoginRoute() {
         <TextInput
           label="Email"
           name="email"
-          type="email"
+          type="text"
           placeholder="you@example.com"
         />
         <TextInput label="Password" name="password" type="password" />
