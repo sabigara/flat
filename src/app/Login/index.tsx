@@ -22,14 +22,14 @@ export const loader = (async () => {
 
 export const action = (async ({ request }) => {
   const data = await request.formData();
-  const email = data.get("email");
+  const identifier = data.get("identifier");
   const password = data.get("password");
   // TODO: better validation?
-  if (typeof email !== "string" || typeof password !== "string") {
-    throw new Error(`Validation error: ${{ email, password }}`);
+  if (typeof identifier !== "string" || typeof password !== "string") {
+    throw new Error(`Validation error: ${{ identifier, password }}`);
   }
   const resp = await atp.login({
-    identifier: email,
+    identifier: identifier,
     password: password,
   });
   if (!resp.success) {
@@ -53,10 +53,10 @@ function LoginRoute() {
       </div>
       <Form method="post" className={styles.form}>
         <TextInput
-          label="Email"
-          name="email"
-          type="email"
-          placeholder="you@example.com"
+          label="Identifier (handle or email)"
+          name="identifier"
+          type="text"
+          placeholder="you.bsky.social"
         />
         <TextInput label="Password" name="password" type="password" />
         <Button
