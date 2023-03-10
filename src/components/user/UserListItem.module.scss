@@ -1,0 +1,26 @@
+.container {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.5rem 1rem;
+}
+
+.sectionCenter {
+  position: relative;
+  height: 100%;
+}
+
+.displayName {
+  font-weight: var(--cmm-font-weight-bold);
+}
+
+.handle {
+  font-size: var(--cmm-font-size-sm);
+  color: var(--cmm-color-font-subtle);
+}
+
+.tag {
+  font-size: calc(var(--cmm-font-size-xs) * 0.9);
+  height: 1.2rem;
+}
