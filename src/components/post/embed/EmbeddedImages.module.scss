@@ -3,7 +3,7 @@
   border: 1px solid var(--cmm-color-border-base);
   border-radius: var(--cmm-radius-2xl);
   overflow: hidden;
-  background: var(--cmm-color-border-base);
+  background: var(--cmm-color-surface-0);
 
   img {
     height: 100%;
@@ -19,7 +19,7 @@
 %grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1.5px;
+  gap: 0.5rem;
 }
 
 .two {
@@ -38,4 +38,24 @@
 .four {
   grid-template-rows: repeat((2, 50%));
   @extend %grid;
+}
+
+.yarl {
+  :global {
+    .yarl {
+      &__button {
+        &:focus-visible {
+          outline: 2px solid var(--cmm-outline-color-primary);
+        }
+      }
+      &__navigation_prev,
+      &__navigation_next {
+        height: 100dvh;
+
+        &[disabled] {
+          display: none;
+        }
+      }
+    }
+  }
 }
