@@ -1,6 +1,5 @@
 import { IconButton } from "@camome/core/IconButton";
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
 import { TbBell } from "react-icons/tb";
 import { Link } from "react-router-dom";
 

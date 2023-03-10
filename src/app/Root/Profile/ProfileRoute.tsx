@@ -49,7 +49,7 @@ export function ProfileRoute() {
           limit: 1,
         })
       ).data.feed[0],
-    []
+    [profile.handle]
   );
   const revalidator = useRevalidator();
   const { mutate: mutateFollowState, isLoading: isMutating } = useMutation(

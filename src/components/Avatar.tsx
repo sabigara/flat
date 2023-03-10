@@ -35,11 +35,10 @@ export default function Avatar({
       onClick={stopPropagation ? (e) => e.stopPropagation() : undefined}
       ref={innerRef}
       {...props}
-      children={
-        <span className={styles.fallback}>
-          {profile.handle.at(0)?.toUpperCase()}
-        </span>
-      }
-    />
+    >
+      <span className={styles.fallback}>
+        {profile.handle.at(0)?.toUpperCase()}
+      </span>
+    </CmmAvatar>
   );
 }

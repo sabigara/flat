@@ -19,17 +19,17 @@ export function AboutRoute() {
           services coming in the future.
         </p>
         <Message status="warn">
-          This app is currently highly experimental and unstable. I'm taking
-          care of security, but use it at your own risk.
+          This app is currently highly experimental and unstable. I&apos;m
+          taking care of security, but use it at your own risk.
         </Message>
         <h2>Contributing</h2>
         If you find any bugs or want to add features, feel free to contact me in
         any way described below.
-        <h3>If you're a developer...</h3>
+        <h3>If you&apos;re a developer...</h3>
         <p>
           Submit an issue to the <a href={ghUrl}>GitHub repository</a>.
         </p>
-        <h3>If you're a non-developer...</h3>
+        <h3>If you&apos;re a non-developer...</h3>
         <p>
           <a href={authorFlatUrl}>Reply to me (sabigara.bsky.social)</a> or{" "}
           <a href={authorEmail}>email me</a>.

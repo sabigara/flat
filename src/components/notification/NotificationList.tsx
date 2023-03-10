@@ -41,7 +41,7 @@ export default function NotificationList({ onClickReply }: Props) {
       queryClient.setQueryData(queryKeys.notifications.count.$, () => 0);
     }
     mounted.current = true;
-  }, []);
+  }, [queryClient]);
 
   return (
     <ul>
