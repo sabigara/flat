@@ -1,0 +1,25 @@
+.container {
+  padding-inline: 1rem;
+  padding-block-start: 1rem;
+  padding-block-end: 2rem;
+}
+
+.title {
+  font-weight: var(--cmm-font-weight-bold);
+  font-size: var(--cmm-font-size-2xl);
+  margin-block-end: 1em;
+}
+
+.section {
+  margin-block-end: 2.5rem;
+
+  h2 {
+    font-weight: var(--cmm-font-weight-bold);
+    font-size: var(--cmm-font-size-lg);
+    margin-block-end: 1em;
+  }
+}
+
+.themeSelect {
+  width: fit-content;
+}

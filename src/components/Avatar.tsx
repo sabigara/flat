@@ -3,6 +3,7 @@ import {
   Avatar as CmmAvatar,
   type AvatarProps as CmmAvatarProps,
 } from "@camome/core/Avatar";
+import React from "react";
 import { Link } from "react-router-dom";
 
 import styles from "./Avatar.module.scss";
@@ -10,9 +11,17 @@ import styles from "./Avatar.module.scss";
 type Props = {
   profile: Pick<AppBskyActorProfile.View, "avatar" | "displayName" | "handle">;
   isLink?: boolean;
+  innerRef?: React.Ref<HTMLImageElement | HTMLAnchorElement>;
+  stopPropagation?: boolean;
 } & CmmAvatarProps;
 
-export default function Avatar({ profile, isLink, ...props }: Props) {
+export default function Avatar({
+  profile,
+  isLink,
+  innerRef,
+  stopPropagation = true,
+  ...props
+}: Props) {
   const linkProps = {
     component: Link,
     to: `/${profile.handle}`,
@@ -23,7 +32,8 @@ export default function Avatar({ profile, isLink, ...props }: Props) {
       {...(isLink ? linkProps : {})}
       src={profile.avatar}
       alt={`${profile.displayName ?? profile.handle}のアバター画像`}
-      onClick={(e) => e.stopPropagation()}
+      onClick={stopPropagation ? (e) => e.stopPropagation() : undefined}
+      ref={innerRef}
       {...props}
       children={
         <span className={styles.fallback}>

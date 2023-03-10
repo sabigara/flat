@@ -1,20 +1,18 @@
-import { IconButton } from "@camome/core/IconButton";
-import { TbQuestionMark } from "react-icons/tb";
 import { Link, useNavigation } from "react-router-dom";
 
 import type { AppBskyActorProfile } from "@atproto/api";
 
 import LogoIcon from "@/src/assets/icon.svg";
-import Avatar from "@/src/components/Avatar";
+import DropdownMenu from "@/src/components/DropdownMenu";
 import NotificationButton from "@/src/components/notification/NotificationButton";
 
 import styles from "./Header.module.scss";
 
 type Props = {
-  profile: AppBskyActorProfile.View;
+  myProfile: AppBskyActorProfile.View;
 };
 
-export default function Header({ profile }: Props) {
+export default function Header({ myProfile }: Props) {
   const { state } = useNavigation();
 
   return (
@@ -33,21 +31,10 @@ export default function Header({ profile }: Props) {
           <LogoIcon />
           <span className={styles.logo__text}>Flat</span>
         </Link>
-        <IconButton
-          component={Link}
-          to="/about"
-          aria-label="About"
-          size="sm"
-          colorScheme="neutral"
-          variant="soft"
-          className={styles.aboutBtn}
-        >
-          <TbQuestionMark />
-        </IconButton>
       </div>
       <div className={styles.sectionEnd}>
         <NotificationButton />
-        <Avatar size="sm" profile={profile} isLink className={styles.avatar} />
+        <DropdownMenu myProfile={myProfile} />
       </div>
     </header>
   );

@@ -14,6 +14,7 @@ import * as RootLayout from "@/src/app/Root/Layout";
 import * as Notifications from "@/src/app/Root/Notifications";
 import * as Post from "@/src/app/Root/Post";
 import * as Profile from "@/src/app/Root/Profile";
+import * as Settings from "@/src/app/Root/Settings";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         index: true,
         ...Root,
+      },
+      {
+        path: "/settings",
+        ...Settings,
       },
       {
         path: "/about",

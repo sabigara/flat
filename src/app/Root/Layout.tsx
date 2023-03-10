@@ -18,20 +18,24 @@ import Header from "@/src/components/Header";
 import PostComposer from "@/src/components/post/PostComposer";
 import { atp, bsky } from "@/src/lib/atp/atp";
 import { feedItemToUniqueKey } from "@/src/lib/post";
+import { storageKeys } from "@/src/lib/storage";
+import { getTheme, Theme, useTheme } from "@/src/lib/theme";
 
 import styles from "./Layout.module.scss";
 
 export const loader = (async () => {
+  let theme: Theme = "system";
   if (!atp.hasSession) {
-    const sessionStr = localStorage.getItem("session");
+    const sessionStr = localStorage.getItem(storageKeys.session.$);
     if (!sessionStr) return redirect("/login");
     const session = JSON.parse(sessionStr) as AtpSessionData;
     await atp.resumeSession(session);
+    theme = getTheme();
   }
   const resp = await bsky.actor.getProfile({
     actor: atp.session!.handle,
   });
-  return resp.data;
+  return { myProfile: resp.data, theme };
 }) satisfies LoaderFunction;
 
 export const element = <RootLayout />;
@@ -46,6 +50,7 @@ const queryClient = new QueryClient({
 });
 
 const composeButtonHideRoutes = [
+  "/settings",
   "/about",
   "/notifications",
   /^\/[^/]*\/(followers|following)/,
@@ -53,7 +58,11 @@ const composeButtonHideRoutes = [
 
 function RootLayout() {
   // TODO: can't use ReturnType as the loader is returning `redirect()`
-  const myProfile = useLoaderData() as AppBskyActorProfile.View;
+  const { myProfile, theme: loadedTheme } = useLoaderData() as {
+    myProfile: AppBskyActorProfile.View;
+    theme: Theme;
+  };
+  const { setTheme, theme, resolvedTheme } = useTheme(loadedTheme);
   const [composerOpen, setComposerOpen] = React.useState(false);
   const [replyTarget, setReplyTarget] =
     React.useState<AppBskyFeedFeedViewPost.Main>();
@@ -61,6 +70,10 @@ function RootLayout() {
 
   const appContext: RootContext = {
     myProfile,
+    theme: {
+      value: theme,
+      set: setTheme,
+    },
     composer: {
       open: composerOpen,
       setOpen: setComposerOpen,
@@ -77,11 +90,15 @@ function RootLayout() {
     },
   };
 
+  React.useLayoutEffect(() => {
+    window.document.documentElement.dataset.theme = resolvedTheme;
+  }, [resolvedTheme]);
+
   return (
     <QueryClientProvider client={queryClient}>
       <ScrollRestoration />
       <div className={styles.container}>
-        <Header profile={myProfile} />
+        <Header myProfile={myProfile} />
         <main>
           <PostComposer
             myProfile={appContext.myProfile}
@@ -109,6 +126,10 @@ function RootLayout() {
 
 export type RootContext = {
   myProfile: AppBskyActorProfile.View;
+  theme: {
+    value: Theme;
+    set: (theme: Theme) => void;
+  };
   composer: {
     open: boolean;
     setOpen: (val: boolean) => void;
