@@ -24,9 +24,14 @@ export type UserListQueryFn<K extends QueryKey> = QueryFunction<
 type Props<K extends QueryKey> = {
   queryKey: K;
   queryFn: UserListQueryFn<K>;
+  className?: string;
 };
 
-export function UserList<K extends QueryKey>({ queryKey, queryFn }: Props<K>) {
+export function UserList<K extends QueryKey>({
+  queryKey,
+  queryFn,
+  className,
+}: Props<K>) {
   const {
     status,
     data,
@@ -60,6 +65,7 @@ export function UserList<K extends QueryKey>({ queryKey, queryFn }: Props<K>) {
         loadMore={() => !isFetchingNextPage && fetchNextPage()}
         hasMore={hasNextPage}
         loader={<SpinnerFill key="__loader" />}
+        className={className}
       >
         <>
           {allItems.map((item) => (

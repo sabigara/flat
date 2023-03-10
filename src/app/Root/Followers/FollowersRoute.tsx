@@ -4,6 +4,8 @@ import { UserList, UserListQueryFn } from "@/src/components/user/UserList";
 import { bsky } from "@/src/lib/atp/atp";
 import { queryKeys } from "@/src/lib/queries/queriesKeys";
 
+import styles from "./FollowersRoute.module.scss";
+
 export function FollowersRoute() {
   const params = useParams();
   const handle = params.handle;
@@ -23,5 +25,10 @@ export function FollowersRoute() {
       cursor: resp.data.cursor,
     };
   };
-  return <UserList queryKey={queryKey} queryFn={queryFn} />;
+  return (
+    <>
+      <h1 className={styles.title}>@{handle} のフォロワー</h1>
+      <UserList queryKey={queryKey} queryFn={queryFn} className={styles.list} />
+    </>
+  );
 }

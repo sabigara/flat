@@ -4,6 +4,8 @@ import { UserList, UserListQueryFn } from "@/src/components/user/UserList";
 import { bsky } from "@/src/lib/atp/atp";
 import { queryKeys } from "@/src/lib/queries/queriesKeys";
 
+import styles from "./FollowingRoute.module.scss";
+
 export function FollowingRoute() {
   const params = useParams();
   const handle = params.handle;
@@ -25,7 +27,8 @@ export function FollowingRoute() {
   };
   return (
     <>
-      <UserList queryKey={queryKey} queryFn={queryFn} />
+      <h1 className={styles.title}>@{handle} がフォロー中</h1>
+      <UserList queryKey={queryKey} queryFn={queryFn} className={styles.list} />
     </>
   );
 }

@@ -16,16 +16,14 @@ import { RootContext } from "@/src/app/Root/Layout";
 import Avatar from "@/src/components/Avatar";
 import { Feed, FeedQueryFn } from "@/src/components/Feed";
 import Prose from "@/src/components/Prose";
-import PostComposer from "@/src/components/post/PostComposer";
 import { atp, bsky } from "@/src/lib/atp/atp";
 import { followUser, unfollowUser } from "@/src/lib/atp/graph";
-import { feedItemToUniqueKey } from "@/src/lib/post";
 import { queryKeys } from "@/src/lib/queries/queriesKeys";
 
 import styles from "./ProfileRoute.module.scss";
 
 export function ProfileRoute() {
-  const { myProfile, composer } = useOutletContext<RootContext>();
+  const { composer } = useOutletContext<RootContext>();
   const profile = useLoaderData() as ProfileRouteLoaderResult;
   const username = profile.displayName ?? profile.handle;
   const queryKey = queryKeys.feed.author.$(profile.handle);
