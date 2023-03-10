@@ -4,6 +4,12 @@
   gap: 1rem;
   align-items: center;
   padding: 0.5rem 1rem;
+
+  @media screen and (max-width: 30rem) {
+    .avatar {
+      --cmm-Avatar-size: 2.25rem;
+    }
+  }
 }
 
 .sectionCenter {

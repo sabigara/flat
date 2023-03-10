@@ -49,7 +49,7 @@ export default function UserListItem({ user, revalidate, className }: Props) {
   return (
     <article className={clsx(styles.container, className)}>
       <div>
-        <Avatar profile={user} isLink />
+        <Avatar profile={user} isLink className={styles.avatar} />
       </div>
       <div className={styles.sectionCenter}>
         <Link to={`/${user.handle}`} className={"clickable-overlay"}>
