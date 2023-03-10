@@ -57,8 +57,9 @@ function LoginRoute() {
           name="identifier"
           type="text"
           placeholder="you.bsky.social"
+          required
         />
-        <TextInput label="Password" name="password" type="password" />
+        <TextInput label="Password" name="password" type="password" required />
         <Button
           type="submit"
           disabled={state === "submitting"}
