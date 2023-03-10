@@ -2,6 +2,7 @@ import { AppBskyFeedFeedViewPost } from "@atproto/api";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 
+import SpinnerFill from "@/src/components/SpinnerFill";
 import Notification from "@/src/components/notification/Notification";
 import { bsky } from "@/src/lib/atp/atp";
 import { queryKeys } from "@/src/lib/queries/queriesKeys";
@@ -17,7 +18,7 @@ type Props = {
 export default function NotificationList({ onClickReply }: Props) {
   const queryClient = useQueryClient();
   const mounted = React.useRef(false);
-  const { data } = useInfiniteQuery({
+  const { data, status, error } = useInfiniteQuery({
     queryKey: queryKeys.notifications.$,
     async queryFn({ pageParam }) {
       const resp = await bsky.notification.list({
@@ -42,6 +43,12 @@ export default function NotificationList({ onClickReply }: Props) {
     }
     mounted.current = true;
   }, [queryClient]);
+
+  if (status === "loading") {
+    return <SpinnerFill />;
+  } else if (status === "error") {
+    return <span>Error: {(error as Error).message}</span>;
+  }
 
   return (
     <ul>
