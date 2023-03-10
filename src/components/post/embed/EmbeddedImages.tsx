@@ -15,6 +15,18 @@ type Props = {
 export default function EmbeddedImages({ embed, className }: Props) {
   const [open, setOpen] = React.useState(false);
   const [index, setIndex] = React.useState(0);
+  const handleClick = (e: React.MouseEvent, i: number) => {
+    e.stopPropagation();
+    setOpen(true);
+    setIndex(i);
+    document.documentElement.style.scrollbarGutter = "auto";
+  };
+  const handleExiting = () => {
+    document.documentElement.style.scrollbarGutter = "stable";
+  };
+  const handleView = (i: number) => {
+    setIndex(i);
+  };
   return (
     <>
       <div
@@ -25,14 +37,7 @@ export default function EmbeddedImages({ embed, className }: Props) {
         })}
       >
         {embed.images.map((img, i) => (
-          <button
-            key={img.thumb}
-            onClick={(e) => {
-              e.stopPropagation();
-              setOpen(true);
-              setIndex(i);
-            }}
-          >
+          <button key={img.thumb} onClick={(e) => handleClick(e, i)}>
             <img src={img.thumb} alt={img.alt} />
           </button>
         ))}
@@ -43,9 +48,8 @@ export default function EmbeddedImages({ embed, className }: Props) {
             open={open}
             index={index}
             on={{
-              view(index) {
-                setIndex(index);
-              },
+              view: handleView,
+              exiting: handleExiting,
             }}
             close={() => setOpen(false)}
             slides={embed.images.map((img) => ({
