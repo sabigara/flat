@@ -13,6 +13,7 @@ type Props = {
 
 export default function EmbeddedImages({ embed, className }: Props) {
   const [open, setOpen] = React.useState(false);
+  const [index, setIndex] = React.useState(0);
   return (
     <>
       <div
@@ -22,12 +23,13 @@ export default function EmbeddedImages({ embed, className }: Props) {
           [styles.four]: embed.images.length === 4,
         })}
       >
-        {embed.images.map((img) => (
+        {embed.images.map((img, i) => (
           <button
             key={img.thumb}
             onClick={(e) => {
               e.stopPropagation();
               setOpen(true);
+              setIndex(i);
             }}
           >
             <img src={img.thumb} alt={img.alt} />
@@ -36,6 +38,12 @@ export default function EmbeddedImages({ embed, className }: Props) {
       </div>
       <Lightbox
         open={open}
+        index={index}
+        on={{
+          view(index) {
+            setIndex(index);
+          },
+        }}
         close={() => setOpen(false)}
         slides={embed.images.map((img) => ({
           src: img.fullsize,
