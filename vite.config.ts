@@ -21,7 +21,6 @@ export default defineConfig({
         name: "Flat",
         short_name: "Flat",
         description: "A Bluesky client",
-        theme_color: "#ffffff",
         icons: [
           {
             src: "icon-192.png",
