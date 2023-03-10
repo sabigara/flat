@@ -6,6 +6,8 @@ import type { PostRouteLoaderResult } from "@/src/app/Root/Post";
 import { RootContext } from "@/src/app/Root/Layout";
 import Thread from "@/src/components/post/Thread";
 
+import styles from "./PostRoute.module.scss";
+
 export default function PostRoute() {
   const {
     composer: { handleClickReply },
@@ -15,11 +17,13 @@ export default function PostRoute() {
   if (!AppBskyFeedGetPostThread.isThreadViewPost(thread)) return null;
   // key shouldn't be required but posts are duplicated only when transitioned by the router.
   return (
-    <Thread
-      thread={thread}
-      onClickReply={handleClickReply}
-      isRoot
-      key={thread.post.uri}
-    />
+    <div className={styles.container}>
+      <Thread
+        thread={thread}
+        onClickReply={handleClickReply}
+        isRoot
+        key={thread.post.uri}
+      />
+    </div>
   );
 }
