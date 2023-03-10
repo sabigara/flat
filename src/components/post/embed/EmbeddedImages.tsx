@@ -1,6 +1,7 @@
 import { AppBskyEmbedImages } from "@atproto/api";
 import clsx from "clsx";
 import React from "react";
+import { createPortal } from "react-dom";
 import Lightbox from "yet-another-react-lightbox";
 
 import "yet-another-react-lightbox/styles.css";
@@ -36,28 +37,33 @@ export default function EmbeddedImages({ embed, className }: Props) {
           </button>
         ))}
       </div>
-      <Lightbox
-        open={open}
-        index={index}
-        on={{
-          view(index) {
-            setIndex(index);
-          },
-        }}
-        close={() => setOpen(false)}
-        slides={embed.images.map((img) => ({
-          src: img.fullsize,
-        }))}
-        animation={{
-          navigation: {
-            duration: 1,
-            easing: "linear",
-          },
-        }}
-        controller={{ closeOnBackdropClick: true }}
-        carousel={{ finite: true }}
-        className={styles.yarl}
-      />
+      {createPortal(
+        <div onClick={(e) => void e.stopPropagation()}>
+          <Lightbox
+            open={open}
+            index={index}
+            on={{
+              view(index) {
+                setIndex(index);
+              },
+            }}
+            close={() => setOpen(false)}
+            slides={embed.images.map((img) => ({
+              src: img.fullsize,
+            }))}
+            animation={{
+              navigation: {
+                duration: 1,
+                easing: "linear",
+              },
+            }}
+            controller={{ closeOnBackdropClick: true }}
+            carousel={{ finite: true }}
+            className={clsx(styles.yarl, "no-nav")}
+          />
+        </div>,
+        document.body
+      )}
     </>
   );
 }

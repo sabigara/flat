@@ -64,6 +64,10 @@
       &__button {
         border-radius: var(--cmm-radius-full);
 
+        &:hover {
+          background: var(--cmm-color-surface-2);
+        }
+
         &:focus-visible {
           outline: 2px solid var(--cmm-outline-color-primary);
         }
