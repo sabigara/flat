@@ -45,7 +45,11 @@ const queryClient = new QueryClient({
   },
 });
 
-const composeButtonHideRoutes = ["/about", "/notifications"];
+const composeButtonHideRoutes = [
+  "/about",
+  "/notifications",
+  /^\/[^/]*\/(followers|following)/,
+];
 
 function RootLayout() {
   // TODO: can't use ReturnType as the loader is returning `redirect()`
@@ -56,7 +60,7 @@ function RootLayout() {
   const location = useLocation();
 
   const appContext: RootContext = {
-    myProfile: myProfile,
+    myProfile,
     composer: {
       open: composerOpen,
       setOpen: setComposerOpen,
@@ -85,7 +89,11 @@ function RootLayout() {
             setOpen={appContext.composer.setOpen}
             onClickCompose={appContext.composer.handleClickCompose}
             replyTarget={appContext.composer.replyTarget}
-            showButton={!composeButtonHideRoutes.includes(location.pathname)}
+            showButton={
+              !composeButtonHideRoutes.some((path) =>
+                location.pathname.match(path)
+              )
+            }
             // keep it's internal state until replyTarget changes or removed.
             key={
               appContext.composer.replyTarget &&
