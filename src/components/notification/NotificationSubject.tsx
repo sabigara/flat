@@ -1,4 +1,8 @@
-import { AppBskyFeedPost, AppBskyNotificationList } from "@atproto/api";
+import {
+  AppBskyFeedFeedViewPost,
+  AppBskyFeedPost,
+  AppBskyNotificationList,
+} from "@atproto/api";
 
 import Prose from "@/src/components/Prose";
 import Post from "@/src/components/post/Post";
@@ -12,22 +16,30 @@ type Props = {
   uri: string;
   reason: Reason;
   isSubject: boolean;
+  onClickReply?: (feedItem: AppBskyFeedFeedViewPost.Main) => void;
 };
 
-export default function NotificationPost({ uri, reason, isSubject }: Props) {
+export default function NotificationPost({
+  uri,
+  reason,
+  isSubject,
+  onClickReply,
+}: Props) {
   const { data } = usePostSingleQuery({ uri: uri });
   if (!data) return null;
   switch (reason) {
     case "mention":
       return isSubject ? <SimplePost post={data.post} /> : <Post data={data} />;
     case "reply":
-      return isSubject ? null : <Post data={data} />;
+      return isSubject ? null : (
+        <Post data={data} onClickReply={onClickReply} />
+      );
     case "repost":
       return <SimplePost post={data.post} />;
     case "vote":
       return <SimplePost post={data.post} />;
   }
-  return <Post data={data} />;
+  return <Post data={data} onClickReply={onClickReply} />;
 }
 
 function SimplePost({ post }: { post: AppBskyFeedPost.View }) {

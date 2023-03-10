@@ -162,17 +162,6 @@ export function ProfileRoute() {
         </div>
       </header>
       <main className={styles.main}>
-        <PostComposer
-          myProfile={myProfile}
-          open={composer.open}
-          setOpen={composer.setOpen}
-          onClickCompose={composer.handleClickCompose}
-          replyTarget={composer.replyTarget}
-          // keep it's internal state until replyTarget changes or removed.
-          key={
-            composer.replyTarget && feedItemToUniqueKey(composer.replyTarget)
-          }
-        />
         <Feed
           queryKey={queryKey}
           queryFn={queryFn}

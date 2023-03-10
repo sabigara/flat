@@ -1,4 +1,4 @@
-import { AppBskyNotificationList } from "@atproto/api";
+import { AppBskyFeedFeedViewPost, AppBskyNotificationList } from "@atproto/api";
 import clsx from "clsx";
 import { FaRetweet, FaUserCircle } from "react-icons/fa";
 import { TbStarFilled } from "react-icons/tb";
@@ -11,10 +11,11 @@ import styles from "./Notification.module.scss";
 
 type Props = {
   notification: AppBskyNotificationList.Notification;
+  onClickReply?: (feedItem: AppBskyFeedFeedViewPost.Main) => void;
 };
 
 // TODO: support tap to navigate to subject
-export default function Notification({ notification }: Props) {
+export default function Notification({ notification, onClickReply }: Props) {
   const reason = notification.reason;
   const shouldFetchPost =
     reason === "reply" || reason === "repost" || reason === "vote";
@@ -60,6 +61,7 @@ export default function Notification({ notification }: Props) {
             uri={notification.reasonSubject}
             reason={notification.reason}
             isSubject
+            onClickReply={onClickReply}
           />
         )}
         {(reason === "mention" || reason === "reply") && (
@@ -67,6 +69,7 @@ export default function Notification({ notification }: Props) {
             uri={notification.uri}
             reason={notification.reason}
             isSubject={false}
+            onClickReply={onClickReply}
           />
         )}
       </div>

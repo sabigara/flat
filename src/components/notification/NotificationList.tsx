@@ -1,3 +1,4 @@
+import { AppBskyFeedFeedViewPost } from "@atproto/api";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 
@@ -7,8 +8,12 @@ import { queryKeys } from "@/src/lib/queries/queriesKeys";
 
 import styles from "./NotificationList.module.scss";
 
+type Props = {
+  onClickReply?: (feedItem: AppBskyFeedFeedViewPost.Main) => void;
+};
+
 // TODO: calling updateSeen every mount is too frequent.
-export default function NotificationList() {
+export default function NotificationList({ onClickReply }: Props) {
   const queryClient = useQueryClient();
   const mounted = React.useRef(false);
   const { data } = useInfiniteQuery({
@@ -44,7 +49,7 @@ export default function NotificationList() {
           key={`${item.uri}:${item.reason}:${item.isRead}`}
           className={styles.item}
         >
-          <Notification notification={item} />
+          <Notification notification={item} onClickReply={onClickReply} />
         </li>
       ))}
     </ul>
