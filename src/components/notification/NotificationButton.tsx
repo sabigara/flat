@@ -15,7 +15,8 @@ export default function NotificationButton() {
       const resp = await bsky.notification.getCount();
       return resp.data.count;
     },
-    refetchInterval: 60 * 1 * 1000,
+    refetchInterval: 60 * 1 * 1000, // 1 minute
+    refetchOnWindowFocus: import.meta.env.PROD,
   });
 
   return (
