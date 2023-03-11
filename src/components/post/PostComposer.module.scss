@@ -72,7 +72,8 @@ $width: 34rem;
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 1rem;
-  padding: 0 var(--pad) var(--pad) var(--pad);
+  padding: var(--pad);
+  border-top: 1px solid var(--cmm-color-border-base);
 }
 
 .postBtnWrap {
@@ -91,4 +92,7 @@ $width: 34rem;
   > svg {
     stroke-width: 1.7;
   }
+}
+
+.imagePreviewContainer {
 }

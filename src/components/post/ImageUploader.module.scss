@@ -1,0 +1,45 @@
+.container {
+}
+
+.preview {
+  &__container {
+    $pad: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    padding: 0 $pad $pad $pad;
+
+    @media screen and (max-width: 28rem) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  &__item {
+    position: relative;
+  }
+
+  &__img {
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: var(--cmm-radius-md);
+  }
+
+  &__removeBtn {
+    --bg: 0 0 0;
+    --cmm-IconButton-size: 1.5rem;
+    --cmm-IconButton-icon-size: 1rem;
+    position: absolute;
+    top: 0.25rem;
+    left: 0.25rem;
+    background: rgba(0 0 0 / 0.6);
+    color: white;
+
+    &:hover {
+      background: rgba(0 0 0 / 0.9);
+    }
+
+    > svg {
+      stroke-width: 2.25;
+    }
+  }
+}

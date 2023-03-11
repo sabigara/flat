@@ -4,19 +4,25 @@ import { Spinner } from "@camome/core/Spinner";
 import { Textarea } from "@camome/core/Textarea";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
+import ImageBlobReduce from "image-blob-reduce";
 import { find } from "linkifyjs";
 import React from "react";
 import { TbPencilPlus } from "react-icons/tb";
 
 import Avatar from "@/src/components/Avatar";
 import Dialog from "@/src/components/Dialog";
+import ImageUploader, {
+  SelectedImage,
+} from "@/src/components/post/ImageUploader";
 import Post from "@/src/components/post/Post";
-import { bsky } from "@/src/lib/atp/atp";
+import { atp, bsky } from "@/src/lib/atp/atp";
 import { isModKey } from "@/src/lib/keybindings";
 import { isIPhone } from "@/src/lib/platform";
 import { queryKeys } from "@/src/lib/queries/queriesKeys";
 
 import styles from "./PostComposer.module.scss";
+
+const imgReduce = ImageBlobReduce({});
 
 export type PostComposerProps = {
   myProfile: AppBskyActorProfile.View;
@@ -25,6 +31,25 @@ export type PostComposerProps = {
   onClickCompose: () => void;
   replyTarget?: AppBskyFeedFeedViewPost.Main;
   showButton?: boolean;
+};
+
+const uploadImages = async (images: SelectedImage[]) => {
+  const cids: string[] = [];
+  for (const img of images) {
+    if (!img.file) return [];
+    const imgBlob = await imgReduce.toBlob(img.file, {
+      max: 1000,
+    });
+    const resp = await atp.api.com.atproto.blob.upload(
+      new Uint8Array(await imgBlob.arrayBuffer()),
+      {
+        encoding: "image/jpeg",
+      }
+    );
+    if (!resp.success) throw new Error("Failed to upload image");
+    cids.push(resp.data.cid);
+  }
+  return cids;
 };
 
 export default function PostComposer({
@@ -37,11 +62,16 @@ export default function PostComposer({
 }: PostComposerProps) {
   const queryClient = useQueryClient();
   const [text, setText] = React.useState("");
+  const [images, setImages] = React.useState<SelectedImage[]>([]);
   // TODO: length
   const isTextValid = !!text.trim();
+  const [imagePreviewContainer, setPreviewContainer] =
+    React.useState<HTMLDivElement | null>(null);
 
   const { mutate, isLoading } = useMutation(
-    async () => {
+    async ({ images }: { images: SelectedImage[] }) => {
+      const imgCids = await uploadImages(images);
+
       const reply = (() => {
         if (!replyTarget) return undefined;
         const parent = { cid: replyTarget.post.cid, uri: replyTarget.post.uri };
@@ -70,6 +100,16 @@ export default function PostComposer({
           })),
           createdAt: new Date().toISOString(),
           reply,
+          embed: {
+            $type: "app.bsky.embed.images",
+            images: imgCids.map((cid) => ({
+              alt: "",
+              image: {
+                cid,
+                mimeType: "image/jpeg",
+              },
+            })),
+          },
         }
       );
     },
@@ -89,8 +129,8 @@ export default function PostComposer({
     e
   ) => {
     if (!(isModKey(e.nativeEvent) && e.key === "Enter")) return;
-    if (!isTextValid) return;
-    mutate();
+    if (!isTextValid || isLoading) return;
+    mutate({ images });
   };
 
   return (
@@ -136,8 +176,19 @@ export default function PostComposer({
               autoFocus={isIPhone ? false : true}
             />
           </div>
+          <div
+            ref={setPreviewContainer}
+            className={styles.imagePreviewContainer}
+          />
           <div className={styles.action}>
-            <div />
+            <div>
+              <ImageUploader
+                images={images}
+                onChange={setImages}
+                max={4}
+                previewContainer={imagePreviewContainer}
+              />
+            </div>
             <div className={styles.postBtnWrap}>
               <Button
                 variant="soft"
@@ -148,7 +199,7 @@ export default function PostComposer({
                 やめる
               </Button>
               <Button
-                onClick={() => mutate()}
+                onClick={() => mutate({ images })}
                 disabled={!isTextValid || isLoading}
                 size="sm"
                 startDecorator={isLoading ? <Spinner size="sm" /> : undefined}
