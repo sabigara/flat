@@ -20,10 +20,6 @@ export default function EmbeddedImages({ embed, className }: Props) {
     e.stopPropagation();
     setOpen(true);
     setIndex(i);
-    document.documentElement.style.scrollbarGutter = "auto";
-  };
-  const handleExiting = () => {
-    document.documentElement.style.scrollbarGutter = "stable";
   };
   const handleView = (i: number) => {
     setIndex(i);
@@ -50,7 +46,6 @@ export default function EmbeddedImages({ embed, className }: Props) {
             index={index}
             on={{
               view: handleView,
-              exiting: handleExiting,
             }}
             close={() => setOpen(false)}
             slides={embed.images.map((img) => ({
