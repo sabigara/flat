@@ -8,6 +8,7 @@ import type { RootContext } from "@/src/app/Root/Layout";
 
 import { storageKeys } from "@/src/lib/storage";
 import { Theme } from "@/src/lib/theme";
+import Seo from "@/src/seo/Seo";
 
 import styles from "./SettingsRoute.module.scss";
 
@@ -25,35 +26,38 @@ export function SettingsRoute() {
     }
   };
   return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>ユーザー設定</h1>
+    <>
+      <Seo title="ユーザー設定" />
+      <div className={styles.container}>
+        <h1 className={styles.title}>ユーザー設定</h1>
 
-      <section className={styles.section}>
-        <h2>外観</h2>
-        <Select
-          label="テーマ"
-          size="md"
-          value={theme.value}
-          onChange={(e) => theme.set(e.target.value as Theme)}
-        >
-          <option value="light">ライト</option>
-          <option value="dark">ダーク</option>
-          <option value="system">システム</option>
-        </Select>
-      </section>
+        <section className={styles.section}>
+          <h2>外観</h2>
+          <Select
+            label="テーマ"
+            size="md"
+            value={theme.value}
+            onChange={(e) => theme.set(e.target.value as Theme)}
+          >
+            <option value="light">ライト</option>
+            <option value="dark">ダーク</option>
+            <option value="system">システム</option>
+          </Select>
+        </section>
 
-      <section className={styles.section}>
-        <h2>アカウント</h2>
-        <Button
-          onClick={signOut}
-          variant="soft"
-          colorScheme="neutral"
-          startDecorator={signingOut ? <Spinner size="sm" /> : false}
-          disabled={signingOut}
-        >
-          ログアウト
-        </Button>
-      </section>
-    </div>
+        <section className={styles.section}>
+          <h2>アカウント</h2>
+          <Button
+            onClick={signOut}
+            variant="soft"
+            colorScheme="neutral"
+            startDecorator={signingOut ? <Spinner size="sm" /> : false}
+            disabled={signingOut}
+          >
+            ログアウト
+          </Button>
+        </section>
+      </div>
+    </>
   );
 }

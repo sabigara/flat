@@ -19,6 +19,7 @@ import Prose from "@/src/components/Prose";
 import { atp, bsky } from "@/src/lib/atp/atp";
 import { followUser, unfollowUser } from "@/src/lib/atp/graph";
 import { queryKeys } from "@/src/lib/queries/queriesKeys";
+import Seo from "@/src/seo/Seo";
 
 import styles from "./ProfileRoute.module.scss";
 
@@ -77,96 +78,102 @@ export function ProfileRoute() {
   const isLoadingFollow = isMutating || revalidator.state === "loading";
 
   return (
-    <article className={styles.container}>
-      <header className={styles.header}>
-        <div className={styles.banner}>
-          {profile.banner && (
-            <img src={profile.banner} alt={`${username}のバナー画像`} />
-          )}
-        </div>
-        <div className={styles.topRow}>
-          <Avatar profile={profile} className={styles.avatar} />
-          <div className={styles.actions}>
-            {!isMyself &&
-              (profile.myState?.follow ? (
-                <Button
-                  colorScheme={
-                    hoverUnfollow || isLoadingFollow ? "danger" : "neutral"
-                  }
-                  variant="soft"
-                  className={styles.followUnfollowBtn}
-                  onMouseEnter={() => setHoverUnfollow(true)}
-                  onMouseLeave={() => setHoverUnfollow(false)}
-                  onFocus={() => setHoverUnfollow(true)}
-                  onBlur={() => setHoverUnfollow(false)}
-                  aria-describedby={UNFOLLOW_DESCRIBE_ID}
-                  onClick={() => mutateFollowState(false)}
-                  disabled={isLoadingFollow}
-                  startDecorator={
-                    isLoadingFollow ? <Spinner size="sm" /> : undefined
-                  }
-                >
-                  {hoverUnfollow || isLoadingFollow
-                    ? "フォロー解除"
-                    : "フォロー中"}
-                </Button>
-              ) : (
-                <Button
-                  className={styles.followUnfollowBtn}
-                  onClick={() => mutateFollowState(true)}
-                  disabled={isLoadingFollow}
-                  startDecorator={
-                    isLoadingFollow ? <Spinner size="sm" /> : undefined
-                  }
-                >
-                  フォローする
-                </Button>
-              ))}
-            <span id={UNFOLLOW_DESCRIBE_ID} className="visually-hidden">
-              クリックして{profile.displayName ?? profile.handle}
-              さんのフォローを解除
-            </span>
+    <>
+      <Seo
+        title={`${profile.displayName ?? profile.handle}のプロフィール`}
+        description={profile.description}
+      />
+      <article className={styles.container}>
+        <header className={styles.header}>
+          <div className={styles.banner}>
+            {profile.banner && (
+              <img src={profile.banner} alt={`${username}のバナー画像`} />
+            )}
           </div>
-        </div>
-        <div className={styles.about}>
-          <hgroup>
-            <h1 className={styles.displayName}>{profile.displayName}</h1>
-            <div className={styles.handleWrap}>
-              <span className={styles.handle}>@{profile.handle}</span>
-              {profile.viewer?.followedBy && (
-                <Tag
-                  size="sm"
-                  variant="soft"
-                  colorScheme="neutral"
-                  className={styles.followedTag}
-                >
-                  フォローされています
-                </Tag>
-              )}
+          <div className={styles.topRow}>
+            <Avatar profile={profile} className={styles.avatar} />
+            <div className={styles.actions}>
+              {!isMyself &&
+                (profile.myState?.follow ? (
+                  <Button
+                    colorScheme={
+                      hoverUnfollow || isLoadingFollow ? "danger" : "neutral"
+                    }
+                    variant="soft"
+                    className={styles.followUnfollowBtn}
+                    onMouseEnter={() => setHoverUnfollow(true)}
+                    onMouseLeave={() => setHoverUnfollow(false)}
+                    onFocus={() => setHoverUnfollow(true)}
+                    onBlur={() => setHoverUnfollow(false)}
+                    aria-describedby={UNFOLLOW_DESCRIBE_ID}
+                    onClick={() => mutateFollowState(false)}
+                    disabled={isLoadingFollow}
+                    startDecorator={
+                      isLoadingFollow ? <Spinner size="sm" /> : undefined
+                    }
+                  >
+                    {hoverUnfollow || isLoadingFollow
+                      ? "フォロー解除"
+                      : "フォロー中"}
+                  </Button>
+                ) : (
+                  <Button
+                    className={styles.followUnfollowBtn}
+                    onClick={() => mutateFollowState(true)}
+                    disabled={isLoadingFollow}
+                    startDecorator={
+                      isLoadingFollow ? <Spinner size="sm" /> : undefined
+                    }
+                  >
+                    フォローする
+                  </Button>
+                ))}
+              <span id={UNFOLLOW_DESCRIBE_ID} className="visually-hidden">
+                クリックして{profile.displayName ?? profile.handle}
+                さんのフォローを解除
+              </span>
             </div>
-          </hgroup>
-          <div className={styles.dl}>
-            <Link to="followers">
-              <div className={styles.term}>Followers</div>
-              <div className={styles.data}>{profile.followersCount}</div>
-            </Link>
-            <Link to="following">
-              <div className={styles.term}>Following</div>
-              <div className={styles.data}>{profile.followsCount}</div>
-            </Link>
           </div>
-          <Prose className={styles.description}>{profile.description}</Prose>
-        </div>
-      </header>
-      <main className={styles.main}>
-        <Feed
-          queryKey={queryKey}
-          queryFn={queryFn}
-          fetchLatestOne={fetchLatest}
-          onClickReply={composer.handleClickReply}
-        />
-      </main>
-    </article>
+          <div className={styles.about}>
+            <hgroup>
+              <h1 className={styles.displayName}>{profile.displayName}</h1>
+              <div className={styles.handleWrap}>
+                <span className={styles.handle}>@{profile.handle}</span>
+                {profile.viewer?.followedBy && (
+                  <Tag
+                    size="sm"
+                    variant="soft"
+                    colorScheme="neutral"
+                    className={styles.followedTag}
+                  >
+                    フォローされています
+                  </Tag>
+                )}
+              </div>
+            </hgroup>
+            <div className={styles.dl}>
+              <Link to="followers">
+                <div className={styles.term}>Followers</div>
+                <div className={styles.data}>{profile.followersCount}</div>
+              </Link>
+              <Link to="following">
+                <div className={styles.term}>Following</div>
+                <div className={styles.data}>{profile.followsCount}</div>
+              </Link>
+            </div>
+            <Prose className={styles.description}>{profile.description}</Prose>
+          </div>
+        </header>
+        <main className={styles.main}>
+          <Feed
+            queryKey={queryKey}
+            queryFn={queryFn}
+            fetchLatestOne={fetchLatest}
+            onClickReply={composer.handleClickReply}
+          />
+        </main>
+      </article>
+    </>
   );
 }
 

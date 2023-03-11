@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { UserList, UserListQueryFn } from "@/src/components/user/UserList";
 import { bsky } from "@/src/lib/atp/atp";
 import { queryKeys } from "@/src/lib/queries/queriesKeys";
+import Seo from "@/src/seo/Seo";
 
 import styles from "./FollowersRoute.module.scss";
 
@@ -25,9 +26,11 @@ export function FollowersRoute() {
       cursor: resp.data.cursor,
     };
   };
+  const title = `@${handle} のフォロワー`;
   return (
     <>
-      <h1 className={styles.title}>@{handle} のフォロワー</h1>
+      <Seo title={title} />
+      <h1 className={styles.title}>{title}</h1>
       <UserList queryKey={queryKey} queryFn={queryFn} className={styles.list} />
     </>
   );

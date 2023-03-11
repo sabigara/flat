@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { Link, useNavigate } from "react-router-dom";
 
 import Avatar from "@/src/components/Avatar";
-import { buildPostUrl } from "@/src/lib/post";
+import { buildPostUrl } from "@/src/lib/atp/post";
 
 import styles from "./EmbeddedRecord.module.scss";
 

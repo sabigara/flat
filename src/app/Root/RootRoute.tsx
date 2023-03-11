@@ -5,6 +5,7 @@ import { RootContext } from "@/src/app/Root/Layout";
 import { Feed, FeedQueryFn } from "@/src/components/Feed";
 import { bsky } from "@/src/lib/atp/atp";
 import { queryKeys } from "@/src/lib/queries/queriesKeys";
+import Seo from "@/src/seo/Seo";
 
 export function RootRoute() {
   const { composer } = useOutletContext<RootContext>();
@@ -24,11 +25,14 @@ export function RootRoute() {
     []
   );
   return (
-    <Feed
-      queryKey={queryKey}
-      queryFn={queryFn}
-      fetchLatestOne={fetchLatest}
-      onClickReply={composer.handleClickReply}
-    />
+    <>
+      <Seo title="Flat" />
+      <Feed
+        queryKey={queryKey}
+        queryFn={queryFn}
+        fetchLatestOne={fetchLatest}
+        onClickReply={composer.handleClickReply}
+      />
+    </>
   );
 }

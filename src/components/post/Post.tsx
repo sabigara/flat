@@ -12,7 +12,7 @@ import Avatar from "@/src/components/Avatar";
 import Prose from "@/src/components/Prose";
 import Embed from "@/src/components/post/embed/Embed";
 import { atp, bsky } from "@/src/lib/atp/atp";
-import { buildPostUrl } from "@/src/lib/post";
+import { buildPostUrl } from "@/src/lib/atp/post";
 import { formatDistanceShort } from "@/src/lib/time";
 
 import styles from "./Post.module.scss";

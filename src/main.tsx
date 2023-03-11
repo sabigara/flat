@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { HelmetProvider } from "react-helmet-async";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import "@camome/system/dist/theme.css";
@@ -15,6 +16,8 @@ import * as Notifications from "@/src/app/Root/Notifications";
 import * as Post from "@/src/app/Root/Post";
 import * as Profile from "@/src/app/Root/Profile";
 import * as Settings from "@/src/app/Root/Settings";
+import Seo from "@/src/seo/Seo";
+import { defaultSeo } from "@/src/seo/defaultSeo";
 
 const router = createBrowserRouter([
   {
@@ -63,6 +66,9 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <HelmetProvider>
+      <Seo {...defaultSeo} />
+      <RouterProvider router={router} />
+    </HelmetProvider>
   </React.StrictMode>
 );

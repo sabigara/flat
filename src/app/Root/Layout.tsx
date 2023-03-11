@@ -17,7 +17,7 @@ import {
 import Header from "@/src/components/Header";
 import PostComposer from "@/src/components/post/PostComposer";
 import { atp, bsky } from "@/src/lib/atp/atp";
-import { feedItemToUniqueKey } from "@/src/lib/post";
+import { feedItemToUniqueKey } from "@/src/lib/atp/post";
 import { storageKeys } from "@/src/lib/storage";
 import { getTheme, Theme, useTheme } from "@/src/lib/theme";
 
