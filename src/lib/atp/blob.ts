@@ -1,8 +1,19 @@
-import ImageBlobReduce from "image-blob-reduce";
+import Compressor from "compressorjs";
 
 import { atp } from "@/src/lib/atp/atp";
 
-const imgReduce = ImageBlobReduce({});
+async function compress(file: File): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    new Compressor(file, {
+      quality: 0.7,
+      error: reject,
+      maxHeight: 2000,
+      maxWidth: 2000,
+      success: resolve,
+      mimeType: "image/jpeg",
+    });
+  });
+}
 
 /* 
   Up to:
@@ -16,9 +27,7 @@ const imgReduce = ImageBlobReduce({});
 export async function uploadImage(file: File) {
   if (!file.type.startsWith("image/"))
     throw new Error(`Invalid mimetype: ${file.type}`);
-  const imgBlob = await imgReduce.toBlob(file, {
-    max: 1500,
-  });
+  const imgBlob = await compress(file);
   console.debug(imgBlob);
   const resp = await atp.api.com.atproto.blob.upload(
     new Uint8Array(await imgBlob.arrayBuffer()),
