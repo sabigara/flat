@@ -4,17 +4,6 @@ import { atp } from "@/src/lib/atp/atp";
 
 const imgReduce = ImageBlobReduce({});
 
-// Always convert to jpeg
-// https://github.com/nodeca/image-blob-reduce#customization
-(imgReduce as any)._create_blob = function (env: any) {
-  return this.pica
-    .toBlob(env.out_canvas, "image/jpeg", 1)
-    .then(function (blob: any) {
-      env.out_blob = blob;
-      return env;
-    });
-};
-
 /* 
   Up to:
   - 2000x2000px 
