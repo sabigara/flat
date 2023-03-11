@@ -6,7 +6,8 @@
   display: grid;
   grid-template-rows: auto 1fr auto;
   grid-template-columns: 100%;
-  min-height: 100vh;
+  min-height: 101vh; // always show scrollbar
+  background: var(--cmm-color-surface-0);
 }
 
 .header {

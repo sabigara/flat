@@ -4,14 +4,24 @@ import { Spinner } from "@camome/core/Spinner";
 import { Textarea } from "@camome/core/Textarea";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
-import { find } from "linkifyjs";
 import React from "react";
+import { toast } from "react-hot-toast";
 import { TbPencilPlus } from "react-icons/tb";
 
 import Avatar from "@/src/components/Avatar";
 import Dialog from "@/src/components/Dialog";
+import ImagePicker, {
+  ImagePickerProps,
+  SelectedImage,
+} from "@/src/components/post/ImagePicker";
 import Post from "@/src/components/post/Post";
 import { bsky } from "@/src/lib/atp/atp";
+import { uploadImage } from "@/src/lib/atp/blob";
+import {
+  embedImages,
+  postTextToEntities,
+  postToReply,
+} from "@/src/lib/atp/feed";
 import { isModKey } from "@/src/lib/keybindings";
 import { isIPhone } from "@/src/lib/platform";
 import { queryKeys } from "@/src/lib/queries/queriesKeys";
@@ -27,6 +37,16 @@ export type PostComposerProps = {
   showButton?: boolean;
 };
 
+const uploadImageBulk = async (images: SelectedImage[]) => {
+  const results: { cid: string; mimetype: string }[] = [];
+  for (const img of images) {
+    if (!img.file) continue;
+    const res = await uploadImage(img.file);
+    results.push(res);
+  }
+  return results;
+};
+
 export default function PostComposer({
   myProfile,
   open,
@@ -37,39 +57,28 @@ export default function PostComposer({
 }: PostComposerProps) {
   const queryClient = useQueryClient();
   const [text, setText] = React.useState("");
+  const [images, setImages] = React.useState<SelectedImage[]>([]);
   // TODO: length
   const isTextValid = !!text.trim();
+  const [imagePreviewContainer, setPreviewContainer] =
+    React.useState<HTMLDivElement | null>(null);
 
   const { mutate, isLoading } = useMutation(
-    async () => {
-      const reply = (() => {
-        if (!replyTarget) return undefined;
-        const parent = { cid: replyTarget.post.cid, uri: replyTarget.post.uri };
-        const root = replyTarget.reply?.root ? replyTarget.reply.root : parent;
-        return {
-          handle: replyTarget.post.author.handle,
-          parent,
-          root,
-        };
-      })();
-      // TODO: Support mention
-      // `linkify-plugin-mention` doesn't support usernames that include dots
-      // https://github.com/Hypercontext/linkifyjs/issues/418#issuecomment-1370140269
-      const urls = find(text, "url");
+    async ({ images }: { images: SelectedImage[] }) => {
+      const imgResults = images.length
+        ? await uploadImageBulk(images)
+        : undefined;
       await bsky.feed.post.create(
         { did: myProfile.did },
         {
           text,
-          entities: urls.map((url) => ({
-            type: "link",
-            index: {
-              start: url.start,
-              end: url.end,
-            },
-            value: url.href,
-          })),
+          entities: postTextToEntities(text),
+          reply: replyTarget ? postToReply(replyTarget) : undefined,
+          embed:
+            imgResults && imgResults?.length
+              ? embedImages(imgResults)
+              : undefined,
           createdAt: new Date().toISOString(),
-          reply,
         }
       );
     },
@@ -80,6 +89,7 @@ export default function PostComposer({
           queryKeys.feed.author.$(myProfile.handle)
         );
         setText("");
+        setImages([]);
         setOpen(false);
       },
     }
@@ -89,8 +99,29 @@ export default function PostComposer({
     e
   ) => {
     if (!(isModKey(e.nativeEvent) && e.key === "Enter")) return;
-    if (!isTextValid) return;
-    mutate();
+    if (!isTextValid || isLoading) return;
+    mutate({ images });
+  };
+
+  const handleImagePickerError: ImagePickerProps["onError"] = (errors) => {
+    if (!errors) return;
+    // TODO: simply the code
+    Object.keys(errors).forEach((err) => {
+      switch (err as keyof typeof errors) {
+        case "maxNumber":
+          toast.error("4枚までアップロードできます");
+          break;
+        case "acceptType":
+          toast.error("無効なファイル形式です");
+          break;
+        case "maxFileSize":
+          toast.error("サイズは1MBまでアップロードできます");
+          break;
+        default:
+          toast.error("無効な画像です");
+          break;
+      }
+    });
   };
 
   return (
@@ -136,8 +167,20 @@ export default function PostComposer({
               autoFocus={isIPhone ? false : true}
             />
           </div>
+          <div
+            ref={setPreviewContainer}
+            className={styles.imagePreviewContainer}
+          />
           <div className={styles.action}>
-            <div />
+            <div>
+              <ImagePicker
+                images={images}
+                onChange={setImages}
+                onError={handleImagePickerError}
+                max={4}
+                previewContainer={imagePreviewContainer}
+              />
+            </div>
             <div className={styles.postBtnWrap}>
               <Button
                 variant="soft"
@@ -148,7 +191,7 @@ export default function PostComposer({
                 やめる
               </Button>
               <Button
-                onClick={() => mutate()}
+                onClick={() => mutate({ images })}
                 disabled={!isTextValid || isLoading}
                 size="sm"
                 startDecorator={isLoading ? <Spinner size="sm" /> : undefined}

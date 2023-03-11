@@ -11,6 +11,8 @@ specifiers:
   '@tanstack/query-sync-storage-persister': ^4.26.1
   '@tanstack/react-query': ^4.24.10
   '@tanstack/react-query-persist-client': ^4.26.1
+  '@types/image-blob-reduce': ^4.1.1
+  '@types/pica': ^9.0.1
   '@types/react': ^18.0.27
   '@types/react-dom': ^18.0.10
   '@types/react-infinite-scroller': ^1.2.3
@@ -24,6 +26,7 @@ specifiers:
   eslint-plugin-import: ^2.27.5
   eslint-plugin-react: ^7.32.2
   eslint-plugin-react-hooks: ^4.6.0
+  image-blob-reduce: ^4.1.0
   linkify-plugin-mention: ^4.1.0
   linkify-react: ^4.1.0
   linkifyjs: ^4.1.0
@@ -33,7 +36,9 @@ specifiers:
   react: ^18.2.0
   react-dom: ^18.2.0
   react-helmet-async: ^1.3.0
+  react-hot-toast: ^2.4.0
   react-icons: ^4.8.0
+  react-images-uploading: ^3.1.7
   react-infinite-scroller: ^1.2.6
   react-router-dom: ^6.8.2
   sass: ^1.58.3
@@ -59,6 +64,7 @@ dependencies:
   clsx: 1.2.1
   date-fns: 2.29.3
   eslint-plugin-react-hooks: 4.6.0_eslint@8.35.0
+  image-blob-reduce: 4.1.0
   linkify-plugin-mention: 4.1.0_linkifyjs@4.1.0
   linkify-react: 4.1.0_w5fbl633f7mujs73uwm6v5bhhm
   linkifyjs: 4.1.0
@@ -67,7 +73,9 @@ dependencies:
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-helmet-async: 1.3.0_biqbaboplfbrettd7655fr4n2y
+  react-hot-toast: 2.4.0_biqbaboplfbrettd7655fr4n2y
   react-icons: 4.8.0_react@18.2.0
+  react-images-uploading: 3.1.7_biqbaboplfbrettd7655fr4n2y
   react-infinite-scroller: 1.2.6_react@18.2.0
   react-router-dom: 6.8.2_biqbaboplfbrettd7655fr4n2y
   sort-by: 1.2.0
@@ -75,6 +83,8 @@ dependencies:
 
 devDependencies:
   '@camome/utils': 0.1.10
+  '@types/image-blob-reduce': 4.1.1
+  '@types/pica': 9.0.1
   '@types/react': 18.0.28
   '@types/react-dom': 18.0.11
   '@types/react-infinite-scroller': 1.2.3
@@ -2074,6 +2084,12 @@ packages:
     resolution: {integrity: sha512-WulqXMDUTYAXCjZnk6JtIHPigp55cVtDgDrO2gHRwhyJto21+1zbVCtOYB2L1F9w4qCQ0rOGWBnBe0FNTiEJIQ==}
     dev: true
 
+  /@types/image-blob-reduce/4.1.1:
+    resolution: {integrity: sha512-Oe2EPjW+iZSsXccxZPebqHqXAUaOLir3eQVqPx0ryXeJZdCZx+gYvWBZtqYEcluP6f3bll1m06ahT26bX0+LOg==}
+    dependencies:
+      '@types/pica': 9.0.1
+    dev: true
+
   /@types/json-schema/7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
     dev: true
@@ -2088,6 +2104,10 @@ packages:
 
   /@types/parse-json/4.0.0:
     resolution: {integrity: sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==}
+    dev: true
+
+  /@types/pica/9.0.1:
+    resolution: {integrity: sha512-hTsYxcy0MqIOKzeALuh3zOHyozBlndxV/bX9X52GBFq2XUQchZF6T0vcRYeT5P1ggmswi2LlIwHAH+bKWxxalg==}
     dev: true
 
   /@types/prop-types/15.7.5:
@@ -3275,6 +3295,16 @@ packages:
     resolution: {integrity: sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==}
     dev: true
 
+  /glur/1.1.2:
+    resolution: {integrity: sha512-l+8esYHTKOx2G/Aao4lEQ0bnHWg4fWtJbVoZZT9Knxi01pB8C80BR85nONLFwkkQoFRCmXY+BUcGZN3yZ2QsRA==}
+    dev: false
+
+  /goober/2.1.12:
+    resolution: {integrity: sha512-yXHAvO08FU1JgTXX6Zn6sYCUFfB/OJSX8HHjDSgerZHZmFKAb08cykp5LBw5QnmyMcZyPRMqkdyHUSSzge788Q==}
+    peerDependencies:
+      csstype: ^3.0.10
+    dev: false
+
   /gopd/1.0.1:
     resolution: {integrity: sha512-d65bNlIadxvpb/A2abVdlqKqV563juRnZ1Wtk6s1sIR8uNsXR70xqIzVqxVf1eTqDunwT2MkczEeaezCKTZhwA==}
     dependencies:
@@ -3338,6 +3368,12 @@ packages:
   /ignore/5.2.4:
     resolution: {integrity: sha512-MAb38BcSbH0eHNBxn7ql2NH/kX33OkB3lZ1BNdh7ENeRChHTYsTvWrMubiIAMNS2llXEEgZ1MUOBtXChP3kaFQ==}
     engines: {node: '>= 4'}
+
+  /image-blob-reduce/4.1.0:
+    resolution: {integrity: sha512-iljleP8Fr7tS1ezrAazWi30abNPYXtBGXb9R9oTZDWObqiKq18AQJGTUb0wkBOtdCZ36/IirkuuAIIHTjBJIjA==}
+    dependencies:
+      pica: 9.0.1
+    dev: false
 
   /immediate/3.0.6:
     resolution: {integrity: sha512-XXOFtyqDjNDAQxVfYxuF7g9Il/IbWmmlQg2MYKOH8ExIT1qg6xc4zyS3HaEEATgs1btfzxq15ciUiY7gjSXRGQ==}
@@ -3793,6 +3829,13 @@ packages:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
     dev: true
 
+  /multimath/2.0.0:
+    resolution: {integrity: sha512-toRx66cAMJ+Ccz7pMIg38xSIrtnbozk0dchXezwQDMgQmbGpfxjtv68H+L00iFL8hxDaVjrmwAFSb3I6bg8Q2g==}
+    dependencies:
+      glur: 1.1.2
+      object-assign: 4.1.1
+    dev: false
+
   /nanoid/3.3.4:
     resolution: {integrity: sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
@@ -3951,6 +3994,15 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
+  /pica/9.0.1:
+    resolution: {integrity: sha512-v0U4vY6Z3ztz9b4jBIhCD3WYoecGXCQeCsYep+sXRefViL+mVVoTL+wqzdPeE+GpBFsRUtQZb6dltvAt2UkMtQ==}
+    dependencies:
+      glur: 1.1.2
+      multimath: 2.0.0
+      object-assign: 4.1.1
+      webworkify: 1.5.0
+    dev: false
+
   /picocolors/1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
     dev: true
@@ -4037,12 +4089,37 @@ packages:
       shallowequal: 1.1.0
     dev: false
 
+  /react-hot-toast/2.4.0_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-qnnVbXropKuwUpriVVosgo8QrB+IaPJCpL8oBI6Ov84uvHZ5QQcTp2qg6ku2wNfgJl6rlQXJIQU5q+5lmPOutA==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
+    dependencies:
+      goober: 2.1.12
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    transitivePeerDependencies:
+      - csstype
+    dev: false
+
   /react-icons/4.8.0_react@18.2.0:
     resolution: {integrity: sha512-N6+kOLcihDiAnj5Czu637waJqSnwlMNROzVZMhfX68V/9bu9qHaMIJC4UdozWoOk57gahFCNHwVvWzm0MTzRjg==}
     peerDependencies:
       react: '*'
     dependencies:
       react: 18.2.0
+    dev: false
+
+  /react-images-uploading/3.1.7_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-woET50eCezm645iIeP4gCoN7HjdR3T64UXC5l53yd+2vHFp+pwABH8Z/aAO5IXDeC1aP6doQ+K738L701zswAw==}
+    engines: {node: '>=8', npm: '>=5'}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /react-infinite-scroller/1.2.6_react@18.2.0:
@@ -4720,6 +4797,10 @@ packages:
   /webidl-conversions/4.0.2:
     resolution: {integrity: sha512-YQ+BmxuTgd6UXZW3+ICGfyqRyHXVlD5GtQr5+qjiNW7bF0cqrzX500HVXPBOvgXb5YnzDd+h0zqyv61KUD7+Sg==}
     dev: true
+
+  /webworkify/1.5.0:
+    resolution: {integrity: sha512-AMcUeyXAhbACL8S2hqqdqOLqvJ8ylmIbNwUIqQujRSouf4+eUFaXbG6F1Rbu+srlJMmxQWsiU7mOJi0nMBfM1g==}
+    dev: false
 
   /whatwg-url/7.1.0:
     resolution: {integrity: sha512-WUu7Rg1DroM7oQvGWfOiAK21n74Gg+T4elXEQYkOhtyLeWiJFoOGLXPKI/9gzIie9CtwVLm8wtw6YJdKyxSjeg==}

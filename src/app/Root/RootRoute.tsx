@@ -7,6 +7,8 @@ import { bsky } from "@/src/lib/atp/atp";
 import { queryKeys } from "@/src/lib/queries/queriesKeys";
 import Seo from "@/src/seo/Seo";
 
+import styles from "./RootRoute.module.scss";
+
 export function RootRoute() {
   const { composer } = useOutletContext<RootContext>();
   const queryKey = queryKeys.feed.home.$;
@@ -27,12 +29,14 @@ export function RootRoute() {
   return (
     <>
       <Seo title="Flat" />
-      <Feed
-        queryKey={queryKey}
-        queryFn={queryFn}
-        fetchLatestOne={fetchLatest}
-        onClickReply={composer.handleClickReply}
-      />
+      <div className={styles.container}>
+        <Feed
+          queryKey={queryKey}
+          queryFn={queryFn}
+          fetchLatestOne={fetchLatest}
+          onClickReply={composer.handleClickReply}
+        />
+      </div>
     </>
   );
 }
