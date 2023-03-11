@@ -13,7 +13,7 @@
 .topRow {
   display: flex;
   justify-content: space-between;
-  padding: 1rem 1rem 0 1rem;
+  padding: 1rem var(--container-pad-inline) 0 var(--container-pad-inline);
   container-type: inline-size;
 }
 
@@ -24,13 +24,15 @@
 
 .avatar {
   --cmm-Avatar-size: max(20cqw, 6.5rem);
-  margin-block-start: calc(var(--cmm-Avatar-size) / -2 - 1rem);
+  margin-block-start: calc(
+    var(--cmm-Avatar-size) / -2 - var(--container-pad-inline)
+  );
   --cmm-Avatar-ring-size: 0.25rem;
   // TODO: add --cmm--Avatar-ring-color
 }
 
 .about {
-  padding: 1rem;
+  padding: 1rem var(--container-pad-inline);
 }
 
 .displayName {

@@ -2,6 +2,7 @@
   height: calc(100dvh - var(--header-height));
   width: 100%;
   overflow: auto;
+  background: var(--cmm-color-surface-0);
 }
 
 .inner {

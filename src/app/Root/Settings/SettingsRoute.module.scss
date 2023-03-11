@@ -1,5 +1,5 @@
 .container {
-  padding-inline: 1rem;
+  padding-inline: var(--container-pad-inline);
   padding-block-start: 1rem;
   padding-block-end: 2rem;
 }
