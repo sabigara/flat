@@ -68,7 +68,8 @@ export default function PostComposer({
           text,
           entities: postTextToEntities(text),
           reply: replyTarget ? postToReply(replyTarget) : undefined,
-          embed: imgCids ? cidsToEmbedImages(imgCids) : undefined,
+          embed:
+            imgCids && imgCids?.length ? cidsToEmbedImages(imgCids) : undefined,
           createdAt: new Date().toISOString(),
         }
       );

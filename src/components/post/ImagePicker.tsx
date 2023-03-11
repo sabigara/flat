@@ -57,6 +57,7 @@ export default function ImagePicker({
                     <div key={index} className={styles.preview__item}>
                       <img
                         src={image.dataURL}
+                        alt="選択された画像プレビュー"
                         className={styles.preview__img}
                       />
                       <IconButton
