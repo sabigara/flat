@@ -21,6 +21,7 @@ type Props = {
   data: AppBskyFeedFeedViewPost.Main;
   onClickReply?: (feedItem: AppBskyFeedFeedViewPost.Main) => void;
   contentOnly?: boolean;
+  isLink?: boolean;
   className?: string;
 };
 
@@ -28,6 +29,7 @@ export default function Post({
   data,
   onClickReply,
   contentOnly = false,
+  isLink = true,
   className,
 }: Props) {
   const { post, reason, reply } = data;
@@ -129,8 +131,8 @@ export default function Post({
 
   return (
     <article
-      className={clsx(styles.container, className)}
-      onClick={handleClickBackground}
+      className={clsx(styles.container, { [styles.link]: isLink }, className)}
+      onClick={isLink ? handleClickBackground : undefined}
     >
       {/* TODO: show on focus? */}
       <Link to={postUrl} className="visually-hidden">

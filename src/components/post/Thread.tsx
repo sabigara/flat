@@ -13,11 +13,11 @@ type Props = {
     | AppBskyFeedGetPostThread.ThreadViewPost
     | AppBskyFeedGetPostThread.NotFoundPost
     | { [k: string]: unknown; $type: string };
-  isRoot?: boolean;
+  isSelected?: boolean;
   onClickReply?: (feedItem: AppBskyFeedFeedViewPost.Main) => void;
 };
 
-export default function Thread({ thread, isRoot, onClickReply }: Props) {
+export default function Thread({ thread, isSelected, onClickReply }: Props) {
   // TODO: consider other cases
   if (!AppBskyFeedGetPostThread.isThreadViewPost(thread)) return null;
   return (
@@ -28,7 +28,8 @@ export default function Thread({ thread, isRoot, onClickReply }: Props) {
       <Post
         data={thread}
         onClickReply={onClickReply}
-        className={clsx(styles.post, { [styles.root]: isRoot })}
+        isLink={!isSelected}
+        className={clsx(styles.post, { [styles.selected]: isSelected })}
       />
       {thread.replies?.map((reply) => (
         <Thread

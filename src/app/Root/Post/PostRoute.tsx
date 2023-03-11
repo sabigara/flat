@@ -21,7 +21,7 @@ export default function PostRoute() {
       <Thread
         thread={thread}
         onClickReply={handleClickReply}
-        isRoot
+        isSelected
         key={thread.post.uri}
       />
     </div>
