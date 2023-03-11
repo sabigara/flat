@@ -68,17 +68,19 @@ export default function PostComposer({
       const imgResults = images.length
         ? await uploadImageBulk(images)
         : undefined;
-      console.log(imgResults);
-      // await bsky.feed.post.create(
-      //   { did: myProfile.did },
-      //   {
-      //     text,
-      //     entities: postTextToEntities(text),
-      //     reply: replyTarget ? postToReply(replyTarget) : undefined,
-      //     embed: imgResults && imgResults?.length ? embedImages(imgResults) : undefined,
-      //     createdAt: new Date().toISOString(),
-      //   }
-      // );
+      await bsky.feed.post.create(
+        { did: myProfile.did },
+        {
+          text,
+          entities: postTextToEntities(text),
+          reply: replyTarget ? postToReply(replyTarget) : undefined,
+          embed:
+            imgResults && imgResults?.length
+              ? embedImages(imgResults)
+              : undefined,
+          createdAt: new Date().toISOString(),
+        }
+      );
     },
     {
       onSuccess() {
