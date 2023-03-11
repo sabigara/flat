@@ -22,14 +22,20 @@ export default function Thread({ thread, isRoot, onClickReply }: Props) {
   if (!AppBskyFeedGetPostThread.isThreadViewPost(thread)) return null;
   return (
     <>
-      {thread.parent && <Thread thread={thread.parent} />}
+      {thread.parent && (
+        <Thread thread={thread.parent} onClickReply={onClickReply} />
+      )}
       <Post
         data={thread}
         onClickReply={onClickReply}
         className={clsx(styles.post, { [styles.root]: isRoot })}
       />
       {thread.replies?.map((reply) => (
-        <Thread thread={reply} key={thread.post.uri as string} />
+        <Thread
+          thread={reply}
+          key={thread.post.uri as string}
+          onClickReply={onClickReply}
+        />
       ))}
     </>
   );
