@@ -20,14 +20,16 @@ export function postTextToEntities(text: string): AppBskyFeedPost.Entity[] {
   }));
 }
 
-export function cidsToEmbedImages(imgCids: string[]): AppBskyEmbedImages.Main {
+export function embedImages(
+  imgs: { cid: string; mimetype: string }[]
+): AppBskyEmbedImages.Main {
   return {
     $type: "app.bsky.embed.images",
-    images: imgCids.map((cid) => ({
+    images: imgs.map(({ cid, mimetype }) => ({
       alt: "",
       image: {
         cid,
-        mimeType: "image/jpeg",
+        mimeType: mimetype,
       },
     })),
   };

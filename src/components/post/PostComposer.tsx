@@ -5,16 +5,20 @@ import { Textarea } from "@camome/core/Textarea";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
 import React from "react";
+import { toast } from "react-hot-toast";
 import { TbPencilPlus } from "react-icons/tb";
 
 import Avatar from "@/src/components/Avatar";
 import Dialog from "@/src/components/Dialog";
-import ImagePicker, { SelectedImage } from "@/src/components/post/ImagePicker";
+import ImagePicker, {
+  ImagePickerProps,
+  SelectedImage,
+} from "@/src/components/post/ImagePicker";
 import Post from "@/src/components/post/Post";
 import { bsky } from "@/src/lib/atp/atp";
 import { uploadImage } from "@/src/lib/atp/blob";
 import {
-  cidsToEmbedImages,
+  embedImages,
   postTextToEntities,
   postToReply,
 } from "@/src/lib/atp/feed";
@@ -34,13 +38,13 @@ export type PostComposerProps = {
 };
 
 const uploadImageBulk = async (images: SelectedImage[]) => {
-  const cids: string[] = [];
+  const results: { cid: string; mimetype: string }[] = [];
   for (const img of images) {
     if (!img.file) continue;
-    const cid = await uploadImage(img.file);
-    cids.push(cid);
+    const res = await uploadImage(img.file);
+    results.push(res);
   }
-  return cids;
+  return results;
 };
 
 export default function PostComposer({
@@ -61,18 +65,20 @@ export default function PostComposer({
 
   const { mutate, isLoading } = useMutation(
     async ({ images }: { images: SelectedImage[] }) => {
-      const imgCids = images.length ? await uploadImageBulk(images) : undefined;
-      await bsky.feed.post.create(
-        { did: myProfile.did },
-        {
-          text,
-          entities: postTextToEntities(text),
-          reply: replyTarget ? postToReply(replyTarget) : undefined,
-          embed:
-            imgCids && imgCids?.length ? cidsToEmbedImages(imgCids) : undefined,
-          createdAt: new Date().toISOString(),
-        }
-      );
+      const imgResults = images.length
+        ? await uploadImageBulk(images)
+        : undefined;
+      console.log(imgResults);
+      // await bsky.feed.post.create(
+      //   { did: myProfile.did },
+      //   {
+      //     text,
+      //     entities: postTextToEntities(text),
+      //     reply: replyTarget ? postToReply(replyTarget) : undefined,
+      //     embed: imgResults && imgResults?.length ? embedImages(imgResults) : undefined,
+      //     createdAt: new Date().toISOString(),
+      //   }
+      // );
     },
     {
       onSuccess() {
@@ -93,6 +99,27 @@ export default function PostComposer({
     if (!(isModKey(e.nativeEvent) && e.key === "Enter")) return;
     if (!isTextValid || isLoading) return;
     mutate({ images });
+  };
+
+  const handleImagePickerError: ImagePickerProps["onError"] = (errors) => {
+    if (!errors) return;
+    // TODO: simply the code
+    Object.keys(errors).forEach((err) => {
+      switch (err as keyof typeof errors) {
+        case "maxNumber":
+          toast.error("4枚までアップロードできます");
+          break;
+        case "acceptType":
+          toast.error("無効なファイル形式です");
+          break;
+        case "maxFileSize":
+          toast.error("サイズは1MBまでアップロードできます");
+          break;
+        default:
+          toast.error("無効な画像です");
+          break;
+      }
+    });
   };
 
   return (
@@ -147,6 +174,7 @@ export default function PostComposer({
               <ImagePicker
                 images={images}
                 onChange={setImages}
+                onError={handleImagePickerError}
                 max={4}
                 previewContainer={imagePreviewContainer}
               />

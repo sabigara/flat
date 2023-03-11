@@ -1,7 +1,7 @@
 import { IconButton } from "@camome/core/IconButton";
 import ReactDOM from "react-dom";
 import { TbPhotoPlus, TbX } from "react-icons/tb";
-import ImageUploading from "react-images-uploading";
+import ImageUploading, { type ErrorsType } from "react-images-uploading";
 
 import styles from "./ImagePicker.module.scss";
 
@@ -10,25 +10,28 @@ export type SelectedImage = {
   file?: File;
 };
 
-type Props = {
+export type ImagePickerProps = {
   images: SelectedImage[];
   onChange: (images: SelectedImage[]) => void;
-  max: number;
+  onError?: (errors: ErrorsType) => void;
+  max?: number;
   previewContainer: HTMLElement | null;
 };
 
 export default function ImagePicker({
   images,
   onChange,
+  onError,
   max,
   previewContainer,
-}: Props) {
+}: ImagePickerProps) {
   return (
     <div>
       <ImageUploading
         multiple
         value={images}
         onChange={onChange}
+        onError={onError}
         maxNumber={max}
       >
         {({

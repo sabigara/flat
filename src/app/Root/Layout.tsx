@@ -3,7 +3,6 @@ import {
   AppBskyActorProfile,
   AppBskyFeedFeedViewPost,
 } from "@atproto/api";
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import React from "react";
 import {
   LoaderFunction,
@@ -39,15 +38,6 @@ export const loader = (async () => {
 }) satisfies LoaderFunction;
 
 export const element = <RootLayout />;
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: 0,
-    },
-  },
-});
 
 const composeButtonHideRoutes = [
   "/settings",
@@ -95,7 +85,7 @@ function RootLayout() {
   }, [resolvedTheme]);
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <>
       <ScrollRestoration />
       <div className={styles.container}>
         <Header myProfile={myProfile} />
@@ -120,7 +110,7 @@ function RootLayout() {
           <Outlet context={appContext} />
         </main>
       </div>
-    </QueryClientProvider>
+    </>
   );
 }
 
