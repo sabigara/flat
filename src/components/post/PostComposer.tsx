@@ -4,25 +4,25 @@ import { Spinner } from "@camome/core/Spinner";
 import { Textarea } from "@camome/core/Textarea";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
-import ImageBlobReduce from "image-blob-reduce";
-import { find } from "linkifyjs";
 import React from "react";
 import { TbPencilPlus } from "react-icons/tb";
 
 import Avatar from "@/src/components/Avatar";
 import Dialog from "@/src/components/Dialog";
-import ImageUploader, {
-  SelectedImage,
-} from "@/src/components/post/ImageUploader";
+import ImagePicker, { SelectedImage } from "@/src/components/post/ImagePicker";
 import Post from "@/src/components/post/Post";
-import { atp, bsky } from "@/src/lib/atp/atp";
+import { bsky } from "@/src/lib/atp/atp";
+import { uploadImage } from "@/src/lib/atp/blob";
+import {
+  cidsToEmbedImages,
+  postTextToEntities,
+  postToReply,
+} from "@/src/lib/atp/feed";
 import { isModKey } from "@/src/lib/keybindings";
 import { isIPhone } from "@/src/lib/platform";
 import { queryKeys } from "@/src/lib/queries/queriesKeys";
 
 import styles from "./PostComposer.module.scss";
-
-const imgReduce = ImageBlobReduce({});
 
 export type PostComposerProps = {
   myProfile: AppBskyActorProfile.View;
@@ -33,21 +33,12 @@ export type PostComposerProps = {
   showButton?: boolean;
 };
 
-const uploadImages = async (images: SelectedImage[]) => {
+const uploadImageBulk = async (images: SelectedImage[]) => {
   const cids: string[] = [];
   for (const img of images) {
-    if (!img.file) return [];
-    const imgBlob = await imgReduce.toBlob(img.file, {
-      max: 1000,
-    });
-    const resp = await atp.api.com.atproto.blob.upload(
-      new Uint8Array(await imgBlob.arrayBuffer()),
-      {
-        encoding: "image/jpeg",
-      }
-    );
-    if (!resp.success) throw new Error("Failed to upload image");
-    cids.push(resp.data.cid);
+    if (!img.file) continue;
+    const cid = await uploadImage(img.file);
+    cids.push(cid);
   }
   return cids;
 };
@@ -70,46 +61,15 @@ export default function PostComposer({
 
   const { mutate, isLoading } = useMutation(
     async ({ images }: { images: SelectedImage[] }) => {
-      const imgCids = await uploadImages(images);
-
-      const reply = (() => {
-        if (!replyTarget) return undefined;
-        const parent = { cid: replyTarget.post.cid, uri: replyTarget.post.uri };
-        const root = replyTarget.reply?.root ? replyTarget.reply.root : parent;
-        return {
-          handle: replyTarget.post.author.handle,
-          parent,
-          root,
-        };
-      })();
-      // TODO: Support mention
-      // `linkify-plugin-mention` doesn't support usernames that include dots
-      // https://github.com/Hypercontext/linkifyjs/issues/418#issuecomment-1370140269
-      const urls = find(text, "url");
+      const imgCids = images.length ? await uploadImageBulk(images) : undefined;
       await bsky.feed.post.create(
         { did: myProfile.did },
         {
           text,
-          entities: urls.map((url) => ({
-            type: "link",
-            index: {
-              start: url.start,
-              end: url.end,
-            },
-            value: url.href,
-          })),
+          entities: postTextToEntities(text),
+          reply: replyTarget ? postToReply(replyTarget) : undefined,
+          embed: imgCids ? cidsToEmbedImages(imgCids) : undefined,
           createdAt: new Date().toISOString(),
-          reply,
-          embed: {
-            $type: "app.bsky.embed.images",
-            images: imgCids.map((cid) => ({
-              alt: "",
-              image: {
-                cid,
-                mimeType: "image/jpeg",
-              },
-            })),
-          },
         }
       );
     },
@@ -120,6 +80,7 @@ export default function PostComposer({
           queryKeys.feed.author.$(myProfile.handle)
         );
         setText("");
+        setImages([]);
         setOpen(false);
       },
     }
@@ -182,7 +143,7 @@ export default function PostComposer({
           />
           <div className={styles.action}>
             <div>
-              <ImageUploader
+              <ImagePicker
                 images={images}
                 onChange={setImages}
                 max={4}

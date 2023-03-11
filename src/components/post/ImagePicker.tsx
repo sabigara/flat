@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { TbPhotoPlus, TbX } from "react-icons/tb";
 import ImageUploading from "react-images-uploading";
 
-import styles from "./ImageUploader.module.scss";
+import styles from "./ImagePicker.module.scss";
 
 export type SelectedImage = {
   dataURL?: string;
@@ -17,7 +17,7 @@ type Props = {
   previewContainer: HTMLElement | null;
 };
 
-export default function ImageUploader({
+export default function ImagePicker({
   images,
   onChange,
   max,
