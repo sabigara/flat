@@ -1,4 +1,3 @@
-import { AppBskyFeedFeedViewPost } from "@atproto/api";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 
@@ -9,13 +8,9 @@ import { bsky } from "@/src/lib/atp";
 
 import styles from "./NotificationList.module.scss";
 
-type Props = {
-  onClickReply?: (feedItem: AppBskyFeedFeedViewPost.Main) => void;
-};
-
 // TODO: calling updateSeen every mount is too frequent.
 // TODO: support infinite scroll
-export default function NotificationList({ onClickReply }: Props) {
+export default function NotificationList() {
   const queryClient = useQueryClient();
   const mounted = React.useRef(false);
   const { data, status, error } = useInfiniteQuery({
@@ -57,7 +52,7 @@ export default function NotificationList({ onClickReply }: Props) {
           key={`${item.uri}:${item.reason}:${item.isRead}`}
           className={styles.item}
         >
-          <Notification notification={item} onClickReply={onClickReply} />
+          <Notification notification={item} />
         </li>
       ))}
     </ul>

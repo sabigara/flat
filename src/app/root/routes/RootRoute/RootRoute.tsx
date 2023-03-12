@@ -1,4 +1,3 @@
-import { AppBskyFeedFeedViewPost } from "@atproto/api";
 import React from "react";
 import {
   Outlet,
@@ -8,6 +7,7 @@ import {
 } from "react-router-dom";
 
 import PostComposer from "@/src/app/post/components/PostComposer";
+import { usePostComposer } from "@/src/app/post/hooks/usePostComposer";
 import { feedItemToUniqueKey } from "@/src/app/post/lib/feedItemToUniqueKey";
 import Header from "@/src/app/root/components/Header";
 import { useTheme } from "@/src/app/theme/hooks/useTheme";
@@ -28,29 +28,13 @@ export function RootRoute() {
     theme: Theme;
   };
   const { setTheme, theme, resolvedTheme } = useTheme(loadedTheme);
-  const [composerOpen, setComposerOpen] = React.useState(false);
-  const [replyTarget, setReplyTarget] =
-    React.useState<AppBskyFeedFeedViewPost.Main>();
   const location = useLocation();
+  const { replyTarget } = usePostComposer();
 
   const appContext: RootContext = {
     theme: {
       value: theme,
       set: setTheme,
-    },
-    composer: {
-      open: composerOpen,
-      setOpen: setComposerOpen,
-      replyTarget,
-      setReplyTarget,
-      handleClickCompose: () => {
-        setReplyTarget(undefined);
-        setComposerOpen(true);
-      },
-      handleClickReply: (feedItem) => {
-        setReplyTarget(feedItem);
-        setComposerOpen(true);
-      },
     },
   };
 
@@ -65,20 +49,13 @@ export function RootRoute() {
         <Header />
         <main>
           <PostComposer
-            open={appContext.composer.open}
-            setOpen={appContext.composer.setOpen}
-            onClickCompose={appContext.composer.handleClickCompose}
-            replyTarget={appContext.composer.replyTarget}
             showButton={
               !composeButtonHideRoutes.some((path) =>
                 location.pathname.match(path)
               )
             }
             // keep it's internal state until replyTarget changes or removed.
-            key={
-              appContext.composer.replyTarget &&
-              feedItemToUniqueKey(appContext.composer.replyTarget)
-            }
+            key={replyTarget && feedItemToUniqueKey(replyTarget)}
           />
           <Outlet context={appContext} />
         </main>
@@ -91,13 +68,5 @@ export type RootContext = {
   theme: {
     value: Theme;
     set: (theme: Theme) => void;
-  };
-  composer: {
-    open: boolean;
-    setOpen: (val: boolean) => void;
-    replyTarget?: AppBskyFeedFeedViewPost.Main;
-    setReplyTarget: (feedItem: RootContext["composer"]["replyTarget"]) => void;
-    handleClickCompose: () => void;
-    handleClickReply: RootContext["composer"]["setReplyTarget"];
   };
 };

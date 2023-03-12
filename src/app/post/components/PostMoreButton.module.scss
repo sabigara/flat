@@ -1,0 +1,9 @@
+.menu {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+
+  &__items {
+    z-index: 50;
+  }
+}

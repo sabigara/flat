@@ -31,7 +31,6 @@ type Props<K extends QueryKey> = {
   queryFn: TimelineQueryFn<K>;
   fetchLatestOne: () => Promise<AppBskyFeedFeedViewPost.Main>;
   maxPages?: number;
-  onClickReply: (feedItem: AppBskyFeedFeedViewPost.Main) => void;
 };
 
 export function Timeline<K extends QueryKey>({
@@ -39,7 +38,6 @@ export function Timeline<K extends QueryKey>({
   queryFn,
   fetchLatestOne,
   maxPages,
-  onClickReply,
 }: Props<K>) {
   const {
     status,
@@ -123,7 +121,6 @@ export function Timeline<K extends QueryKey>({
           {allItems.map((item) => (
             <Post
               data={item}
-              onClickReply={onClickReply}
               key={feedItemToUniqueKey(item)}
               className={styles.post}
             />

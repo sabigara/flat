@@ -1,4 +1,4 @@
-import { AppBskyActorProfile, AppBskyFeedFeedViewPost } from "@atproto/api";
+import { AppBskyActorProfile } from "@atproto/api";
 import { Button } from "@camome/core/Button";
 import { Spinner } from "@camome/core/Spinner";
 import { Textarea } from "@camome/core/Textarea";
@@ -16,6 +16,7 @@ import ImagePicker, {
   SelectedImage,
 } from "@/src/app/post/components/ImagePicker";
 import Post from "@/src/app/post/components/Post";
+import { usePostComposer } from "@/src/app/post/hooks/usePostComposer";
 import { embedImages } from "@/src/app/post/lib/embedImages";
 import { postTextToEntities } from "@/src/app/post/lib/postTextToEntities";
 import { postToReply } from "@/src/app/post/lib/postToReply";
@@ -29,10 +30,6 @@ import { isIPhone } from "@/src/lib/platform";
 import styles from "./PostComposer.module.scss";
 
 export type PostComposerProps = {
-  open: boolean;
-  setOpen: (val: boolean) => void;
-  onClickCompose: () => void;
-  replyTarget?: AppBskyFeedFeedViewPost.Main;
   showButton?: boolean;
 };
 
@@ -46,14 +43,11 @@ const uploadImageBulk = async (images: SelectedImage[]) => {
   return results;
 };
 
-export default function PostComposer({
-  open,
-  setOpen,
-  onClickCompose,
-  replyTarget,
-  showButton,
-}: PostComposerProps) {
+export default function PostComposer({ showButton }: PostComposerProps) {
   const { data: account } = useAccountQuery();
+  const { open, replyTarget, handleClickCompose, set } = usePostComposer();
+  const setOpen = (val: boolean) =>
+    void set((curr) => ({ ...curr, open: val }));
   const queryClient = useQueryClient();
   const [text, setText] = React.useState("");
   const [images, setImages] = React.useState<SelectedImage[]>([]);
@@ -136,7 +130,7 @@ export default function PostComposer({
           aria-label="投稿ツールを開く"
           startDecorator={<TbPencilPlus />}
           size="lg"
-          onClick={onClickCompose}
+          onClick={handleClickCompose}
           className={styles.composeBtn}
         >
           つぶやく

@@ -3,17 +3,11 @@ import { Spinner } from "@camome/core/Spinner";
 import { Tag } from "@camome/core/Tag";
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
-import {
-  Link,
-  useLoaderData,
-  useOutletContext,
-  useRevalidator,
-} from "react-router-dom";
+import { Link, useLoaderData, useRevalidator } from "react-router-dom";
 
 import type { ProfileRouteLoaderResult } from "@/src/app/user/routes/ProfileRoute";
 
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
-import { RootContext } from "@/src/app/root/routes/RootRoute/RootRoute";
 import Seo from "@/src/app/seo/Seo";
 import {
   Timeline,
@@ -28,7 +22,6 @@ import { atp, bsky } from "@/src/lib/atp";
 import styles from "./ProfileRoute.module.scss";
 
 export function ProfileRoute() {
-  const { composer } = useOutletContext<RootContext>();
   const profile = useLoaderData() as ProfileRouteLoaderResult;
   const username = profile.displayName ?? profile.handle;
   const queryKey = queryKeys.feed.author.$(profile.handle);
@@ -173,7 +166,6 @@ export function ProfileRoute() {
             queryKey={queryKey}
             queryFn={queryFn}
             fetchLatestOne={fetchLatest}
-            onClickReply={composer.handleClickReply}
           />
         </main>
       </article>

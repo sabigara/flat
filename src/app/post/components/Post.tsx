@@ -5,10 +5,13 @@ import clsx from "clsx";
 import React from "react";
 import { BsReplyFill } from "react-icons/bs";
 import { FaRetweet } from "react-icons/fa";
-import { TbMessageCircle2, TbStar, TbStarFilled } from "react-icons/tb";
+import { TbDots, TbMessageCircle2, TbStar, TbStarFilled } from "react-icons/tb";
 import { Link, useNavigate } from "react-router-dom";
 
+import { useAccountQuery } from "@/src/app/account/hooks/useAccountQuery";
+import PostMoreButton from "@/src/app/post/components/PostMoreButton";
 import Embed from "@/src/app/post/components/embed/Embed";
+import { usePostComposer } from "@/src/app/post/hooks/usePostComposer";
 import { buildPostUrl } from "@/src/app/post/lib/buildPostUrl";
 import { formatDistanceShort } from "@/src/app/time/lib/time";
 import Avatar from "@/src/app/user/components/Avatar";
@@ -19,7 +22,6 @@ import styles from "./Post.module.scss";
 
 type Props = {
   data: AppBskyFeedFeedViewPost.Main;
-  onClickReply?: (feedItem: AppBskyFeedFeedViewPost.Main) => void;
   contentOnly?: boolean;
   isLink?: boolean;
   className?: string;
@@ -27,11 +29,12 @@ type Props = {
 
 export default function Post({
   data,
-  onClickReply,
   contentOnly = false,
   isLink = true,
   className,
 }: Props) {
+  const { data: account } = useAccountQuery();
+  const { handleClickReply } = usePostComposer();
   const { post, reason, reply } = data;
   const [upvoted, setUpvoted] = React.useState(false);
   const [reposted, setReposted] = React.useState(false);
@@ -97,7 +100,7 @@ export default function Post({
       icon: <TbMessageCircle2 />,
       iconReacted: <TbMessageCircle2 />,
       "aria-label": `${post.replyCount}件の返信`,
-      onClick: () => onClickReply?.(data),
+      onClick: () => handleClickReply(data),
       reacted: false,
     },
     {
@@ -195,8 +198,25 @@ export default function Post({
           {!contentOnly && (
             <ul className={styles.reactionList}>
               {reactions.map((reaction) => (
-                <Reaction {...reaction} key={reaction.type} />
+                <li key={reaction.type}>
+                  <Reaction {...reaction} />
+                </li>
               ))}
+              <li>
+                <PostMoreButton
+                  myProfile={account?.profile}
+                  button={
+                    <span className={styles.reaction}>
+                      <input type="hidden" name="type" />
+                      <span className={styles.reaction__icon}>
+                        <TbDots />
+                      </span>
+                    </span>
+                  }
+                  post={post}
+                  revalidate={() => {}}
+                />
+              </li>
             </ul>
           )}
         </div>

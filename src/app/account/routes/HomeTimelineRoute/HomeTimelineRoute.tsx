@@ -1,8 +1,6 @@
 import React from "react";
-import { useOutletContext } from "react-router-dom";
 
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
-import { RootContext } from "@/src/app/root/routes/RootRoute/RootRoute";
 import Seo from "@/src/app/seo/Seo";
 import {
   Timeline,
@@ -13,7 +11,6 @@ import { bsky } from "@/src/lib/atp";
 import styles from "./HomeTimelineRoute.module.scss";
 
 export function HomeTimelineRoute() {
-  const { composer } = useOutletContext<RootContext>();
   const queryKey = queryKeys.feed.home.$;
   const queryFn: TimelineQueryFn<typeof queryKey> = async ({ pageParam }) => {
     const resp = await bsky.feed.getTimeline({
@@ -37,7 +34,6 @@ export function HomeTimelineRoute() {
           queryKey={queryKey}
           queryFn={queryFn}
           fetchLatestOne={fetchLatest}
-          onClickReply={composer.handleClickReply}
         />
       </div>
     </>
