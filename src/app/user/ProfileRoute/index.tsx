@@ -1,6 +1,6 @@
 import { LoaderFunction } from "react-router-dom";
 
-import { ProfileRoute } from "@/src/app/Root/Profile/ProfileRoute";
+import { ProfileRoute } from "@/src/app/user/ProfileRoute/ProfileRoute";
 import { bsky } from "@/src/lib/atp/atp";
 
 export const loader = (async ({ params }) => {

@@ -1,9 +1,9 @@
 import { AppBskyFeedGetPostThread, AppBskyFeedPost } from "@atproto/api";
 import { useLoaderData, useOutletContext } from "react-router-dom";
 
-import type { PostRouteLoaderResult } from "@/src/app/Root/Post";
+import type { PostRouteLoaderResult } from "@/src/app/post/PostRoute";
 
-import { RootContext } from "@/src/app/Root/Layout";
+import { RootContext } from "@/src/app/RootRoute/RooteRouteLayout";
 import Thread from "@/src/components/post/Thread";
 import { toUsername } from "@/src/lib/atp/user";
 import Seo from "@/src/seo/Seo";

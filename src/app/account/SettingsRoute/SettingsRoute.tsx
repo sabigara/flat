@@ -4,7 +4,7 @@ import { Spinner } from "@camome/core/Spinner";
 import React from "react";
 import { useOutletContext } from "react-router-dom";
 
-import type { RootContext } from "@/src/app/Root/Layout";
+import type { RootContext } from "@/src/app/RootRoute/RooteRouteLayout";
 
 import { storageKeys } from "@/src/lib/storage";
 import { Theme } from "@/src/lib/theme";

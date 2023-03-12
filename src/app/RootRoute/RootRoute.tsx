@@ -1,7 +1,7 @@
 import React from "react";
 import { useOutletContext } from "react-router-dom";
 
-import { RootContext } from "@/src/app/Root/Layout";
+import { RootContext } from "@/src/app/RootRoute/RooteRouteLayout";
 import { Feed, FeedQueryFn } from "@/src/components/Feed";
 import { bsky } from "@/src/lib/atp/atp";
 import { queryKeys } from "@/src/lib/queries/queriesKeys";

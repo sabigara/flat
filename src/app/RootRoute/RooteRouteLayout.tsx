@@ -20,7 +20,7 @@ import { feedItemToUniqueKey } from "@/src/lib/atp/post";
 import { storageKeys } from "@/src/lib/storage";
 import { getTheme, Theme, useTheme } from "@/src/lib/theme";
 
-import styles from "./Layout.module.scss";
+import styles from "./RooteRouteLayout.module.scss";
 
 export const loader = (async () => {
   let theme: Theme = "system";

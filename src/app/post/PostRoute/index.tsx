@@ -1,6 +1,6 @@
 import { LoaderFunction } from "react-router-dom";
 
-import PostRoute from "@/src/app/Root/Post/PostRoute";
+import PostRoute from "@/src/app/post/PostRoute/PostRoute";
 import { bsky } from "@/src/lib/atp/atp";
 
 export const loader = (async ({ params }) => {
