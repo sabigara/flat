@@ -31,7 +31,7 @@ export function RootRoute() {
   const location = useLocation();
   const { replyTarget } = usePostComposer();
 
-  const appContext: RootContext = {
+  const rootContext: RootContext = {
     theme: {
       value: theme,
       set: setTheme,
@@ -55,9 +55,10 @@ export function RootRoute() {
               )
             }
             // keep it's internal state until replyTarget changes or removed.
+            // TODO: more performant way?
             key={replyTarget && feedItemToUniqueKey(replyTarget)}
           />
-          <Outlet context={appContext} />
+          <Outlet context={rootContext} />
         </main>
       </div>
     </>

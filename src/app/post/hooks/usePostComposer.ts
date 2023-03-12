@@ -16,7 +16,7 @@ export function usePostComposer() {
     },
     handleClickReply: (feedItem: AppBskyFeedFeedViewPost.Main) => {
       setComposer({
-        open: false,
+        open: true,
         replyTarget: feedItem,
       });
     },
