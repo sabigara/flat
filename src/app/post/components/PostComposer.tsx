@@ -20,7 +20,6 @@ import { usePostComposer } from "@/src/app/post/hooks/usePostComposer";
 import { embedImages } from "@/src/app/post/lib/embedImages";
 import { postTextToEntities } from "@/src/app/post/lib/postTextToEntities";
 import { postToReply } from "@/src/app/post/lib/postToReply";
-import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import Avatar from "@/src/app/user/components/Avatar";
 import Dialog from "@/src/components/Dialog";
 import { bsky } from "@/src/lib/atp";
@@ -31,6 +30,7 @@ import styles from "./PostComposer.module.scss";
 
 export type PostComposerProps = {
   showButton?: boolean;
+  revalidate?: () => void;
 };
 
 const uploadImageBulk = async (images: SelectedImage[]) => {
@@ -43,12 +43,14 @@ const uploadImageBulk = async (images: SelectedImage[]) => {
   return results;
 };
 
-export default function PostComposer({ showButton }: PostComposerProps) {
+export default function PostComposer({
+  showButton = true,
+  revalidate,
+}: PostComposerProps) {
   const { data: account } = useAccountQuery();
   const { open, replyTarget, handleClickCompose, set } = usePostComposer();
   const setOpen = (val: boolean) =>
     void set((curr) => ({ ...curr, open: val }));
-  const queryClient = useQueryClient();
   const [text, setText] = React.useState("");
   const [images, setImages] = React.useState<SelectedImage[]>([]);
   // TODO: length
@@ -82,14 +84,11 @@ export default function PostComposer({ showButton }: PostComposerProps) {
       );
     },
     {
-      onSuccess(_, { myProfile }) {
-        queryClient.invalidateQueries(queryKeys.feed.home.$);
-        queryClient.invalidateQueries(
-          queryKeys.feed.author.$(myProfile.handle)
-        );
+      onSuccess() {
         setText("");
         setImages([]);
         setOpen(false);
+        revalidate?.();
       },
     }
   );
@@ -122,6 +121,12 @@ export default function PostComposer({ showButton }: PostComposerProps) {
       }
     });
   };
+
+  // keep text as long as referencing to the same reply target
+  // or not a reply
+  React.useEffect(() => {
+    setText("");
+  }, [replyTarget]);
 
   return (
     <>

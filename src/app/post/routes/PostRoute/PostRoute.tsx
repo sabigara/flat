@@ -3,9 +3,11 @@ import { Link, useLoaderData, useRevalidator } from "react-router-dom";
 
 import type { PostRouteLoaderResult } from "@/src/app/post/routes/PostRoute";
 
+import PostComposer from "@/src/app/post/components/PostComposer";
 import Thread from "@/src/app/post/components/Thread";
 import Seo from "@/src/app/seo/Seo";
 import { userToName } from "@/src/app/user/lib/userToName";
+import SpinnerFill from "@/src/components/SpinnerFill";
 
 import styles from "./PostRoute.module.scss";
 
@@ -42,7 +44,9 @@ export default function PostRoute() {
           revalidate={revalidator.revalidate}
           key={thread.post.uri}
         />
+        {revalidator.state === "loading" && <SpinnerFill />}
       </div>
+      <PostComposer revalidate={revalidator.revalidate} />
     </>
   );
 }

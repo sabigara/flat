@@ -4,6 +4,7 @@
 
 .notFound {
   padding-block: 1rem;
+  padding-inline: var(--container-pad-inline);
 
   a {
     display: inline-block;

@@ -12,6 +12,7 @@ import InfiniteScroll from "react-infinite-scroller";
 import type { AppBskyFeedFeedViewPost } from "@atproto/api";
 
 import Post from "@/src/app/post/components/Post";
+import PostComposer from "@/src/app/post/components/PostComposer";
 import { feedItemToUniqueKey } from "@/src/app/post/lib/feedItemToUniqueKey";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import SpinnerFill from "@/src/components/SpinnerFill";
@@ -100,6 +101,10 @@ export function Timeline<K extends QueryKey>({
     window.requestAnimationFrame(refetchOnTop);
   };
 
+  const revalidateOnPost = () => {
+    queryClient.invalidateQueries(queryKey);
+  };
+
   if (status === "loading") {
     return (
       <div className={styles.spinner}>
@@ -149,6 +154,7 @@ export function Timeline<K extends QueryKey>({
           )}
         </Button>
       )}
+      <PostComposer revalidate={revalidateOnPost} />
     </>
   );
 }
