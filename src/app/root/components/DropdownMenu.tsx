@@ -1,4 +1,3 @@
-import { AppBskyActorProfile } from "@atproto/api";
 import { menuClassNames } from "@camome/core/Menu";
 import { useFloating, offset, flip } from "@floating-ui/react";
 import { Menu } from "@headlessui/react";
@@ -6,6 +5,7 @@ import clsx from "clsx";
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
+import { useAccountQuery } from "@/src/app/account/hooks/useAccountQuery";
 import Avatar from "@/src/app/user/components/Avatar";
 
 import styles from "./DropdownMenu.module.scss";
@@ -26,11 +26,8 @@ const links = (handle: string) =>
     },
   ] satisfies { href: string; label: string }[];
 
-type Props = {
-  myProfile: AppBskyActorProfile.View;
-};
-
-export default function DropdownMenu({ myProfile }: Props) {
+export default function DropdownMenu() {
+  const { data: account } = useAccountQuery();
   const { x, y, reference, floating, strategy } = useFloating({
     placement: "bottom-end",
     middleware: [offset(8), flip()],
@@ -43,7 +40,7 @@ export default function DropdownMenu({ myProfile }: Props) {
       <div>
         <Menu.Button className={styles.button}>
           <Avatar
-            profile={myProfile}
+            profile={account?.profile}
             size="sm"
             innerRef={reference}
             stopPropagation={false}
@@ -51,38 +48,40 @@ export default function DropdownMenu({ myProfile }: Props) {
           />
         </Menu.Button>
       </div>
-      <Menu.Items
-        className={menuClassNames.menu}
-        ref={floating}
-        style={{
-          position: strategy,
-          top: y ?? 0,
-          left: x ?? 0,
-        }}
-      >
-        {links(myProfile.handle).map(({ href, label }) => (
-          <Menu.Item
-            key={href}
-            as={React.Fragment}
-            disabled={isCurrentPage(href)}
-          >
-            {({ active, disabled }) => (
-              <Link
-                to={href}
-                aria-current={disabled ? "page" : undefined}
-                className={clsx(
-                  menuClassNames.item,
-                  styles.link,
-                  active && menuClassNames.itemActive,
-                  disabled && menuClassNames.itemDisabled
-                )}
-              >
-                {label}
-              </Link>
-            )}
-          </Menu.Item>
-        ))}
-      </Menu.Items>
+      {account?.profile && (
+        <Menu.Items
+          className={menuClassNames.menu}
+          ref={floating}
+          style={{
+            position: strategy,
+            top: y ?? 0,
+            left: x ?? 0,
+          }}
+        >
+          {links(account.profile.handle).map(({ href, label }) => (
+            <Menu.Item
+              key={href}
+              as={React.Fragment}
+              disabled={isCurrentPage(href)}
+            >
+              {({ active, disabled }) => (
+                <Link
+                  to={href}
+                  aria-current={disabled ? "page" : undefined}
+                  className={clsx(
+                    menuClassNames.item,
+                    styles.link,
+                    active && menuClassNames.itemActive,
+                    disabled && menuClassNames.itemDisabled
+                  )}
+                >
+                  {label}
+                </Link>
+              )}
+            </Menu.Item>
+          ))}
+        </Menu.Items>
+      )}
     </Menu>
   );
 }

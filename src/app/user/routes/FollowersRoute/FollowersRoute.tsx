@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
 
+import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import Seo from "@/src/app/seo/Seo";
 import { UserList, UserListQueryFn } from "@/src/app/user/components/UserList";
 import { bsky } from "@/src/lib/atp";
-import { queryKeys } from "@/src/lib/queries/queryKeys";
 
 import styles from "./FollowersRoute.module.scss";
 

@@ -1,4 +1,4 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { HelmetProvider } from "react-helmet-async";
@@ -12,10 +12,10 @@ import * as About from "@/src/app/about/routes/AboutRoute";
 import * as HomeTimelineRoute from "@/src/app/account/routes/HomeTimelineRoute";
 import * as Login from "@/src/app/account/routes/LoginRoute";
 import * as Settings from "@/src/app/account/routes/SettingsRoute";
-import { notifyError } from "@/src/app/error/lib/notifyError";
 import * as Notifications from "@/src/app/notification/routes/NotificationsRoute";
 import * as Post from "@/src/app/post/routes/PostRoute";
-import * as RootLayout from "@/src/app/root/routes/RootRoute/RootRoute";
+import { queryClient } from "@/src/app/root/lib/queryClient";
+import * as RootRoute from "@/src/app/root/routes/RootRoute";
 import Seo from "@/src/app/seo/Seo";
 import { defaultSeo } from "@/src/app/seo/defaultSeo";
 import * as Followers from "@/src/app/user/routes/FollowersRoute";
@@ -25,7 +25,7 @@ import * as Profile from "@/src/app/user/routes/ProfileRoute";
 const router = createBrowserRouter([
   {
     path: "/",
-    ...RootLayout,
+    ...RootRoute,
     children: [
       {
         index: true,
@@ -66,20 +66,6 @@ const router = createBrowserRouter([
     ...Login,
   },
 ]);
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: 0,
-    },
-    mutations: {
-      onError(error) {
-        notifyError({ error, message: "エラーが発生しました" });
-      },
-    },
-  },
-});
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

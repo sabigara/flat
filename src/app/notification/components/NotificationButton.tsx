@@ -3,8 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { TbBell } from "react-icons/tb";
 import { Link } from "react-router-dom";
 
+import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import { bsky } from "@/src/lib/atp";
-import { queryKeys } from "@/src/lib/queries/queryKeys";
 
 import styles from "./NotificationButton.module.scss";
 

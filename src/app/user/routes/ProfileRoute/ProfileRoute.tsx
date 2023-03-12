@@ -12,6 +12,7 @@ import {
 
 import type { ProfileRouteLoaderResult } from "@/src/app/user/routes/ProfileRoute";
 
+import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import { RootContext } from "@/src/app/root/routes/RootRoute/RootRoute";
 import Seo from "@/src/app/seo/Seo";
 import {
@@ -23,7 +24,6 @@ import { followUser } from "@/src/app/user/lib/followUser";
 import { unfollowUser } from "@/src/app/user/lib/unfollowUser";
 import Prose from "@/src/components/Prose";
 import { atp, bsky } from "@/src/lib/atp";
-import { queryKeys } from "@/src/lib/queries/queryKeys";
 
 import styles from "./ProfileRoute.module.scss";
 

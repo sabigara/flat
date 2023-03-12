@@ -2,23 +2,20 @@ import { Link, useNavigation } from "react-router-dom";
 
 import type { AppBskyActorProfile } from "@atproto/api";
 
+import { useAccountQuery } from "@/src/app/account/hooks/useAccountQuery";
 import NotificationButton from "@/src/app/notification/components/NotificationButton";
 import DropdownMenu from "@/src/app/root/components/DropdownMenu";
 import LogoIcon from "@/src/assets/icon.svg";
 
 import styles from "./Header.module.scss";
 
-type Props = {
-  myProfile: AppBskyActorProfile.View;
-};
-
-export default function Header({ myProfile }: Props) {
-  const { state } = useNavigation();
+export default function Header() {
+  const { state: navState } = useNavigation();
 
   return (
     <header className={styles.container}>
       <div className={styles.progressBar}>
-        {state === "loading" && (
+        {navState === "loading" && (
           <div role="status">
             <span className="visually-hidden">
               次のページのデータを取得中・・・
@@ -34,7 +31,7 @@ export default function Header({ myProfile }: Props) {
       </div>
       <div className={styles.sectionEnd}>
         <NotificationButton />
-        <DropdownMenu myProfile={myProfile} />
+        <DropdownMenu />
       </div>
     </header>
   );

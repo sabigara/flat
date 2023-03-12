@@ -3,9 +3,9 @@ import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 
 import Notification from "@/src/app/notification/components/Notification";
+import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import SpinnerFill from "@/src/components/SpinnerFill";
 import { bsky } from "@/src/lib/atp";
-import { queryKeys } from "@/src/lib/queries/queryKeys";
 
 import styles from "./NotificationList.module.scss";
 

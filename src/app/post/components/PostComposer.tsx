@@ -8,6 +8,7 @@ import React from "react";
 import { toast } from "react-hot-toast";
 import { TbPencilPlus } from "react-icons/tb";
 
+import { useAccountQuery } from "@/src/app/account/hooks/useAccountQuery";
 import { compressImage } from "@/src/app/content/image/lib/compressImage";
 import { uploadImage } from "@/src/app/content/image/lib/uploadImage";
 import ImagePicker, {
@@ -18,17 +19,16 @@ import Post from "@/src/app/post/components/Post";
 import { embedImages } from "@/src/app/post/lib/embedImages";
 import { postTextToEntities } from "@/src/app/post/lib/postTextToEntities";
 import { postToReply } from "@/src/app/post/lib/postToReply";
+import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import Avatar from "@/src/app/user/components/Avatar";
 import Dialog from "@/src/components/Dialog";
 import { bsky } from "@/src/lib/atp";
 import { isModKey } from "@/src/lib/keybindings";
 import { isIPhone } from "@/src/lib/platform";
-import { queryKeys } from "@/src/lib/queries/queryKeys";
 
 import styles from "./PostComposer.module.scss";
 
 export type PostComposerProps = {
-  myProfile: AppBskyActorProfile.View;
   open: boolean;
   setOpen: (val: boolean) => void;
   onClickCompose: () => void;
@@ -47,13 +47,13 @@ const uploadImageBulk = async (images: SelectedImage[]) => {
 };
 
 export default function PostComposer({
-  myProfile,
   open,
   setOpen,
   onClickCompose,
   replyTarget,
   showButton,
 }: PostComposerProps) {
+  const { data: account } = useAccountQuery();
   const queryClient = useQueryClient();
   const [text, setText] = React.useState("");
   const [images, setImages] = React.useState<SelectedImage[]>([]);
@@ -63,7 +63,13 @@ export default function PostComposer({
     React.useState<HTMLDivElement | null>(null);
 
   const { mutate, isLoading } = useMutation(
-    async ({ images }: { images: SelectedImage[] }) => {
+    async ({
+      images,
+      myProfile,
+    }: {
+      images: SelectedImage[];
+      myProfile: AppBskyActorProfile.View;
+    }) => {
       const imgResults = images.length
         ? await uploadImageBulk(images)
         : undefined;
@@ -82,7 +88,7 @@ export default function PostComposer({
       );
     },
     {
-      onSuccess() {
+      onSuccess(_, { myProfile }) {
         queryClient.invalidateQueries(queryKeys.feed.home.$);
         queryClient.invalidateQueries(
           queryKeys.feed.author.$(myProfile.handle)
@@ -98,8 +104,8 @@ export default function PostComposer({
     e
   ) => {
     if (!(isModKey(e.nativeEvent) && e.key === "Enter")) return;
-    if (!isTextValid || isLoading) return;
-    mutate({ images });
+    if (!account || !isTextValid || isLoading) return;
+    mutate({ images, myProfile: account.profile });
   };
 
   const handleImagePickerError: ImagePickerProps["onError"] = (errors) => {
@@ -142,7 +148,7 @@ export default function PostComposer({
             <Post data={replyTarget} contentOnly className={styles.post} />
           )}
           <div className={styles.form}>
-            <Avatar profile={myProfile} className={styles.avatar} />
+            <Avatar profile={account?.profile} className={styles.avatar} />
             {/* TODO: Textarea isn't passing id to textarea */}
             <label
               htmlFor="post"
@@ -190,7 +196,11 @@ export default function PostComposer({
                 やめる
               </Button>
               <Button
-                onClick={() => mutate({ images })}
+                onClick={() =>
+                  void (
+                    account && mutate({ images, myProfile: account?.profile })
+                  )
+                }
                 disabled={!isTextValid || isLoading}
                 size="sm"
                 startDecorator={isLoading ? <Spinner size="sm" /> : undefined}

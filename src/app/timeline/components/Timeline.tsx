@@ -13,8 +13,8 @@ import type { AppBskyFeedFeedViewPost } from "@atproto/api";
 
 import Post from "@/src/app/post/components/Post";
 import { feedItemToUniqueKey } from "@/src/app/post/lib/feedItemToUniqueKey";
+import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import SpinnerFill from "@/src/components/SpinnerFill";
-import { queryKeys } from "@/src/lib/queries/queryKeys";
 
 import styles from "./Timeline.module.scss";
 

@@ -2,6 +2,9 @@ import { AppBskyFeedFeedViewPost } from "@atproto/api";
 import { QueryKey } from "@tanstack/react-query";
 
 export const queryKeys = {
+  session: {
+    $: ["session"],
+  },
   feed: {
     home: {
       $: ["feed"] as const,

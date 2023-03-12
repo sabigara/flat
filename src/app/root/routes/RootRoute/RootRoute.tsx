@@ -19,24 +19,11 @@ import Header from "@/src/app/root/components/Header";
 import { useTheme } from "@/src/app/theme/hooks/useTheme";
 import { getTheme } from "@/src/app/theme/lib/getTheme";
 import { Theme } from "@/src/app/theme/lib/types";
-import { atp, bsky } from "@/src/lib/atp";
-import { storageKeys } from "@/src/lib/storage";
 
 import styles from "./RootRoute.module.scss";
 
 export const loader = (async () => {
-  let theme: Theme = "system";
-  if (!atp.hasSession) {
-    const sessionStr = localStorage.getItem(storageKeys.session.$);
-    if (!sessionStr) return redirect("/login");
-    const session = JSON.parse(sessionStr) as AtpSessionData;
-    await atp.resumeSession(session);
-    theme = getTheme();
-  }
-  const resp = await bsky.actor.getProfile({
-    actor: atp.session!.handle,
-  });
-  return { myProfile: resp.data, theme };
+  return { theme: getTheme() };
 }) satisfies LoaderFunction;
 
 export const element = <RootRoute />;
@@ -50,8 +37,7 @@ const composeButtonHideRoutes = [
 
 export function RootRoute() {
   // TODO: can't use ReturnType as the loader is returning `redirect()`
-  const { myProfile, theme: loadedTheme } = useLoaderData() as {
-    myProfile: AppBskyActorProfile.View;
+  const { theme: loadedTheme } = useLoaderData() as {
     theme: Theme;
   };
   const { setTheme, theme, resolvedTheme } = useTheme(loadedTheme);
@@ -61,7 +47,6 @@ export function RootRoute() {
   const location = useLocation();
 
   const appContext: RootContext = {
-    myProfile,
     theme: {
       value: theme,
       set: setTheme,
@@ -90,10 +75,9 @@ export function RootRoute() {
     <>
       <ScrollRestoration />
       <div className={styles.container}>
-        <Header myProfile={myProfile} />
+        <Header />
         <main>
           <PostComposer
-            myProfile={appContext.myProfile}
             open={appContext.composer.open}
             setOpen={appContext.composer.setOpen}
             onClickCompose={appContext.composer.handleClickCompose}
@@ -117,7 +101,6 @@ export function RootRoute() {
 }
 
 export type RootContext = {
-  myProfile: AppBskyActorProfile.View;
   theme: {
     value: Theme;
     set: (theme: Theme) => void;

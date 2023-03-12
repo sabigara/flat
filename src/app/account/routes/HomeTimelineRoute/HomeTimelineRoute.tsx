@@ -1,6 +1,7 @@
 import React from "react";
 import { useOutletContext } from "react-router-dom";
 
+import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import { RootContext } from "@/src/app/root/routes/RootRoute/RootRoute";
 import Seo from "@/src/app/seo/Seo";
 import {
@@ -8,7 +9,6 @@ import {
   TimelineQueryFn,
 } from "@/src/app/timeline/components/Timeline";
 import { bsky } from "@/src/lib/atp";
-import { queryKeys } from "@/src/lib/queries/queryKeys";
 
 import styles from "./HomeTimelineRoute.module.scss";
 
