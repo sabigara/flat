@@ -8,10 +8,14 @@ import { getTheme } from "@/src/app/theme/lib/getTheme";
 
 export const loader = (async () => {
   const account = await getAccount();
-  // login required in every routes except for `/login`
+  // Login required in every routes except for `/login`
+  // so that return value of `useSessionQuery` is guaranteed to be non-null.
+  // But it will be nullable once atp's public APIs are supported.
   if (!account) return redirect("/login");
   queryClient.setQueryData(queryKeys.session.$, account);
   return { theme: getTheme() };
 }) satisfies LoaderFunction;
 
+// separate the file for the content of `element` to
+// avoid full-reload caused by tiny code changes like CSS.
 export const element = <RootRoute />;

@@ -1,8 +1,5 @@
 import { Link, useNavigation } from "react-router-dom";
 
-import type { AppBskyActorProfile } from "@atproto/api";
-
-import { useAccountQuery } from "@/src/app/account/hooks/useAccountQuery";
 import NotificationButton from "@/src/app/notification/components/NotificationButton";
 import DropdownMenu from "@/src/app/root/components/DropdownMenu";
 import LogoIcon from "@/src/assets/icon.svg";

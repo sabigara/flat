@@ -1,13 +1,7 @@
-import {
-  AtpSessionData,
-  AppBskyActorProfile,
-  AppBskyFeedFeedViewPost,
-} from "@atproto/api";
+import { AppBskyFeedFeedViewPost } from "@atproto/api";
 import React from "react";
 import {
-  LoaderFunction,
   Outlet,
-  redirect,
   useLoaderData,
   ScrollRestoration,
   useLocation,
@@ -17,16 +11,9 @@ import PostComposer from "@/src/app/post/components/PostComposer";
 import { feedItemToUniqueKey } from "@/src/app/post/lib/feedItemToUniqueKey";
 import Header from "@/src/app/root/components/Header";
 import { useTheme } from "@/src/app/theme/hooks/useTheme";
-import { getTheme } from "@/src/app/theme/lib/getTheme";
 import { Theme } from "@/src/app/theme/lib/types";
 
 import styles from "./RootRoute.module.scss";
-
-export const loader = (async () => {
-  return { theme: getTheme() };
-}) satisfies LoaderFunction;
-
-export const element = <RootRoute />;
 
 const composeButtonHideRoutes = [
   "/settings",

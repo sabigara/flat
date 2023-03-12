@@ -6,6 +6,6 @@ import { msInMinutes } from "@/src/app/time/lib/msInMinutes";
 
 export function useAccountQuery() {
   return useQuery(queryKeys.session.$, getAccount, {
-    staleTime: msInMinutes(5),
+    staleTime: msInMinutes(60),
   });
 }
