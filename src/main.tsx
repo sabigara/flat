@@ -8,19 +8,19 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "@camome/system/dist/theme.css";
 import "@/src/styles/globals.scss";
 
-import * as RootLayout from "@/src/app/RootRoute/RootRoute";
-import * as About from "@/src/app/about/AboutRoute";
-import * as HomeTimelineRoute from "@/src/app/account/HomeTimelineRoute";
-import * as Login from "@/src/app/account/LoginRoute";
-import * as Settings from "@/src/app/account/SettingsRoute";
-import * as Notifications from "@/src/app/notification/NotificationsRoute";
-import * as Post from "@/src/app/post/PostRoute";
-import * as Followers from "@/src/app/user/FollowersRoute";
-import * as Following from "@/src/app/user/FollowingRoute";
-import * as Profile from "@/src/app/user/ProfileRoute";
-import { handleError } from "@/src/lib/error";
-import Seo from "@/src/seo/Seo";
-import { defaultSeo } from "@/src/seo/defaultSeo";
+import * as About from "@/src/app/about/routes/AboutRoute";
+import * as HomeTimelineRoute from "@/src/app/account/routes/HomeTimelineRoute";
+import * as Login from "@/src/app/account/routes/LoginRoute";
+import * as Settings from "@/src/app/account/routes/SettingsRoute";
+import { notifyError } from "@/src/app/error/lib/notifyError";
+import * as Notifications from "@/src/app/notification/routes/NotificationsRoute";
+import * as Post from "@/src/app/post/routes/PostRoute";
+import * as RootLayout from "@/src/app/root/routes/RootRoute/RootRoute";
+import Seo from "@/src/app/seo/Seo";
+import { defaultSeo } from "@/src/app/seo/defaultSeo";
+import * as Followers from "@/src/app/user/routes/FollowersRoute";
+import * as Following from "@/src/app/user/routes/FollowingRoute";
+import * as Profile from "@/src/app/user/routes/ProfileRoute";
 
 const router = createBrowserRouter([
   {
@@ -75,7 +75,7 @@ const queryClient = new QueryClient({
     },
     mutations: {
       onError(error) {
-        handleError({ error, message: "エラーが発生しました" });
+        notifyError({ error, message: "エラーが発生しました" });
       },
     },
   },
