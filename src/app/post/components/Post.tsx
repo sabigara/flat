@@ -24,6 +24,7 @@ type Props = {
   data: AppBskyFeedFeedViewPost.Main;
   contentOnly?: boolean;
   isLink?: boolean;
+  revalidate?: () => void;
   className?: string;
 };
 
@@ -31,6 +32,7 @@ export default function Post({
   data,
   contentOnly = false,
   isLink = true,
+  revalidate,
   className,
 }: Props) {
   const { data: account } = useAccountQuery();
@@ -214,7 +216,7 @@ export default function Post({
                     </span>
                   }
                   post={post}
-                  revalidate={() => {}}
+                  revalidate={revalidate}
                 />
               </li>
             </ul>

@@ -11,10 +11,11 @@ import styles from "./Notification.module.scss";
 
 type Props = {
   notification: AppBskyNotificationList.Notification;
+  revalidate: () => void;
 };
 
 // TODO: support tap to navigate to subject
-export default function Notification({ notification }: Props) {
+export default function Notification({ notification, revalidate }: Props) {
   const reason = notification.reason;
   const shouldFetchPost =
     reason === "reply" || reason === "repost" || reason === "vote";
@@ -59,6 +60,7 @@ export default function Notification({ notification }: Props) {
           <NotificationPost
             uri={notification.reasonSubject}
             reason={notification.reason}
+            revalidate={revalidate}
             isSubject
           />
         )}
@@ -66,6 +68,7 @@ export default function Notification({ notification }: Props) {
           <NotificationPost
             uri={notification.uri}
             reason={notification.reason}
+            revalidate={revalidate}
             isSubject={false}
           />
         )}

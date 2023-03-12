@@ -11,21 +11,30 @@ type Props = {
     | AppBskyFeedGetPostThread.NotFoundPost
     | { [k: string]: unknown; $type: string };
   isSelected?: boolean;
+  revalidate: () => void;
 };
 
-export default function Thread({ thread, isSelected }: Props) {
+export default function Thread({ thread, isSelected, revalidate }: Props) {
   // TODO: consider other cases
   if (!AppBskyFeedGetPostThread.isThreadViewPost(thread)) return null;
+
   return (
     <>
-      {thread.parent && <Thread thread={thread.parent} />}
+      {thread.parent && (
+        <Thread thread={thread.parent} revalidate={revalidate} />
+      )}
       <Post
         data={thread}
         isLink={!isSelected}
+        revalidate={revalidate}
         className={clsx(styles.post, { [styles.selected]: isSelected })}
       />
       {thread.replies?.map((reply) => (
-        <Thread thread={reply} key={thread.post.uri as string} />
+        <Thread
+          thread={reply}
+          revalidate={revalidate}
+          key={thread.post.uri as string}
+        />
       ))}
     </>
   );

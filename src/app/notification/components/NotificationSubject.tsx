@@ -12,22 +12,32 @@ type Props = {
   uri: string;
   reason: Reason;
   isSubject: boolean;
+  revalidate: () => void;
 };
 
-export default function NotificationPost({ uri, reason, isSubject }: Props) {
+export default function NotificationPost({
+  uri,
+  reason,
+  isSubject,
+  revalidate,
+}: Props) {
   const { data } = usePostSingleQuery({ uri: uri });
   if (!data) return null;
+
+  const postElem = <Post data={data} revalidate={revalidate} />;
+  const simplePostElm = <SimplePost post={data.post} />;
+
   switch (reason) {
     case "mention":
-      return isSubject ? <SimplePost post={data.post} /> : <Post data={data} />;
+      return isSubject ? simplePostElm : postElem;
     case "reply":
-      return isSubject ? null : <Post data={data} />;
+      return isSubject ? null : postElem;
     case "repost":
-      return <SimplePost post={data.post} />;
     case "vote":
-      return <SimplePost post={data.post} />;
+      // always subject
+      return simplePostElm;
   }
-  return <Post data={data} />;
+  return postElem;
 }
 
 function SimplePost({ post }: { post: AppBskyFeedPost.View }) {

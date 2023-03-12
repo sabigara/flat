@@ -1,3 +1,13 @@
 .container {
   padding-block-end: 6rem;
 }
+
+.notFound {
+  padding-block: 1rem;
+
+  a {
+    display: inline-block;
+    text-decoration: underline;
+    margin-block-start: 1rem;
+  }
+}

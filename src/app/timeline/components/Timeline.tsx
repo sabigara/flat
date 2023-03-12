@@ -47,6 +47,7 @@ export function Timeline<K extends QueryKey>({
     isFetching,
     fetchNextPage,
     hasNextPage,
+    refetch,
   } = useInfiniteQuery({
     queryKey,
     queryFn,
@@ -122,6 +123,7 @@ export function Timeline<K extends QueryKey>({
             <Post
               data={item}
               key={feedItemToUniqueKey(item)}
+              revalidate={refetch}
               className={styles.post}
             />
           ))}

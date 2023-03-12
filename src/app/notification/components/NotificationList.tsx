@@ -13,7 +13,7 @@ import styles from "./NotificationList.module.scss";
 export default function NotificationList() {
   const queryClient = useQueryClient();
   const mounted = React.useRef(false);
-  const { data, status, error } = useInfiniteQuery({
+  const { data, status, error, refetch } = useInfiniteQuery({
     queryKey: queryKeys.notifications.$,
     async queryFn({ pageParam }) {
       const resp = await bsky.notification.list({
@@ -52,7 +52,7 @@ export default function NotificationList() {
           key={`${item.uri}:${item.reason}:${item.isRead}`}
           className={styles.item}
         >
-          <Notification notification={item} />
+          <Notification notification={item} revalidate={refetch} />
         </li>
       ))}
     </ul>
