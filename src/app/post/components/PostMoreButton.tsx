@@ -63,7 +63,7 @@ export default function PostMoreButton({
 
   return (
     <Menu as="div" className={styles.menu}>
-      <Menu.Button ref={reference} onClick={(e) => e.stopPropagation()}>
+      <Menu.Button as={React.Fragment} ref={reference}>
         {button}
       </Menu.Button>
       <Menu.Items

@@ -208,12 +208,15 @@ export default function Post({
                 <PostMoreButton
                   myProfile={account?.profile}
                   button={
-                    <span className={styles.reaction}>
+                    <button
+                      className={styles.reaction}
+                      onClick={(e) => e.stopPropagation()}
+                    >
                       <input type="hidden" name="type" />
                       <span className={styles.reaction__icon}>
                         <TbDots />
                       </span>
-                    </span>
+                    </button>
                   }
                   post={post}
                   revalidate={revalidate}

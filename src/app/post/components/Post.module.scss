@@ -100,14 +100,18 @@
 }
 
 .reaction {
+  $padX: 1em;
+  $padY: 0.2em;
   display: flex;
   gap: 0.5em;
   align-items: center;
   color: var(--cmm-color-font-subtle);
   font-size: var(--cmm-font-size-sm);
   width: fit-content;
-  padding: 0.2em 0.75em;
-  margin: 0 0 -0.2em -0.75em;
+  min-width: 3rem;
+  height: 100%;
+  padding: $padY $padX;
+  margin: 0 0 -$padY -$padX;
 
   &:where(:hover, :focus-visible):not(.reacted) {
     color: var(--cmm-color-font-base);
