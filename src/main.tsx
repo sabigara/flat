@@ -8,9 +8,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "@camome/system/dist/theme.css";
 import "@/src/styles/globals.scss";
 
-import * as Root from "@/src/app/RootRoute";
-import * as RootLayout from "@/src/app/RootRoute/RooteRouteLayout";
+import * as RootLayout from "@/src/app/RootRoute/RootRoute";
 import * as About from "@/src/app/about/AboutRoute";
+import * as HomeTimelineRoute from "@/src/app/account/HomeTimelineRoute";
 import * as Login from "@/src/app/account/LoginRoute";
 import * as Settings from "@/src/app/account/SettingsRoute";
 import * as Notifications from "@/src/app/notification/NotificationsRoute";
@@ -29,7 +29,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        ...Root,
+        ...HomeTimelineRoute,
       },
       {
         path: "/settings",

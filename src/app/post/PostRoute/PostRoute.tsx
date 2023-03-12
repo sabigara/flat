@@ -3,7 +3,7 @@ import { useLoaderData, useOutletContext } from "react-router-dom";
 
 import type { PostRouteLoaderResult } from "@/src/app/post/PostRoute";
 
-import { RootContext } from "@/src/app/RootRoute/RooteRouteLayout";
+import { RootContext } from "@/src/app/RootRoute/RootRoute";
 import Thread from "@/src/components/post/Thread";
 import { toUsername } from "@/src/lib/atp/user";
 import Seo from "@/src/seo/Seo";

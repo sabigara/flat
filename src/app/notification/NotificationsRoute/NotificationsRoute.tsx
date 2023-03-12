@@ -1,6 +1,6 @@
 import { useOutletContext } from "react-router-dom";
 
-import { RootContext } from "@/src/app/RootRoute/RooteRouteLayout";
+import { RootContext } from "@/src/app/RootRoute/RootRoute";
 import NotificationList from "@/src/components/notification/NotificationList";
 import Seo from "@/src/seo/Seo";
 

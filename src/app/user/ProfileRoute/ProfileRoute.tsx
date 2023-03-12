@@ -12,7 +12,7 @@ import {
 
 import type { ProfileRouteLoaderResult } from "@/src/app/user/ProfileRoute";
 
-import { RootContext } from "@/src/app/RootRoute/RooteRouteLayout";
+import { RootContext } from "@/src/app/RootRoute/RootRoute";
 import Avatar from "@/src/components/Avatar";
 import { Feed, FeedQueryFn } from "@/src/components/Feed";
 import Prose from "@/src/components/Prose";

@@ -1,42 +1,131 @@
+import {
+  AtpSessionData,
+  AppBskyActorProfile,
+  AppBskyFeedFeedViewPost,
+} from "@atproto/api";
 import React from "react";
-import { useOutletContext } from "react-router-dom";
+import {
+  LoaderFunction,
+  Outlet,
+  redirect,
+  useLoaderData,
+  ScrollRestoration,
+  useLocation,
+} from "react-router-dom";
 
-import { RootContext } from "@/src/app/RootRoute/RooteRouteLayout";
-import { Feed, FeedQueryFn } from "@/src/components/Feed";
-import { bsky } from "@/src/lib/atp/atp";
-import { queryKeys } from "@/src/lib/queries/queriesKeys";
-import Seo from "@/src/seo/Seo";
+import Header from "@/src/components/Header";
+import PostComposer from "@/src/components/post/PostComposer";
+import { atp, bsky } from "@/src/lib/atp/atp";
+import { feedItemToUniqueKey } from "@/src/lib/atp/post";
+import { storageKeys } from "@/src/lib/storage";
+import { getTheme, Theme, useTheme } from "@/src/lib/theme";
 
 import styles from "./RootRoute.module.scss";
 
+export const loader = (async () => {
+  let theme: Theme = "system";
+  if (!atp.hasSession) {
+    const sessionStr = localStorage.getItem(storageKeys.session.$);
+    if (!sessionStr) return redirect("/login");
+    const session = JSON.parse(sessionStr) as AtpSessionData;
+    await atp.resumeSession(session);
+    theme = getTheme();
+  }
+  const resp = await bsky.actor.getProfile({
+    actor: atp.session!.handle,
+  });
+  return { myProfile: resp.data, theme };
+}) satisfies LoaderFunction;
+
+export const element = <RootRoute />;
+
+const composeButtonHideRoutes = [
+  "/settings",
+  "/about",
+  "/notifications",
+  /^\/[^/]*\/(followers|following)/,
+];
+
 export function RootRoute() {
-  const { composer } = useOutletContext<RootContext>();
-  const queryKey = queryKeys.feed.home.$;
-  const queryFn: FeedQueryFn<typeof queryKey> = async ({ pageParam }) => {
-    const resp = await bsky.feed.getTimeline({
-      limit: 25,
-      // passing `undefined` breaks the query somehow
-      ...(pageParam ? { before: pageParam.cursor } : {}),
-    });
-    // TODO: ?????
-    if (!resp.success) throw new Error("Fetch error");
-    return resp.data;
+  // TODO: can't use ReturnType as the loader is returning `redirect()`
+  const { myProfile, theme: loadedTheme } = useLoaderData() as {
+    myProfile: AppBskyActorProfile.View;
+    theme: Theme;
   };
-  const fetchLatest = React.useCallback(
-    async () => (await bsky.feed.getTimeline({ limit: 1 })).data.feed[0],
-    []
-  );
+  const { setTheme, theme, resolvedTheme } = useTheme(loadedTheme);
+  const [composerOpen, setComposerOpen] = React.useState(false);
+  const [replyTarget, setReplyTarget] =
+    React.useState<AppBskyFeedFeedViewPost.Main>();
+  const location = useLocation();
+
+  const appContext: RootContext = {
+    myProfile,
+    theme: {
+      value: theme,
+      set: setTheme,
+    },
+    composer: {
+      open: composerOpen,
+      setOpen: setComposerOpen,
+      replyTarget,
+      setReplyTarget,
+      handleClickCompose: () => {
+        setReplyTarget(undefined);
+        setComposerOpen(true);
+      },
+      handleClickReply: (feedItem) => {
+        setReplyTarget(feedItem);
+        setComposerOpen(true);
+      },
+    },
+  };
+
+  React.useLayoutEffect(() => {
+    window.document.documentElement.dataset.theme = resolvedTheme;
+  }, [resolvedTheme]);
+
   return (
     <>
-      <Seo title="Flat" />
+      <ScrollRestoration />
       <div className={styles.container}>
-        <Feed
-          queryKey={queryKey}
-          queryFn={queryFn}
-          fetchLatestOne={fetchLatest}
-          onClickReply={composer.handleClickReply}
-        />
+        <Header myProfile={myProfile} />
+        <main>
+          <PostComposer
+            myProfile={appContext.myProfile}
+            open={appContext.composer.open}
+            setOpen={appContext.composer.setOpen}
+            onClickCompose={appContext.composer.handleClickCompose}
+            replyTarget={appContext.composer.replyTarget}
+            showButton={
+              !composeButtonHideRoutes.some((path) =>
+                location.pathname.match(path)
+              )
+            }
+            // keep it's internal state until replyTarget changes or removed.
+            key={
+              appContext.composer.replyTarget &&
+              feedItemToUniqueKey(appContext.composer.replyTarget)
+            }
+          />
+          <Outlet context={appContext} />
+        </main>
       </div>
     </>
   );
 }
+
+export type RootContext = {
+  myProfile: AppBskyActorProfile.View;
+  theme: {
+    value: Theme;
+    set: (theme: Theme) => void;
+  };
+  composer: {
+    open: boolean;
+    setOpen: (val: boolean) => void;
+    replyTarget?: AppBskyFeedFeedViewPost.Main;
+    setReplyTarget: (feedItem: RootContext["composer"]["replyTarget"]) => void;
+    handleClickCompose: () => void;
+    handleClickReply: RootContext["composer"]["setReplyTarget"];
+  };
+};
