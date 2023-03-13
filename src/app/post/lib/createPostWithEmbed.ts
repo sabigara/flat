@@ -27,20 +27,30 @@ export async function createPostWithEmbed({
   replyTarget,
   quoteTarget,
 }: Params) {
-  const recordEmbed = quoteTarget ? embedRecord(quoteTarget) : undefined;
-  const imgResults = images.length ? await uploadImageBulk(images) : undefined;
-  const imgEmbed =
-    imgResults && imgResults?.length ? embedImages(imgResults) : undefined;
   return bsky.feed.post.create(
     { did: myProfile.did },
     {
       text,
       entities: postTextToEntities(text),
       reply: replyTarget ? postToReply(replyTarget) : undefined,
-      embed: recordEmbed ?? imgEmbed,
+      embed: await getEmbed({ images, quoteTarget }),
       createdAt: new Date().toISOString(),
     }
   );
+}
+
+async function getEmbed({
+  images,
+  quoteTarget,
+}: Pick<Params, "images" | "quoteTarget">) {
+  if (quoteTarget) {
+    return embedRecord(quoteTarget);
+  } else if (images.length) {
+    const res = await uploadImageBulk(images);
+    return res.length ? embedImages(res) : undefined;
+  } else {
+    return undefined;
+  }
 }
 
 const uploadImageBulk = async (images: File[]) => {

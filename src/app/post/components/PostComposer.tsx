@@ -62,8 +62,8 @@ export default function PostComposer({
   const [imagePreviewContainer, setPreviewContainer] =
     React.useState<HTMLDivElement | null>(null);
 
-  const { mutate, isLoading } = useMutation(
-    async (params: PostMutateParams) => {
+  const { mutate, isLoading } = useMutation({
+    async mutationFn(params: PostMutateParams) {
       await createPostWithEmbed({
         ...params,
         images: params.images
@@ -71,26 +71,21 @@ export default function PostComposer({
           .filter((file) => !!file) as File[],
       });
     },
-    {
-      onSuccess() {
-        setText("");
-        setImages([]);
-        setComposer((curr) => ({
-          ...curr,
-          quoteTarget: undefined,
-          replyTarget: undefined,
-        }));
-        setOpen(false);
-        revalidate?.();
-      },
-    }
-  );
+    onSuccess() {
+      setText("");
+      setImages([]);
+      setComposer((curr) => ({
+        ...curr,
+        quoteTarget: undefined,
+        replyTarget: undefined,
+      }));
+      setOpen(false);
+      revalidate?.();
+    },
+  });
 
-  const handleKeyDown: React.KeyboardEventHandler<HTMLTextAreaElement> = (
-    e
-  ) => {
-    if (!(isModKey(e.nativeEvent) && e.key === "Enter")) return;
-    if (!account || !isTextValid || isLoading) return;
+  const handleClickSubmit = () => {
+    if (!account) return;
     mutate({
       text,
       images,
@@ -98,6 +93,14 @@ export default function PostComposer({
       replyTarget,
       quoteTarget,
     });
+  };
+
+  const handleKeyDown: React.KeyboardEventHandler<HTMLTextAreaElement> = (
+    e
+  ) => {
+    if (!(isModKey(e.nativeEvent) && e.key === "Enter")) return;
+    if (!isTextValid || isLoading) return;
+    handleClickSubmit();
   };
 
   const handleImagePickerError: ImagePickerProps["onError"] = (errors) => {
@@ -202,12 +205,7 @@ export default function PostComposer({
                 やめる
               </Button>
               <Button
-                onClick={() =>
-                  void (
-                    account &&
-                    mutate({ text, images, myProfile: account?.profile })
-                  )
-                }
+                onClick={handleClickSubmit}
                 disabled={!isTextValid || isLoading}
                 size="sm"
                 startDecorator={isLoading ? <Spinner size="sm" /> : undefined}
