@@ -70,7 +70,8 @@ export default function PostMoreButton({
     moreActions.push({
       label: "投稿を削除",
       icon: <TbTrash />,
-      onClick: () => deleteMutation({ post }),
+      onClick: () =>
+        window.confirm("削除してよろしいですか？") && deleteMutation({ post }),
       danger: true,
     });
   }
