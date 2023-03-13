@@ -9,6 +9,12 @@ type Props = {
 };
 
 export default function EmbeddedExternal({ external, className }: Props) {
+  let hostname = "";
+  try {
+    hostname = new URL(external.uri).hostname;
+  } catch (e) {
+    console.error(e);
+  }
   return (
     <article className={clsx(styles.container, className)}>
       <a
@@ -27,9 +33,7 @@ export default function EmbeddedExternal({ external, className }: Props) {
             src={`https://www.google.com/s2/favicons?sz=32&domain_url=${external.uri}`}
           />
         </span>
-        <span className={clsx(styles.host__text)}>
-          {new URL(external.uri).hostname}
-        </span>
+        <span className={clsx(styles.host__text)}>{hostname}</span>
       </div>
     </article>
   );
