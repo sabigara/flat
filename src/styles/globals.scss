@@ -79,11 +79,11 @@ body {
 }
 
 .toast {
-  background: var(--cmm-color-surface-0);
-  color: var(--cmm-color-font-base);
-  border: 1px solid var(--cmm-color-border-base);
+  background: var(--cmm-color-surface-0) !important;
+  color: var(--cmm-color-font-base) !important;
+  border: 1px solid var(--cmm-color-border-base) !important;
 
   [data-theme="dark"] & {
-    background: var(--cmm-color-surface-2);
+    background: var(--cmm-color-surface-2) !important;
   }
 }
