@@ -7,8 +7,9 @@ import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import React from "react";
 import { toast } from "react-hot-toast";
-import { TbTrash } from "react-icons/tb";
+import { TbTrash, TbQuote } from "react-icons/tb";
 
+import { usePostComposer } from "@/src/app/post/hooks/usePostComposer";
 import { bsky } from "@/src/lib/atp";
 
 import styles from "./PostMoreButton.module.scss";
@@ -26,13 +27,14 @@ export default function PostMoreButton({
   button,
   revalidate,
 }: Props) {
+  const { handleClickQuote } = usePostComposer();
   const toastRef = React.useRef<string>();
   const { x, y, reference, floating, strategy } = useFloating({
     placement: "bottom-end",
     middleware: [offset(8), flip()],
   });
 
-  const { mutate } = useMutation({
+  const { mutate: deleteMutation } = useMutation({
     async mutationFn({ post }: { post: AppBskyFeedPost.View }) {
       const { host, rkey } = new AtUri(post.uri);
       await bsky.feed.post.delete({ did: host, rkey });
@@ -51,23 +53,29 @@ export default function PostMoreButton({
     },
   });
 
-  const actions: {
+  const moreActions: {
     label: string;
     icon: React.ReactNode;
     onClick: () => void;
     danger?: boolean;
   }[] = [];
 
+  moreActions.push({
+    label: "投稿を引用",
+    icon: <TbQuote />,
+    onClick: () => handleClickQuote(post),
+  });
+
   if (myProfile && post.author.did === myProfile.did) {
-    actions.push({
+    moreActions.push({
       label: "投稿を削除",
       icon: <TbTrash />,
-      onClick: () => mutate({ post }),
+      onClick: () => deleteMutation({ post }),
       danger: true,
     });
   }
 
-  if (actions.length === 0) return null;
+  if (moreActions.length === 0) return null;
 
   return (
     <Menu as="div" className={styles.menu}>
@@ -83,7 +91,7 @@ export default function PostMoreButton({
           left: x ?? 0,
         }}
       >
-        {actions.map(({ label, icon, onClick, danger }) => (
+        {moreActions.map(({ label, icon, onClick, danger }) => (
           <Menu.Item key={label} as={React.Fragment}>
             {({ active, disabled }) => (
               <button
