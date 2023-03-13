@@ -43,6 +43,22 @@ export function AboutRoute() {
             <a href="https://github.com/sabigara/flat/issues/5">roadmap</a> to
             know if your problem is already under consideration.
           </Message>
+          <h2>Support</h2>
+          <p>
+            If you like Flat, please consider supporting the development by
+            donation.
+          </p>
+          <a
+            href="https://www.buymeacoffee.com/sabigara"
+            target="_blank"
+            rel="noreferrer"
+            className={styles.buyMeACoffee}
+          >
+            <img
+              src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
+              alt="Buy Me A Coffee"
+            />
+          </a>
           <h2>Links</h2>
           <ul>
             <li>

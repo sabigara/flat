@@ -13,3 +13,10 @@
 .markup {
   margin-block-start: 1rem;
 }
+
+.buyMeACoffee {
+  img {
+    border-radius: var(--cmm-radius-full);
+    height: 3rem;
+  }
+}
