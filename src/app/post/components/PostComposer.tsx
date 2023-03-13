@@ -1,46 +1,44 @@
-import { AppBskyActorProfile } from "@atproto/api";
+import {
+  AppBskyActorProfile,
+  AppBskyFeedFeedViewPost,
+  AppBskyFeedPost,
+} from "@atproto/api";
 import { Button } from "@camome/core/Button";
 import { Spinner } from "@camome/core/Spinner";
 import { Textarea } from "@camome/core/Textarea";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import React from "react";
 import { toast } from "react-hot-toast";
 import { TbPencilPlus } from "react-icons/tb";
 
 import { useAccountQuery } from "@/src/app/account/hooks/useAccountQuery";
-import { compressImage } from "@/src/app/content/image/lib/compressImage";
-import { uploadImage } from "@/src/app/content/image/lib/uploadImage";
 import ImagePicker, {
   ImagePickerProps,
   SelectedImage,
 } from "@/src/app/post/components/ImagePicker";
 import Post from "@/src/app/post/components/Post";
+import EmbeddedRecord from "@/src/app/post/components/embed/EmbeddedRecord";
 import { usePostComposer } from "@/src/app/post/hooks/usePostComposer";
-import { embedImages } from "@/src/app/post/lib/embedImages";
-import { postTextToEntities } from "@/src/app/post/lib/postTextToEntities";
-import { postToReply } from "@/src/app/post/lib/postToReply";
+import { createPostWithEmbed } from "@/src/app/post/lib/createPostWithEmbed";
 import Avatar from "@/src/app/user/components/Avatar";
 import Dialog from "@/src/components/Dialog";
-import { bsky } from "@/src/lib/atp";
 import { isModKey } from "@/src/lib/keybindings";
 import { isIPhone } from "@/src/lib/platform";
 
 import styles from "./PostComposer.module.scss";
 
+type PostMutateParams = {
+  text: string;
+  images: SelectedImage[];
+  myProfile: AppBskyActorProfile.View;
+  replyTarget?: AppBskyFeedFeedViewPost.Main;
+  quoteTarget?: AppBskyFeedPost.View;
+};
+
 export type PostComposerProps = {
   showButton?: boolean;
   revalidate?: () => void;
-};
-
-const uploadImageBulk = async (images: SelectedImage[]) => {
-  const results: { cid: string; mimetype: string }[] = [];
-  for (const img of images) {
-    if (!img.file) continue;
-    const res = await uploadImage(await compressImage(img.file));
-    results.push(res);
-  }
-  return results;
 };
 
 export default function PostComposer({
@@ -48,9 +46,15 @@ export default function PostComposer({
   revalidate,
 }: PostComposerProps) {
   const { data: account } = useAccountQuery();
-  const { open, replyTarget, handleClickCompose, set } = usePostComposer();
+  const {
+    open,
+    replyTarget,
+    quoteTarget,
+    handleClickCompose,
+    set: setComposer,
+  } = usePostComposer();
   const setOpen = (val: boolean) =>
-    void set((curr) => ({ ...curr, open: val }));
+    void setComposer((curr) => ({ ...curr, open: val }));
   const [text, setText] = React.useState("");
   const [images, setImages] = React.useState<SelectedImage[]>([]);
   // TODO: length
@@ -58,47 +62,45 @@ export default function PostComposer({
   const [imagePreviewContainer, setPreviewContainer] =
     React.useState<HTMLDivElement | null>(null);
 
-  const { mutate, isLoading } = useMutation(
-    async ({
-      images,
-      myProfile,
-    }: {
-      images: SelectedImage[];
-      myProfile: AppBskyActorProfile.View;
-    }) => {
-      const imgResults = images.length
-        ? await uploadImageBulk(images)
-        : undefined;
-      await bsky.feed.post.create(
-        { did: myProfile.did },
-        {
-          text,
-          entities: postTextToEntities(text),
-          reply: replyTarget ? postToReply(replyTarget) : undefined,
-          embed:
-            imgResults && imgResults?.length
-              ? embedImages(imgResults)
-              : undefined,
-          createdAt: new Date().toISOString(),
-        }
-      );
+  const { mutate, isLoading } = useMutation({
+    async mutationFn(params: PostMutateParams) {
+      await createPostWithEmbed({
+        ...params,
+        images: params.images
+          .map(({ file }) => file)
+          .filter((file) => !!file) as File[],
+      });
     },
-    {
-      onSuccess() {
-        setText("");
-        setImages([]);
-        setOpen(false);
-        revalidate?.();
-      },
-    }
-  );
+    onSuccess() {
+      setText("");
+      setImages([]);
+      setComposer((curr) => ({
+        ...curr,
+        quoteTarget: undefined,
+        replyTarget: undefined,
+      }));
+      setOpen(false);
+      revalidate?.();
+    },
+  });
+
+  const handleClickSubmit = () => {
+    if (!account) return;
+    mutate({
+      text,
+      images,
+      myProfile: account.profile,
+      replyTarget,
+      quoteTarget,
+    });
+  };
 
   const handleKeyDown: React.KeyboardEventHandler<HTMLTextAreaElement> = (
     e
   ) => {
     if (!(isModKey(e.nativeEvent) && e.key === "Enter")) return;
-    if (!account || !isTextValid || isLoading) return;
-    mutate({ images, myProfile: account.profile });
+    if (!isTextValid || isLoading) return;
+    handleClickSubmit();
   };
 
   const handleImagePickerError: ImagePickerProps["onError"] = (errors) => {
@@ -126,7 +128,7 @@ export default function PostComposer({
   // or not a reply
   React.useEffect(() => {
     setText("");
-  }, [replyTarget]);
+  }, [replyTarget, quoteTarget]);
 
   return (
     <>
@@ -171,19 +173,27 @@ export default function PostComposer({
               autoFocus={isIPhone ? false : true}
             />
           </div>
+          {quoteTarget && (
+            <div className={styles.quoteTarget}>
+              <EmbeddedRecord record={quoteTarget} />
+            </div>
+          )}
           <div
             ref={setPreviewContainer}
             className={styles.imagePreviewContainer}
           />
           <div className={styles.action}>
             <div>
-              <ImagePicker
-                images={images}
-                onChange={setImages}
-                onError={handleImagePickerError}
-                max={4}
-                previewContainer={imagePreviewContainer}
-              />
+              {/* a post can have a embedded content */}
+              {!quoteTarget && (
+                <ImagePicker
+                  images={images}
+                  onChange={setImages}
+                  onError={handleImagePickerError}
+                  max={4}
+                  previewContainer={imagePreviewContainer}
+                />
+              )}
             </div>
             <div className={styles.postBtnWrap}>
               <Button
@@ -195,11 +205,7 @@ export default function PostComposer({
                 やめる
               </Button>
               <Button
-                onClick={() =>
-                  void (
-                    account && mutate({ images, myProfile: account?.profile })
-                  )
-                }
+                onClick={handleClickSubmit}
                 disabled={!isTextValid || isLoading}
                 size="sm"
                 startDecorator={isLoading ? <Spinner size="sm" /> : undefined}
