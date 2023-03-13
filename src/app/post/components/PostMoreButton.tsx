@@ -7,6 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import React from "react";
 import { toast } from "react-hot-toast";
+import { TbTrash } from "react-icons/tb";
 
 import { bsky } from "@/src/lib/atp";
 
@@ -50,12 +51,19 @@ export default function PostMoreButton({
     },
   });
 
-  const actions: { label: string; onClick: () => void }[] = [];
+  const actions: {
+    label: string;
+    icon: React.ReactNode;
+    onClick: () => void;
+    danger?: boolean;
+  }[] = [];
 
   if (myProfile && post.author.did === myProfile.did) {
     actions.push({
-      label: "削除",
+      label: "投稿を削除",
+      icon: <TbTrash />,
       onClick: () => mutate({ post }),
+      danger: true,
     });
   }
 
@@ -75,7 +83,7 @@ export default function PostMoreButton({
           left: x ?? 0,
         }}
       >
-        {actions.map(({ label, onClick }) => (
+        {actions.map(({ label, icon, onClick, danger }) => (
           <Menu.Item key={label} as={React.Fragment}>
             {({ active, disabled }) => (
               <button
@@ -85,12 +93,14 @@ export default function PostMoreButton({
                 }}
                 className={clsx(
                   menuClassNames.item,
-                  styles.link,
+                  styles.menu__item,
                   active && menuClassNames.itemActive,
-                  disabled && menuClassNames.itemDisabled
+                  disabled && menuClassNames.itemDisabled,
+                  danger && styles.danger
                 )}
               >
-                {label}
+                <span>{icon}</span>
+                <span>{label}</span>
               </button>
             )}
           </Menu.Item>

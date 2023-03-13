@@ -7,4 +7,10 @@
   &__items {
     z-index: 50;
   }
+
+  &__item {
+    &.danger {
+      color: var(--cmm-color-danger-emphasis);
+    }
+  }
 }
