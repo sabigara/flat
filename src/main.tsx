@@ -72,7 +72,11 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <QueryClientProvider client={queryClient}>
       <HelmetProvider>
         <Seo {...defaultSeo} />
-        <Toaster />
+        <Toaster
+          toastOptions={{
+            className: "toast",
+          }}
+        />
         <RouterProvider router={router} />
       </HelmetProvider>
     </QueryClientProvider>

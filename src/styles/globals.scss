@@ -77,3 +77,13 @@ body {
     cursor: inherit;
   }
 }
+
+.toast {
+  background: var(--cmm-color-surface-0);
+  color: var(--cmm-color-font-base);
+  border: 1px solid var(--cmm-color-border-base);
+
+  [data-theme="dark"] & {
+    background: var(--cmm-color-surface-2);
+  }
+}
