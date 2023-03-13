@@ -27,6 +27,7 @@
     "compressorjs": "^1.2.1",
     "date-fns": "^2.29.3",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "jotai": "^2.0.3",
     "linkify-plugin-mention": "^4.1.0",
     "linkify-react": "^4.1.0",
     "linkifyjs": "^4.1.0",

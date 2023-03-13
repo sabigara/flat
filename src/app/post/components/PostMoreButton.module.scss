@@ -1,0 +1,10 @@
+.menu {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  height: 100%;
+
+  &__items {
+    z-index: 50;
+  }
+}

@@ -27,6 +27,7 @@ specifiers:
   eslint-plugin-import: ^2.27.5
   eslint-plugin-react: ^7.32.2
   eslint-plugin-react-hooks: ^4.6.0
+  jotai: ^2.0.3
   linkify-plugin-mention: ^4.1.0
   linkify-react: ^4.1.0
   linkifyjs: ^4.1.0
@@ -65,6 +66,7 @@ dependencies:
   compressorjs: 1.2.1
   date-fns: 2.29.3
   eslint-plugin-react-hooks: 4.6.0_eslint@8.35.0
+  jotai: 2.0.3_react@18.2.0
   linkify-plugin-mention: 4.1.0_linkifyjs@4.1.0
   linkify-react: 4.1.0_w5fbl633f7mujs73uwm6v5bhhm
   linkifyjs: 4.1.0
@@ -3609,6 +3611,18 @@ packages:
       merge-stream: 2.0.0
       supports-color: 7.2.0
     dev: true
+
+  /jotai/2.0.3_react@18.2.0:
+    resolution: {integrity: sha512-MMjhSPAL3RoeZD9WbObufRT2quThEAEknHHridf2ma8Ml7ZVQmUiHk0ssdbR3F0h3kcwhYqSGJ59OjhPge7RRg==}
+    engines: {node: '>=12.20.0'}
+    peerDependencies:
+      react: '>=17.0.0'
+    peerDependenciesMeta:
+      react:
+        optional: true
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /js-sdsl/4.3.0:
     resolution: {integrity: sha512-mifzlm2+5nZ+lEcLJMoBK0/IH/bDg8XnJfd/Wq6IP+xoCjLZsTOnV2QpxlVbX9bMnkl5PdEjNtBJ9Cj1NjifhQ==}
