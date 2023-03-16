@@ -74,7 +74,7 @@ export function Timeline<K extends QueryKey>({
       return new Date(latest.post.indexedAt).getTime() > latestDate.getTime();
     },
     {
-      refetchInterval: 30 * 1000, // 30 seconds
+      refetchInterval: 15 * 1000, // 15 seconds; the same as the official web app
       refetchOnWindowFocus: import.meta.env.PROD,
     }
   );
