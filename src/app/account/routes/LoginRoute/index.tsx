@@ -1,6 +1,6 @@
 import { Button } from "@camome/core/Button";
+import { Input } from "@camome/core/Input";
 import { Spinner } from "@camome/core/Spinner";
-import { TextInput } from "@camome/core/TextInput";
 import {
   ActionFunction,
   Form,
@@ -52,14 +52,14 @@ function LoginRoute() {
         <span className={styles.logo__text}>Flat</span>
       </div>
       <Form method="post" className={styles.form}>
-        <TextInput
+        <Input
           label="Identifier (handle or email)"
           name="identifier"
           type="text"
           placeholder="you.bsky.social"
           required
         />
-        <TextInput label="Password" name="password" type="password" required />
+        <Input label="Password" name="password" type="password" required />
         <Button
           type="submit"
           disabled={state === "submitting"}

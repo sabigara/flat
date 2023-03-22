@@ -3,7 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@atproto/api': ^0.1.3
   '@atproto/uri': ^0.0.1
-  '@camome/core': ^0.0.28
+  '@camome/core': ^0.0.29
   '@camome/system': ^0.1.24
   '@camome/utils': ^0.1.10
   '@floating-ui/react': ^0.20.1
@@ -55,7 +55,7 @@ specifiers:
 dependencies:
   '@atproto/api': 0.1.3
   '@atproto/uri': 0.0.1
-  '@camome/core': 0.0.28_react@18.2.0
+  '@camome/core': 0.0.29_react@18.2.0
   '@camome/system': 0.1.24
   '@floating-ui/react': 0.20.1_biqbaboplfbrettd7655fr4n2y
   '@headlessui/react': 1.7.13_biqbaboplfbrettd7655fr4n2y
@@ -1303,8 +1303,8 @@ packages:
       to-fast-properties: 2.0.0
     dev: true
 
-  /@camome/core/0.0.28_react@18.2.0:
-    resolution: {integrity: sha512-G8SZ+7OmVR9ildyxpzdFXjRwVgwyDkikmWhzyo/G8cwbjQfRDsMwgFGwRDsc83Knm3z3tvA46MT/v7thFmzx8A==}
+  /@camome/core/0.0.29_react@18.2.0:
+    resolution: {integrity: sha512-aDJjZ1v1aRqWs2PCR8JT1i28RdU4HKyXU19T1wbQi9Ulimzq7MoSFclPvClMlRwsp7bSB+cvSkR7YajYJ1HWRQ==}
     peerDependencies:
       react: '>=18'
     dependencies:
