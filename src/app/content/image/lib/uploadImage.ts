@@ -16,7 +16,8 @@ export async function uploadImage(blob: Blob) {
       encoding: blob.type,
     }
   );
-  if (!resp.success) throw new Error("Failed to upload image");
+  if (!resp.success || typeof resp.data.cid !== "string")
+    throw new Error("Failed to upload image");
   return {
     cid: resp.data.cid,
     mimetype: blob.type,
