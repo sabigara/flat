@@ -9,7 +9,10 @@ import { Link } from "react-router-dom";
 import styles from "./Avatar.module.scss";
 
 type Props = {
-  profile?: Pick<AppBskyActorProfile.View, "avatar" | "displayName" | "handle">;
+  profile?: Pick<
+    AppBskyActorProfile.Record,
+    "avatar" | "displayName" | "handle"
+  >;
   isLink?: boolean;
   innerRef?: React.Ref<HTMLImageElement | HTMLAnchorElement>;
   stopPropagation?: boolean;
@@ -37,7 +40,9 @@ export default function Avatar({
       {...props}
     >
       <span className={styles.fallback}>
-        {profile?.handle.at(0)?.toUpperCase()}
+        {typeof profile?.handle === "string"
+          ? profile.handle.at(0)?.toUpperCase()
+          : ""}
       </span>
     </CmmAvatar>
   );

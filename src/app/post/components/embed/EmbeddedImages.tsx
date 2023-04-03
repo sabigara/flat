@@ -9,11 +9,11 @@ import "yet-another-react-lightbox/styles.css";
 import styles from "./EmbeddedImages.module.scss";
 
 type Props = {
-  embed: AppBskyEmbedImages.Presented;
+  images: AppBskyEmbedImages.ViewImage[];
   className?: string;
 };
 
-export default function EmbeddedImages({ embed, className }: Props) {
+export default function EmbeddedImages({ images, className }: Props) {
   const [open, setOpen] = React.useState(false);
   const [index, setIndex] = React.useState(0);
   const handleClick = (e: React.MouseEvent, i: number) => {
@@ -28,12 +28,12 @@ export default function EmbeddedImages({ embed, className }: Props) {
     <>
       <div
         className={clsx(styles.container, className, {
-          [styles.two]: embed.images.length === 2,
-          [styles.three]: embed.images.length === 3,
-          [styles.four]: embed.images.length === 4,
+          [styles.two]: images.length === 2,
+          [styles.three]: images.length === 3,
+          [styles.four]: images.length === 4,
         })}
       >
-        {embed.images.map((img, i) => (
+        {images.map((img, i) => (
           <button key={img.thumb} onClick={(e) => handleClick(e, i)}>
             <img src={img.thumb} alt={img.alt} />
           </button>
@@ -48,7 +48,7 @@ export default function EmbeddedImages({ embed, className }: Props) {
               view: handleView,
             }}
             close={() => setOpen(false)}
-            slides={embed.images.map((img) => ({
+            slides={images.map((img) => ({
               src: img.fullsize,
             }))}
             animation={{

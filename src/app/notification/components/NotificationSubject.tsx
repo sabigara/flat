@@ -1,4 +1,8 @@
-import { AppBskyFeedPost, AppBskyNotificationList } from "@atproto/api";
+import {
+  AppBskyFeedDefs,
+  AppBskyFeedPost,
+  AppBskyNotificationListNotifications,
+} from "@atproto/api";
 
 import Post from "@/src/app/post/components/Post";
 import { usePostSingleQuery } from "@/src/app/post/hooks/usePostSingleQuery";
@@ -6,7 +10,7 @@ import Prose from "@/src/components/Prose";
 
 import styles from "./NotificationSubject.module.scss";
 
-type Reason = AppBskyNotificationList.Notification["reason"];
+type Reason = AppBskyNotificationListNotifications.Notification["reason"];
 
 type Props = {
   uri: string;
@@ -33,14 +37,14 @@ export default function NotificationPost({
     case "reply":
       return isSubject ? null : postElem;
     case "repost":
-    case "vote":
+    case "like":
       // always subject
       return simplePostElm;
   }
   return postElem;
 }
 
-function SimplePost({ post }: { post: AppBskyFeedPost.View }) {
+function SimplePost({ post }: { post: AppBskyFeedDefs.PostView }) {
   if (!AppBskyFeedPost.isRecord(post.record)) return null;
 
   return (

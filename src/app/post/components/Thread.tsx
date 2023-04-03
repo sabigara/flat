@@ -1,4 +1,4 @@
-import { AppBskyFeedGetPostThread } from "@atproto/api";
+import { AppBskyFeedDefs } from "@atproto/api";
 import clsx from "clsx";
 
 import Post from "@/src/app/post/components/Post";
@@ -7,8 +7,8 @@ import styles from "./Thread.module.scss";
 
 type Props = {
   thread:
-    | AppBskyFeedGetPostThread.ThreadViewPost
-    | AppBskyFeedGetPostThread.NotFoundPost
+    | AppBskyFeedDefs.ThreadViewPost
+    | AppBskyFeedDefs.NotFoundPost
     | { [k: string]: unknown; $type: string };
   isSelected?: boolean;
   revalidate: () => void;
@@ -16,7 +16,7 @@ type Props = {
 
 export default function Thread({ thread, isSelected, revalidate }: Props) {
   // TODO: consider other cases
-  if (!AppBskyFeedGetPostThread.isThreadViewPost(thread)) return null;
+  if (!AppBskyFeedDefs.isThreadViewPost(thread)) return null;
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { AppBskyFeedGetPostThread, AppBskyFeedPost } from "@atproto/api";
+import { AppBskyFeedDefs, AppBskyFeedPost } from "@atproto/api";
 import { Link, useLoaderData, useRevalidator } from "react-router-dom";
 
 import type { PostRouteLoaderResult } from "@/src/app/post/routes/PostRoute";
@@ -17,7 +17,7 @@ export default function PostRoute() {
   const thread = useLoaderData() as PostRouteLoaderResult;
   const revalidator = useRevalidator();
   // TODO: correct?
-  if (!AppBskyFeedGetPostThread.isThreadViewPost(thread)) {
+  if (!AppBskyFeedDefs.isThreadViewPost(thread)) {
     return (
       <div className={styles.notFound}>
         <p>存在しない投稿です</p>

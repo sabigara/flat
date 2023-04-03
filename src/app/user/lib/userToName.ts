@@ -1,5 +1,5 @@
-import { AppBskyActorRef } from "@atproto/api";
+import { AppBskyActorDefs } from "@atproto/api";
 
-export function userToName(user: AppBskyActorRef.WithInfo): string {
+export function userToName(user: AppBskyActorDefs.ProfileViewDetailed): string {
   return user.displayName || user.handle;
 }

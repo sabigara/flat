@@ -1,4 +1,4 @@
-import { AppBskyActorRef } from "@atproto/api";
+import { AppBskyActorDefs } from "@atproto/api";
 import { Button, ButtonProps } from "@camome/core/Button";
 import { Spinner } from "@camome/core/Spinner";
 import { Tag } from "@camome/core/Tag";
@@ -14,7 +14,7 @@ import { atp } from "@/src/lib/atp";
 import styles from "./UserListItem.module.scss";
 
 type Props = {
-  user: AppBskyActorRef.WithInfo;
+  user: AppBskyActorDefs.ProfileViewDetailed;
   revalidate?: () => void;
   className?: string;
 };
@@ -26,11 +26,8 @@ export default function UserListItem({ user, revalidate, className }: Props) {
       if (!atp.session) return;
       if (isFollow) {
         await followUser({
-          did: atp.session.did,
-          subject: {
-            did: user.did,
-            declarationCid: user.declaration.cid,
-          },
+          repo: atp.session.did,
+          did: user.did,
         });
       } else {
         if (!user.viewer?.following) return;

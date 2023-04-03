@@ -1,4 +1,4 @@
-import { AppBskyFeedFeedViewPost } from "@atproto/api";
+import { AppBskyFeedDefs, AppBskyFeedPost } from "@atproto/api";
 import { Tag } from "@camome/core/Tag";
 import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
@@ -15,13 +15,13 @@ import { usePostComposer } from "@/src/app/post/hooks/usePostComposer";
 import { buildPostUrl } from "@/src/app/post/lib/buildPostUrl";
 import { formatDistanceShort } from "@/src/app/time/lib/time";
 import Avatar from "@/src/app/user/components/Avatar";
-import Prose from "@/src/components/Prose";
+import { RichTextRenderer } from "@/src/components/RichTextRenderer";
 import { atp, bsky } from "@/src/lib/atp";
 
 import styles from "./Post.module.scss";
 
 type Props = {
-  data: AppBskyFeedFeedViewPost.Main;
+  data: AppBskyFeedDefs.FeedViewPost;
   contentOnly?: boolean;
   isLink?: boolean;
   revalidate?: () => void;
@@ -79,13 +79,22 @@ export default function Post({
 
   const { mutate: mutateVote } = useMutation({
     mutationFn: async ({ reacted }: { reacted: boolean }) => {
-      await bsky.feed.setVote({
-        direction: reacted ? "none" : "up",
-        subject: {
-          cid: post.cid,
-          uri: post.uri,
-        },
-      });
+      if (reacted) {
+        // TODO: delete like
+      } else {
+        await bsky.feed.like.create(
+          {
+            repo: post.uri,
+          },
+          {
+            subject: {
+              cid: post.cid,
+              uri: post.uri,
+            },
+            createdAt: new Date().toISOString(),
+          }
+        );
+      }
     },
     onMutate() {
       setUpvoted((curr) => !curr);
@@ -98,7 +107,7 @@ export default function Post({
   const reactions = [
     {
       type: "reply",
-      count: post.replyCount,
+      count: post.replyCount ?? 0,
       icon: <TbMessageCircle2 />,
       iconReacted: <TbMessageCircle2 />,
       "aria-label": `${post.replyCount}件の返信`,
@@ -107,7 +116,7 @@ export default function Post({
     },
     {
       type: "repost",
-      count: post.repostCount + (reposted ? 1 : 0),
+      count: (post.repostCount ?? 0) + (reposted ? 1 : 0),
       icon: <FaRetweet />,
       iconReacted: <FaRetweet style={{ color: "var(--color-repost)" }} />,
       "aria-label": `${post.replyCount}件のリポスト`,
@@ -116,7 +125,7 @@ export default function Post({
     },
     {
       type: "upvote",
-      count: post.upvoteCount + (upvoted ? 1 : 0),
+      count: (post.likeCount ?? 0) + (upvoted ? 1 : 0),
       icon: <TbStar />,
       iconReacted: <TbStarFilled style={{ color: "var(--color-upvote)" }} />,
       "aria-label": `${post.replyCount}件のいいね`,
@@ -143,21 +152,19 @@ export default function Post({
       <Link to={postUrl} className="visually-hidden">
         投稿の詳細
       </Link>
-      {!contentOnly &&
-        reason &&
-        AppBskyFeedFeedViewPost.isReasonRepost(reason) && (
-          <Tag
-            component={Link}
-            to={profileHref(reason.by.handle)}
-            colorScheme="neutral"
-            size="sm"
-            startDecorator={<FaRetweet />}
-            onClick={(e) => e.stopPropagation()}
-            className={styles.repost}
-          >
-            Repost by {reason.by.displayName}
-          </Tag>
-        )}
+      {!contentOnly && reason && AppBskyFeedDefs.isReasonRepost(reason) && (
+        <Tag
+          component={Link}
+          to={profileHref(reason.by.handle)}
+          colorScheme="neutral"
+          size="sm"
+          startDecorator={<FaRetweet />}
+          onClick={(e) => e.stopPropagation()}
+          className={styles.repost}
+        >
+          Repost by {reason.by.displayName}
+        </Tag>
+      )}
       <div className={styles.main}>
         <div className={styles.left}>
           <Avatar
@@ -195,7 +202,9 @@ export default function Post({
                 `@${reply.parent.author.handle}`}
             </Tag>
           )}
-          <Prose className={styles.prose}>{(post.record as any).text}</Prose>
+          {AppBskyFeedPost.isRecord(post.record) && (
+            <RichTextRenderer {...post.record} className={styles.prose} />
+          )}
           {post.embed && <Embed embed={post.embed} className={styles.embed} />}
           {!contentOnly && (
             <ul className={styles.reactionList}>

@@ -1,4 +1,4 @@
-import { AppBskyFeedFeedViewPost } from "@atproto/api";
+import { AppBskyFeedDefs } from "@atproto/api";
 import { QueryKey } from "@tanstack/react-query";
 
 export const queryKeys = {
@@ -16,7 +16,7 @@ export const queryKeys = {
       $: (
         key: QueryKey,
         latestDate: Date | undefined,
-        fetchLatestOne: () => Promise<AppBskyFeedFeedViewPost.Main>
+        fetchLatestOne: () => Promise<AppBskyFeedDefs.FeedViewPost>
       ) => [key, { latestDate, fetchLatestOne }] as const,
     },
   },

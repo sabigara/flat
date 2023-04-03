@@ -1,7 +1,7 @@
-import { AppBskyFeedFeedViewPost, AppBskyFeedPost } from "@atproto/api";
+import { AppBskyFeedDefs, AppBskyFeedPost } from "@atproto/api";
 
 export function postToReply(
-  replyTarget: AppBskyFeedFeedViewPost.Main
+  replyTarget: AppBskyFeedDefs.FeedViewPost
 ): AppBskyFeedPost.ReplyRef {
   const parent = { cid: replyTarget.post.cid, uri: replyTarget.post.uri };
   const root = replyTarget.reply?.root ? replyTarget.reply.root : parent;

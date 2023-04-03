@@ -18,10 +18,10 @@ export default function NotificationList() {
   const { data, status, error, refetch } = useInfiniteQuery({
     queryKey: queryKeys.notifications.$,
     async queryFn({ pageParam }) {
-      const resp = await bsky.notification.list({
+      const resp = await bsky.notification.listNotifications({
         limit: 20,
         // passing `undefined` breaks the query somehow
-        ...(pageParam ? { before: pageParam.cursor } : {}),
+        ...(pageParam ? { cursor: pageParam.cursor } : {}),
       });
       return resp.data;
     },

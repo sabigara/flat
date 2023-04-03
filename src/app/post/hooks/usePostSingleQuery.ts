@@ -1,4 +1,4 @@
-import { AppBskyFeedGetPostThread } from "@atproto/api";
+import { AppBskyFeedDefs } from "@atproto/api";
 import { useQuery } from "@tanstack/react-query";
 
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
@@ -19,8 +19,7 @@ export function usePostSingleQuery({ uri }: Params) {
       });
 
       // TODO: should throw?
-      if (!AppBskyFeedGetPostThread.isThreadViewPost(resp.data.thread))
-        return null;
+      if (!AppBskyFeedDefs.isThreadViewPost(resp.data.thread)) return null;
 
       return resp.data.thread;
     },

@@ -1,23 +1,24 @@
 import {
+  RichText,
   AppBskyActorProfile,
-  AppBskyFeedFeedViewPost,
-  AppBskyFeedPost,
+  AppBskyFeedDefs,
+  AtpAgent,
 } from "@atproto/api";
 
 import { compressImage } from "@/src/app/content/image/lib/compressImage";
 import { uploadImage } from "@/src/app/content/image/lib/uploadImage";
 import { embedImages } from "@/src/app/post/lib/embedImages";
 import { embedRecord } from "@/src/app/post/lib/embedRecord";
-import { postTextToEntities } from "@/src/app/post/lib/postTextToEntities";
 import { postToReply } from "@/src/app/post/lib/postToReply";
 import { bsky } from "@/src/lib/atp";
 
 type Params = {
-  myProfile: AppBskyActorProfile.View;
+  myProfile: AppBskyActorProfile.Record;
   text: string;
   images: File[];
-  replyTarget?: AppBskyFeedFeedViewPost.Main;
-  quoteTarget?: AppBskyFeedPost.View;
+  replyTarget?: AppBskyFeedDefs.FeedViewPost;
+  quoteTarget?: AppBskyFeedDefs.PostView;
+  atp: AtpAgent;
 };
 
 export async function createPostWithEmbed({
@@ -26,12 +27,15 @@ export async function createPostWithEmbed({
   images,
   replyTarget,
   quoteTarget,
+  atp,
 }: Params) {
+  const richText = new RichText({ text });
+  await richText.detectFacets(atp);
   return bsky.feed.post.create(
-    { did: myProfile.did },
+    { repo: myProfile.did },
     {
-      text,
-      entities: postTextToEntities(text),
+      text: richText.text,
+      facets: richText.facets,
       reply: replyTarget ? postToReply(replyTarget) : undefined,
       embed: await getEmbed({ images, quoteTarget }),
       createdAt: new Date().toISOString(),

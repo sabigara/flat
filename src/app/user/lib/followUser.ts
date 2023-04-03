@@ -1,16 +1,10 @@
 import { bsky } from "@/src/lib/atp";
 
-export async function followUser({
-  did,
-  subject,
-}: {
-  did: string;
-  subject: { did: string; declarationCid: string };
-}) {
+export async function followUser({ repo, did }: { repo: string; did: string }) {
   return bsky.graph.follow.create(
-    { did },
+    { repo },
     {
-      subject,
+      subject: did,
       createdAt: new Date().toISOString(),
     }
   );

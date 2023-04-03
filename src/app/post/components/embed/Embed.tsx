@@ -2,6 +2,7 @@ import {
   AppBskyEmbedExternal,
   AppBskyEmbedImages,
   AppBskyEmbedRecord,
+  AppBskyEmbedRecordWithMedia,
 } from "@atproto/api";
 
 import EmbeddedExternal from "@/src/app/post/components/embed/EmbeddedExternal";
@@ -10,9 +11,10 @@ import EmbeddedRecord from "@/src/app/post/components/embed/EmbeddedRecord";
 
 type Props = {
   embed:
-    | AppBskyEmbedExternal.Presented
-    | AppBskyEmbedImages.Presented
-    | AppBskyEmbedRecord.Presented
+    | AppBskyEmbedExternal.View
+    | AppBskyEmbedImages.View
+    | AppBskyEmbedRecord.View
+    | AppBskyEmbedRecordWithMedia.View
     | {
         $type: string;
         [k: string]: unknown;
@@ -21,13 +23,13 @@ type Props = {
 };
 
 export default function Embed({ embed, className }: Props) {
-  if (AppBskyEmbedImages.isPresented(embed)) {
-    return <EmbeddedImages embed={embed} className={className} />;
-    // TODO: also support AppBskyEmbedRecord.isPresentedNotFound ?
-  } else if (AppBskyEmbedRecord.isPresentedRecord(embed.record)) {
-    // ignore the others
+  if (AppBskyEmbedImages.isView(embed)) {
+    return <EmbeddedImages images={embed.images} className={className} />;
+  } else if (AppBskyEmbedRecord.isView(embed)) {
+    // TODO: also support AppBskyEmbedRecord.isViewNotFound?
+    if (!AppBskyEmbedRecord.isViewRecord(embed.record)) return null;
     return <EmbeddedRecord record={embed.record} className={className} />;
-  } else if (AppBskyEmbedExternal.isPresented(embed)) {
+  } else if (AppBskyEmbedExternal.isView(embed)) {
     return <EmbeddedExternal external={embed.external} className={className} />;
   } else {
     return null;

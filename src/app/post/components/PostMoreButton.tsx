@@ -1,4 +1,4 @@
-import { AppBskyActorProfile, AppBskyFeedPost } from "@atproto/api";
+import { AppBskyActorProfile, AppBskyFeedDefs } from "@atproto/api";
 import { AtUri } from "@atproto/uri";
 import { menuClassNames } from "@camome/core/Menu";
 import { useFloating, offset, flip } from "@floating-ui/react";
@@ -15,8 +15,8 @@ import { bsky } from "@/src/lib/atp";
 import styles from "./PostMoreButton.module.scss";
 
 type Props = {
-  myProfile?: AppBskyActorProfile.View;
-  post: AppBskyFeedPost.View;
+  myProfile?: AppBskyActorProfile.Record;
+  post: AppBskyFeedDefs.PostView;
   button: React.ReactNode;
   revalidate?: () => void;
 };
@@ -35,7 +35,7 @@ export default function PostMoreButton({
   });
 
   const { mutate: deleteMutation } = useMutation({
-    async mutationFn({ post }: { post: AppBskyFeedPost.View }) {
+    async mutationFn({ post }: { post: AppBskyFeedDefs.PostView }) {
       const { host, rkey } = new AtUri(post.uri);
       await bsky.feed.post.delete({ did: host, rkey });
     },
