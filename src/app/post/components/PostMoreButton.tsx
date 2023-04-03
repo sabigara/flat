@@ -37,7 +37,7 @@ export default function PostMoreButton({
   const { mutate: deleteMutation } = useMutation({
     async mutationFn({ post }: { post: AppBskyFeedDefs.PostView }) {
       const { host, rkey } = new AtUri(post.uri);
-      await bsky.feed.post.delete({ did: host, rkey });
+      await bsky.feed.post.delete({ repo: host, rkey });
     },
     onMutate() {
       toastRef.current = toast.loading("投稿を削除しています");
@@ -49,6 +49,7 @@ export default function PostMoreButton({
       revalidate?.();
     },
     onSettled() {
+      toast.dismiss(toastRef.current);
       toastRef.current = undefined;
     },
   });
