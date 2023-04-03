@@ -4,6 +4,7 @@ import {
   AppBskyFeedDefs,
   AtpAgent,
 } from "@atproto/api";
+import { type BlobRef } from "@atproto/lexicon";
 
 import { compressImage } from "@/src/app/content/image/lib/compressImage";
 import { uploadImage } from "@/src/app/content/image/lib/uploadImage";
@@ -58,7 +59,7 @@ async function getEmbed({
 }
 
 const uploadImageBulk = async (images: File[]) => {
-  const results: { cid: string; mimetype: string }[] = [];
+  const results: { blobRef: BlobRef }[] = [];
   for (const img of images) {
     if (!img) continue;
     const res = await uploadImage(await compressImage(img));

@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@atproto/api': ^0.2.1
+  '@atproto/lexicon': ^0.1.0
   '@atproto/uri': ^0.0.1
   '@camome/core': ^0.0.29
   '@camome/system': ^0.1.24
@@ -52,6 +53,7 @@ specifiers:
 
 dependencies:
   '@atproto/api': 0.2.1
+  '@atproto/lexicon': 0.1.0
   '@atproto/uri': 0.0.1
   '@camome/core': 0.0.29_react@18.2.0
   '@camome/system': 0.1.24
@@ -142,11 +144,21 @@ packages:
       zod: 3.21.4
     dev: false
 
-  /@atproto/lexicon/0.0.4:
-    resolution: {integrity: sha512-00lqIKJetVlxQzNmEhrFzZeT9k+zGPBsHwtYpG7rH4vZ211i5WiDkmQcBwwFs2g/qCBt+nVq0dlgl3JhCLJXQg==}
+  /@atproto/identifier/0.1.0:
+    resolution: {integrity: sha512-3LV7+4E6S0k8Rru7NBkyDF6Zf6NHVUXVS9d4l9fiXWMC49ghZMjq0vPmz80xjG1rRuFdJFbpRf4ApFciGxLIyQ==}
     dependencies:
+      '@atproto/common-web': 0.1.0
+    dev: false
+
+  /@atproto/lexicon/0.1.0:
+    resolution: {integrity: sha512-Iy+gV9w42xLhrZrmcbZh7VFoHjXuzWvecGHIfz44owNjjv7aE/d2P5BbOX/XicSkmQ8Qkpg0BqwYDD1XBVS+DQ==}
+    dependencies:
+      '@atproto/common-web': 0.1.0
+      '@atproto/identifier': 0.1.0
       '@atproto/nsid': 0.0.1
+      '@atproto/uri': 0.0.1
       iso-datestring-validator: 2.2.2
+      multiformats: 9.9.0
       zod: 3.21.4
     dev: false
 
@@ -161,7 +173,7 @@ packages:
   /@atproto/xrpc/0.0.4:
     resolution: {integrity: sha512-Hxh+GgZx21Zvlb2RMlSlJDd3r3GR0vAS6OOZPW2xzWiVHsetb9ZlFB6D0AeAPj2R+U2UUkmdUR8G3U/nkgnQFA==}
     dependencies:
-      '@atproto/lexicon': 0.0.4
+      '@atproto/lexicon': 0.1.0
       zod: 3.21.4
     dev: false
 

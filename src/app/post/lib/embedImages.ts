@@ -1,16 +1,14 @@
 import { AppBskyEmbedImages } from "@atproto/api";
+import { type BlobRef } from "@atproto/lexicon";
 
 export function embedImages(
-  imgs: { cid: string; mimetype: string }[]
+  imgs: { blobRef: BlobRef }[]
 ): AppBskyEmbedImages.Main {
   return {
     $type: "app.bsky.embed.images",
-    images: imgs.map(({ cid, mimetype }) => ({
+    images: imgs.map(({ blobRef }) => ({
       alt: "",
-      image: {
-        cid,
-        mimeType: mimetype,
-      },
+      image: blobRef,
     })),
   };
 }

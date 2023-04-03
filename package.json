@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@atproto/api": "^0.2.1",
+    "@atproto/lexicon": "^0.1.0",
     "@atproto/uri": "^0.0.1",
     "@camome/core": "^0.0.29",
     "@camome/system": "^0.1.24",
