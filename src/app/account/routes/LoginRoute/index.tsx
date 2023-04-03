@@ -62,15 +62,20 @@ function LoginRoute() {
         <Input label="Password" name="password" type="password" required />
         <Button
           type="submit"
-          disabled={state === "submitting"}
+          disabled
           startDecorator={
             state === "submitting" ? <Spinner size="sm" /> : undefined
           }
         >
           ログイン
         </Button>
+
         <small className={styles.notice}>
-          Flatはまだ開発中です。セキュリティなどに不安を覚える人はログインしないでください。
+          FlatはBlueskyサーバーの破壊的変更に対応中です。数日以内には復旧予定です。
+        </small>
+        <small className={styles.notice}>
+          I&apos;m working on migrating to the new AT Protocol which may take a
+          few days.
         </small>
       </Form>
     </div>
