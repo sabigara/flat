@@ -34,9 +34,8 @@ export default function EmbeddedRecord({ record, className }: Props) {
       onClick={handleClickBackground}
       className={clsx(styles.container, className)}
     >
-      {/* TODO: better link text */}
-      <Link to={postUrl} className="visually-hidden">
-        引用された投稿
+      <Link to={postUrl} className={styles.focusLink}>
+        引用された投稿の詳細
       </Link>
       <div className={styles.header}>
         <div className={styles.avatarWrap}>

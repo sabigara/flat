@@ -1,3 +1,5 @@
+@use "@/mixins";
+
 .container {
   padding: 1rem 1rem;
   background: var(--cmm-color-surface-0);
@@ -140,4 +142,17 @@
 
 .embed {
   margin-block: 1rem;
+}
+
+.focusLink {
+  display: inline-block;
+  margin-block-end: 1rem;
+  padding-inline: 0.5rem;
+  font-size: var(--cmm-font-size-sm);
+  border: 1px solid var(--cmm-color-border-base);
+  border-radius: var(--cmm-radius-sm);
+
+  &:not(:focus-visible) {
+    @include mixins.visuallyHidden;
+  }
 }

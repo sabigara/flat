@@ -4,11 +4,12 @@ import styles from "./PostGraphemeCounter.module.scss";
 
 type Props = {
   length: number;
+  exceedingId?: string;
 };
 
 const MAX = 300 as const;
 
-export function PostGraphemeCounter({ length }: Props) {
+export function PostGraphemeCounter({ length, exceedingId }: Props) {
   const percent = Math.min((length / MAX) * 100, 100);
   const status = (() => {
     if (percent < 80) {
@@ -19,6 +20,7 @@ export function PostGraphemeCounter({ length }: Props) {
       return "danger";
     }
   })();
+  const exceeding = MAX - length;
   return (
     <div
       role="progressbar"
@@ -30,9 +32,13 @@ export function PostGraphemeCounter({ length }: Props) {
         [styles.danger]: status === "danger",
       })}
     >
-      {/* TODO: should be tied to the textarea field for a11y. */}
       {length >= MAX && (
-        <span className={styles.exceeding}>{MAX - length}</span>
+        <div id={exceedingId} className={styles.exceeding}>
+          <span aria-hidden>{exceeding}</span>
+          <span className="visually-hidden">
+            {-exceeding}文字超過しています
+          </span>
+        </div>
       )}
       <svg viewBox="0 0 120 120" className={styles.svg}>
         <circle cx="60" cy="60" r="50" fill="none" className={styles.track} />

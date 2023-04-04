@@ -44,3 +44,16 @@
   margin-block-start: 0.2em;
   font-size: var(--cmm-font-size-sm);
 }
+
+.focusLink {
+  display: inline-block;
+  margin-block-end: 1rem;
+  padding-inline: 0.5rem;
+  font-size: var(--cmm-font-size-sm);
+  border: 1px solid var(--cmm-color-border-base);
+  border-radius: var(--cmm-radius-sm);
+
+  &:not(:focus-visible) {
+    @include mixins.visuallyHidden;
+  }
+}

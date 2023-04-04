@@ -210,8 +210,7 @@ export default function Post({
       className={clsx(styles.container, { [styles.link]: isLink }, className)}
       onClick={isLink ? handleClickBackground : undefined}
     >
-      {/* TODO: show on focus? */}
-      <Link to={postUrl} className="visually-hidden">
+      <Link to={postUrl} className={styles.focusLink}>
         投稿の詳細
       </Link>
       {!contentOnly && reason && isReasonRepost(reason) && (

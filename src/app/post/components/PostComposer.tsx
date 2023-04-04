@@ -58,6 +58,7 @@ export default function PostComposer({
   const rt = new RichText({ text });
   const [imagePreviewContainer, setPreviewContainer] =
     React.useState<HTMLDivElement | null>(null);
+  const exceedingId = React.useId();
 
   const { mutate, isLoading } = useMutation({
     async mutationFn(params: PostMutateParams) {
@@ -166,8 +167,9 @@ export default function PostComposer({
               rows={6}
               fill
               onKeyDown={handleKeyDown}
-              // focusing on textarea breaks scroll position on iPhone🫵
+              // focusing on textarea breaks scroll position on iPhone 🫵
               autoFocus={isIPhone ? false : true}
+              aria-describedby={exceedingId}
             />
           </div>
           {quoteTarget && (
@@ -198,7 +200,10 @@ export default function PostComposer({
               )}
             </div>
             <div className={styles.postBtnWrap}>
-              <PostGraphemeCounter length={rt.graphemeLength} />
+              <PostGraphemeCounter
+                length={rt.graphemeLength}
+                exceedingId={exceedingId}
+              />
               <Button
                 variant="soft"
                 colorScheme="neutral"
