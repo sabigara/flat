@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 
 import Prose from "@/src/components/Prose";
 
+import styles from "./RichTextRenderer.module.scss";
+
 type Props = RichTextProps & {
   className?: string;
 };
@@ -42,8 +44,10 @@ function SegmentToElement({
         target="_blank"
         rel="noopener noreferrer"
         onClick={(e) => void e.stopPropagation()}
+        className={styles.anchor}
       >
-        {segment.text}
+        {/* Strip URL scheme */}
+        {segment.text.replace(/^.*:\/\//, "")}
       </a>
     );
   } else if (segment.isMention() && segment.mention) {
