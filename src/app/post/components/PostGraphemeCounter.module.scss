@@ -1,0 +1,43 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.svg {
+  $size: 1.75rem;
+  width: $size;
+  height: $size;
+  rotate: -90deg;
+  stroke-width: 16;
+}
+
+.track {
+  stroke: var(--cmm-color-primary-soft-bg);
+
+  .warn & {
+    stroke: var(--cmm-color-warn-soft-bg);
+  }
+
+  .danger & {
+    stroke: var(--cmm-color-danger-soft-bg);
+  }
+}
+
+.value {
+  stroke-dasharray: 100;
+  stroke: var(--cmm-color-primary-emphasis);
+
+  .warn & {
+    stroke: var(--cmm-color-warn-emphasis);
+  }
+
+  .danger & {
+    stroke: var(--cmm-color-danger-emphasis);
+  }
+}
+
+.exceeding {
+  font-size: var(--cmm-font-size-md);
+  color: var(--cmm-color-danger-emphasis);
+}

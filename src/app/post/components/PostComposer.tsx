@@ -1,4 +1,4 @@
-import { AppBskyActorDefs, AppBskyFeedDefs } from "@atproto/api";
+import { AppBskyActorDefs, AppBskyFeedDefs, RichText } from "@atproto/api";
 import { Button } from "@camome/core/Button";
 import { Spinner } from "@camome/core/Spinner";
 import { Textarea } from "@camome/core/Textarea";
@@ -14,12 +14,13 @@ import ImagePicker, {
   SelectedImage,
 } from "@/src/app/post/components/ImagePicker";
 import Post from "@/src/app/post/components/Post";
+import { PostGraphemeCounter } from "@/src/app/post/components/PostGraphemeCounter";
 import EmbeddedRecord from "@/src/app/post/components/embed/EmbeddedRecord";
 import { usePostComposer } from "@/src/app/post/hooks/usePostComposer";
 import { createPostWithEmbed } from "@/src/app/post/lib/createPostWithEmbed";
 import Avatar from "@/src/app/user/components/Avatar";
 import Dialog from "@/src/components/Dialog";
-import { atp } from "@/src/lib/atp";
+import { atp, isPostValid } from "@/src/lib/atp";
 import { isModKey } from "@/src/lib/keybindings";
 import { isIPhone } from "@/src/lib/platform";
 
@@ -54,8 +55,7 @@ export default function PostComposer({
     void setComposer((curr) => ({ ...curr, open: val }));
   const [text, setText] = React.useState("");
   const [images, setImages] = React.useState<SelectedImage[]>([]);
-  // TODO: length
-  const isTextValid = !!text.trim();
+  const rt = new RichText({ text });
   const [imagePreviewContainer, setPreviewContainer] =
     React.useState<HTMLDivElement | null>(null);
 
@@ -97,7 +97,7 @@ export default function PostComposer({
     e
   ) => {
     if (!(isModKey(e.nativeEvent) && e.key === "Enter")) return;
-    if (!isTextValid || isLoading) return;
+    if (!isPostValid(rt, images.length) || isLoading) return;
     handleClickSubmit();
   };
 
@@ -122,8 +122,7 @@ export default function PostComposer({
     });
   };
 
-  // keep text as long as referencing to the same reply target
-  // or not a reply
+  // keep text as long as referencing to the same reply target or not a reply
   React.useEffect(() => {
     setText("");
   }, [replyTarget, quoteTarget]);
@@ -199,6 +198,7 @@ export default function PostComposer({
               )}
             </div>
             <div className={styles.postBtnWrap}>
+              <PostGraphemeCounter length={rt.graphemeLength} />
               <Button
                 variant="soft"
                 colorScheme="neutral"
@@ -209,7 +209,7 @@ export default function PostComposer({
               </Button>
               <Button
                 onClick={handleClickSubmit}
-                disabled={!isTextValid || isLoading}
+                disabled={!isPostValid(rt, images.length) || isLoading}
                 size="sm"
                 startDecorator={isLoading ? <Spinner size="sm" /> : undefined}
               >
