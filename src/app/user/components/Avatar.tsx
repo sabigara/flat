@@ -1,4 +1,4 @@
-import { AppBskyActorProfile } from "@atproto/api";
+import { AppBskyActorDefs } from "@atproto/api";
 import {
   Avatar as CmmAvatar,
   type AvatarProps as CmmAvatarProps,
@@ -10,7 +10,7 @@ import styles from "./Avatar.module.scss";
 
 type Props = {
   profile?: Pick<
-    AppBskyActorProfile.Record,
+    AppBskyActorDefs.ProfileViewBasic,
     "avatar" | "displayName" | "handle"
   >;
   isLink?: boolean;

@@ -1,8 +1,8 @@
 import {
   RichText,
-  AppBskyActorProfile,
   AppBskyFeedDefs,
   AtpAgent,
+  AppBskyActorDefs,
 } from "@atproto/api";
 import { type BlobRef } from "@atproto/lexicon";
 
@@ -14,7 +14,7 @@ import { postToReply } from "@/src/app/post/lib/postToReply";
 import { bsky } from "@/src/lib/atp";
 
 type Params = {
-  myProfile: AppBskyActorProfile.Record;
+  myProfile: AppBskyActorDefs.ProfileViewDetailed;
   text: string;
   images: File[];
   replyTarget?: AppBskyFeedDefs.FeedViewPost;

@@ -5,17 +5,18 @@ import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import { bsky } from "@/src/lib/atp";
 
 type Params = {
-  uri: string;
+  uri: string | undefined;
 };
 
-export function usePostSingleQuery({ uri }: Params) {
+export function usePostThreadQuery({ uri }: Params) {
   return useQuery({
     queryKey: queryKeys.posts.single.$({
       uri,
     }),
     async queryFn() {
+      if (!uri) return;
       const resp = await bsky.feed.getPostThread({
-        uri,
+        uri: uri,
       });
 
       // TODO: should throw?
@@ -23,7 +24,6 @@ export function usePostSingleQuery({ uri }: Params) {
 
       return resp.data.thread;
     },
-    staleTime: 60 * 60 * 24 * 1000,
-    cacheTime: 60 * 60 * 24 * 1000,
+    enabled: !!uri,
   });
 }

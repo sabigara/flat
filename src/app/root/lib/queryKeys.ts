@@ -22,10 +22,13 @@ export const queryKeys = {
   },
   posts: {
     single: {
-      $: (params: { uri: string }) => ["posts", params] as const,
+      $: (params: { uri?: string }) => ["posts", params] as const,
     },
   },
   users: {
+    single: {
+      $: (params: { identifier?: string }) => ["users", params] as const,
+    },
     followers: {
       $: (params: { user: string }) => ["users", "followers", params] as const,
     },

@@ -1,4 +1,4 @@
-import { AppBskyActorProfile, AppBskyFeedDefs } from "@atproto/api";
+import { AppBskyActorDefs, AppBskyFeedDefs } from "@atproto/api";
 import { Button } from "@camome/core/Button";
 import { Spinner } from "@camome/core/Spinner";
 import { Textarea } from "@camome/core/Textarea";
@@ -28,7 +28,7 @@ import styles from "./PostComposer.module.scss";
 type PostMutateParams = {
   text: string;
   images: SelectedImage[];
-  myProfile: AppBskyActorProfile.Record;
+  myProfile: AppBskyActorDefs.ProfileViewDetailed;
   replyTarget?: AppBskyFeedDefs.FeedViewPost;
   quoteTarget?: AppBskyFeedDefs.PostView;
 };

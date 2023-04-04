@@ -1,4 +1,4 @@
-import { AppBskyActorProfile, AppBskyFeedDefs } from "@atproto/api";
+import { AppBskyActorDefs, AppBskyFeedDefs } from "@atproto/api";
 import { AtUri } from "@atproto/uri";
 import { menuClassNames } from "@camome/core/Menu";
 import { useFloating, offset, flip } from "@floating-ui/react";
@@ -15,7 +15,7 @@ import { bsky } from "@/src/lib/atp";
 import styles from "./PostMoreButton.module.scss";
 
 type Props = {
-  myProfile?: AppBskyActorProfile.Record;
+  myProfile?: AppBskyActorDefs.ProfileViewDetailed;
   post: AppBskyFeedDefs.PostView;
   button: React.ReactNode;
   revalidate?: () => void;
@@ -48,8 +48,11 @@ export default function PostMoreButton({
       });
       revalidate?.();
     },
-    onSettled() {
+    onError() {
       toast.dismiss(toastRef.current);
+      toast.error("エラーが発生しました");
+    },
+    onSettled() {
       toastRef.current = undefined;
     },
   });
