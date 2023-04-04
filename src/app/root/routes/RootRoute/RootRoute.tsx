@@ -5,6 +5,7 @@ import Header from "@/src/app/root/components/Header";
 import { useTheme } from "@/src/app/theme/hooks/useTheme";
 import { Theme } from "@/src/app/theme/lib/types";
 
+import "@/src/lib/intl-segmenter-polyfill.min.js";
 import styles from "./RootRoute.module.scss";
 
 export function RootRoute() {
