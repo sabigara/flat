@@ -30,11 +30,8 @@ export default function PostRoute() {
   });
   const queryClient = useQueryClient();
 
-  const revalidate = () => {
-    queryClient.invalidateQueries(
-      queryKeys.users.single.$({ identifier: params.handle })
-    );
-    queryClient.invalidateQueries(queryKeys.posts.single.$({ uri: threadUri }));
+  const revalidatePost = () => {
+    queryClient.refetchQueries(queryKeys.posts.single.$({ uri: threadUri }));
   };
 
   const mutatePostCache = ({
@@ -64,12 +61,13 @@ export default function PostRoute() {
         </div>
       );
     }
+    // key shouldn't be required but posts are duplicated only when transitioned by the router.
     return (
       <Thread
         thread={thread}
         isSelected
         key={thread.post.uri}
-        revalidate={revalidate}
+        revalidate={revalidatePost}
         mutatePostCache={mutatePostCache}
       />
     );
@@ -92,11 +90,10 @@ export default function PostRoute() {
         }
       />
       <div className={styles.container}>
-        {/* key shouldn't be required but posts are duplicated only when transitioned by the router. */}
         {content}
         {isLoading && <SpinnerFill />}
       </div>
-      <PostComposer revalidate={revalidate} />
+      <PostComposer revalidate={revalidatePost} />
     </>
   );
 }
