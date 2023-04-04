@@ -10,7 +10,7 @@ import { atp } from "@/src/lib/atp";
   TODO: it accepts image/svg+xml but fails
 */
 export async function uploadImage(blob: Blob) {
-  const resp = await atp.api.com.atproto.blob.upload(
+  const resp = await atp.api.com.atproto.repo.uploadBlob(
     new Uint8Array(await blob.arrayBuffer()),
     {
       encoding: blob.type,
@@ -18,7 +18,6 @@ export async function uploadImage(blob: Blob) {
   );
   if (!resp.success) throw new Error("Failed to upload image");
   return {
-    cid: resp.data.cid,
-    mimetype: blob.type,
+    blobRef: resp.data.blob,
   };
 }

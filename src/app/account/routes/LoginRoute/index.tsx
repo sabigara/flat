@@ -62,7 +62,6 @@ function LoginRoute() {
         <Input label="Password" name="password" type="password" required />
         <Button
           type="submit"
-          disabled
           startDecorator={
             state === "submitting" ? <Spinner size="sm" /> : undefined
           }

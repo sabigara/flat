@@ -15,9 +15,9 @@ export function FollowingRoute() {
   const queryKey = queryKeys.users.following.$({ user: handle });
   const queryFn: UserListQueryFn<typeof queryKey> = async ({ pageParam }) => {
     const resp = await bsky.graph.getFollows({
-      user: handle,
+      actor: handle,
       limit: 25,
-      ...(pageParam ? { before: pageParam.cursor } : {}),
+      ...(pageParam ? { cursor: pageParam.cursor } : {}),
     });
     // TODO: ?????
     if (!resp.success) throw new Error("Fetch error");

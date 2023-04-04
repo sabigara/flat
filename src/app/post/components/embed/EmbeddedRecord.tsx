@@ -8,14 +8,14 @@ import Avatar from "@/src/app/user/components/Avatar";
 import styles from "./EmbeddedRecord.module.scss";
 
 type Props = {
-  record: AppBskyEmbedRecord.PresentedRecord;
+  record: AppBskyEmbedRecord.ViewRecord;
   className?: string;
 };
 
 export default function EmbeddedRecord({ record, className }: Props) {
   const navigate = useNavigate();
   const author = record.author;
-  const post = record.record;
+  const post = record.value;
   if (!AppBskyFeedPost.isRecord(post)) {
     return null;
   }

@@ -30,10 +30,10 @@ export function ProfileRoute() {
     pageParam,
   }) => {
     const resp = await bsky.feed.getAuthorFeed({
-      author: queryKey[1].authorId,
+      actor: queryKey[1].authorId,
       limit: 20,
       // passing `undefined` breaks the query somehow
-      ...(pageParam ? { before: pageParam.cursor } : {}),
+      ...(pageParam ? { cursor: pageParam.cursor } : {}),
     });
     // TODO: ?????
     if (!resp.success) throw new Error("Fetch error");
@@ -43,7 +43,7 @@ export function ProfileRoute() {
     async () =>
       (
         await bsky.feed.getAuthorFeed({
-          author: profile.handle,
+          actor: profile.handle,
           limit: 1,
         })
       ).data.feed[0],
@@ -56,15 +56,12 @@ export function ProfileRoute() {
       if (!atp.session) return;
       if (isFollow) {
         await followUser({
-          did: atp.session.did,
-          subject: {
-            did: profile.did,
-            declarationCid: profile.declaration.cid,
-          },
+          repo: atp.session.did,
+          did: profile.did,
         });
       } else {
-        if (!profile.myState?.follow) return;
-        await unfollowUser({ uri: profile.myState.follow });
+        if (!profile.viewer?.following) return;
+        await unfollowUser({ uri: profile.viewer.following });
       }
       revalidator.revalidate();
     }
@@ -91,7 +88,7 @@ export function ProfileRoute() {
             <Avatar profile={profile} className={styles.avatar} />
             <div className={styles.actions}>
               {!isMyself &&
-                (profile.myState?.follow ? (
+                (profile.viewer?.following ? (
                   <Button
                     colorScheme={
                       hoverUnfollow || isLoadingFollow ? "danger" : "neutral"

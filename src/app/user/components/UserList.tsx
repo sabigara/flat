@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-query";
 import InfiniteScroll from "react-infinite-scroller";
 
-import type { AppBskyActorRef } from "@atproto/api";
+import type { AppBskyActorDefs } from "@atproto/api";
 
 import UserListItem from "@/src/app/user/components/UserListItem";
 import SpinnerFill from "@/src/components/SpinnerFill";
@@ -16,7 +16,7 @@ import styles from "./UserList.module.scss";
 export type UserListQueryFn<K extends QueryKey> = QueryFunction<
   {
     cursor?: string;
-    users: AppBskyActorRef.WithInfo[];
+    users: AppBskyActorDefs.ProfileViewDetailed[];
   },
   K
 >;

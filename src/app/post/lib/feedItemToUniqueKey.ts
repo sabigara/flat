@@ -1,7 +1,7 @@
-import { AppBskyFeedFeedViewPost } from "@atproto/api";
+import { AppBskyFeedDefs } from "@atproto/api";
 
 export function feedItemToUniqueKey(
-  item: AppBskyFeedFeedViewPost.Main
+  item: AppBskyFeedDefs.FeedViewPost
 ): string {
   return `${item.post.cid}:${item.reason?.$type}:${
     (item.reason?.by as any)?.did

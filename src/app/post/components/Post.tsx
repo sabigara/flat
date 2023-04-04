@@ -1,7 +1,9 @@
-import { AppBskyFeedFeedViewPost } from "@atproto/api";
+import { AppBskyFeedDefs, AppBskyFeedPost } from "@atproto/api";
+import { AtUri } from "@atproto/uri";
 import { Tag } from "@camome/core/Tag";
 import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
+import { Draft } from "immer";
 import React from "react";
 import { BsReplyFill } from "react-icons/bs";
 import { FaRetweet } from "react-icons/fa";
@@ -15,16 +17,20 @@ import { usePostComposer } from "@/src/app/post/hooks/usePostComposer";
 import { buildPostUrl } from "@/src/app/post/lib/buildPostUrl";
 import { formatDistanceShort } from "@/src/app/time/lib/time";
 import Avatar from "@/src/app/user/components/Avatar";
-import Prose from "@/src/components/Prose";
-import { atp, bsky } from "@/src/lib/atp";
+import { RichTextRenderer } from "@/src/components/RichTextRenderer";
+import { bsky, atp, isReasonRepost } from "@/src/lib/atp";
 
 import styles from "./Post.module.scss";
 
 type Props = {
-  data: AppBskyFeedFeedViewPost.Main;
+  data: AppBskyFeedDefs.FeedViewPost;
   contentOnly?: boolean;
   isLink?: boolean;
   revalidate?: () => void;
+  mutatePostCache?: (params: {
+    cid: string;
+    fn: (draft: Draft<AppBskyFeedDefs.PostView>) => void;
+  }) => void;
   className?: string;
 };
 
@@ -33,64 +39,127 @@ export default function Post({
   contentOnly = false,
   isLink = true,
   revalidate,
+  mutatePostCache,
   className,
 }: Props) {
   const { data: account } = useAccountQuery();
   const { handleClickReply } = usePostComposer();
   const { post, reason, reply } = data;
-  const [upvoted, setUpvoted] = React.useState(false);
-  const [reposted, setReposted] = React.useState(false);
-  const [repostUri, setRepostUri] = React.useState<string>();
+  const [optimisticallyReposted, setOptimisticallyReposted] = React.useState<
+    boolean | undefined
+  >(undefined);
+  const [optimisticallyLiked, setOptimisticallyLiked] = React.useState<
+    boolean | undefined
+  >(undefined);
   const navigate = useNavigate();
 
-  const { mutate: mutateRepost } = useMutation({
-    mutationFn: async ({
-      reacted,
-      repostUri,
-    }: {
-      reacted: boolean;
-      repostUri: string | undefined;
-    }) => {
-      if (reacted && repostUri) {
+  const reposted =
+    optimisticallyReposted === undefined
+      ? !!post.viewer?.repost
+      : optimisticallyReposted;
+  const liked =
+    optimisticallyLiked === undefined
+      ? !!post.viewer?.like
+      : optimisticallyLiked;
+
+  const { mutate: mutateRepost, isLoading: isMutatingRepost } = useMutation(
+    async () => {
+      let repostUri: string | undefined = undefined;
+      if (post.viewer?.repost) {
+        const uri = new AtUri(post.viewer.repost);
         await bsky.feed.repost.delete({
-          did: atp.session!.did,
-          rkey: repostUri.split("/").pop(),
+          repo: uri.hostname,
+          rkey: uri.rkey,
         });
       } else {
         const resp = await bsky.feed.repost.create(
           {
-            did: atp.session!.did,
+            repo: atp.session!.did,
           },
           {
-            createdAt: new Date().toISOString(),
             subject: {
               cid: post.cid,
               uri: post.uri,
             },
+            createdAt: new Date().toISOString(),
           }
         );
-        setRepostUri(resp.uri);
+        repostUri = resp.uri;
       }
+      return { repostUri };
     },
-    onMutate() {
-      setReposted((curr) => !curr);
-    },
-  });
-
-  const { mutate: mutateVote } = useMutation({
-    mutationFn: async ({ reacted }: { reacted: boolean }) => {
-      await bsky.feed.setVote({
-        direction: reacted ? "none" : "up",
-        subject: {
+    {
+      onMutate() {
+        setOptimisticallyReposted((curr) => !curr);
+      },
+      onSuccess({ repostUri }) {
+        mutatePostCache?.({
           cid: post.cid,
-          uri: post.uri,
-        },
-      });
+          fn: (draft: Draft<AppBskyFeedDefs.PostView>) => {
+            if (!draft.repostCount) {
+              draft.repostCount = 0;
+            }
+            draft.repostCount += repostUri ? +1 : -1;
+            if (!draft.viewer) {
+              draft.viewer = {};
+            }
+            draft.viewer.repost = repostUri;
+          },
+        });
+        revalidate?.();
+      },
+    }
+  );
+
+  const { mutate: mutateVote, isLoading: isMutatingLike } = useMutation(
+    async ({ did, post }: { did: string; post: AppBskyFeedDefs.PostView }) => {
+      let likeUri: string | undefined = undefined;
+      if (post.viewer?.like) {
+        const uri = new AtUri(post.viewer.like);
+        await bsky.feed.like.delete({
+          repo: uri.hostname,
+          rkey: uri.rkey,
+        });
+      } else {
+        const resp = await bsky.feed.like.create(
+          {
+            repo: did,
+          },
+          {
+            subject: {
+              cid: post.cid,
+              uri: post.uri,
+            },
+            createdAt: new Date().toISOString(),
+          }
+        );
+        likeUri = resp.uri;
+      }
+      // TODO: error handling
+      return { likeUri };
     },
-    onMutate() {
-      setUpvoted((curr) => !curr);
-    },
-  });
+    {
+      onMutate() {
+        setOptimisticallyLiked((curr) => !curr);
+      },
+      onSuccess({ likeUri }) {
+        mutatePostCache?.({
+          cid: post.cid,
+          fn: (draft: Draft<AppBskyFeedDefs.PostView>) => {
+            if (!draft.likeCount) {
+              draft.likeCount = 0;
+            }
+            draft.likeCount += likeUri ? +1 : -1;
+            if (!draft.viewer) {
+              draft.viewer = {};
+            }
+            draft.viewer.like = likeUri;
+          },
+        });
+        setOptimisticallyLiked(undefined);
+      },
+    }
+  );
 
   // TODO: consider about encoding
   const profileHref = (handle: string) => `/${handle}`;
@@ -98,30 +167,32 @@ export default function Post({
   const reactions = [
     {
       type: "reply",
-      count: post.replyCount,
       icon: <TbMessageCircle2 />,
       iconReacted: <TbMessageCircle2 />,
-      "aria-label": `${post.replyCount}件の返信`,
+      "aria-label": `${post.replyCount ?? 0}件の返信`,
+      count: post.replyCount ?? 0,
       onClick: () => handleClickReply(data),
       reacted: false,
     },
     {
       type: "repost",
-      count: post.repostCount + (reposted ? 1 : 0),
       icon: <FaRetweet />,
-      iconReacted: <FaRetweet style={{ color: "var(--color-repost)" }} />,
-      "aria-label": `${post.replyCount}件のリポスト`,
-      onClick: () => mutateRepost({ reacted: reposted, repostUri }),
+      iconReacted: <FaRetweet style={{ color: "#22c55e" }} />,
+      "aria-label": `${post.repostCount ?? 0}件のリポスト`,
+      count: post.repostCount ?? 0,
       reacted: reposted,
+      disabled: isMutatingRepost,
+      onClick: mutateRepost,
     },
     {
-      type: "upvote",
-      count: post.upvoteCount + (upvoted ? 1 : 0),
+      type: "like",
       icon: <TbStar />,
-      iconReacted: <TbStarFilled style={{ color: "var(--color-upvote)" }} />,
-      "aria-label": `${post.replyCount}件のいいね`,
-      onClick: () => mutateVote({ reacted: upvoted }),
-      reacted: upvoted,
+      iconReacted: <TbStarFilled style={{ color: "#eab308" }} />,
+      "aria-label": `${post.likeCount ?? 0}件のいいね`,
+      count: post.likeCount ?? 0,
+      reacted: liked,
+      disabled: isMutatingLike,
+      onClick: () => atp.session && mutateVote({ did: atp.session.did, post }),
     },
   ] satisfies ReactionProps[];
 
@@ -143,21 +214,19 @@ export default function Post({
       <Link to={postUrl} className="visually-hidden">
         投稿の詳細
       </Link>
-      {!contentOnly &&
-        reason &&
-        AppBskyFeedFeedViewPost.isReasonRepost(reason) && (
-          <Tag
-            component={Link}
-            to={profileHref(reason.by.handle)}
-            colorScheme="neutral"
-            size="sm"
-            startDecorator={<FaRetweet />}
-            onClick={(e) => e.stopPropagation()}
-            className={styles.repost}
-          >
-            Repost by {reason.by.displayName}
-          </Tag>
-        )}
+      {!contentOnly && reason && isReasonRepost(reason) && (
+        <Tag
+          component={Link}
+          to={profileHref(reason.by.handle)}
+          colorScheme="neutral"
+          size="sm"
+          startDecorator={<FaRetweet />}
+          onClick={(e) => e.stopPropagation()}
+          className={styles.repost}
+        >
+          Repost by {reason.by.displayName}
+        </Tag>
+      )}
       <div className={styles.main}>
         <div className={styles.left}>
           <Avatar
@@ -195,7 +264,9 @@ export default function Post({
                 `@${reply.parent.author.handle}`}
             </Tag>
           )}
-          <Prose className={styles.prose}>{(post.record as any).text}</Prose>
+          {AppBskyFeedPost.isRecord(post.record) && (
+            <RichTextRenderer {...post.record} className={styles.prose} />
+          )}
           {post.embed && <Embed embed={post.embed} className={styles.embed} />}
           {!contentOnly && (
             <ul className={styles.reactionList}>
@@ -231,13 +302,14 @@ export default function Post({
 }
 
 type ReactionProps = {
-  type: "reply" | "repost" | "upvote";
+  type: "reply" | "repost" | "like";
   icon: React.ReactNode;
   iconReacted: React.ReactNode;
   count: number;
   onClick?: () => void;
-  reacted: boolean;
+  disabled?: boolean;
   ["aria-label"]: string;
+  reacted: boolean;
 };
 
 function Reaction({
@@ -247,6 +319,7 @@ function Reaction({
   count,
   onClick,
   reacted,
+  disabled,
   ...props
 }: ReactionProps) {
   return (
@@ -254,9 +327,9 @@ function Reaction({
       aria-label={props["aria-label"]}
       onClick={(e) => {
         e.stopPropagation();
-        onClick?.();
+        if (!disabled) onClick?.();
       }}
-      className={styles.reaction}
+      className={clsx(styles.reaction, disabled && styles.disabled)}
     >
       <input type="hidden" name="type" value={type} />
       <span className={styles.reaction__icon}>

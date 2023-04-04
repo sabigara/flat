@@ -1,8 +1,4 @@
-import {
-  AppBskyActorProfile,
-  AppBskyFeedFeedViewPost,
-  AppBskyFeedPost,
-} from "@atproto/api";
+import { AppBskyActorDefs, AppBskyFeedDefs } from "@atproto/api";
 import { Button } from "@camome/core/Button";
 import { Spinner } from "@camome/core/Spinner";
 import { Textarea } from "@camome/core/Textarea";
@@ -23,6 +19,7 @@ import { usePostComposer } from "@/src/app/post/hooks/usePostComposer";
 import { createPostWithEmbed } from "@/src/app/post/lib/createPostWithEmbed";
 import Avatar from "@/src/app/user/components/Avatar";
 import Dialog from "@/src/components/Dialog";
+import { atp } from "@/src/lib/atp";
 import { isModKey } from "@/src/lib/keybindings";
 import { isIPhone } from "@/src/lib/platform";
 
@@ -31,9 +28,9 @@ import styles from "./PostComposer.module.scss";
 type PostMutateParams = {
   text: string;
   images: SelectedImage[];
-  myProfile: AppBskyActorProfile.View;
-  replyTarget?: AppBskyFeedFeedViewPost.Main;
-  quoteTarget?: AppBskyFeedPost.View;
+  myProfile: AppBskyActorDefs.ProfileViewDetailed;
+  replyTarget?: AppBskyFeedDefs.FeedViewPost;
+  quoteTarget?: AppBskyFeedDefs.PostView;
 };
 
 export type PostComposerProps = {
@@ -69,6 +66,7 @@ export default function PostComposer({
         images: params.images
           .map(({ file }) => file)
           .filter((file) => !!file) as File[],
+        atp,
       });
     },
     onSuccess() {
@@ -175,7 +173,12 @@ export default function PostComposer({
           </div>
           {quoteTarget && (
             <div className={styles.quoteTarget}>
-              <EmbeddedRecord record={quoteTarget} />
+              <EmbeddedRecord
+                record={{
+                  ...quoteTarget,
+                  value: quoteTarget.record,
+                }}
+              />
             </div>
           )}
           <div

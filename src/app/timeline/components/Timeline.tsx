@@ -1,3 +1,4 @@
+import { FeedViewPost } from "@atproto/api/dist/client/types/app/bsky/feed/defs";
 import { Button } from "@camome/core/Button";
 import { Spinner } from "@camome/core/Spinner";
 import {
@@ -7,13 +8,18 @@ import {
   useQueryClient,
   useQuery,
 } from "@tanstack/react-query";
+import { Draft } from "immer";
 import InfiniteScroll from "react-infinite-scroller";
 
-import type { AppBskyFeedFeedViewPost } from "@atproto/api";
+import type { AppBskyFeedDefs } from "@atproto/api";
 
 import Post from "@/src/app/post/components/Post";
 import PostComposer from "@/src/app/post/components/PostComposer";
 import { feedItemToUniqueKey } from "@/src/app/post/lib/feedItemToUniqueKey";
+import {
+  TimelineInfiniteData,
+  mutateTimelineItem,
+} from "@/src/app/post/lib/mutateTimelineItem";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import SpinnerFill from "@/src/components/SpinnerFill";
 
@@ -22,7 +28,7 @@ import styles from "./Timeline.module.scss";
 export type TimelineQueryFn<K extends QueryKey> = QueryFunction<
   {
     cursor?: string;
-    feed: AppBskyFeedFeedViewPost.Main[];
+    feed: FeedViewPost[];
   },
   K
 >;
@@ -30,7 +36,7 @@ export type TimelineQueryFn<K extends QueryKey> = QueryFunction<
 type Props<K extends QueryKey> = {
   queryKey: K;
   queryFn: TimelineQueryFn<K>;
-  fetchLatestOne: () => Promise<AppBskyFeedFeedViewPost.Main>;
+  fetchLatestOne: () => Promise<AppBskyFeedDefs.FeedViewPost>;
   maxPages?: number;
 };
 
@@ -56,7 +62,6 @@ export function Timeline<K extends QueryKey>({
       if (maxPages && allPages.length >= maxPages) return undefined;
       return lastPage.cursor ? { cursor: lastPage.cursor } : undefined;
     },
-    refetchOnMount: false,
   });
   const queryClient = useQueryClient();
 
@@ -105,6 +110,18 @@ export function Timeline<K extends QueryKey>({
     queryClient.invalidateQueries(queryKey);
   };
 
+  const mutatePostCache = ({
+    cid,
+    fn,
+  }: {
+    cid: string;
+    fn: (post: Draft<AppBskyFeedDefs.PostView>) => void;
+  }) => {
+    queryClient.setQueryData<TimelineInfiniteData>(queryKey, (data) =>
+      mutateTimelineItem(data, cid, fn)
+    );
+  };
+
   if (status === "loading") {
     return (
       <div className={styles.spinner}>
@@ -129,6 +146,7 @@ export function Timeline<K extends QueryKey>({
               data={item}
               key={feedItemToUniqueKey(item)}
               revalidate={refetch}
+              mutatePostCache={mutatePostCache}
               className={styles.post}
             />
           ))}

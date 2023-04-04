@@ -12,7 +12,7 @@ export default function NotificationButton() {
   const { data: count } = useQuery({
     queryKey: queryKeys.notifications.count.$,
     async queryFn() {
-      const resp = await bsky.notification.getCount();
+      const resp = await bsky.notification.getUnreadCount();
       return resp.data.count;
     },
     refetchInterval: 60 * 1 * 1000, // 1 minute

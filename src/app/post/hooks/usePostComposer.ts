@@ -1,4 +1,4 @@
-import { AppBskyFeedFeedViewPost, AppBskyFeedPost } from "@atproto/api";
+import { AppBskyFeedDefs } from "@atproto/api";
 import { useAtom } from "jotai";
 
 import { postComposerAtom } from "@/src/app/post/states/postComposerAtom";
@@ -15,13 +15,13 @@ export function usePostComposer() {
         quoteTarget: undefined,
       });
     },
-    handleClickReply: (feedItem: AppBskyFeedFeedViewPost.Main) => {
+    handleClickReply: (feedItem: AppBskyFeedDefs.FeedViewPost) => {
       setComposer({
         open: true,
         replyTarget: feedItem,
       });
     },
-    handleClickQuote: (feedItem: AppBskyFeedPost.View) => {
+    handleClickQuote: (feedItem: AppBskyFeedDefs.PostView) => {
       setComposer({
         open: true,
         quoteTarget: feedItem,

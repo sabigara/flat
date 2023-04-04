@@ -16,7 +16,7 @@ export function HomeTimelineRoute() {
     const resp = await bsky.feed.getTimeline({
       limit: 25,
       // passing `undefined` breaks the query somehow
-      ...(pageParam ? { before: pageParam.cursor } : {}),
+      ...(pageParam ? { cursor: pageParam.cursor } : {}),
     });
     // TODO: ?????
     if (!resp.success) throw new Error("Fetch error");

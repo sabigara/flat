@@ -1,7 +1,7 @@
-import { AppBskyNotificationList } from "@atproto/api";
+import { AppBskyNotificationListNotifications } from "@atproto/api";
 import clsx from "clsx";
 import { FaRetweet, FaUserCircle } from "react-icons/fa";
-import { TbStarFilled } from "react-icons/tb";
+import { TbStarFilled, TbQuote } from "react-icons/tb";
 import { Link } from "react-router-dom";
 
 import NotificationPost from "@/src/app/notification/components/NotificationSubject";
@@ -10,7 +10,7 @@ import Avatar from "@/src/app/user/components/Avatar";
 import styles from "./Notification.module.scss";
 
 type Props = {
-  notification: AppBskyNotificationList.Notification;
+  notification: AppBskyNotificationListNotifications.Notification;
   revalidate: () => void;
 };
 
@@ -18,9 +18,9 @@ type Props = {
 export default function Notification({ notification, revalidate }: Props) {
   const reason = notification.reason;
   const shouldFetchPost =
-    reason === "reply" || reason === "repost" || reason === "vote";
+    reason === "reply" || reason === "repost" || reason === "like";
 
-  const col2 = reason === "follow" || reason === "repost" || reason === "vote";
+  const col2 = reason === "follow" || reason === "repost" || reason === "like";
 
   return (
     <div
@@ -78,7 +78,7 @@ export default function Notification({ notification, revalidate }: Props) {
 }
 
 const reasonToIcon: Record<
-  AppBskyNotificationList.Notification["reason"],
+  AppBskyNotificationListNotifications.Notification["reason"],
   React.ReactNode
 > = {
   follow: <FaUserCircle className={styles.followIcon} />,
@@ -86,12 +86,13 @@ const reasonToIcon: Record<
   mention: null,
   reply: null,
   repost: <FaRetweet className={styles.repostIcon} />,
-  vote: <TbStarFilled className={styles.upvoteIcon} />,
+  like: <TbStarFilled className={styles.upvoteIcon} />,
+  quote: <TbQuote />, // TODO: color
 };
 
 // TODO: support i18n
 const reasonToLabel: Record<
-  AppBskyNotificationList.Notification["reason"],
+  AppBskyNotificationListNotifications.Notification["reason"],
   string
 > = {
   follow: `さんにフォローされました`,
@@ -99,5 +100,6 @@ const reasonToLabel: Record<
   mention: `さんからのメンション`,
   reply: `さんから返信がありました`,
   repost: `さんにリポストされました`,
-  vote: `さんにいいねされました`,
+  like: `さんにいいねされました`,
+  quote: `さんに引用されました`,
 };
