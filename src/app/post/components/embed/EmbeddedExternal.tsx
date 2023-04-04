@@ -4,7 +4,7 @@ import clsx from "clsx";
 import styles from "./EmbeddedExternal.module.scss";
 
 type Props = {
-  external: AppBskyEmbedExternal.External;
+  external: AppBskyEmbedExternal.ViewExternal;
   className?: string;
 };
 
