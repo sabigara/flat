@@ -5,6 +5,10 @@
   border-radius: var(--cmm-radius-2xl);
   padding: 0.75em;
   position: relative;
+
+  &:hover {
+    background: var(--cmm-color-surface-2);
+  }
 }
 
 .title {
