@@ -15,6 +15,7 @@ import PostMoreButton from "@/src/app/post/components/PostMoreButton";
 import Embed from "@/src/app/post/components/embed/Embed";
 import { usePostComposer } from "@/src/app/post/hooks/usePostComposer";
 import { buildPostUrl } from "@/src/app/post/lib/buildPostUrl";
+import { MutatePostCache } from "@/src/app/post/lib/types";
 import { formatDistanceShort } from "@/src/app/time/lib/time";
 import Avatar from "@/src/app/user/components/Avatar";
 import { RichTextRenderer } from "@/src/components/RichTextRenderer";
@@ -27,10 +28,7 @@ type Props = {
   contentOnly?: boolean;
   isLink?: boolean;
   revalidate?: () => void;
-  mutatePostCache?: (params: {
-    cid: string;
-    fn: (draft: Draft<AppBskyFeedDefs.PostView>) => void;
-  }) => void;
+  mutatePostCache?: MutatePostCache;
   className?: string;
 };
 

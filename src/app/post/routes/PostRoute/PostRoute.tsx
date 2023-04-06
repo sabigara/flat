@@ -1,11 +1,12 @@
 import { AppBskyFeedDefs, AppBskyFeedPost } from "@atproto/api";
 import { useQueryClient } from "@tanstack/react-query";
-import produce, { Draft } from "immer";
+import produce from "immer";
 import { Link, useParams } from "react-router-dom";
 
 import PostComposer from "@/src/app/post/components/PostComposer";
 import Thread from "@/src/app/post/components/Thread";
 import { usePostThreadQuery } from "@/src/app/post/hooks/usePostThreadQuery";
+import { MutatePostCache } from "@/src/app/post/lib/types";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import Seo from "@/src/app/seo/Seo";
 import { useProfileQuery } from "@/src/app/user/hooks/useProfileQuery";
@@ -33,12 +34,7 @@ export default function PostRoute() {
     queryClient.refetchQueries(queryKeys.posts.single.$({ uri: threadUri }));
   };
 
-  const mutatePostCache = ({
-    fn,
-  }: {
-    cid: string;
-    fn: (draft: Draft<AppBskyFeedDefs.PostView>) => void;
-  }) => {
+  const mutatePostCache: MutatePostCache = ({ fn }) => {
     queryClient.setQueryData<AppBskyFeedDefs.ThreadViewPost>(
       queryKeys.posts.single.$({ uri: threadUri }),
       (data) => {

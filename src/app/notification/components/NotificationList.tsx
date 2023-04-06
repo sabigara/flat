@@ -9,7 +9,6 @@ import { bsky } from "@/src/lib/atp";
 
 import styles from "./NotificationList.module.scss";
 
-// TODO: calling updateSeen every mount is too frequent.
 // TODO: support infinite scroll
 export default function NotificationList() {
   const mounted = React.useRef(false);

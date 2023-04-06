@@ -1,8 +1,8 @@
 import { AppBskyFeedDefs } from "@atproto/api";
 import clsx from "clsx";
-import { Draft } from "immer";
 
 import Post from "@/src/app/post/components/Post";
+import { MutatePostCache } from "@/src/app/post/lib/types";
 
 import styles from "./Thread.module.scss";
 
@@ -13,10 +13,7 @@ type Props = {
     | { [k: string]: unknown; $type: string };
   isSelected?: boolean;
   revalidate: () => void;
-  mutatePostCache?: (params: {
-    cid: string;
-    fn: (draft: Draft<AppBskyFeedDefs.PostView>) => void;
-  }) => void;
+  mutatePostCache?: MutatePostCache;
 };
 
 export default function Thread({
