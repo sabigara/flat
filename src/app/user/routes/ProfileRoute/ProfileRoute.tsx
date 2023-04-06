@@ -16,13 +16,13 @@ import {
 import Avatar from "@/src/app/user/components/Avatar";
 import { followUser } from "@/src/app/user/lib/followUser";
 import { unfollowUser } from "@/src/app/user/lib/unfollowUser";
-import Prose from "@/src/components/Prose";
+import { RichTextRenderer } from "@/src/components/RichTextRenderer";
 import { atp, bsky } from "@/src/lib/atp";
 
 import styles from "./ProfileRoute.module.scss";
 
 export function ProfileRoute() {
-  const profile = useLoaderData() as ProfileRouteLoaderResult;
+  const { profile, richText } = useLoaderData() as ProfileRouteLoaderResult;
   const username = profile.displayName ?? profile.handle;
   const queryKey = queryKeys.feed.author.$(profile.handle);
   const queryFn: TimelineQueryFn<typeof queryKey> = async ({
@@ -155,7 +155,11 @@ export function ProfileRoute() {
                 <div className={styles.data}>{profile.followsCount}</div>
               </Link>
             </div>
-            <Prose className={styles.description}>{profile.description}</Prose>
+            <RichTextRenderer
+              text={richText.text}
+              facets={richText.facets}
+              className={styles.description}
+            />
           </div>
         </header>
         <main className={styles.main}>
