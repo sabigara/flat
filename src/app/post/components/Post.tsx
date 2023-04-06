@@ -19,7 +19,7 @@ import { MutatePostCache } from "@/src/app/post/lib/types";
 import { formatDistanceShort } from "@/src/app/time/lib/time";
 import Avatar from "@/src/app/user/components/Avatar";
 import { RichTextRenderer } from "@/src/components/RichTextRenderer";
-import { bsky, atp, isReasonRepost } from "@/src/lib/atp";
+import { bsky, atp } from "@/src/lib/atp";
 
 import styles from "./Post.module.scss";
 
@@ -211,7 +211,7 @@ export default function Post({
       <Link to={postUrl} className={styles.focusLink}>
         投稿の詳細
       </Link>
-      {!contentOnly && reason && isReasonRepost(reason) && (
+      {!contentOnly && reason && AppBskyFeedDefs.isReasonRepost(reason) && (
         <Tag
           component={Link}
           to={profileHref(reason.by.handle)}
