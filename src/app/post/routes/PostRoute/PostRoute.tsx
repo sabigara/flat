@@ -11,10 +11,9 @@ import Seo from "@/src/app/seo/Seo";
 import { useProfileQuery } from "@/src/app/user/hooks/useProfileQuery";
 import { userToName } from "@/src/app/user/lib/userToName";
 import SpinnerFill from "@/src/components/SpinnerFill";
+import { truncate } from "@/src/lib/string";
 
 import styles from "./PostRoute.module.scss";
-
-const TITLE_POST_LEN = 32;
 
 export default function PostRoute() {
   const params = useParams();
@@ -77,10 +76,7 @@ export default function PostRoute() {
     thread && AppBskyFeedPost.isRecord(thread.post.record)
       ? thread.post.record.text
       : "";
-
-  const titlePostText =
-    postText.slice(0, TITLE_POST_LEN) +
-    (postText.length > TITLE_POST_LEN ? "..." : "");
+  const titlePostText = truncate(postText, { max: 32 });
 
   return (
     <>
