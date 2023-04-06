@@ -19,7 +19,7 @@ export function RichTextRenderer({ text, facets, className }: Props) {
             key={
               seg.facet
                 ? `${seg.facet.index.byteStart}-${seg.facet.index.byteEnd}`
-                : seg.text
+                : seg.text // FIXME: whitespace are easily duplicated
             }
             segment={seg}
           />

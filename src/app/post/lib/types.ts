@@ -5,3 +5,9 @@ export type MutatePostCache = (params: {
   cid: string;
   fn: (draft: Draft<AppBskyFeedDefs.PostView>) => void;
 }) => void;
+
+export type RevalidateOnPost = ({
+  replyTarget,
+}: {
+  replyTarget?: AppBskyFeedDefs.FeedViewPost;
+}) => void;

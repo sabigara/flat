@@ -3,9 +3,13 @@ import {
   AppBskyFeedPost,
   AppBskyNotificationListNotifications,
 } from "@atproto/api";
+import { useQueryClient } from "@tanstack/react-query";
+import produce from "immer";
 
 import Post from "@/src/app/post/components/Post";
 import { usePostThreadQuery } from "@/src/app/post/hooks/usePostThreadQuery";
+import { MutatePostCache } from "@/src/app/post/lib/types";
+import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import Prose from "@/src/components/Prose";
 
 import styles from "./NotificationSubject.module.scss";
@@ -16,19 +20,26 @@ type Props = {
   uri: string;
   reason: Reason;
   isSubject: boolean;
-  revalidate: () => void;
 };
 
-export default function NotificationPost({
-  uri,
-  reason,
-  isSubject,
-  revalidate,
-}: Props) {
-  const { data } = usePostThreadQuery({ uri: uri });
+export default function NotificationPost({ uri, reason, isSubject }: Props) {
+  const queryClient = useQueryClient();
+  const { data, refetch } = usePostThreadQuery({ uri: uri });
   if (!data) return null;
 
-  const postElem = <Post data={data} revalidate={revalidate} />;
+  const mutatePostCache: MutatePostCache = ({ fn }) => {
+    queryClient.setQueryData<AppBskyFeedDefs.FeedViewPost>(
+      queryKeys.posts.single.$({ uri }),
+      (data) => {
+        if (!data) throw new Error("Shouldn't reach here");
+        return produce(data, (draft) => fn(draft.post));
+      }
+    );
+  };
+
+  const postElem = (
+    <Post data={data} mutatePostCache={mutatePostCache} revalidate={refetch} />
+  );
   const simplePostElm = <SimplePost post={data.post} />;
 
   switch (reason) {

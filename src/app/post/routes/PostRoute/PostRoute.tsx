@@ -38,7 +38,7 @@ export default function PostRoute() {
     queryClient.setQueryData<AppBskyFeedDefs.ThreadViewPost>(
       queryKeys.posts.single.$({ uri: threadUri }),
       (data) => {
-        if (!data) throw new Error("Should reach here");
+        if (!data) throw new Error("Shouldn't reach here");
         return produce(data, (draft) => fn(draft.post));
       }
     );

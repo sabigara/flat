@@ -18,6 +18,7 @@ import { PostGraphemeCounter } from "@/src/app/post/components/PostGraphemeCount
 import EmbeddedRecord from "@/src/app/post/components/embed/EmbeddedRecord";
 import { usePostComposer } from "@/src/app/post/hooks/usePostComposer";
 import { createPostWithEmbed } from "@/src/app/post/lib/createPostWithEmbed";
+import { RevalidateOnPost } from "@/src/app/post/lib/types";
 import Avatar from "@/src/app/user/components/Avatar";
 import Dialog from "@/src/components/Dialog";
 import { atp, isPostValid } from "@/src/lib/atp";
@@ -36,7 +37,7 @@ type PostMutateParams = {
 
 export type PostComposerProps = {
   showButton?: boolean;
-  revalidate?: () => void;
+  revalidate?: RevalidateOnPost;
 };
 
 export default function PostComposer({
@@ -79,7 +80,9 @@ export default function PostComposer({
         replyTarget: undefined,
       }));
       setOpen(false);
-      revalidate?.();
+      revalidate?.({
+        replyTarget,
+      });
     },
   });
 
