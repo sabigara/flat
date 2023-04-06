@@ -24,7 +24,7 @@ export default function EmbeddedExternal({ external, className }: Props) {
         onClick={(e) => e.stopPropagation()}
         className={clsx("clickable-overlay", styles.title)}
       >
-        {external.title}
+        {external.title ?? "No title"}
       </a>
       <div className={clsx(styles.description)}>{external.description}</div>
       <div className={styles.host}>
