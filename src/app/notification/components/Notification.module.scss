@@ -22,6 +22,7 @@
 }
 
 .endSection {
+  min-width: 0;
   &:has(.mention) {
     grid-row: 1;
     grid-column: 1 / -1;
