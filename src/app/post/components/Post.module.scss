@@ -19,13 +19,23 @@
   }
 }
 
+%truncatedTag {
+  > span {
+    max-width: 12rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
 .repost {
+  @extend %truncatedTag;
   margin-inline-start: 3.5rem;
   margin-block-end: 0.5rem;
   column-gap: 0.4em;
 }
 
 .reply {
+  @extend %truncatedTag;
   width: fit-content;
   background: none;
   padding: 0;

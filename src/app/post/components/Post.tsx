@@ -221,7 +221,7 @@ export default function Post({
           onClick={(e) => e.stopPropagation()}
           className={styles.repost}
         >
-          Repost by {reason.by.displayName}
+          <span>Repost by {reason.by.displayName}</span>
         </Tag>
       )}
       <div className={styles.main}>
@@ -256,9 +256,11 @@ export default function Post({
               startDecorator={<BsReplyFill />}
               className={styles.reply}
             >
-              Reply to{" "}
-              {reply.parent.author.displayName ??
-                `@${reply.parent.author.handle}`}
+              <span>
+                Reply to{" "}
+                {reply.parent.author.displayName ??
+                  `@${reply.parent.author.handle}`}
+              </span>
             </Tag>
           )}
           {AppBskyFeedPost.isRecord(post.record) && (
