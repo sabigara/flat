@@ -5,14 +5,16 @@ import {
 } from "@atproto/api";
 import { useQueryClient } from "@tanstack/react-query";
 import produce from "immer";
+import { Link } from "react-router-dom";
 
 import Post from "@/src/app/post/components/Post";
 import { usePostThreadQuery } from "@/src/app/post/hooks/usePostThreadQuery";
+import { buildPostUrl } from "@/src/app/post/lib/buildPostUrl";
 import { MutatePostCache } from "@/src/app/post/lib/types";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import Prose from "@/src/components/Prose";
 
-import styles from "./NotificationSubject.module.scss";
+import styles from "./NotificationPost.module.scss";
 
 type Reason = AppBskyNotificationListNotifications.Notification["reason"];
 
@@ -46,7 +48,11 @@ export default function NotificationPost({ uri, reason, isSubject }: Props) {
     case "mention":
       return isSubject ? simplePostElm : postElem;
     case "reply":
-      return isSubject ? null : postElem;
+      return isSubject ? (
+        <div className={styles.replySubject}>{simplePostElm}</div>
+      ) : (
+        postElem
+      );
     case "repost":
     case "like":
       // always subject
@@ -60,7 +66,14 @@ function SimplePost({ post }: { post: AppBskyFeedDefs.PostView }) {
 
   return (
     <article className={styles.simplePost}>
-      <Prose>{post.record.text}</Prose>
+      <Link
+        to={buildPostUrl({
+          handle: post.author.handle,
+          uri: post.uri,
+        })}
+      >
+        <Prose>{post.record.text}</Prose>
+      </Link>
     </article>
   );
 }

@@ -4,7 +4,7 @@ import { FaRetweet, FaUserCircle } from "react-icons/fa";
 import { TbStarFilled, TbQuote } from "react-icons/tb";
 import { Link } from "react-router-dom";
 
-import NotificationPost from "@/src/app/notification/components/NotificationSubject";
+import NotificationPost from "@/src/app/notification/components/NotificationPost";
 import Avatar from "@/src/app/user/components/Avatar";
 
 import styles from "./Notification.module.scss";
