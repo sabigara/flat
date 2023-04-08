@@ -6,7 +6,7 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-      retry: 0,
+      retry: import.meta.env.PROD ? 2 : 0,
     },
     mutations: {
       onError(error) {
