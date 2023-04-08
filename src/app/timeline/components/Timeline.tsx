@@ -62,6 +62,7 @@ export function Timeline<K extends QueryKey>({
       if (maxPages && allPages.length >= maxPages) return undefined;
       return lastPage.cursor ? { cursor: lastPage.cursor } : undefined;
     },
+    refetchOnMount: false,
   });
   const queryClient = useQueryClient();
 
