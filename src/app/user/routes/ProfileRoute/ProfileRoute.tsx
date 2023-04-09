@@ -162,13 +162,13 @@ export function ProfileRoute() {
             />
           </div>
         </header>
-        <main className={styles.main}>
+        <div className={styles.main}>
           <Timeline
             queryKey={queryKey}
             queryFn={queryFn}
             fetchLatestOne={fetchLatest}
           />
-        </main>
+        </div>
       </article>
     </>
   );
