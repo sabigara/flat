@@ -9,10 +9,15 @@ import styles from "./EmbeddedRecord.module.scss";
 
 type Props = {
   record: AppBskyEmbedRecord.ViewRecord;
+  isLink?: boolean;
   className?: string;
 };
 
-export default function EmbeddedRecord({ record, className }: Props) {
+export default function EmbeddedRecord({
+  record,
+  isLink = true,
+  className,
+}: Props) {
   const navigate = useNavigate();
   const author = record.author;
   const post = record.value;
@@ -26,7 +31,7 @@ export default function EmbeddedRecord({ record, className }: Props) {
 
   const handleClickBackground: React.MouseEventHandler = (e) => {
     e.stopPropagation();
-    navigate(postUrl);
+    if (isLink) navigate(postUrl);
   };
 
   return (
@@ -34,9 +39,11 @@ export default function EmbeddedRecord({ record, className }: Props) {
       onClick={handleClickBackground}
       className={clsx(styles.container, className)}
     >
-      <Link to={postUrl} className={styles.focusLink}>
-        引用された投稿の詳細
-      </Link>
+      {isLink && (
+        <Link to={postUrl} className={styles.focusLink}>
+          引用された投稿の詳細
+        </Link>
+      )}
       <div className={styles.header}>
         <div className={styles.avatarWrap}>
           <Avatar profile={author} className={styles.avatar} />

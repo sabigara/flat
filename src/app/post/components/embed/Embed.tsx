@@ -19,16 +19,23 @@ type Props = {
         $type: string;
         [k: string]: unknown;
       };
+  isLink?: boolean;
   className?: string;
 };
 
-export default function Embed({ embed, className }: Props) {
+export default function Embed({ embed, isLink, className }: Props) {
   if (AppBskyEmbedImages.isView(embed)) {
     return <EmbeddedImages images={embed.images} className={className} />;
   } else if (AppBskyEmbedRecord.isView(embed)) {
     // TODO: also support AppBskyEmbedRecord.isViewNotFound?
     if (!AppBskyEmbedRecord.isViewRecord(embed.record)) return null;
-    return <EmbeddedRecord record={embed.record} className={className} />;
+    return (
+      <EmbeddedRecord
+        record={embed.record}
+        isLink={isLink}
+        className={className}
+      />
+    );
   } else if (AppBskyEmbedExternal.isView(embed)) {
     return <EmbeddedExternal external={embed.external} className={className} />;
   } else {

@@ -266,7 +266,13 @@ export default function Post({
           {AppBskyFeedPost.isRecord(post.record) && (
             <RichTextRenderer {...post.record} className={styles.prose} />
           )}
-          {post.embed && <Embed embed={post.embed} className={styles.embed} />}
+          {post.embed && (
+            <Embed
+              embed={post.embed}
+              isLink={isLink}
+              className={styles.embed}
+            />
+          )}
           {!contentOnly && (
             <ul className={styles.reactionList}>
               {reactions.map((reaction) => (

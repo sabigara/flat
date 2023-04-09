@@ -147,7 +147,12 @@ export default function PostComposer({
       <Dialog open={open} setOpen={setOpen} className={styles.dialog}>
         <div className={styles.container}>
           {replyTarget && (
-            <Post data={replyTarget} contentOnly className={styles.post} />
+            <Post
+              data={replyTarget}
+              isLink={false}
+              contentOnly
+              className={styles.post}
+            />
           )}
           <div className={styles.form}>
             <Avatar profile={account?.profile} className={styles.avatar} />
@@ -182,6 +187,7 @@ export default function PostComposer({
                   ...quoteTarget,
                   value: quoteTarget.record,
                 }}
+                isLink={false}
               />
             </div>
           )}
