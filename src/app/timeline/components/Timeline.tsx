@@ -38,6 +38,9 @@ type Props<K extends QueryKey> = {
   queryFn: TimelineQueryFn<K>;
   fetchLatestOne: () => Promise<AppBskyFeedDefs.FeedViewPost>;
   maxPages?: number;
+  filter?: (
+    posts: AppBskyFeedDefs.FeedViewPost[]
+  ) => AppBskyFeedDefs.FeedViewPost[];
 };
 
 export function Timeline<K extends QueryKey>({
@@ -45,6 +48,7 @@ export function Timeline<K extends QueryKey>({
   queryFn,
   fetchLatestOne,
   maxPages,
+  filter = (posts) => posts,
 }: Props<K>) {
   const {
     status,
@@ -66,7 +70,8 @@ export function Timeline<K extends QueryKey>({
   });
   const queryClient = useQueryClient();
 
-  const allItems = data?.pages.flatMap((p) => p.feed) ?? [];
+  const allItems = filter(data?.pages.flatMap((p) => p.feed) ?? []);
+
   const latestItem = allItems.at(0);
   const latestDate = latestItem
     ? new Date(latestItem.post.indexedAt)

@@ -1,3 +1,4 @@
+import { AppBskyFeedDefs } from "@atproto/api";
 import React from "react";
 
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
@@ -6,7 +7,7 @@ import {
   Timeline,
   TimelineQueryFn,
 } from "@/src/app/timeline/components/Timeline";
-import { bsky } from "@/src/lib/atp";
+import { atp, bsky } from "@/src/lib/atp";
 
 import styles from "./HomeTimelineRoute.module.scss";
 
@@ -22,8 +23,21 @@ export function HomeTimelineRoute() {
     if (!resp.success) throw new Error("Fetch error");
     return resp.data;
   };
+
+  const postFilter = (posts: AppBskyFeedDefs.FeedViewPost[]) => {
+    return posts.filter((p) => {
+      if (p.reply?.parent.author.viewer) {
+        return (
+          !!p.reply.parent.author.viewer.following ||
+          p.reply.parent.author.did === atp.session?.did
+        );
+      }
+      return true;
+    });
+  };
   const fetchLatest = React.useCallback(
-    async () => (await bsky.feed.getTimeline({ limit: 1 })).data.feed[0],
+    async () =>
+      postFilter((await bsky.feed.getTimeline({ limit: 1 })).data.feed)[0],
     []
   );
   return (
@@ -34,6 +48,7 @@ export function HomeTimelineRoute() {
           queryKey={queryKey}
           queryFn={queryFn}
           fetchLatestOne={fetchLatest}
+          filter={postFilter}
         />
       </div>
     </>
