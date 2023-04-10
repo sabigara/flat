@@ -1,13 +1,9 @@
-.container {
-}
-
 .preview {
   &__container {
-    $pad: 1.5rem;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 0.5rem;
-    padding: 0 $pad $pad $pad;
+    padding-inline: 1.5rem;
 
     @media screen and (max-width: 28rem) {
       grid-template-columns: repeat(2, 1fr);

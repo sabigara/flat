@@ -1,7 +1,10 @@
 $width: 34rem;
 
 .container {
-  --pad: 1.5rem;
+  --pad: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--pad);
 
   @media screen and (max-width: $width) {
     --pad: 1rem;
@@ -9,6 +12,10 @@ $width: 34rem;
 
   > button {
     align-self: flex-end;
+  }
+
+  hr {
+    border-top: 1px solid var(--cmm-color-border-base);
   }
 }
 
@@ -39,8 +46,15 @@ $width: 34rem;
   }
 }
 
+.hr {
+}
+
+.closeBtn {
+  margin: calc(var(--pad) - 0.5rem) 0 0 calc(var(--pad) - 0.5rem);
+}
+
 .post {
-  border-bottom: 1px solid var(--cmm-color-border-base);
+  padding-block: 0;
 }
 
 .form {
@@ -48,7 +62,7 @@ $width: 34rem;
   grid-template-columns: auto 1fr;
   column-gap: 1rem;
   row-gap: 0.25rem;
-  padding: var(--pad);
+  padding-inline: var(--pad);
 
   .avatar {
     --cmm-Avatar-size: 2.5rem;
@@ -72,8 +86,8 @@ $width: 34rem;
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 1rem;
-  padding: var(--pad);
-  border-top: 1px solid var(--cmm-color-border-base);
+  padding-inline: var(--pad);
+  padding-block-end: var(--pad);
 }
 
 .postBtnWrap {
@@ -95,5 +109,5 @@ $width: 34rem;
 }
 
 .quoteTarget {
-  margin: 0 1rem 1rem 1rem;
+  margin-inline: var(--pad);
 }

@@ -1,12 +1,13 @@
 import { AppBskyActorDefs, AppBskyFeedDefs, RichText } from "@atproto/api";
 import { Button } from "@camome/core/Button";
+import { IconButton } from "@camome/core/IconButton";
 import { Spinner } from "@camome/core/Spinner";
 import { Textarea } from "@camome/core/Textarea";
 import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import React from "react";
 import { toast } from "react-hot-toast";
-import { TbPencilPlus } from "react-icons/tb";
+import { TbPencilPlus, TbX } from "react-icons/tb";
 
 import { useAccountQuery } from "@/src/app/account/hooks/useAccountQuery";
 import ImagePicker, {
@@ -146,14 +147,29 @@ export default function PostComposer({
       )}
       <Dialog open={open} setOpen={setOpen} className={styles.dialog}>
         <div className={styles.container}>
+          <div>
+            <IconButton
+              aria-label="閉じる"
+              size="sm"
+              variant="ghost"
+              colorScheme="neutral"
+              onClick={() => void setOpen(false)}
+              className={styles.closeBtn}
+            >
+              <TbX />
+            </IconButton>
+          </div>
           {replyTarget && (
-            <Post
-              data={replyTarget}
-              isLink={false}
-              isEmbedLink={false}
-              contentOnly
-              className={styles.post}
-            />
+            <>
+              <Post
+                data={replyTarget}
+                isLink={false}
+                isEmbedLink={false}
+                contentOnly
+                className={styles.post}
+              />
+              <hr />
+            </>
           )}
           <div className={styles.form}>
             <Avatar profile={account?.profile} className={styles.avatar} />
@@ -192,13 +208,16 @@ export default function PostComposer({
               />
             </div>
           )}
-          <div
-            ref={setPreviewContainer}
-            className={styles.imagePreviewContainer}
-          />
+          {images.length > 0 && (
+            <div
+              ref={setPreviewContainer}
+              className={styles.imagePreviewContainer}
+            />
+          )}
+          <hr />
           <div className={styles.action}>
             <div>
-              {/* a post can have a embedded content */}
+              {/* a post can't have multiple embedded contents */}
               {!quoteTarget && (
                 <ImagePicker
                   images={images}
@@ -214,14 +233,6 @@ export default function PostComposer({
                 length={rt.graphemeLength}
                 exceedingId={exceedingId}
               />
-              <Button
-                variant="soft"
-                colorScheme="neutral"
-                size="sm"
-                onClick={() => setOpen(false)}
-              >
-                やめる
-              </Button>
               <Button
                 onClick={handleClickSubmit}
                 disabled={!isPostValid(rt, images.length) || isLoading}
