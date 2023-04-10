@@ -36,7 +36,7 @@ export type TimelineQueryFn<K extends QueryKey> = QueryFunction<
 type Props<K extends QueryKey> = {
   queryKey: K;
   queryFn: TimelineQueryFn<K>;
-  fetchLatestOne: () => Promise<AppBskyFeedDefs.FeedViewPost>;
+  fetchLatestOne: () => Promise<AppBskyFeedDefs.FeedViewPost | undefined>;
   maxPages?: number;
   filter?: (
     posts: AppBskyFeedDefs.FeedViewPost[]
@@ -78,6 +78,7 @@ export function Timeline<K extends QueryKey>({
     async () => {
       if (!latestUri) return false;
       const latest = await fetchLatestOne();
+      if (!latest) return false;
       // FIXME: consider about reposts which share the same URI
       return latest.post.uri !== latestUri;
     },

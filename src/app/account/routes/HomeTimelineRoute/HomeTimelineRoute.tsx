@@ -1,6 +1,10 @@
 import { AppBskyFeedDefs } from "@atproto/api";
 import React from "react";
 
+import {
+  filterRepliesToNoFollowing,
+  filterDuplicates,
+} from "@/src/app/post/lib/postFilters";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import Seo from "@/src/app/seo/Seo";
 import {
@@ -25,19 +29,13 @@ export function HomeTimelineRoute() {
   };
 
   const postFilter = (posts: AppBskyFeedDefs.FeedViewPost[]) => {
-    return posts.filter((p) => {
-      if (p.reply?.parent.author.viewer) {
-        return (
-          !!p.reply.parent.author.viewer.following ||
-          p.reply.parent.author.did === atp.session?.did
-        );
-      }
-      return true;
-    });
+    return filterDuplicates(
+      posts.filter((p) => filterRepliesToNoFollowing(p, atp))
+    );
   };
   const fetchLatest = React.useCallback(
     async () =>
-      postFilter((await bsky.feed.getTimeline({ limit: 1 })).data.feed)[0],
+      postFilter((await bsky.feed.getTimeline({ limit: 1 })).data.feed).at(0),
     []
   );
   return (
