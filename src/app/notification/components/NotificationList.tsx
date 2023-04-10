@@ -28,7 +28,9 @@ export default function NotificationList() {
       return lastPage.cursor ? { cursor: lastPage.cursor } : undefined;
     },
   });
-  const allItems = data?.pages.flatMap((p) => p.notifications) ?? [];
+  const allItems = (data?.pages.flatMap((p) => p.notifications) ?? []).filter(
+    (n) => !n.author.viewer?.muted
+  );
   const revalidateOnPost: RevalidateOnPost = ({ replyTarget }) => {
     if (replyTarget) {
       queryClient.refetchQueries(
