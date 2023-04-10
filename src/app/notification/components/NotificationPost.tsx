@@ -26,8 +26,10 @@ type Props = {
 
 export default function NotificationPost({ uri, reason, isSubject }: Props) {
   const queryClient = useQueryClient();
-  const { data, refetch } = usePostThreadQuery({ uri: uri });
-  if (!data) return null;
+  const { data, isLoading, refetch } = usePostThreadQuery({ uri: uri });
+  if (isLoading) return <p className={styles.loading}>投稿を取得中...</p>;
+  if (!data)
+    return <article className={styles.simplePost}>削除済みの投稿</article>;
 
   const mutatePostCache: MutatePostCache = ({ fn }) => {
     queryClient.setQueryData<AppBskyFeedDefs.FeedViewPost>(

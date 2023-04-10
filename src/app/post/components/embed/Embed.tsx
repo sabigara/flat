@@ -27,7 +27,8 @@ export default function Embed({ embed, isLink, className }: Props) {
   if (AppBskyEmbedImages.isView(embed)) {
     return <EmbeddedImages images={embed.images} className={className} />;
   } else if (AppBskyEmbedRecord.isView(embed)) {
-    // TODO: also support AppBskyEmbedRecord.isViewNotFound?
+    // TODO: support not found?
+    if (AppBskyEmbedRecord.isViewNotFound(embed)) return null;
     if (!AppBskyEmbedRecord.isViewRecord(embed.record)) return null;
     return (
       <EmbeddedRecord
