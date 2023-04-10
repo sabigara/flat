@@ -136,7 +136,6 @@ export default function PostComposer({
     <>
       {showButton && (
         <Button
-          aria-label="投稿ツールを開く"
           startDecorator={<TbPencilPlus />}
           size="lg"
           onClick={handleClickCompose}
