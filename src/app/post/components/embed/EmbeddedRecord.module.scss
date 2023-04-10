@@ -46,6 +46,11 @@
   font-size: var(--cmm-font-size-sm);
 }
 
+.muted {
+  font-size: var(--cmm-font-size-sm);
+  color: var(--cmm-color-font-subtle);
+}
+
 .focusLink {
   display: inline-block;
   margin-block-end: 1rem;
