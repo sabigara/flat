@@ -21,7 +21,6 @@ export default function EmbeddedRecord({
   const navigate = useNavigate();
   const author = record.author;
   const post = record.value;
-  const muted = !!author.viewer?.muted;
   if (!AppBskyFeedPost.isRecord(post)) {
     return null;
   }
@@ -32,12 +31,23 @@ export default function EmbeddedRecord({
 
   const handleClickBackground: React.MouseEventHandler = (e) => {
     e.stopPropagation();
-    if (isLink && !muted) navigate(postUrl);
+    if (isLink) navigate(postUrl);
   };
 
-  const content = (
-    <>
-      {isLink && !muted && (
+  if (author.viewer?.muted) {
+    return (
+      <article className={clsx(styles.container, styles.muted, className)}>
+        ミュート中のユーザーの投稿
+      </article>
+    );
+  }
+
+  return (
+    <article
+      onClick={handleClickBackground}
+      className={clsx(styles.container, isLink && styles.link, className)}
+    >
+      {isLink && (
         <Link to={postUrl} className={styles.focusLink}>
           引用された投稿の詳細
         </Link>
@@ -58,23 +68,6 @@ export default function EmbeddedRecord({
         <span className={styles.handle}>@{author.handle}</span>
       </div>
       <p className={styles.body}>{post.text}</p>
-    </>
-  );
-
-  return (
-    <article
-      onClick={handleClickBackground}
-      className={clsx(
-        styles.container,
-        isLink && !muted && styles.link,
-        className
-      )}
-    >
-      {muted ? (
-        <p className={styles.muted}>ミュート中のユーザーの投稿</p>
-      ) : (
-        content
-      )}
     </article>
   );
 }

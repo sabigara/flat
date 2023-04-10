@@ -205,6 +205,14 @@ export default function Post({
     navigate(postUrl);
   };
 
+  if (post.author.viewer?.muted) {
+    return (
+      <article className={clsx(styles.container, styles.muted, className)}>
+        ミュート中のユーザーの投稿
+      </article>
+    );
+  }
+
   return (
     <article
       className={clsx(styles.container, { [styles.link]: isLink }, className)}

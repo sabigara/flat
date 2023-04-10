@@ -10,6 +10,11 @@
     background: var(--cmm-color-surface-2);
     cursor: pointer;
   }
+
+  &.muted {
+    font-size: var(--cmm-font-size-sm);
+    color: var(--cmm-color-font-subtle);
+  }
 }
 
 .header {
@@ -44,11 +49,6 @@
   @include mixins.lineClamp(3);
   margin-block-start: 0.2em;
   font-size: var(--cmm-font-size-sm);
-}
-
-.muted {
-  font-size: var(--cmm-font-size-sm);
-  color: var(--cmm-color-font-subtle);
 }
 
 .focusLink {

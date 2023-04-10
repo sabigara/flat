@@ -10,6 +10,11 @@
     cursor: pointer;
   }
 
+  &.muted {
+    font-size: var(--cmm-font-size-sm);
+    color: var(--cmm-color-font-subtle);
+  }
+
   // disable hover effect on mobile devices
   // 32rem is just a magic number...
   @media screen and (max-width: 32rem) {
