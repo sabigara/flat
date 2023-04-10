@@ -18,7 +18,6 @@ export default function Notification({ notification }: Props) {
   const reason = notification.reason;
   const shouldFetchPost =
     reason === "reply" || reason === "repost" || reason === "like";
-
   const col2 = reason === "follow" || reason === "repost" || reason === "like";
 
   return (
@@ -62,7 +61,7 @@ export default function Notification({ notification }: Props) {
             isSubject
           />
         )}
-        {(reason === "mention" || reason === "reply") && (
+        {(reason === "mention" || reason === "reply" || reason === "quote") && (
           <NotificationPost
             uri={notification.uri}
             reason={notification.reason}
