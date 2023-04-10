@@ -6,8 +6,9 @@
   padding: 0.75em;
   position: relative;
 
-  &:hover {
+  &.link:hover {
     background: var(--cmm-color-surface-2);
+    cursor: pointer;
   }
 }
 

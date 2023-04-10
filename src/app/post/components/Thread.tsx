@@ -37,6 +37,7 @@ export default function Thread({
       <Post
         data={thread}
         isLink={!isSelected}
+        isEmbedLink={true}
         revalidate={revalidate}
         mutatePostCache={mutatePostCache}
         className={clsx(styles.post, { [styles.selected]: isSelected })}

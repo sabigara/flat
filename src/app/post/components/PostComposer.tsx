@@ -150,6 +150,7 @@ export default function PostComposer({
             <Post
               data={replyTarget}
               isLink={false}
+              isEmbedLink={false}
               contentOnly
               className={styles.post}
             />

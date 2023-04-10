@@ -27,6 +27,7 @@ type Props = {
   data: AppBskyFeedDefs.FeedViewPost;
   contentOnly?: boolean;
   isLink?: boolean;
+  isEmbedLink?: boolean;
   revalidate?: () => void;
   mutatePostCache?: MutatePostCache;
   className?: string;
@@ -36,6 +37,7 @@ export default function Post({
   data,
   contentOnly = false,
   isLink = true,
+  isEmbedLink = true,
   revalidate,
   mutatePostCache,
   className,
@@ -269,7 +271,7 @@ export default function Post({
           {post.embed && (
             <Embed
               embed={post.embed}
-              isLink={isLink}
+              isLink={isEmbedLink}
               className={styles.embed}
             />
           )}

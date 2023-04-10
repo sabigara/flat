@@ -37,7 +37,7 @@ export default function EmbeddedRecord({
   return (
     <article
       onClick={handleClickBackground}
-      className={clsx(styles.container, className)}
+      className={clsx(styles.container, isLink && styles.link, className)}
     >
       {isLink && (
         <Link to={postUrl} className={styles.focusLink}>
