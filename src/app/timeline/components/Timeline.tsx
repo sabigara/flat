@@ -71,18 +71,15 @@ export function Timeline<K extends QueryKey>({
   const queryClient = useQueryClient();
 
   const allItems = filter(data?.pages.flatMap((p) => p.feed) ?? []);
-
-  const latestItem = allItems.at(0);
-  const latestDate = latestItem
-    ? new Date(latestItem.post.indexedAt)
-    : undefined;
+  const latestUri = allItems.at(0)?.post.uri;
 
   const { data: isNewAvailable } = useQuery(
-    queryKeys.feed.new.$(queryKey, latestDate, fetchLatestOne),
+    queryKeys.feed.new.$(queryKey, latestUri, fetchLatestOne),
     async () => {
-      if (!latestDate) return false;
+      if (!latestUri) return false;
       const latest = await fetchLatestOne();
-      return new Date(latest.post.indexedAt).getTime() > latestDate.getTime();
+      // FIXME: consider about reposts which share the same URI
+      return latest.post.uri !== latestUri;
     },
     {
       refetchInterval: 15 * 1000, // 15 seconds; the same as the official web app
