@@ -21,6 +21,7 @@ import {
   mutateTimelineItem,
 } from "@/src/app/post/lib/mutateTimelineItem";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
+import { reloadTimelineForNewPosts } from "@/src/app/timeline/lib/reloadTimelineForNewPosts";
 import SpinnerFill from "@/src/components/SpinnerFill";
 
 import styles from "./Timeline.module.scss";
@@ -89,25 +90,7 @@ export function Timeline<K extends QueryKey>({
   );
 
   const loadNewPosts = () => {
-    // must scroll to top to prevent refetch at the bottom.
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-    const refetchOnTop = () => {
-      if (window.scrollY !== 0) {
-        window.requestAnimationFrame(refetchOnTop);
-        return;
-      }
-      // 1. remove all the pages except for the first.
-      // 2. refetch the first page.
-      queryClient.setQueryData(queryKey, (data: any) => ({
-        pages: data.pages.slice(0, 1),
-        pageParams: data.pageParams.slice(0, 1),
-      }));
-      queryClient.invalidateQueries(queryKey);
-    };
-    window.requestAnimationFrame(refetchOnTop);
+    reloadTimelineForNewPosts(queryClient, queryKey);
   };
 
   const revalidateOnPost = () => {
