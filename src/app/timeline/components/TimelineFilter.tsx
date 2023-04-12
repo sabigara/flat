@@ -49,7 +49,7 @@ export function TimelineFilter() {
     <details className={styles.details}>
       <summary className={styles.summary}>
         <TbFilter />
-        <span>表示オプション</span>
+        <span className={styles.summary__label}>表示オプション</span>
       </summary>
       <div className={styles.content}>
         <RadioGroup label="リプライ" aria-required orientation="horizontal">
