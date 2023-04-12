@@ -6,5 +6,13 @@ export const storageKeys = {
     theme: {
       $: "theme",
     },
+    tlFilters: {
+      reply: {
+        $: "tlFilterReply",
+      },
+      repost: {
+        $: "tlFilterRepost",
+      },
+    },
   },
 };

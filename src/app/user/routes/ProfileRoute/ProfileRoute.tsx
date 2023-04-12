@@ -15,6 +15,8 @@ import {
   Timeline,
   TimelineQueryFn,
 } from "@/src/app/timeline/components/Timeline";
+import { TimelineFilter } from "@/src/app/timeline/components/TimelineFilter";
+import { useTimelineFilter } from "@/src/app/timeline/hooks/useTimelineFilter";
 import Avatar from "@/src/app/user/components/Avatar";
 import { followUser } from "@/src/app/user/lib/followUser";
 import { unfollowUser } from "@/src/app/user/lib/unfollowUser";
@@ -43,15 +45,18 @@ export function ProfileRoute() {
     if (!resp.success) throw new Error("Fetch error");
     return resp.data;
   };
+  const { timelineFilter } = useTimelineFilter();
   const fetchLatest = React.useCallback(
     async () =>
-      (
-        await bsky.feed.getAuthorFeed({
-          actor: profile.handle,
-          limit: 1,
-        })
-      ).data.feed[0],
-    [profile.handle]
+      timelineFilter(
+        (
+          await bsky.feed.getAuthorFeed({
+            actor: profile.handle,
+            limit: 1,
+          })
+        ).data.feed
+      ).at(0),
+    [profile.handle, timelineFilter]
   );
   const revalidator = useRevalidator();
   const revalidate = () => {
@@ -184,10 +189,12 @@ export function ProfileRoute() {
           </div>
         </header>
         <div className={styles.main}>
+          <TimelineFilter />
           <Timeline
             queryKey={queryKey}
             queryFn={queryFn}
             fetchLatestOne={fetchLatest}
+            filter={timelineFilter}
           />
         </div>
       </article>
