@@ -5,7 +5,7 @@ import { toast } from "react-hot-toast";
 import { TbVolume, TbVolumeOff } from "react-icons/tb";
 
 import Menu, { MenuProps } from "@/src/components/Menu";
-import { bsky } from "@/src/lib/atp";
+import { atp, bsky } from "@/src/lib/atp";
 
 type Props = {
   profile: AppBskyActorDefs.ProfileViewDetailed;
@@ -43,13 +43,15 @@ export default function ProfileMoreMenu({
     },
   });
 
-  const actions: MenuProps["actions"] = [
-    {
+  const actions: MenuProps["actions"] = [];
+
+  if (atp.session && profile.did !== atp.session.did) {
+    actions.push({
       label: muted ? "ミュート解除" : "ミュートする",
       icon: muted ? <TbVolume /> : <TbVolumeOff />,
       onClick: () => muteMutation({ profile, muted }),
-    },
-  ];
+    });
+  }
 
   if (actions.length === 0) return null;
 
