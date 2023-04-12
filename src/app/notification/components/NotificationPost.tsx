@@ -59,8 +59,9 @@ export default function NotificationPost({ uri, reason, isSubject }: Props) {
     case "like":
       // always subject
       return simplePostElm;
+    default:
+      return postElem;
   }
-  return postElem;
 }
 
 function SimplePost({ post }: { post: AppBskyFeedDefs.PostView }) {

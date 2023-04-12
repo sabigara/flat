@@ -6,7 +6,7 @@ import React from "react";
 
 import styles from "./Menu.module.scss";
 
-type Props = {
+export type MenuProps = {
   button: React.ReactNode;
   actions: {
     label: string;
@@ -16,7 +16,7 @@ type Props = {
   }[];
 };
 
-export default function Menu({ button, actions }: Props) {
+export default function Menu({ button, actions }: MenuProps) {
   const { x, y, reference, floating, strategy } = useFloating({
     placement: "bottom-end",
     middleware: [offset(8), flip()],

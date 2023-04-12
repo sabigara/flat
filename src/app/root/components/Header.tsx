@@ -1,4 +1,4 @@
-import { Link, useNavigation } from "react-router-dom";
+import { Link, useNavigation, useRevalidator } from "react-router-dom";
 
 import NotificationButton from "@/src/app/notification/components/NotificationButton";
 import DropdownMenu from "@/src/app/root/components/DropdownMenu";
@@ -8,11 +8,13 @@ import styles from "./Header.module.scss";
 
 export default function Header() {
   const { state: navState } = useNavigation();
+  const { state: revalidateState } = useRevalidator();
+  const progressBusy = navState === "loading" || revalidateState === "loading";
 
   return (
     <header className={styles.container}>
       <div className={styles.progressBar}>
-        {navState === "loading" && (
+        {progressBusy && (
           <div role="status">
             <span className="visually-hidden">
               次のページのデータを取得中・・・

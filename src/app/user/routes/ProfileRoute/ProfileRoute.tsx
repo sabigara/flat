@@ -1,8 +1,10 @@
 import { Button } from "@camome/core/Button";
+import { IconButton } from "@camome/core/IconButton";
 import { Spinner } from "@camome/core/Spinner";
 import { Tag } from "@camome/core/Tag";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
+import { TbDots } from "react-icons/tb";
 import { Link, useLoaderData, useRevalidator } from "react-router-dom";
 
 import type { ProfileRouteLoaderResult } from "@/src/app/user/routes/ProfileRoute";
@@ -16,6 +18,7 @@ import {
 import Avatar from "@/src/app/user/components/Avatar";
 import { followUser } from "@/src/app/user/lib/followUser";
 import { unfollowUser } from "@/src/app/user/lib/unfollowUser";
+import ProfileMoreMenu from "@/src/app/user/routes/ProfileRoute/ProfileMoreMenu";
 import { RichTextRenderer } from "@/src/components/RichTextRenderer";
 import { atp, bsky } from "@/src/lib/atp";
 
@@ -24,6 +27,7 @@ import styles from "./ProfileRoute.module.scss";
 export function ProfileRoute() {
   const { profile, richText } = useLoaderData() as ProfileRouteLoaderResult;
   const username = profile.displayName ?? profile.handle;
+  const queryClient = useQueryClient();
   const queryKey = queryKeys.feed.author.$(profile.handle);
   const queryFn: TimelineQueryFn<typeof queryKey> = async ({
     queryKey,
@@ -50,8 +54,13 @@ export function ProfileRoute() {
     [profile.handle]
   );
   const revalidator = useRevalidator();
+  const revalidate = () => {
+    revalidator.revalidate();
+    queryClient.invalidateQueries(queryKey);
+  };
   const { mutate: mutateFollowState, isLoading: isMutating } = useMutation(
     async (isFollow: boolean) => {
+      setHoverUnfollow(false);
       // TODO: error handling
       if (!atp.session) return;
       if (isFollow) {
@@ -63,13 +72,13 @@ export function ProfileRoute() {
         if (!profile.viewer?.following) return;
         await unfollowUser({ uri: profile.viewer.following });
       }
-      revalidator.revalidate();
+      revalidate();
     }
   );
   const [hoverUnfollow, setHoverUnfollow] = React.useState(false);
 
   const isMyself = atp.session && atp.session.did === profile.did;
-  const isLoadingFollow = isMutating || revalidator.state === "loading";
+  const isLoadingFollow = isMutating;
 
   return (
     <>
@@ -87,6 +96,20 @@ export function ProfileRoute() {
           <div className={styles.topRow}>
             <Avatar profile={profile} className={styles.avatar} />
             <div className={styles.actions}>
+              <ProfileMoreMenu
+                profile={profile}
+                button={
+                  <IconButton
+                    colorScheme="neutral"
+                    variant="soft"
+                    size="sm"
+                    aria-label=""
+                  >
+                    <TbDots />
+                  </IconButton>
+                }
+                revalidate={revalidate}
+              />
               {!isMyself &&
                 (profile.viewer?.following ? (
                   <Button
@@ -106,9 +129,7 @@ export function ProfileRoute() {
                       isLoadingFollow ? <Spinner size="sm" /> : undefined
                     }
                   >
-                    {hoverUnfollow || isLoadingFollow
-                      ? "フォロー解除"
-                      : "フォロー中"}
+                    {hoverUnfollow ? "フォロー解除" : "フォロー中"}
                   </Button>
                 ) : (
                   <Button
