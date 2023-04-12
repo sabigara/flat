@@ -37,7 +37,7 @@ export function ProfileRoute() {
   }) => {
     const resp = await bsky.feed.getAuthorFeed({
       actor: queryKey[1].authorId,
-      limit: 20,
+      limit: 30,
       // passing `undefined` breaks the query somehow
       ...(pageParam ? { cursor: pageParam.cursor } : {}),
     });

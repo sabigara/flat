@@ -16,7 +16,7 @@ export function HomeTimelineRoute() {
   const queryKey = queryKeys.feed.home.$;
   const queryFn: TimelineQueryFn<typeof queryKey> = async ({ pageParam }) => {
     const resp = await bsky.feed.getTimeline({
-      limit: 25,
+      limit: 30,
       // passing `undefined` breaks the query somehow
       ...(pageParam ? { cursor: pageParam.cursor } : {}),
     });
