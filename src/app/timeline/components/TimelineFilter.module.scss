@@ -17,9 +17,15 @@
     cursor: pointer;
     background: var(--cmm-color-surface-1);
   }
+
+  &::-webkit-details-marker {
+    display: none;
+  }
 }
 
 .content {
+  --cmm-FormFieldLabel-font-weight: var(--cmm-font-weight-normal);
+
   display: flex;
   flex-direction: column;
   gap: 1rem;
