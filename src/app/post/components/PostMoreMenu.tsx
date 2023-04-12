@@ -16,7 +16,7 @@ type Props = {
   revalidate?: () => void;
 };
 
-export default function PostMoreButton({
+export default function PostMoreMenu({
   myProfile,
   post,
   button,

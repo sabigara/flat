@@ -11,7 +11,7 @@ import { TbDots, TbMessageCircle2, TbStar, TbStarFilled } from "react-icons/tb";
 import { Link, useNavigate } from "react-router-dom";
 
 import { useAccountQuery } from "@/src/app/account/hooks/useAccountQuery";
-import PostMoreButton from "@/src/app/post/components/PostMoreButton";
+import PostMoreMenu from "@/src/app/post/components/PostMoreMenu";
 import Embed from "@/src/app/post/components/embed/Embed";
 import { usePostComposer } from "@/src/app/post/hooks/usePostComposer";
 import { buildPostUrl } from "@/src/app/post/lib/buildPostUrl";
@@ -291,7 +291,7 @@ export default function Post({
                 </li>
               ))}
               <li>
-                <PostMoreButton
+                <PostMoreMenu
                   myProfile={account?.profile}
                   button={
                     <button
