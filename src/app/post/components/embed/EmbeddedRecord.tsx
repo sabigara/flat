@@ -54,16 +54,14 @@ export default function EmbeddedRecord({
       )}
       <div className={styles.header}>
         <div className={styles.avatarWrap}>
-          <Avatar profile={author} className={styles.avatar} />
+          <Avatar
+            profile={author}
+            stopPropagation={false}
+            className={styles.avatar}
+          />
         </div>
         {author.displayName && (
-          <Link
-            to={`/${author.handle}`}
-            onClick={(e) => e.stopPropagation()}
-            className={styles.displayName}
-          >
-            {author.displayName}
-          </Link>
+          <span className={styles.displayName}>{author.displayName}</span>
         )}
         <span className={styles.handle}>@{author.handle}</span>
       </div>
