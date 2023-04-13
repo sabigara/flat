@@ -37,7 +37,7 @@ export type TimelineQueryFn<K extends QueryKey> = QueryFunction<
 type Props<K extends QueryKey> = {
   queryKey: K;
   queryFn: TimelineQueryFn<K>;
-  fetchLatestOne: () => Promise<AppBskyFeedDefs.FeedViewPost | undefined>;
+  fetchNewLatest: () => Promise<AppBskyFeedDefs.FeedViewPost | undefined>;
   maxPages?: number;
   filter?: (
     posts: AppBskyFeedDefs.FeedViewPost[]
@@ -47,7 +47,7 @@ type Props<K extends QueryKey> = {
 export function Timeline<K extends QueryKey>({
   queryKey,
   queryFn,
-  fetchLatestOne,
+  fetchNewLatest,
   maxPages,
   filter = (posts) => posts,
 }: Props<K>) {
@@ -72,16 +72,16 @@ export function Timeline<K extends QueryKey>({
   const queryClient = useQueryClient();
 
   const allItems = filter(data?.pages.flatMap((p) => p.feed) ?? []);
-  const latestUri = allItems.at(0)?.post.uri;
+  const currentLatestUri = allItems.at(0)?.post.uri;
 
   const { data: isNewAvailable } = useQuery(
-    queryKeys.feed.new.$(queryKey, latestUri, fetchLatestOne),
+    queryKeys.feed.new.$(queryKey, currentLatestUri, fetchNewLatest),
     async () => {
-      const latest = await fetchLatestOne();
-      console.log({ curr: latestUri, new: latest?.post.uri });
-      if (!latest) return false;
+      const newLatest = await fetchNewLatest();
+      console.log({ curr: currentLatestUri, new: newLatest?.post.uri });
+      if (!newLatest) return false;
       // FIXME: consider about reposts which share the same URI
-      return latest.post.uri !== latestUri;
+      return newLatest.post.uri !== currentLatestUri;
     },
     {
       refetchInterval: 15 * 1000, // 15 seconds; the same as the official web app

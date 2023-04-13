@@ -15,9 +15,11 @@ export const queryKeys = {
     new: {
       $: (
         key: QueryKey,
-        latestId: string | undefined,
-        fetchLatestOne: () => Promise<AppBskyFeedDefs.FeedViewPost | undefined>
-      ) => [key, { latestId, fetchLatestOne }] as const,
+        currentLatestId: string | undefined,
+        fetchNewLatestOne: () => Promise<
+          AppBskyFeedDefs.FeedViewPost | undefined
+        >
+      ) => [key, { currentLatestId, fetchNewLatestOne }] as const,
     },
   },
   posts: {

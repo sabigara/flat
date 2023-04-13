@@ -193,7 +193,7 @@ export function ProfileRoute() {
           <Timeline
             queryKey={queryKey}
             queryFn={queryFn}
-            fetchLatestOne={fetchLatest}
+            fetchNewLatest={fetchLatest}
             filter={timelineFilter}
           />
         </div>

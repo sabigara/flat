@@ -28,7 +28,7 @@ export function HomeTimelineRoute() {
 
   const fetchLatest = React.useCallback(
     async () =>
-      timelineFilter((await bsky.feed.getTimeline({ limit: 1 })).data.feed).at(
+      timelineFilter((await bsky.feed.getTimeline({ limit: 5 })).data.feed).at(
         0
       ),
     [timelineFilter]
@@ -41,7 +41,7 @@ export function HomeTimelineRoute() {
         <Timeline
           queryKey={queryKey}
           queryFn={queryFn}
-          fetchLatestOne={fetchLatest}
+          fetchNewLatest={fetchLatest}
           filter={timelineFilter}
         />
       </div>
