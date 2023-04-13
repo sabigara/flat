@@ -63,7 +63,7 @@ export default function Post({
       : optimisticallyLiked;
 
   const { mutate: mutateRepost, isLoading: isMutatingRepost } = useMutation(
-    async () => {
+    async ({ did, post }: { did: string; post: AppBskyFeedDefs.PostView }) => {
       let repostUri: string | undefined = undefined;
       if (post.viewer?.repost) {
         const uri = new AtUri(post.viewer.repost);
@@ -74,7 +74,7 @@ export default function Post({
       } else {
         const resp = await bsky.feed.repost.create(
           {
-            repo: atp.session!.did,
+            repo: did,
           },
           {
             subject: {
@@ -89,12 +89,12 @@ export default function Post({
       return { repostUri };
     },
     {
-      onMutate() {
-        setOptimisticallyReposted((curr) => !curr);
+      onMutate({ post }) {
+        setOptimisticallyReposted(!post.viewer?.repost);
       },
-      onSuccess({ repostUri }) {
+      onSuccess({ repostUri }, { post }) {
         mutatePostCache?.({
-          cid: post.cid,
+          uri: post.uri,
           fn: (draft: Draft<AppBskyFeedDefs.PostView>) => {
             if (!draft.repostCount) {
               draft.repostCount = 0;
@@ -106,6 +106,7 @@ export default function Post({
             draft.viewer.repost = repostUri;
           },
         });
+        setOptimisticallyReposted(undefined);
         revalidate?.();
       },
     }
@@ -139,12 +140,12 @@ export default function Post({
       return { likeUri };
     },
     {
-      onMutate() {
-        setOptimisticallyLiked((curr) => !curr);
+      onMutate({ post }) {
+        setOptimisticallyLiked(!post.viewer?.like);
       },
-      onSuccess({ likeUri }) {
+      onSuccess({ likeUri }, { post }) {
         mutatePostCache?.({
-          cid: post.cid,
+          uri: post.uri,
           fn: (draft: Draft<AppBskyFeedDefs.PostView>) => {
             if (!draft.likeCount) {
               draft.likeCount = 0;
@@ -182,7 +183,8 @@ export default function Post({
       count: post.repostCount ?? 0,
       reacted: reposted,
       disabled: isMutatingRepost,
-      onClick: mutateRepost,
+      onClick: () =>
+        atp.session && mutateRepost({ did: atp.session.did, post }),
     },
     {
       type: "like",

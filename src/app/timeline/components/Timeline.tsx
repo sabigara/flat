@@ -8,7 +8,6 @@ import {
   useQueryClient,
   useQuery,
 } from "@tanstack/react-query";
-import { Draft } from "immer";
 import InfiniteScroll from "react-infinite-scroller";
 
 import type { AppBskyFeedDefs } from "@atproto/api";
@@ -20,6 +19,7 @@ import {
   TimelineInfiniteData,
   mutateTimelineItem,
 } from "@/src/app/post/lib/mutateTimelineItem";
+import { MutatePostCache } from "@/src/app/post/lib/types";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import { reloadTimelineForNewPosts } from "@/src/app/timeline/lib/reloadTimelineForNewPosts";
 import SpinnerFill from "@/src/components/SpinnerFill";
@@ -97,15 +97,9 @@ export function Timeline<K extends QueryKey>({
     queryClient.invalidateQueries(queryKey);
   };
 
-  const mutatePostCache = ({
-    cid,
-    fn,
-  }: {
-    cid: string;
-    fn: (post: Draft<AppBskyFeedDefs.PostView>) => void;
-  }) => {
+  const mutatePostCache: MutatePostCache = ({ uri, fn }) => {
     queryClient.setQueryData<TimelineInfiniteData>(queryKey, (data) =>
-      mutateTimelineItem(data, cid, fn)
+      mutateTimelineItem(data, uri, fn)
     );
   };
 

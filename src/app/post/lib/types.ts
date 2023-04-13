@@ -2,7 +2,7 @@ import { AppBskyFeedDefs } from "@atproto/api";
 import { Draft } from "immer";
 
 export type MutatePostCache = (params: {
-  cid: string;
+  uri: string;
   fn: (draft: Draft<AppBskyFeedDefs.PostView>) => void;
 }) => void;
 
@@ -11,3 +11,9 @@ export type RevalidateOnPost = ({
 }: {
   replyTarget?: AppBskyFeedDefs.FeedViewPost;
 }) => void;
+
+export function isNonNullish<T>(
+  something: T
+): something is Exclude<T, undefined | null> {
+  return something != null;
+}

@@ -6,6 +6,7 @@ import { Link, useParams } from "react-router-dom";
 import PostComposer from "@/src/app/post/components/PostComposer";
 import Thread from "@/src/app/post/components/Thread";
 import { usePostThreadQuery } from "@/src/app/post/hooks/usePostThreadQuery";
+import { findPostFromThread } from "@/src/app/post/lib/findPostFromThread";
 import { MutatePostCache } from "@/src/app/post/lib/types";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import Seo from "@/src/app/seo/Seo";
@@ -34,12 +35,16 @@ export default function PostRoute() {
     queryClient.refetchQueries(queryKeys.posts.single.$({ uri: threadUri }));
   };
 
-  const mutatePostCache: MutatePostCache = ({ fn }) => {
+  const mutatePostCache: MutatePostCache = ({ fn, uri }) => {
     queryClient.setQueryData<AppBskyFeedDefs.ThreadViewPost>(
       queryKeys.posts.single.$({ uri: threadUri }),
       (data) => {
         if (!data) throw new Error("Shouldn't reach here");
-        return produce(data, (draft) => fn(draft.post));
+        return produce(data, (draft) => {
+          const post = findPostFromThread(draft, uri);
+          if (!post) return;
+          fn(post);
+        });
       }
     );
   };
