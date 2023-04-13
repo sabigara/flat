@@ -77,8 +77,8 @@ export function Timeline<K extends QueryKey>({
   const { data: isNewAvailable } = useQuery(
     queryKeys.feed.new.$(queryKey, latestUri, fetchLatestOne),
     async () => {
-      if (!latestUri) return false;
       const latest = await fetchLatestOne();
+      console.log({ curr: latestUri, new: latest?.post.uri });
       if (!latest) return false;
       // FIXME: consider about reposts which share the same URI
       return latest.post.uri !== latestUri;
