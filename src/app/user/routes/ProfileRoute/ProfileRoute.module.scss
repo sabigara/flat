@@ -96,3 +96,18 @@
   margin-block-start: 1rem;
   padding-block-end: 5rem;
 }
+
+.muted {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-inline: auto;
+  padding-block: 1rem;
+  color: var(--cmm-color-font-subtle);
+  font-size: var(--cmm-font-size-sm);
+
+  > svg {
+    font-size: var(--cmm-font-size-lg);
+  }
+}

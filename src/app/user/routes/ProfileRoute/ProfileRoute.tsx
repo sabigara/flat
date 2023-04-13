@@ -4,7 +4,7 @@ import { Spinner } from "@camome/core/Spinner";
 import { Tag } from "@camome/core/Tag";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
-import { TbDots } from "react-icons/tb";
+import { TbDots, TbVolumeOff } from "react-icons/tb";
 import { Link, useLoaderData, useRevalidator } from "react-router-dom";
 
 import type { ProfileRouteLoaderResult } from "@/src/app/user/routes/ProfileRoute";
@@ -84,6 +84,7 @@ export function ProfileRoute() {
 
   const isMyself = atp.session && atp.session.did === profile.did;
   const isLoadingFollow = isMutating;
+  const muted = !!profile.viewer?.muted;
 
   return (
     <>
@@ -189,13 +190,21 @@ export function ProfileRoute() {
           </div>
         </header>
         <div className={styles.main}>
-          <TimelineFilter />
-          <Timeline
-            queryKey={queryKey}
-            queryFn={queryFn}
-            fetchNewLatest={fetchLatest}
-            filter={timelineFilter}
-          />
+          {muted && (
+            <p className={styles.muted}>
+              <TbVolumeOff aria-hidden />
+              ミュート中
+            </p>
+          )}
+          <div hidden={muted}>
+            <TimelineFilter />
+            <Timeline
+              queryKey={queryKey}
+              queryFn={queryFn}
+              fetchNewLatest={fetchLatest}
+              filter={timelineFilter}
+            />
+          </div>
         </div>
       </article>
     </>

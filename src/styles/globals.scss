@@ -87,3 +87,8 @@ body {
     background: var(--cmm-color-surface-2) !important;
   }
 }
+
+// Should be browser's default but let it be explicit.
+[hidden] {
+  display: none;
+}
