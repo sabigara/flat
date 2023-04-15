@@ -11,7 +11,13 @@ type Props = RichTextProps & {
 
 export function RichTextRenderer({ text, facets, className }: Props) {
   const content = React.useMemo(() => {
-    const rt = new RichText({ text, facets });
+    let rt: RichText;
+    try {
+      rt = new RichText({ text, facets });
+    } catch (e) {
+      console.error(e);
+      return <span>Could&apos;nt parse RichText</span>;
+    }
     return (
       <>
         {Array.from(rt.segments()).map((seg) => (
