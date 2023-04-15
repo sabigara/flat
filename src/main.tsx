@@ -8,6 +8,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "@camome/system/dist/theme.css";
 import "@/src/styles/globals.scss";
 
+import { InviteCodesRoute } from "@/src/app/InviteCodesRoute";
 import * as About from "@/src/app/about/routes/AboutRoute";
 import * as HomeTimelineRoute from "@/src/app/account/routes/HomeTimelineRoute";
 import * as Login from "@/src/app/account/routes/LoginRoute";
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       {
         index: true,
         ...HomeTimelineRoute,
+      },
+      {
+        path: "/invite-codes",
+        element: <InviteCodesRoute />,
       },
       {
         path: "/settings",
