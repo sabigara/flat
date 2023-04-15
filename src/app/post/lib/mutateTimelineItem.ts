@@ -12,10 +12,11 @@ export function mutateTimelineItem(
 ) {
   if (!data) return { pageParams: [], pages: [] };
   return produce(data, (draft) => {
-    const target = draft.pages
+    // find all to mutate reposts as well.
+    const targets = draft.pages
       .flatMap((p) => p.feed)
-      .find((item) => item.post.uri === postUri);
-    if (!target) return data;
-    fn(target.post);
+      .filter((item) => item.post.uri === postUri);
+    if (!targets) return data;
+    targets.forEach((t) => fn(t.post));
   });
 }
