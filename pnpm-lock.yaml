@@ -2,8 +2,8 @@ lockfileVersion: '6.0'
 
 dependencies:
   '@atproto/api':
-    specifier: ^0.2.5
-    version: 0.2.5
+    specifier: ^0.2.7
+    version: 0.2.7
   '@atproto/lexicon':
     specifier: ^0.1.0
     version: 0.1.0
@@ -169,8 +169,8 @@ packages:
       leven: 3.1.0
     dev: true
 
-  /@atproto/api@0.2.5:
-    resolution: {integrity: sha512-RJGhiwj6kOjrlVy7ES/SfJt3JyFwXdFZeBP4iw2ne/Ie0ZlanKhY0y9QHx5tI4rvEUP/wf0iKtaq2neczHi3bg==}
+  /@atproto/api@0.2.7:
+    resolution: {integrity: sha512-Sz+lLD5apC2f0FSClkElIrt4w+aLgzqJ/wqtFO7xuQH8+hGfxdfGuVIK5GEDQ7epeDlWvVhVSouP6ZdGSKKtSA==}
     dependencies:
       '@atproto/common-web': 0.1.0
       '@atproto/uri': 0.0.1
