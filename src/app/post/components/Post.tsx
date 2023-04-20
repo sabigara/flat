@@ -254,9 +254,7 @@ export default function Post({
             >
               {post.author.displayName}
             </Link>
-            <span className={styles.name}>
-              @{post.author.handle.replace(".bsky.social", "")}
-            </span>
+            <span className={styles.name}>@{post.author.handle}</span>
             <time dateTime={post.indexedAt} className={styles.time}>
               {formatDistanceShort(new Date(post.indexedAt))}
             </time>
