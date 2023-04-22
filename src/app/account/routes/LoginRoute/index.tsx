@@ -9,6 +9,7 @@ import {
   useNavigation,
 } from "react-router-dom";
 
+import { appPasswordRegex } from "@/src/app/account/lib/appPassword";
 import LogoIcon from "@/src/assets/icon.svg";
 import { atp } from "@/src/lib/atp";
 
@@ -25,7 +26,11 @@ export const action = (async ({ request }) => {
   const identifier = data.get("identifier");
   const password = data.get("password");
   // TODO: better validation?
-  if (typeof identifier !== "string" || typeof password !== "string") {
+  if (
+    typeof identifier !== "string" ||
+    typeof password !== "string" ||
+    !password.match(appPasswordRegex)
+  ) {
     throw new Error(`Validation error: ${{ identifier, password }}`);
   }
   const resp = await atp.login({
@@ -53,13 +58,32 @@ function LoginRoute() {
       </div>
       <Form method="post" className={styles.form}>
         <Input
-          label="Identifier (handle or email)"
+          label="ハンドルまたはメールアドレス"
           name="identifier"
           type="text"
           placeholder="you.bsky.social"
           required
         />
-        <Input label="Password" name="password" type="password" required />
+        <Input
+          label="パスワード"
+          description={
+            <span className={styles.passwordDescription}>
+              <a
+                href="https://staging.bsky.app/settings/app-passwords"
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                アプリパスワードを生成
+              </a>
+              して入力してください
+            </span>
+          }
+          name="password"
+          type="password"
+          placeholder="xxxx-xxxx-xxxx-xxxx"
+          pattern={`.{4}-.{4}-.{4}-.{4}`} // TODO: is there any way to convert a RegExp to string?
+          required
+        />
         <Button
           type="submit"
           disabled={state === "submitting"}

@@ -44,3 +44,10 @@
 .notice {
   color: var(--cmm-color-danger-font);
 }
+
+.passwordDescription {
+  > a {
+    color: var(--cmm-color-link);
+    text-decoration: underline;
+  }
+}
