@@ -1,5 +1,6 @@
 import { AppBskyFeedDefs } from "@atproto/api";
 import clsx from "clsx";
+import React from "react";
 
 import Post from "@/src/app/post/components/Post";
 import { MutatePostCache } from "@/src/app/post/lib/types";
@@ -22,6 +23,11 @@ export default function Thread({
   revalidate,
   mutatePostCache,
 }: Props) {
+  React.useLayoutEffect(() => {
+    if (!isSelected || !AppBskyFeedDefs.isThreadViewPost(thread)) return;
+    document.getElementById(thread.post.uri)?.scrollIntoView();
+  }, [isSelected, thread]);
+
   // TODO: consider other cases
   if (!AppBskyFeedDefs.isThreadViewPost(thread)) return null;
 
@@ -41,6 +47,7 @@ export default function Thread({
         revalidate={revalidate}
         mutatePostCache={mutatePostCache}
         className={clsx(styles.post, { [styles.selected]: isSelected })}
+        id={thread.post.uri}
       />
       {thread.replies?.map((reply) => (
         <Thread

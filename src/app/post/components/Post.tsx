@@ -30,6 +30,7 @@ type Props = {
   isEmbedLink?: boolean;
   revalidate?: () => void;
   mutatePostCache?: MutatePostCache;
+  id?: string;
   className?: string;
 };
 
@@ -40,6 +41,7 @@ export default function Post({
   isEmbedLink = true,
   revalidate,
   mutatePostCache,
+  id,
   className,
 }: Props) {
   const { data: account } = useAccountQuery();
@@ -219,6 +221,7 @@ export default function Post({
     <article
       className={clsx(styles.container, { [styles.link]: isLink }, className)}
       onClick={isLink ? handleClickBackground : undefined}
+      id={id}
     >
       <Link to={postUrl} className={styles.focusLink}>
         投稿の詳細
