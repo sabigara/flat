@@ -13,7 +13,6 @@ type Props = {
   notification: AppBskyNotificationListNotifications.Notification;
 };
 
-// TODO: support tap to navigate to subject
 export default function Notification({ notification }: Props) {
   const reason = notification.reason;
   const shouldFetchPost =
