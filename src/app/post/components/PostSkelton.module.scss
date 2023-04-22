@@ -1,0 +1,39 @@
+@use "@/mixins";
+@use "./postMixins";
+
+%skelton {
+  background: var(--cmm-color-surface-2);
+}
+
+.container {
+  @include postMixins.container;
+}
+
+.main {
+  @include postMixins.main;
+}
+
+.right {
+  @include postMixins.right;
+}
+
+.header {
+  @include postMixins.header;
+  @extend %skelton;
+  block-size: 1rem;
+}
+
+.prose {
+  @include postMixins.prose;
+  @extend %skelton;
+  flex: unset;
+  block-size: 4rem;
+}
+
+.avatar {
+  @include postMixins.avatar;
+  @extend %skelton;
+  block-size: var(--cmm-Avatar-size);
+  inline-size: var(--cmm-Avatar-size);
+  border-radius: var(--cmm-radius-full);
+}

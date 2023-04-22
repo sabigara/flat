@@ -8,6 +8,7 @@ import produce from "immer";
 import { Link } from "react-router-dom";
 
 import Post from "@/src/app/post/components/Post";
+import { PostSkelton } from "@/src/app/post/components/PostSkelton";
 import { usePostThreadQuery } from "@/src/app/post/hooks/usePostThreadQuery";
 import { buildPostUrl } from "@/src/app/post/lib/buildPostUrl";
 import { MutatePostCache } from "@/src/app/post/lib/types";
@@ -59,8 +60,7 @@ type PostProps = {
 };
 
 function SubjectPost({ view, isLoading }: PostProps) {
-  if (isLoading)
-    return <p className={styles["loading--subject"]}>投稿を取得中...</p>;
+  if (isLoading) return <p className={styles.loading}>投稿を取得中...</p>;
   if (!view)
     return <article className={styles.notFound}>削除済みの投稿</article>;
   if (!AppBskyFeedPost.isRecord(view.post.record)) return null;
@@ -89,8 +89,7 @@ function NonSubjectPost({
 }) {
   const queryClient = useQueryClient();
 
-  if (isLoading)
-    return <p className={styles["loading--nonSubject"]}>投稿を取得中...</p>;
+  if (isLoading) return <PostSkelton />;
   if (!view)
     return <article className={styles.notFound}>削除済みの投稿</article>;
   if (!AppBskyFeedPost.isRecord(view.post.record)) return null;

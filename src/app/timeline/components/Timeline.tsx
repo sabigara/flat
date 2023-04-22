@@ -21,6 +21,7 @@ import {
 } from "@/src/app/post/lib/mutateTimelineItem";
 import { MutatePostCache } from "@/src/app/post/lib/types";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
+import { TimelineSkelton } from "@/src/app/timeline/components/TimelineSkelton";
 import { reloadTimelineForNewPosts } from "@/src/app/timeline/lib/reloadTimelineForNewPosts";
 import SpinnerFill from "@/src/components/SpinnerFill";
 
@@ -104,11 +105,7 @@ export function Timeline<K extends QueryKey>({
   };
 
   if (status === "loading") {
-    return (
-      <div className={styles.spinner}>
-        <Spinner />
-      </div>
-    );
+    return <TimelineSkelton count={12} />;
   } else if (status === "error") {
     return <span>Error: {(error as Error).message}</span>;
   }

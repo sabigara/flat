@@ -8,22 +8,10 @@
   margin-block-start: 0.2em;
 }
 
-%base {
+.loading {
+  margin-block-start: 0.2em;
   font-size: var(--cmm-font-size-sm);
   color: var(--cmm-color-font-subtle);
-}
-
-.loading {
-  &--subject {
-    @extend %base;
-    margin-block-start: 0.2em;
-  }
-
-  &--nonSubject {
-    @extend %base;
-    padding: 1rem;
-    block-size: 7rem;
-  }
 }
 
 .notFound {

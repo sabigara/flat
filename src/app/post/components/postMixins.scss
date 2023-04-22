@@ -1,0 +1,38 @@
+@use "@/mixins";
+
+@mixin container {
+  padding: 1rem 1rem;
+  background: var(--cmm-color-surface-0);
+  position: relative;
+}
+
+@mixin main {
+  display: flex;
+  gap: 1rem;
+  min-height: 3rem;
+}
+
+@mixin right {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+@mixin header {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+  align-items: baseline;
+  line-height: 1.1;
+}
+
+@mixin prose {
+  flex: 1;
+  display: inline-block;
+  margin-block-start: 0.3rem;
+}
+
+@mixin avatar {
+  --cmm-Avatar-size: 2.5rem;
+}
