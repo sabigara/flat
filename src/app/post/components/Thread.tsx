@@ -25,7 +25,14 @@ export default function Thread({
 }: Props) {
   React.useLayoutEffect(() => {
     if (!isSelected || !AppBskyFeedDefs.isThreadViewPost(thread)) return;
-    document.getElementById(thread.post.uri)?.scrollIntoView();
+    const target = document.getElementById(thread.post.uri);
+    if (!target) return;
+    const headerOffset = 3.5 * 16; // FIXME: get value of var(--header-height)
+    const offsetPosition =
+      target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+    window.scrollTo({
+      top: offsetPosition,
+    });
   }, [isSelected, thread]);
 
   // TODO: consider other cases
