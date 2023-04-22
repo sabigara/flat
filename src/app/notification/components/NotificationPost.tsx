@@ -16,35 +16,22 @@ import Prose from "@/src/components/Prose";
 
 import styles from "./NotificationPost.module.scss";
 
-type Reason = AppBskyNotificationListNotifications.Notification["reason"];
+type NotificationReason =
+  AppBskyNotificationListNotifications.Notification["reason"];
 
 type Props = {
   uri: string;
-  reason: Reason;
+  reason: NotificationReason;
   isSubject: boolean;
 };
 
 export default function NotificationPost({ uri, reason, isSubject }: Props) {
-  const queryClient = useQueryClient();
   const { data, isLoading, refetch } = usePostThreadQuery({ uri: uri });
-  if (isLoading) return <p className={styles.loading}>投稿を取得中...</p>;
-  if (!data)
-    return <article className={styles.simplePost}>削除済みの投稿</article>;
-
-  const mutatePostCache: MutatePostCache = ({ fn }) => {
-    queryClient.setQueryData<AppBskyFeedDefs.FeedViewPost>(
-      queryKeys.posts.single.$({ uri }),
-      (data) => {
-        if (!data) throw new Error("Shouldn't reach here");
-        return produce(data, (draft) => fn(draft.post));
-      }
-    );
-  };
 
   const postElem = (
-    <Post data={data} mutatePostCache={mutatePostCache} revalidate={refetch} />
+    <NonSubjectPost view={data} isLoading={isLoading} revalidate={refetch} />
   );
-  const simplePostElm = <SimplePost post={data.post} />;
+  const simplePostElm = <SubjectPost view={data} isLoading={isLoading} />;
 
   switch (reason) {
     case "mention":
@@ -59,24 +46,70 @@ export default function NotificationPost({ uri, reason, isSubject }: Props) {
     case "like":
       // always subject
       return simplePostElm;
-    default:
+    case "quote":
       return postElem;
+    default:
+      return null;
   }
 }
 
-function SimplePost({ post }: { post: AppBskyFeedDefs.PostView }) {
-  if (!AppBskyFeedPost.isRecord(post.record)) return null;
+type PostProps = {
+  view?: AppBskyFeedDefs.FeedViewPost | null;
+  isLoading: boolean;
+};
+
+function SubjectPost({ view, isLoading }: PostProps) {
+  if (isLoading)
+    return <p className={styles["loading--subject"]}>投稿を取得中...</p>;
+  if (!view)
+    return <article className={styles.notFound}>削除済みの投稿</article>;
+  if (!AppBskyFeedPost.isRecord(view.post.record)) return null;
 
   return (
-    <article className={styles.simplePost}>
+    <article className={styles.subject}>
       <Link
         to={buildPostUrl({
-          handle: post.author.handle,
-          uri: post.uri,
+          handle: view.post.author.handle,
+          uri: view.post.uri,
         })}
       >
-        <Prose>{post.record.text}</Prose>
+        <Prose>{view.post.record.text}</Prose>
       </Link>
     </article>
+  );
+}
+
+// FIXME: better name?
+function NonSubjectPost({
+  view,
+  isLoading,
+  revalidate,
+}: PostProps & {
+  revalidate: () => void;
+}) {
+  const queryClient = useQueryClient();
+
+  if (isLoading)
+    return <p className={styles["loading--nonSubject"]}>投稿を取得中...</p>;
+  if (!view)
+    return <article className={styles.notFound}>削除済みの投稿</article>;
+  if (!AppBskyFeedPost.isRecord(view.post.record)) return null;
+
+  const mutatePostCache: MutatePostCache = ({ fn }) => {
+    queryClient.setQueryData<AppBskyFeedDefs.FeedViewPost>(
+      queryKeys.posts.single.$({ uri: view.post.uri }),
+      (data) => {
+        if (!data) throw new Error("Shouldn't reach here");
+        return produce(data, (draft) => fn(draft.post));
+      }
+    );
+  };
+
+  return (
+    <Post
+      data={view}
+      mutatePostCache={mutatePostCache}
+      revalidate={revalidate}
+    />
   );
 }

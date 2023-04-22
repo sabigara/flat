@@ -1,10 +1,32 @@
-.simplePost {
+@use "@/mixins";
+
+.subject {
+  @include mixins.lineClamp(2);
+
   font-size: var(--cmm-font-size-sm);
   color: var(--cmm-color-font-subtle);
   margin-block-start: 0.2em;
 }
 
+%base {
+  font-size: var(--cmm-font-size-sm);
+  color: var(--cmm-color-font-subtle);
+}
+
 .loading {
+  &--subject {
+    @extend %base;
+    margin-block-start: 0.2em;
+  }
+
+  &--nonSubject {
+    @extend %base;
+    padding: 1rem;
+    block-size: 7rem;
+  }
+}
+
+.notFound {
   font-size: var(--cmm-font-size-sm);
   color: var(--cmm-color-font-subtle);
   margin-block-start: 0.2em;
