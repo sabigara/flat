@@ -92,3 +92,9 @@ body {
 [hidden] {
   display: none;
 }
+
+// For glightbox
+.gzoomIn,
+.gZoomOut {
+  animation-duration: 0.3s !important;
+}

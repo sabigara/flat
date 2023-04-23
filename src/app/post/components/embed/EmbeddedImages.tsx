@@ -1,11 +1,9 @@
 import { AppBskyEmbedImages } from "@atproto/api";
 import clsx from "clsx";
+import GLightbox from "glightbox";
 import React from "react";
-import { createPortal } from "react-dom";
-import Lightbox from "yet-another-react-lightbox";
-import Zoom from "yet-another-react-lightbox/plugins/zoom";
 
-import "yet-another-react-lightbox/styles.css";
+import "glightbox/dist/css/glightbox.min.css";
 import styles from "./EmbeddedImages.module.scss";
 
 type Props = {
@@ -14,15 +12,20 @@ type Props = {
 };
 
 export default function EmbeddedImages({ images, className }: Props) {
-  const [open, setOpen] = React.useState(false);
-  const [index, setIndex] = React.useState(0);
+  const gl = React.useMemo(
+    () =>
+      GLightbox({
+        elements: images.map(({ fullsize }) => ({
+          href: fullsize,
+          type: "image",
+        })),
+        dragToleranceY: 0,
+      }),
+    [images]
+  );
   const handleClick = (e: React.MouseEvent, i: number) => {
     e.stopPropagation();
-    setOpen(true);
-    setIndex(i);
-  };
-  const handleView = (i: number) => {
-    setIndex(i);
+    gl.openAt(i);
   };
   return (
     <>
@@ -39,36 +42,6 @@ export default function EmbeddedImages({ images, className }: Props) {
           </button>
         ))}
       </div>
-      {createPortal(
-        <div onClick={(e) => void e.stopPropagation()}>
-          <Lightbox
-            open={open}
-            index={index}
-            on={{
-              view: handleView,
-            }}
-            close={() => setOpen(false)}
-            slides={images.map((img) => ({
-              src: img.fullsize,
-            }))}
-            animation={{
-              navigation: {
-                duration: 1,
-                easing: "linear",
-              },
-            }}
-            controller={{ closeOnBackdropClick: true, touchAction: "pan-y" }}
-            carousel={{ finite: true }}
-            render={{
-              buttonZoomIn: () => null,
-              buttonZoomOut: () => null,
-            }}
-            plugins={[Zoom]}
-            className={styles.yarl}
-          />
-        </div>,
-        document.body
-      )}
     </>
   );
 }
