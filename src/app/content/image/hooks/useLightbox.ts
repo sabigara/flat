@@ -10,20 +10,19 @@ type Params = {
 
 export function useLightbox({ images }: Params) {
   // TODO: is this expensive? consider moving to inside useEffect.
-  const gl = React.useMemo(
-    () =>
-      GLightbox({
-        elements: images.map(({ src, alt }) => ({
-          href: src,
-          alt,
-          type: "image",
-        })),
-      }),
-    [images]
-  );
+  const gl = React.useMemo(() => {
+    if (!images.length) return undefined;
+    return GLightbox({
+      elements: images.map(({ src, alt }) => ({
+        href: src,
+        alt,
+        type: "image",
+      })),
+    });
+  }, [images]);
 
   const openAt = (i: number) => {
-    gl.openAt(i);
+    gl?.openAt(i);
   };
 
   return { openAt };

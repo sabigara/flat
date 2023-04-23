@@ -9,6 +9,7 @@ import { Link, useLoaderData, useRevalidator } from "react-router-dom";
 
 import type { ProfileRouteLoaderResult } from "@/src/app/user/routes/ProfileRoute";
 
+import { useLightbox } from "@/src/app/content/image/hooks/useLightbox";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import Seo from "@/src/app/seo/Seo";
 import {
@@ -80,6 +81,12 @@ export function ProfileRoute() {
       revalidate();
     }
   );
+
+  const { openAt } = useLightbox({
+    images: profile.avatar ? [{ src: profile.avatar }] : [],
+  });
+  const expandAvatar = () => void openAt(0);
+
   const [hoverUnfollow, setHoverUnfollow] = React.useState(false);
 
   const isMyself = atp.session && atp.session.did === profile.did;
@@ -100,7 +107,13 @@ export function ProfileRoute() {
             )}
           </div>
           <div className={styles.topRow}>
-            <Avatar profile={profile} className={styles.avatar} />
+            <button onClick={expandAvatar} aria-label="ユーザー画像を拡大">
+              <Avatar
+                profile={profile}
+                stopPropagation={false}
+                className={styles.avatar}
+              />
+            </button>
             <div className={styles.actions}>
               <ProfileMoreMenu
                 profile={profile}
