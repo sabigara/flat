@@ -11,27 +11,30 @@ type Props = {
   open: boolean;
   setOpen: (open: boolean) => void;
   title?: React.ReactNode;
-  children?: React.ReactNode;
-  className?: string;
+  initialFocus?: React.MutableRefObject<HTMLElement | null>;
   transitions?: {
     backdrop?: TransitionClasses;
     panel?: TransitionClasses;
   };
+  children?: React.ReactNode;
+  className?: string;
 };
 
 export default function Dialog({
   open,
   setOpen,
   title,
+  initialFocus,
+  transitions,
   children,
   className,
-  transitions,
 }: Props) {
   return (
     <Transition appear show={open} as={React.Fragment}>
       <HeadlessDialog
         as="div"
         onClose={setOpen}
+        initialFocus={initialFocus}
         className={clsx(dialogClassNames.container, className)}
       >
         <Transition.Child

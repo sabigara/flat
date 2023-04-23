@@ -24,7 +24,6 @@ import Avatar from "@/src/app/user/components/Avatar";
 import Dialog from "@/src/components/Dialog";
 import { atp, isPostValid } from "@/src/lib/atp";
 import { isModKey } from "@/src/lib/keybindings";
-import { isIPhone } from "@/src/lib/platform";
 
 import styles from "./PostComposer.module.scss";
 
@@ -61,6 +60,7 @@ export default function PostComposer({
   const [imagePreviewContainer, setPreviewContainer] =
     React.useState<HTMLDivElement | null>(null);
   const exceedingId = React.useId();
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
   const { mutate, isLoading } = useMutation({
     async mutationFn(params: PostMutateParams) {
@@ -147,7 +147,7 @@ export default function PostComposer({
       <Dialog
         open={open}
         setOpen={setOpen}
-        className={styles.dialog}
+        initialFocus={textareaRef}
         transitions={{
           panel: {
             enter: styles.panelEnter,
@@ -158,6 +158,7 @@ export default function PostComposer({
             leaveTo: styles.panelLeaveTo,
           },
         }}
+        className={styles.dialog}
       >
         <div className={styles.container}>
           <div>
@@ -206,9 +207,8 @@ export default function PostComposer({
               rows={6}
               fill
               onKeyDown={handleKeyDown}
-              // focusing on textarea breaks scroll position on iPhone 🫵
-              autoFocus={isIPhone ? false : true}
               aria-describedby={exceedingId}
+              ref={textareaRef}
             />
           </div>
           {quoteTarget && (
