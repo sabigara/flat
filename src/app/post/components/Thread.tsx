@@ -23,7 +23,7 @@ export default function Thread({
   revalidate,
   mutatePostCache,
 }: Props) {
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     if (!isSelected || !AppBskyFeedDefs.isThreadViewPost(thread)) return;
     const target = document.getElementById(thread.post.uri);
     if (!target) return;
@@ -32,6 +32,7 @@ export default function Thread({
       target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
     window.scrollTo({
       top: offsetPosition,
+      behavior: "smooth",
     });
   }, [isSelected, thread]);
 
