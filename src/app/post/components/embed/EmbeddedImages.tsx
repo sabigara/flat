@@ -12,6 +12,7 @@ type Props = {
 };
 
 export default function EmbeddedImages({ images, className }: Props) {
+  // TODO: is this expensive? consider moving to inside useEffect.
   const gl = React.useMemo(
     () =>
       GLightbox({
@@ -19,7 +20,6 @@ export default function EmbeddedImages({ images, className }: Props) {
           href: fullsize,
           type: "image",
         })),
-        dragToleranceY: 0,
       }),
     [images]
   );
