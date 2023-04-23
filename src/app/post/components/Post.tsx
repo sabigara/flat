@@ -18,6 +18,7 @@ import { buildPostUrl } from "@/src/app/post/lib/buildPostUrl";
 import { MutatePostCache } from "@/src/app/post/lib/types";
 import { formatDistanceShort } from "@/src/app/time/lib/time";
 import Avatar from "@/src/app/user/components/Avatar";
+import { Foldable } from "@/src/components/Foldable";
 import { RichTextRenderer } from "@/src/components/RichTextRenderer";
 import { bsky, atp } from "@/src/lib/atp";
 
@@ -30,6 +31,7 @@ type Props = {
   isEmbedLink?: boolean;
   revalidate?: () => void;
   mutatePostCache?: MutatePostCache;
+  revealable?: boolean;
   id?: string;
   className?: string;
 };
@@ -41,6 +43,7 @@ export default function Post({
   isEmbedLink = true,
   revalidate,
   mutatePostCache,
+  revealable = true,
   id,
   className,
 }: Props) {
@@ -276,9 +279,13 @@ export default function Post({
               </span>
             </Tag>
           )}
-          {AppBskyFeedPost.isRecord(post.record) && (
-            <RichTextRenderer {...post.record} className={styles.prose} />
-          )}
+          <div className={styles.prose}>
+            <Foldable lines={5} enabled={revealable}>
+              {AppBskyFeedPost.isRecord(post.record) && (
+                <RichTextRenderer {...post.record} />
+              )}
+            </Foldable>
+          </div>
           {post.embed && (
             <Embed
               embed={post.embed}

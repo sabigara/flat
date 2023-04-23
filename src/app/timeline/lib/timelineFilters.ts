@@ -40,6 +40,7 @@ function excludeRepliesToNoFollowing(
   myDid: string
 ) {
   return posts.filter((post) => {
+    // FIXME: check if the root is also a following account.
     if (post.reply?.parent.author.viewer) {
       return (
         !!post.reply.parent.author.viewer.following ||

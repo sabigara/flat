@@ -54,6 +54,7 @@ export default function Thread({
         isEmbedLink={true}
         revalidate={revalidate}
         mutatePostCache={mutatePostCache}
+        revealable={!isSelected}
         className={clsx(styles.post, { [styles.selected]: isSelected })}
         id={thread.post.uri}
       />
