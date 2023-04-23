@@ -11,9 +11,10 @@ import styles from "./Notification.module.scss";
 
 type Props = {
   notification: AppBskyNotificationListNotifications.Notification;
+  className?: string;
 };
 
-export default function Notification({ notification }: Props) {
+export default function Notification({ notification, className }: Props) {
   const reason = notification.reason;
   const shouldFetchPost =
     reason === "reply" || reason === "repost" || reason === "like";
@@ -21,7 +22,7 @@ export default function Notification({ notification }: Props) {
 
   return (
     <div
-      className={clsx(styles.container, {
+      className={clsx(styles.container, className, {
         [styles.col2]: col2,
       })}
     >

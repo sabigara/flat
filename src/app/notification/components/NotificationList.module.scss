@@ -4,3 +4,10 @@
 .item {
   border-bottom: 1px solid var(--cmm-color-border-base);
 }
+
+.noMore {
+  margin-block: 1rem;
+  font-size: var(--cmm-font-size-sm);
+  color: var(--cmm-color-font-muted);
+  text-align: center;
+}

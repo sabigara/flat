@@ -1,5 +1,6 @@
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
+import InfiniteScroll from "react-infinite-scroller";
 
 import Notification from "@/src/app/notification/components/Notification";
 import PostComposer from "@/src/app/post/components/PostComposer";
@@ -14,7 +15,14 @@ import styles from "./NotificationList.module.scss";
 export default function NotificationList() {
   const mounted = React.useRef(false);
   const queryClient = useQueryClient();
-  const { data, status, error } = useInfiniteQuery({
+  const {
+    data,
+    status,
+    error,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+  } = useInfiniteQuery({
     queryKey: queryKeys.notifications.$,
     async queryFn({ pageParam }) {
       const resp = await bsky.notification.listNotifications({
@@ -49,6 +57,17 @@ export default function NotificationList() {
     mounted.current = true;
   }, [queryClient]);
 
+  React.useEffect(() => {
+    return () => {
+      // remove pages except for the first to reduce redundant queries issued on revisits;
+      // only the newest notifications should be interesting for users.
+      queryClient.setQueryData(queryKeys.notifications.$, (data: any) => ({
+        pages: data.pages.slice(0, 1),
+        pageParams: data.pageParams.slice(0, 1),
+      }));
+    };
+  }, [queryClient]);
+
   if (status === "loading") {
     return <SpinnerFill />;
   } else if (status === "error") {
@@ -57,16 +76,27 @@ export default function NotificationList() {
 
   return (
     <>
-      <ul>
-        {allItems.map((item) => (
-          <li
-            key={`${item.uri}:${item.reason}:${item.isRead}`}
-            className={styles.item}
-          >
-            <Notification notification={item} />
-          </li>
-        ))}
-      </ul>
+      <InfiniteScroll
+        pageStart={0}
+        loadMore={() => !isFetchingNextPage && fetchNextPage()}
+        hasMore={hasNextPage}
+        loader={<SpinnerFill key="__loader" />}
+      >
+        <>
+          {allItems.map((item) => (
+            <Notification
+              key={`${item.uri}:${item.reason}:${item.isRead}`}
+              notification={item}
+              className={styles.item}
+            />
+          ))}
+        </>
+        {!hasNextPage && (
+          <div className={styles.noMore} key="__noMore">
+            nothing more to say...
+          </div>
+        )}
+      </InfiniteScroll>
       {/* used when reply */}
       <PostComposer revalidate={revalidateOnPost} showButton={false} />
     </>
