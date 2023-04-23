@@ -522,6 +522,6 @@ declare module "glightbox" {
     version(): string;
   }
 
-  declare function init(options: Options = {});
+  declare function init(options: Options = {}): GlightboxInit;
   export default init;
 }
