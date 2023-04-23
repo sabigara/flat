@@ -57,17 +57,6 @@ export default function NotificationList() {
     mounted.current = true;
   }, [queryClient]);
 
-  React.useEffect(() => {
-    return () => {
-      // remove pages except for the first to reduce redundant queries issued on revisits;
-      // only the newest notifications should be interesting for users.
-      queryClient.setQueryData(queryKeys.notifications.$, (data: any) => ({
-        pages: data.pages.slice(0, 1),
-        pageParams: data.pageParams.slice(0, 1),
-      }));
-    };
-  }, [queryClient]);
-
   if (status === "loading") {
     return <SpinnerFill />;
   } else if (status === "error") {

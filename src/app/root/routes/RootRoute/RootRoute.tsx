@@ -1,6 +1,7 @@
 import React from "react";
 import { Outlet, useLoaderData, ScrollRestoration } from "react-router-dom";
 
+import { useClearNotifQueryData } from "@/src/app/notification/hooks/useClearNotifQueryData";
 import Header from "@/src/app/root/components/Header";
 import { useTheme } from "@/src/app/theme/hooks/useTheme";
 import { Theme } from "@/src/app/theme/lib/types";
@@ -21,6 +22,8 @@ export function RootRoute() {
       set: setTheme,
     },
   };
+
+  useClearNotifQueryData();
 
   React.useLayoutEffect(() => {
     window.document.documentElement.dataset.theme = resolvedTheme;
