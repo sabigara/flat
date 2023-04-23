@@ -1,9 +1,10 @@
 import { AppBskyEmbedImages } from "@atproto/api";
 import clsx from "clsx";
-import GLightbox from "glightbox";
 import React from "react";
 
 import "glightbox/dist/css/glightbox.min.css";
+import { useLightbox } from "@/src/app/content/image/hooks/useLightbox";
+
 import styles from "./EmbeddedImages.module.scss";
 
 type Props = {
@@ -12,21 +13,15 @@ type Props = {
 };
 
 export default function EmbeddedImages({ images, className }: Props) {
-  // TODO: is this expensive? consider moving to inside useEffect.
-  const gl = React.useMemo(
-    () =>
-      GLightbox({
-        elements: images.map(({ fullsize }) => ({
-          href: fullsize,
-          type: "image",
-        })),
-      }),
-    [images]
-  );
+  const { openAt } = useLightbox({
+    images: images.map(({ fullsize, alt }) => ({ src: fullsize, alt })),
+  });
+
   const handleClick = (e: React.MouseEvent, i: number) => {
     e.stopPropagation();
-    gl.openAt(i);
+    openAt(i);
   };
+
   return (
     <>
       <div
