@@ -23,6 +23,12 @@ $width: 34rem;
   :global {
     --cmm-Dialog-outer-margin: 0px;
 
+    .Dialog__backdrop {
+      @media screen and (max-width: $width) {
+        display: none;
+      }
+    }
+
     .Dialog__panel {
       --cmm-Dialog-min-width: $width;
       --cmm-Dialog-max-width: $width;
@@ -42,6 +48,64 @@ $width: 34rem;
 
     .Dialog__close {
       display: none;
+    }
+  }
+}
+
+.panelEnter {
+  transition-property: all;
+  transition-timing-function: ease-out;
+  transition-duration: 0.2s;
+
+  &From {
+    opacity: 0;
+    scale: 0.95;
+  }
+
+  &To {
+    opacity: 1;
+    scale: 1;
+  }
+
+  @media screen and (max-width: $width) {
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+
+    &From {
+      translate: 0 100%;
+    }
+
+    &To {
+      translate: 0;
+    }
+  }
+}
+
+.panelLeave {
+  transition-property: all;
+  transition-timing-function: ease-in;
+  transition-duration: 0.2s;
+
+  &From {
+    opacity: 1;
+    scale: 1;
+  }
+
+  &To {
+    opacity: 0;
+    scale: 0.95;
+  }
+
+  @media screen and (max-width: $width) {
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+
+    &From {
+      translate: 0;
+    }
+
+    &To {
+      translate: 0 100%;
     }
   }
 }

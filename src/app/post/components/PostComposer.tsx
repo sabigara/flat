@@ -144,7 +144,21 @@ export default function PostComposer({
           つぶやく
         </Button>
       )}
-      <Dialog open={open} setOpen={setOpen} className={styles.dialog}>
+      <Dialog
+        open={open}
+        setOpen={setOpen}
+        className={styles.dialog}
+        transitions={{
+          panel: {
+            enter: styles.panelEnter,
+            enterFrom: styles.panelEnterFrom,
+            enterTo: styles.panelEnterTo,
+            leave: styles.panelLeave,
+            leaveFrom: styles.panelLeaveFrom,
+            leaveTo: styles.panelLeaveTo,
+          },
+        }}
+      >
         <div className={styles.container}>
           <div>
             <IconButton
@@ -165,6 +179,7 @@ export default function PostComposer({
                 isLink={false}
                 isEmbedLink={false}
                 contentOnly
+                foldable={false}
                 className={styles.post}
               />
               <hr />

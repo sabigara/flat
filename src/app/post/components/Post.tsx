@@ -31,7 +31,7 @@ type Props = {
   isEmbedLink?: boolean;
   revalidate?: () => void;
   mutatePostCache?: MutatePostCache;
-  revealable?: boolean;
+  foldable?: boolean;
   id?: string;
   className?: string;
 };
@@ -43,7 +43,7 @@ export default function Post({
   isEmbedLink = true,
   revalidate,
   mutatePostCache,
-  revealable = true,
+  foldable = true,
   id,
   className,
 }: Props) {
@@ -280,7 +280,7 @@ export default function Post({
             </Tag>
           )}
           <div className={styles.prose}>
-            <Foldable lines={5} enabled={revealable}>
+            <Foldable lines={5} enabled={foldable}>
               {AppBskyFeedPost.isRecord(post.record) && (
                 <RichTextRenderer {...post.record} />
               )}
