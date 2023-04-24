@@ -2,6 +2,7 @@ import { Button } from "@camome/core/Button";
 import { Select } from "@camome/core/Select";
 import { Spinner } from "@camome/core/Spinner";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useOutletContext } from "react-router-dom";
 
 import type { RootContext } from "@/src/app/root/routes/RootRoute/RootRoute";
@@ -13,6 +14,7 @@ import { storageKeys } from "@/src/lib/storage";
 import styles from "./SettingsRoute.module.scss";
 
 export function SettingsRoute() {
+  const { i18n } = useTranslation();
   const { theme } = useOutletContext<RootContext>();
   const [signingOut, setSigningOut] = React.useState(false);
   const signOut = () => {
@@ -42,6 +44,19 @@ export function SettingsRoute() {
             <option value="light">ライト</option>
             <option value="dark">ダーク</option>
             <option value="system">システム</option>
+          </Select>
+        </section>
+
+        <section className={styles.section}>
+          <h2>言語</h2>
+          <Select
+            label="言語"
+            size="md"
+            value={i18n.language}
+            onChange={(e) => i18n.changeLanguage(e.target.value)}
+          >
+            <option value="ja">日本語</option>
+            <option value="en">English</option>
           </Select>
         </section>
 

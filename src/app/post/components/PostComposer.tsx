@@ -7,6 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import React from "react";
 import { toast } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import { TbPencilPlus, TbX } from "react-icons/tb";
 
 import { useAccountQuery } from "@/src/app/account/hooks/useAccountQuery";
@@ -44,6 +45,7 @@ export default function PostComposer({
   showButton = true,
   revalidate,
 }: PostComposerProps) {
+  const { t } = useTranslation();
   const { data: account } = useAccountQuery();
   const {
     open,
@@ -141,7 +143,7 @@ export default function PostComposer({
           onClick={handleClickCompose}
           className={styles.composeBtn}
         >
-          つぶやく
+          {t("post.compose")}
         </Button>
       )}
       <Dialog
@@ -253,7 +255,7 @@ export default function PostComposer({
                 size="sm"
                 startDecorator={isLoading ? <Spinner size="sm" /> : undefined}
               >
-                つぶやく
+                {t("post.submit")}
               </Button>
             </div>
           </div>

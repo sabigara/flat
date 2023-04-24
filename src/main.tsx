@@ -22,6 +22,8 @@ import * as Followers from "@/src/app/user/routes/FollowersRoute";
 import * as Following from "@/src/app/user/routes/FollowingRoute";
 import * as Profile from "@/src/app/user/routes/ProfileRoute";
 
+import "@/src/i18n/config";
+
 const router = createBrowserRouter([
   {
     path: "/",
