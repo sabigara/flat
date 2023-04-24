@@ -52,7 +52,7 @@ export function SettingsRoute() {
           <Select
             label="言語"
             size="md"
-            value={i18n.language}
+            value={i18n.resolvedLanguage}
             onChange={(e) => i18n.changeLanguage(e.target.value)}
           >
             <option value="ja">日本語</option>

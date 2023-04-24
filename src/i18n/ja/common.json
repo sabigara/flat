@@ -1,6 +1,39 @@
 {
+  "close": "閉じる",
   "post": {
-    "compose": "つぶやく",
-    "submit": "つぶやく"
+    "repost": "リポスト",
+    "reply": "リプライ",
+    "repost-tag": "{{actor}} のリポスト",
+    "reply-tag": "{{actor}} へのリプライ",
+    "composer": {
+      "compose": "つぶやく",
+      "submit": "つぶやく",
+      "textarea-placeholder": "なにしてる？",
+      "textarea-placeholder-reply": "なんていう？",
+      "reply-to": "返信先",
+      "content": "投稿内容",
+      "errors": {
+        "img-max-number": "4枚までアップロードできます",
+        "img-accept-type": "無効なファイル形式です",
+        "img-max-file-size": "サイズは1MBまでアップロードできます",
+        "img-general": "無効な画像です"
+      }
+    }
+  },
+  "timeline": {
+    "load-new-posts": "新しい投稿を取得",
+    "filters": {
+      "title": "表示オプション",
+      "reply": {
+        "all": "すべて",
+        "following": "フォロー中",
+        "none": "非表示"
+      },
+      "repost": {
+        "all": "すべて",
+        "latest": "最新のみ",
+        "none": "非表示"
+      }
+    }
   }
 }

@@ -8,6 +8,7 @@ import {
   useQueryClient,
   useQuery,
 } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import InfiniteScroll from "react-infinite-scroller";
 
 import type { AppBskyFeedDefs } from "@atproto/api";
@@ -52,6 +53,7 @@ export function Timeline<K extends QueryKey>({
   maxPages,
   filter = (posts) => posts,
 }: Props<K>) {
+  const { t } = useTranslation();
   const {
     status,
     data,
@@ -146,7 +148,7 @@ export function Timeline<K extends QueryKey>({
           {isFetching && !isFetchingNextPage ? (
             <Spinner size="sm" />
           ) : (
-            "Load new posts"
+            t("timeline.load-new-posts")
           )}
         </Button>
       )}

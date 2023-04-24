@@ -2,6 +2,7 @@ import { Radio } from "@camome/core/Radio";
 import { RadioGroup } from "@camome/core/RadioGroup";
 import { useAtom } from "jotai";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { TbFilter } from "react-icons/tb";
 
 import { TlFilterReply, TlFilterRepost } from "@/src/app/timeline/lib/types";
@@ -23,6 +24,7 @@ type Register = (
 };
 
 export function TimelineFilter() {
+  const { t } = useTranslation("common");
   const [reply, setReply] = useAtom(tlFilterReplyAtom);
   const [repost, setRepost] = useAtom(tlFilterRepostAtom);
   const register: Register = (
@@ -49,39 +51,49 @@ export function TimelineFilter() {
     <details className={styles.details}>
       <summary className={styles.summary}>
         <TbFilter />
-        <span className={styles.summary__label}>表示オプション</span>
+        <span className={styles.summary__label}>
+          {t("timeline.filters.title")}
+        </span>
       </summary>
       <div className={styles.content}>
-        <RadioGroup label="リプライ" aria-required orientation="horizontal">
+        <RadioGroup
+          label={t("post.reply")}
+          aria-required
+          orientation="horizontal"
+        >
           <Radio
-            label="すべて"
+            label={t("timeline.filters.reply.all")}
             size={RADIO_SIZE}
             {...register("reply", "all")}
           />
           <Radio
-            label="フォロー中"
+            label={t("timeline.filters.reply.following")}
             size={RADIO_SIZE}
             {...register("reply", "following")}
           />
           <Radio
-            label="非表示"
+            label={t("timeline.filters.reply.none")}
             size={RADIO_SIZE}
             {...register("reply", "none")}
           />
         </RadioGroup>
-        <RadioGroup label="リポスト" aria-required orientation="horizontal">
+        <RadioGroup
+          label={t("post.repost")}
+          aria-required
+          orientation="horizontal"
+        >
           <Radio
-            label="すべて"
+            label={t("timeline.filters.repost.all")}
             size={RADIO_SIZE}
             {...register("repost", "all")}
           />
           <Radio
-            label="最新のみ"
+            label={t("timeline.filters.repost.latest")}
             size={RADIO_SIZE}
             {...register("repost", "latest")}
           />
           <Radio
-            label="非表示"
+            label={t("timeline.filters.repost.none")}
             size={RADIO_SIZE}
             {...register("repost", "none")}
           />

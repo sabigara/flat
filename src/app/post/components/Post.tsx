@@ -5,6 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import { Draft } from "immer";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { BsReplyFill } from "react-icons/bs";
 import { FaRetweet } from "react-icons/fa";
 import { TbDots, TbMessageCircle2, TbStar, TbStarFilled } from "react-icons/tb";
@@ -18,6 +19,7 @@ import { buildPostUrl } from "@/src/app/post/lib/buildPostUrl";
 import { MutatePostCache } from "@/src/app/post/lib/types";
 import { formatDistanceShort } from "@/src/app/time/lib/time";
 import Avatar from "@/src/app/user/components/Avatar";
+import { userToName } from "@/src/app/user/lib/userToName";
 import { Foldable } from "@/src/components/Foldable";
 import { RichTextRenderer } from "@/src/components/RichTextRenderer";
 import { bsky, atp } from "@/src/lib/atp";
@@ -47,6 +49,7 @@ export default function Post({
   id,
   className,
 }: Props) {
+  const { t } = useTranslation();
   const { data: account } = useAccountQuery();
   const { handleClickReply } = usePostComposer();
   const { post, reason, reply } = data;
@@ -239,7 +242,11 @@ export default function Post({
           onClick={(e) => e.stopPropagation()}
           className={styles.repost}
         >
-          <span>Repost by {reason.by.displayName}</span>
+          <span>
+            {t("post.repost-tag", {
+              actor: userToName(reason.by),
+            })}
+          </span>
         </Tag>
       )}
       <div className={styles.main}>
@@ -273,9 +280,9 @@ export default function Post({
               className={styles.reply}
             >
               <span>
-                Reply to{" "}
-                {reply.parent.author.displayName ??
-                  `@${reply.parent.author.handle}`}
+                {t("post.reply-tag", {
+                  actor: userToName(reply.parent.author),
+                })}
               </span>
             </Tag>
           )}

@@ -114,16 +114,16 @@ export default function PostComposer({
     Object.keys(errors).forEach((err) => {
       switch (err as keyof typeof errors) {
         case "maxNumber":
-          toast.error("4枚までアップロードできます");
+          toast.error(t("post.composer.errors.img-max-number"));
           break;
         case "acceptType":
-          toast.error("無効なファイル形式です");
+          toast.error(t("post.composer.errors.img-accept-type"));
           break;
         case "maxFileSize":
-          toast.error("サイズは1MBまでアップロードできます");
+          toast.error(t("post.composer.errors.img-max-file-size"));
           break;
         default:
-          toast.error("無効な画像です");
+          toast.error(t("post.composer.errors.img-general"));
           break;
       }
     });
@@ -143,7 +143,7 @@ export default function PostComposer({
           onClick={handleClickCompose}
           className={styles.composeBtn}
         >
-          {t("post.compose")}
+          {t("post.composer.compose")}
         </Button>
       )}
       <Dialog
@@ -165,7 +165,7 @@ export default function PostComposer({
         <div className={styles.container}>
           <div>
             <IconButton
-              aria-label="閉じる"
+              aria-label={t("close")}
               size="sm"
               variant="ghost"
               colorScheme="neutral"
@@ -198,13 +198,19 @@ export default function PostComposer({
               })}
             >
               {replyTarget
-                ? `返信先: @${replyTarget.post.author.handle}`
-                : "投稿内容"}
+                ? `${t("post.composer.reply-to")}: @${
+                    replyTarget.post.author.handle
+                  }`
+                : t("post.composer.content")}
             </label>
             <Textarea
               id="post"
               value={text}
-              placeholder={replyTarget ? "なんていう？" : "なにしてる？"}
+              placeholder={
+                replyTarget
+                  ? t("post.composer.textarea-placeholder-reply")
+                  : t("post.composer.textarea-placeholder")
+              }
               onChange={(e) => setText(e.target.value)}
               rows={6}
               fill
@@ -255,7 +261,7 @@ export default function PostComposer({
                 size="sm"
                 startDecorator={isLoading ? <Spinner size="sm" /> : undefined}
               >
-                {t("post.submit")}
+                {t("post.composer.submit")}
               </Button>
             </div>
           </div>

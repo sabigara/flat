@@ -1,6 +1,29 @@
 {
   "post": {
-    "compose": "Compose",
-    "submit": "Submit"
+    "repost": "Repost",
+    "reply": "Reply",
+    "repost-tag": "Repost by {{actor}}",
+    "reply-tag": "Reply to {{actor}}",
+    "composer": {
+      "compose": "Compose",
+      "submit": "Submit",
+      "textarea-placeholder": "What are you doing？"
+    }
+  },
+  "timeline": {
+    "load-new-posts": "Load new posts",
+    "filters": {
+      "title": "Filters",
+      "reply": {
+        "all": "All",
+        "following": "Following",
+        "none": "None"
+      },
+      "repost": {
+        "all": "All",
+        "latest": "Latest",
+        "none": "None"
+      }
+    }
   }
 }
