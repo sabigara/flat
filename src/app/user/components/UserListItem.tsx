@@ -1,7 +1,6 @@
 import { AppBskyActorDefs } from "@atproto/api";
 import { Button, ButtonProps } from "@camome/core/Button";
 import { Spinner } from "@camome/core/Spinner";
-import { Tag } from "@camome/core/Tag";
 import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
@@ -46,30 +45,24 @@ export default function UserListItem({ user, revalidate, className }: Props) {
 
   return (
     <article className={clsx(styles.container, className)}>
-      <div>
-        <Avatar profile={user} isLink className={styles.avatar} />
-      </div>
-      <div className={styles.sectionCenter}>
-        <Link to={`/${user.handle}`} className={"clickable-overlay"}>
-          {user.displayName && (
-            <div className={styles.displayName}>{user.displayName}</div>
-          )}
-          <div className={styles.handle}>@{user.handle}</div>
-        </Link>
-        <div>
-          {user.viewer?.followedBy && (
-            <Tag
-              variant="soft"
-              colorScheme="neutral"
-              size="sm"
-              className={styles.tag}
-            >
-              フォローされています
-            </Tag>
-          )}
+      <div className={styles.leftSection}>
+        <div className={styles.avatar}>
+          <Avatar profile={user} />
         </div>
+        <Link
+          to={`/${user.handle}`}
+          className={clsx("clickable-overlay", styles.names)}
+        >
+          <div className={styles.names__inner}>
+            {user.displayName && (
+              <div className={styles.displayName}>{user.displayName}</div>
+            )}
+            <div className={styles.handle}>@{user.handle}</div>
+          </div>
+        </Link>
+        <div className={styles.description}>{user.description}</div>
       </div>
-      <div>
+      <div className={styles.button}>
         {user.viewer?.following ? (
           <Button
             variant="soft"
