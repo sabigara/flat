@@ -50,7 +50,7 @@
     "composer": {
       "compose": "Compose",
       "submit": "Submit",
-      "textarea-placeholder": "What are you doing？"
+      "textarea-placeholder": "What are you doing?"
     }
   },
   "timeline": {
