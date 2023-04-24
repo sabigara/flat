@@ -1,4 +1,21 @@
 {
+  "close": "Close",
+  "auth": {
+    "sign-in": "Sign in",
+    "sign-out": "Sign out",
+    "identifier": {
+      "label": "Handle, email or did"
+    },
+    "password": {
+      "label": "Password",
+      "description": "<anchor>Generate an App Password</anchor> and use it"
+    }
+  },
+  "navigation": {
+    "profile": "Profile",
+    "settings": "Settings",
+    "about": "About Flat"
+  },
   "post": {
     "repost": "Repost",
     "reply": "Reply",

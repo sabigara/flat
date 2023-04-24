@@ -3,6 +3,7 @@ import { useFloating, offset, flip } from "@floating-ui/react";
 import { Menu } from "@headlessui/react";
 import clsx from "clsx";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
 
 import { useAccountQuery } from "@/src/app/account/hooks/useAccountQuery";
@@ -10,23 +11,8 @@ import Avatar from "@/src/app/user/components/Avatar";
 
 import styles from "./DropdownMenu.module.scss";
 
-const links = (handle: string) =>
-  [
-    {
-      href: `/${handle}`,
-      label: "プロフィール",
-    },
-    {
-      href: "/settings",
-      label: "ユーザー設定",
-    },
-    {
-      href: "/about",
-      label: "Flatについて",
-    },
-  ] satisfies { href: string; label: string }[];
-
 export default function DropdownMenu() {
+  const { t } = useTranslation();
   const { data: account } = useAccountQuery();
   const { x, y, reference, floating, strategy } = useFloating({
     placement: "bottom-end",
@@ -34,6 +20,22 @@ export default function DropdownMenu() {
   });
   const location = useLocation();
   const isCurrentPage = (href: string) => href === location.pathname;
+
+  const links = (handle: string) =>
+    [
+      {
+        href: `/${handle}`,
+        label: t("navigation.profile"),
+      },
+      {
+        href: "/settings",
+        label: t("navigation.settings"),
+      },
+      {
+        href: "/about",
+        label: t("navigation.about"),
+      },
+    ] satisfies { href: string; label: string }[];
 
   return (
     <Menu as="div" className={styles.menu}>

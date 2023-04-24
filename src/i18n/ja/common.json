@@ -1,5 +1,21 @@
 {
   "close": "閉じる",
+  "auth": {
+    "sign-in": "ログイン",
+    "sign-out": "ログアウト",
+    "identifier": {
+      "label": "ハンドル、メールアドレスまたはdid"
+    },
+    "password": {
+      "label": "パスワード",
+      "description": "<anchor>アプリパスワードを生成</anchor>して入力してください"
+    }
+  },
+  "navigation": {
+    "profile": "プロフィール",
+    "settings": "ユーザー設定",
+    "about": "Flatについて"
+  },
   "post": {
     "repost": "リポスト",
     "reply": "リプライ",

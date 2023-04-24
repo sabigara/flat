@@ -1,6 +1,7 @@
 import { Button } from "@camome/core/Button";
 import { Input } from "@camome/core/Input";
 import { Spinner } from "@camome/core/Spinner";
+import { useTranslation, Trans } from "react-i18next";
 import {
   ActionFunction,
   Form,
@@ -48,6 +49,7 @@ export const action = (async ({ request }) => {
 export const element = <LoginRoute />;
 
 function LoginRoute() {
+  const { t } = useTranslation();
   const { state } = useNavigation();
 
   return (
@@ -58,24 +60,28 @@ function LoginRoute() {
       </div>
       <Form method="post" className={styles.form}>
         <Input
-          label="ハンドルまたはメールアドレス"
+          label={t("auth.identifier.label")}
           name="identifier"
           type="text"
           placeholder="you.bsky.social"
           required
         />
         <Input
-          label="パスワード"
+          label={t("auth.password.label")}
           description={
             <span className={styles.passwordDescription}>
-              <a
-                href="https://staging.bsky.app/settings/app-passwords"
-                rel="noreferrer noopener"
-                target="_blank"
-              >
-                アプリパスワードを生成
-              </a>
-              して入力してください
+              <Trans
+                i18nKey="auth.password.description"
+                components={{
+                  anchor: (
+                    <a
+                      href="https://staging.bsky.app/settings/app-passwords"
+                      rel="noreferrer noopener"
+                      target="_blank"
+                    />
+                  ),
+                }}
+              />
             </span>
           }
           name="password"
@@ -91,7 +97,7 @@ function LoginRoute() {
             state === "submitting" ? <Spinner size="sm" /> : undefined
           }
         >
-          ログイン
+          {t("auth.sign-in")}
         </Button>
       </Form>
     </div>

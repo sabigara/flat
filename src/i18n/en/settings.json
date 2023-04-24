@@ -1,0 +1,20 @@
+{
+  "title": "Settings",
+  "appearance": {
+    "title": "Appearance",
+    "theme": {
+      "title": "Theme",
+      "options": {
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System"
+      }
+    }
+  },
+  "language": {
+    "title": "Language"
+  },
+  "account": {
+    "title": "Account"
+  }
+}
