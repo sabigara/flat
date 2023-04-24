@@ -1,1 +1,5 @@
-{}
+{
+  "follow": "<anchor>{{actor}}</anchor> <reason>followed you</reason>",
+  "repost": "<anchor>{{actor}}</anchor> <reason>reposted your post</reason>",
+  "like": "<anchor>{{actor}}</anchor> <reason>liked your post</reason>"
+}
