@@ -1,0 +1,14 @@
+{
+  "profile": {
+    "title": "{{actor}} のプロフィール",
+    "banner-alt": "{{actor}} のバナー画像",
+    "expand-avatar": "{{actor}} のアバターを拡大",
+    "unfollow-description": "クリックして {{actor}} さんのフォローを解除"
+  },
+  "following": {
+    "title": "{{actor}} がフォロー中"
+  },
+  "followers": {
+    "title": "{{actor}} のフォロワー"
+  }
+}

@@ -33,6 +33,7 @@
     },
     "muted-placeholder": "ミュート中のユーザーの投稿",
     "view-thread": "スレッドを表示",
+    "view-all": "すべて表示",
     "composer": {
       "compose": "つぶやく",
       "submit": "つぶやく",
@@ -63,5 +64,13 @@
         "none": "非表示"
       }
     }
+  },
+  "graph": {
+    "follow": "フォローする",
+    "unfollow": "フォロー解除",
+    "following": "フォロー中",
+    "mute": "ミュートする",
+    "muted": "ミュート中",
+    "follows-you": "フォローされています"
   }
 }

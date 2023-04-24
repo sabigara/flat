@@ -36,6 +36,7 @@
     },
     "muted-placeholder": "ミュート中のユーザーの投稿",
     "view-thread": "View thread",
+    "view-all": "View all",
     "composer": {
       "compose": "Compose",
       "submit": "Submit",
@@ -57,5 +58,13 @@
         "none": "None"
       }
     }
+  },
+  "graph": {
+    "follow": "Follow",
+    "unfollow": "Unfollow",
+    "following": "Following",
+    "mute": "Mute",
+    "muted": "Muted",
+    "follows-you": "Follows you"
   }
 }

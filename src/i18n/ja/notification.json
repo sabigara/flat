@@ -1,4 +1,5 @@
 {
+  "title": "通知",
   "follow": "<anchor>{{actor}}</anchor> <reason>さんにフォローされました</reason>",
   "repost": "<anchor>{{actor}}</anchor> <reason>さんにリポストされました</reason>",
   "like": "<anchor>{{actor}}</anchor> <reason>さんにいいねされました</reason>"
