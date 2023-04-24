@@ -57,7 +57,7 @@ export function TimelineFilter() {
       </summary>
       <div className={styles.content}>
         <RadioGroup
-          label={t("post.reply")}
+          label={t("post.reply.title")}
           aria-required
           orientation="horizontal"
         >
@@ -78,7 +78,7 @@ export function TimelineFilter() {
           />
         </RadioGroup>
         <RadioGroup
-          label={t("post.repost")}
+          label={t("post.repost.title")}
           aria-required
           orientation="horizontal"
         >

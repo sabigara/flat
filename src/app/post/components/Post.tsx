@@ -178,7 +178,9 @@ export default function Post({
       type: "reply",
       icon: <TbMessageCircle2 />,
       iconReacted: <TbMessageCircle2 />,
-      "aria-label": `${post.replyCount ?? 0}件の返信`,
+      "aria-label": t("post.reply.btn-label", {
+        count: post.replyCount ?? 0,
+      }),
       count: post.replyCount ?? 0,
       onClick: () => handleClickReply(data),
       reacted: false,
@@ -187,7 +189,9 @@ export default function Post({
       type: "repost",
       icon: <FaRetweet />,
       iconReacted: <FaRetweet style={{ color: "#22c55e" }} />,
-      "aria-label": `${post.repostCount ?? 0}件のリポスト`,
+      "aria-label": t("post.repost.btn-label", {
+        count: post.repostCount ?? 0,
+      }),
       count: post.repostCount ?? 0,
       reacted: reposted,
       disabled: isMutatingRepost,
@@ -198,7 +202,9 @@ export default function Post({
       type: "like",
       icon: <TbStar />,
       iconReacted: <TbStarFilled style={{ color: "#eab308" }} />,
-      "aria-label": `${post.likeCount ?? 0}件のいいね`,
+      "aria-label": t("post.like.btn-label", {
+        count: post.likeCount ?? 0,
+      }),
       count: post.likeCount ?? 0,
       reacted: liked,
       disabled: isMutatingLike,
@@ -218,7 +224,7 @@ export default function Post({
   if (post.author.viewer?.muted) {
     return (
       <article className={clsx(styles.container, styles.muted, className)}>
-        ミュート中のユーザーの投稿
+        {t("post.muted-placeholder")}
       </article>
     );
   }
@@ -230,7 +236,7 @@ export default function Post({
       id={id}
     >
       <Link to={postUrl} className={styles.focusLink}>
-        投稿の詳細
+        {t("post.view-thread")}
       </Link>
       {!contentOnly && reason && AppBskyFeedDefs.isReasonRepost(reason) && (
         <Tag
@@ -243,7 +249,7 @@ export default function Post({
           className={styles.repost}
         >
           <span>
-            {t("post.repost-tag", {
+            {t("post.repost.tag", {
               actor: userToName(reason.by),
             })}
           </span>
@@ -280,7 +286,7 @@ export default function Post({
               className={styles.reply}
             >
               <span>
-                {t("post.reply-tag", {
+                {t("post.reply.tag", {
                   actor: userToName(reply.parent.author),
                 })}
               </span>

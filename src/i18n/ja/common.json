@@ -17,10 +17,22 @@
     "about": "Flatについて"
   },
   "post": {
-    "repost": "リポスト",
-    "reply": "リプライ",
-    "repost-tag": "{{actor}} のリポスト",
-    "reply-tag": "{{actor}} へのリプライ",
+    "reply": {
+      "title": "リプライ",
+      "tag": "{{actor}} への返信",
+      "btn-label": "{{count}}件の返信"
+    },
+    "like": {
+      "title": "いいね",
+      "btn-label": "{{count}}件のいいね"
+    },
+    "repost": {
+      "title": "リポスト",
+      "tag": "{{actor}} がリポスト",
+      "btn-label": "{{count}}件のリポスト"
+    },
+    "muted-placeholder": "ミュート中のユーザーの投稿",
+    "view-thread": "スレッドを表示",
     "composer": {
       "compose": "つぶやく",
       "submit": "つぶやく",
