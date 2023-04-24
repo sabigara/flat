@@ -3,6 +3,7 @@ import { AtUri } from "@atproto/uri";
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { toast } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import { TbTrash, TbQuote } from "react-icons/tb";
 
 import { usePostComposer } from "@/src/app/post/hooks/usePostComposer";
@@ -22,6 +23,7 @@ export default function PostMoreMenu({
   button,
   revalidate,
 }: Props) {
+  const { t } = useTranslation();
   const { handleClickQuote } = usePostComposer();
   const toastRef = React.useRef<string>();
 
@@ -31,17 +33,17 @@ export default function PostMoreMenu({
       await bsky.feed.post.delete({ repo: host, rkey });
     },
     onMutate() {
-      toastRef.current = toast.loading("投稿を削除しています");
+      toastRef.current = toast.loading(t("post.delete.loading"));
     },
     onSuccess() {
-      toast.success("削除が完了しました", {
+      toast.success(t("post.delete.success"), {
         id: toastRef.current,
       });
       revalidate?.();
     },
     onError() {
       toast.dismiss(toastRef.current);
-      toast.error("エラーが発生しました");
+      toast.error(t("post.delete.error"));
     },
     onSettled() {
       toastRef.current = undefined;
@@ -56,17 +58,17 @@ export default function PostMoreMenu({
   }[] = [];
 
   moreActions.push({
-    label: "投稿を引用",
+    label: t("post.quote.do"),
     icon: <TbQuote />,
     onClick: () => handleClickQuote(post),
   });
 
   if (myProfile && post.author.did === myProfile.did) {
     moreActions.push({
-      label: "投稿を削除",
+      label: t("post.delete.do"),
       icon: <TbTrash />,
       onClick: () =>
-        window.confirm("削除してよろしいですか？") && deleteMutation({ post }),
+        window.confirm(t("post.delete.confirm")) && deleteMutation({ post }),
       danger: true,
     });
   }

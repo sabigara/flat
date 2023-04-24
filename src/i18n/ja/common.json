@@ -31,6 +31,16 @@
       "tag": "{{actor}} がリポスト",
       "btn-label": "{{count}}件のリポスト"
     },
+    "quote": {
+      "do": "投稿を引用"
+    },
+    "delete": {
+      "do": "投稿を削除",
+      "confirm": "削除してよろしいですか？",
+      "loading": "投稿を削除しています",
+      "success": "削除が完了しました",
+      "error": "削除に失敗しました"
+    },
     "muted-placeholder": "ミュート中のユーザーの投稿",
     "view-thread": "スレッドを表示",
     "view-all": "すべて表示",
@@ -70,7 +80,10 @@
     "unfollow": "フォロー解除",
     "following": "フォロー中",
     "mute": "ミュートする",
+    "unmute": "ミュート解除",
     "muted": "ミュート中",
-    "follows-you": "フォローされています"
+    "follows-you": "フォローされています",
+    "mute-success": "{{actor}} をミュートしました",
+    "unmute-success": "{{actor}} のミュートを解除しました"
   }
 }

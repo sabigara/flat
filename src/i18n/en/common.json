@@ -34,6 +34,16 @@
       "btn-label_one": "{{count}} repost",
       "btn-label_other": "{{count}} reposts"
     },
+    "quote": {
+      "do": "Quote post"
+    },
+    "delete": {
+      "do": "Delete post",
+      "confirm": "Are you sure you want to delete this post?",
+      "loading": "Deleting post",
+      "success": "Post deleted",
+      "error": "Failed to delete"
+    },
     "muted-placeholder": "ミュート中のユーザーの投稿",
     "view-thread": "View thread",
     "view-all": "View all",
@@ -64,7 +74,10 @@
     "unfollow": "Unfollow",
     "following": "Following",
     "mute": "Mute",
+    "unmute": "Unmute",
     "muted": "Muted",
-    "follows-you": "Follows you"
+    "follows-you": "Follows you",
+    "mute-success": "Muted {{actor}}",
+    "unmute-success": "Unmuted {{actor}}"
   }
 }

@@ -1,6 +1,6 @@
 {
   "profile": {
-    "title": "Profile of {{actor}}",
+    "title": "{{actor}}'s profile",
     "banner-alt": "Banner image of {{actor}}",
     "expand-avatar": "Expand avatar of {{actor}}",
     "unfollow-description": "Click to unfollow {{actor}}"
