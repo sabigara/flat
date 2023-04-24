@@ -280,7 +280,7 @@ export default function Post({
             </Tag>
           )}
           <div className={styles.prose}>
-            <Foldable lines={5} enabled={foldable}>
+            <Foldable lines={7} enabled={foldable}>
               {AppBskyFeedPost.isRecord(post.record) && (
                 <RichTextRenderer {...post.record} />
               )}
