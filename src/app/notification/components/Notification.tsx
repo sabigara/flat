@@ -1,11 +1,13 @@
 import { AppBskyNotificationListNotifications } from "@atproto/api";
 import clsx from "clsx";
+import { Trans } from "react-i18next";
 import { FaRetweet, FaUserCircle } from "react-icons/fa";
 import { TbStarFilled, TbQuote } from "react-icons/tb";
 import { Link } from "react-router-dom";
 
 import NotificationPost from "@/src/app/notification/components/NotificationPost";
 import Avatar from "@/src/app/user/components/Avatar";
+import { userToName } from "@/src/app/user/lib/userToName";
 
 import styles from "./Notification.module.scss";
 
@@ -16,6 +18,7 @@ type Props = {
 
 export default function Notification({ notification, className }: Props) {
   const reason = notification.reason;
+  if (!isKnownReason(reason)) return null;
   const shouldFetchPost =
     reason === "reply" || reason === "repost" || reason === "like";
   const col2 = reason === "follow" || reason === "repost" || reason === "like";
@@ -42,15 +45,20 @@ export default function Notification({ notification, className }: Props) {
               />
             </div>
             <div>
-              <Link
-                to={`/${notification.author.handle}`}
-                className={styles.displayName}
-              >
-                {notification.author.displayName ?? notification.author.handle}
-              </Link>{" "}
-              <span className={styles.reason}>
-                {reasonToLabel[notification.reason]}
-              </span>
+              <Trans
+                ns="notification"
+                i18nKey={reason}
+                values={{ actor: userToName(notification.author) }}
+                components={{
+                  anchor: (
+                    <Link
+                      to={`/${notification.author.handle}`}
+                      className={styles.displayName}
+                    />
+                  ),
+                  reason: <span key="reason" className={styles.reason} />,
+                }}
+              />
             </div>
           </>
         )}
@@ -73,10 +81,9 @@ export default function Notification({ notification, className }: Props) {
   );
 }
 
-const reasonToIcon: Record<
-  AppBskyNotificationListNotifications.Notification["reason"],
-  React.ReactNode
-> = {
+type Reason = AppBskyNotificationListNotifications.Notification["reason"];
+
+const reasonToIcon: Record<Reason, React.ReactNode> = {
   follow: <FaUserCircle className={styles.followIcon} />,
   invite: null,
   mention: null,
@@ -86,16 +93,19 @@ const reasonToIcon: Record<
   quote: <TbQuote />, // TODO: color
 };
 
-// TODO: support i18n
-const reasonToLabel: Record<
-  AppBskyNotificationListNotifications.Notification["reason"],
-  string
-> = {
-  follow: `さんにフォローされました`,
-  invite: ``,
-  mention: `さんからのメンション`,
-  reply: `さんから返信がありました`,
-  repost: `さんにリポストされました`,
-  like: `さんにいいねされました`,
-  quote: `さんに引用されました`,
-};
+const knownReasons = [
+  "follow",
+  "invite",
+  "mention",
+  "reply",
+  "repost",
+  "like",
+  "quote",
+];
+
+function isKnownReason(
+  reason: Reason
+  // eslint-disable-next-line @typescript-eslint/ban-types
+): reason is Exclude<Reason, string & {}> {
+  return knownReasons.includes(reason);
+}

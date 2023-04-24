@@ -1,0 +1,9 @@
+{
+  "follow": "<anchor>{{actor}}</anchor> <reason>さんにフォローされました</reason>",
+  "invite": "<anchor>{{actor}}</anchor> <reason>さんがあなたの招待コードで登録しました</reason>",
+  "mention": "<anchor>{{actor}}</anchor> <reason>さんからのメンション</reason>",
+  "reply": "<anchor>{{actor}}</anchor> <reason>さんから返信がありました</reason>",
+  "repost": "<anchor>{{actor}}</anchor> <reason>さんにリポストされました</reason>",
+  "like": "<anchor>{{actor}}</anchor> <reason>さんにいいねされました</reason>",
+  "quote": "<anchor>{{actor}}</anchor> <reason>さんに引用されました</reason>"
+}
