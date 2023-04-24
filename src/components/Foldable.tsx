@@ -50,7 +50,7 @@ export function Foldable({ lines = 5, enabled = true, children }: Props) {
       </div>
       {shouldShowOverlay && (
         <button onClick={handleClickBtn} className={styles.revealBtn}>
-          <span className={styles.revealBtn__label}>{t("post.view-all")}</span>
+          <span className={styles.revealBtn__label}>{t("post.show-all")}</span>
         </button>
       )}
     </div>

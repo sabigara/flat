@@ -43,7 +43,7 @@
     },
     "muted-placeholder": "ミュート中のユーザーの投稿",
     "view-thread": "スレッドを表示",
-    "view-all": "すべて表示",
+    "show-all": "すべて表示",
     "composer": {
       "compose": "つぶやく",
       "submit": "つぶやく",
