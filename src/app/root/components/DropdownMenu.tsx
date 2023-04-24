@@ -4,6 +4,7 @@ import { Menu } from "@headlessui/react";
 import clsx from "clsx";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { TbExternalLink } from "react-icons/tb";
 import { Link, useLocation } from "react-router-dom";
 
 import { useAccountQuery } from "@/src/app/account/hooks/useAccountQuery";
@@ -12,7 +13,7 @@ import Avatar from "@/src/app/user/components/Avatar";
 import styles from "./DropdownMenu.module.scss";
 
 export default function DropdownMenu() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { data: account } = useAccountQuery();
   const { x, y, reference, floating, strategy } = useFloating({
     placement: "bottom-end",
@@ -32,10 +33,14 @@ export default function DropdownMenu() {
         label: t("navigation.settings"),
       },
       {
-        href: "/about",
+        href:
+          i18n.resolvedLanguage === "ja"
+            ? "https://sabigara.notion.site/sabigara/Flat-3be5369d5d6e4548885d02aa5a37a3e2"
+            : "https://sabigara.notion.site/sabigara/About-Flat-6b11ebee0aa843839a67180786174888",
         label: t("navigation.about"),
+        external: true,
       },
-    ] satisfies { href: string; label: string }[];
+    ] satisfies { href: string; label: string; external?: boolean }[];
 
   return (
     <Menu as="div" className={styles.menu}>
@@ -60,7 +65,7 @@ export default function DropdownMenu() {
             left: x ?? 0,
           }}
         >
-          {links(account.profile.handle).map(({ href, label }) => (
+          {links(account.profile.handle).map(({ href, label, external }) => (
             <Menu.Item
               key={href}
               as={React.Fragment}
@@ -76,8 +81,15 @@ export default function DropdownMenu() {
                     active && menuClassNames.itemActive,
                     disabled && menuClassNames.itemDisabled
                   )}
+                  {...(external
+                    ? {
+                        rel: "noreferrer noopener",
+                        target: "_blank",
+                      }
+                    : {})}
                 >
                   {label}
+                  {external && <TbExternalLink />}
                 </Link>
               )}
             </Menu.Item>

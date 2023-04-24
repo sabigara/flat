@@ -8,7 +8,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "@camome/system/dist/theme.css";
 import "@/src/styles/globals.scss";
 
-import * as About from "@/src/app/about/routes/AboutRoute";
 import * as HomeTimelineRoute from "@/src/app/account/routes/HomeTimelineRoute";
 import * as Login from "@/src/app/account/routes/LoginRoute";
 import * as Settings from "@/src/app/account/routes/SettingsRoute";
@@ -36,10 +35,6 @@ const router = createBrowserRouter([
       {
         path: "/settings",
         ...Settings,
-      },
-      {
-        path: "/about",
-        ...About,
       },
       {
         path: "/notifications",

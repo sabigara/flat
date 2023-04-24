@@ -7,7 +7,15 @@
 }
 
 .link {
+  gap: 0.3rem !important;
+
   &[aria-current="page"] {
     font-weight: var(--cmm-font-weight-bold);
+  }
+
+  svg {
+    font-size: 1.2em;
+    margin-block-end: 2px;
+    color: var(--cmm-color-font-subtle);
   }
 }
