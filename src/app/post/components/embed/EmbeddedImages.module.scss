@@ -10,6 +10,7 @@
     aspect-ratio: 1;
     object-fit: cover;
     border-radius: var(--cmm-radius-md);
+    border: 1px solid var(--cmm-color-border-base);
 
     &:hover {
       filter: brightness(0.9);

@@ -9,6 +9,13 @@
         "dark": "Dark",
         "system": "System"
       }
+    },
+    "image-layout": {
+      "title": "Image layout",
+      "options": {
+        "stack": "Stack",
+        "compact": "Compact"
+      }
     }
   },
   "language": {

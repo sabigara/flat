@@ -1,10 +1,12 @@
 import { AppBskyEmbedImages } from "@atproto/api";
 import clsx from "clsx";
+import { useAtomValue } from "jotai";
 import React from "react";
 
-import "glightbox/dist/css/glightbox.min.css";
+import { settingsAtom } from "@/src/app/account/states/settingsAtom";
 import { useLightbox } from "@/src/app/content/image/hooks/useLightbox";
 
+import "glightbox/dist/css/glightbox.min.css";
 import styles from "./EmbeddedImages.module.scss";
 
 type Props = {
@@ -13,6 +15,7 @@ type Props = {
 };
 
 export default function EmbeddedImages({ images, className }: Props) {
+  const { postImageLayout } = useAtomValue(settingsAtom);
   const { openAt } = useLightbox({
     images: images.map(({ fullsize, alt }) => ({ src: fullsize, alt })),
   });
@@ -25,7 +28,7 @@ export default function EmbeddedImages({ images, className }: Props) {
   return (
     <>
       <div
-        className={clsx(styles["container--stack"], className, {
+        className={clsx(styles[`container--${postImageLayout}`], className, {
           [styles.two]: images.length === 2,
           [styles.three]: images.length === 3,
           [styles.four]: images.length === 4,

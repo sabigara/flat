@@ -9,6 +9,13 @@
         "dark": "ダーク",
         "system": "システム"
       }
+    },
+    "image-layout": {
+      "title": "画像レイアウト",
+      "options": {
+        "stack": "スタック",
+        "compact": "コンパクト"
+      }
     }
   },
   "language": {

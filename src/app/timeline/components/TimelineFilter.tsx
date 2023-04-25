@@ -21,7 +21,7 @@ type Register = (
 };
 
 export function TimelineFilter() {
-  const { t } = useTranslation("common");
+  const { t } = useTranslation();
   const [settings, setSettings] = useImmerAtom(settingsAtom);
   const {
     tlFilters: { reply, repost },
