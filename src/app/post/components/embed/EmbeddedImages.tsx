@@ -25,7 +25,7 @@ export default function EmbeddedImages({ images, className }: Props) {
   return (
     <>
       <div
-        className={clsx(styles.container, className, {
+        className={clsx(styles["container--stack"], className, {
           [styles.two]: images.length === 2,
           [styles.three]: images.length === 3,
           [styles.four]: images.length === 4,
