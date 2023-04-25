@@ -48,7 +48,6 @@ export default function EmbeddedRecord({
       </article>
     );
   }
-  console.log(AppBskyEmbedImages.isView(post.embed));
 
   return (
     <article
