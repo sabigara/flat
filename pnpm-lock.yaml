@@ -49,6 +49,9 @@ dependencies:
   jotai:
     specifier: ^2.0.3
     version: 2.0.3(react@18.2.0)
+  jotai-immer:
+    specifier: ^0.2.0
+    version: 0.2.0(immer@9.0.21)(jotai@2.0.3)(react@18.2.0)
   match-sorter:
     specifier: ^6.3.1
     version: 6.3.1
@@ -3891,6 +3894,18 @@ packages:
       merge-stream: 2.0.0
       supports-color: 7.2.0
     dev: true
+
+  /jotai-immer@0.2.0(immer@9.0.21)(jotai@2.0.3)(react@18.2.0):
+    resolution: {integrity: sha512-hahK8EPiROS9RoNWmX/Z8rY9WkAijspX4BZ1O7umpcwI4kPNkbcCpu/PhiQ8FMcpEcF6KmbpbMpSSj/GFmo8NA==}
+    peerDependencies:
+      immer: '*'
+      jotai: '>=1.11.0'
+      react: '>=17.0.0'
+    dependencies:
+      immer: 9.0.21
+      jotai: 2.0.3(react@18.2.0)
+      react: 18.2.0
+    dev: false
 
   /jotai@2.0.3(react@18.2.0):
     resolution: {integrity: sha512-MMjhSPAL3RoeZD9WbObufRT2quThEAEknHHridf2ma8Ml7ZVQmUiHk0ssdbR3F0h3kcwhYqSGJ59OjhPge7RRg==}

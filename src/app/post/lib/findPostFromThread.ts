@@ -1,6 +1,6 @@
 import { AppBskyFeedDefs } from "@atproto/api";
 
-import { isNonNullish } from "@/src/app/post/lib/types";
+import { isNonNullish } from "@/src/lib/typing";
 
 export function findPostFromThread(
   thread: AppBskyFeedDefs.ThreadViewPost,

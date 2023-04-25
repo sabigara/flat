@@ -1,15 +1,12 @@
 import { Radio } from "@camome/core/Radio";
 import { RadioGroup } from "@camome/core/RadioGroup";
-import { useAtom } from "jotai";
+import { useImmerAtom } from "jotai-immer";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { TbFilter } from "react-icons/tb";
 
+import { settingsAtom } from "@/src/app/account/states/settingsAtom";
 import { TlFilterReply, TlFilterRepost } from "@/src/app/timeline/lib/types";
-import {
-  tlFilterReplyAtom,
-  tlFilterRepostAtom,
-} from "@/src/app/timeline/states/tlFilterAtoms";
 
 import styles from "./TimelineFilter.module.scss";
 
@@ -25,8 +22,10 @@ type Register = (
 
 export function TimelineFilter() {
   const { t } = useTranslation("common");
-  const [reply, setReply] = useAtom(tlFilterReplyAtom);
-  const [repost, setRepost] = useAtom(tlFilterRepostAtom);
+  const [settings, setSettings] = useImmerAtom(settingsAtom);
+  const {
+    tlFilters: { reply, repost },
+  } = settings;
   const register: Register = (
     name: "reply" | "repost",
     value: TlFilterReply | TlFilterRepost
@@ -38,9 +37,13 @@ export function TimelineFilter() {
       onChange: (e) => {
         if (e.currentTarget.checked) {
           if (e.currentTarget.name === "reply") {
-            setReply(e.currentTarget.value as TlFilterReply);
+            setSettings((draft) => {
+              draft.tlFilters.reply = e.currentTarget.value as TlFilterReply;
+            });
           } else {
-            setRepost(e.currentTarget.value as TlFilterRepost);
+            setSettings((draft) => {
+              draft.tlFilters.repost = e.currentTarget.value as TlFilterRepost;
+            });
           }
         }
       },

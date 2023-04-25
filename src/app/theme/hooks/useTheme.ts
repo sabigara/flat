@@ -1,7 +1,7 @@
-import React from "react";
+import { useImmerAtom } from "jotai-immer";
 
+import { settingsAtom } from "@/src/app/account/states/settingsAtom";
 import { Theme } from "@/src/app/theme/lib/types";
-import { storageKeys } from "@/src/lib/storage";
 import { useMatchMedia } from "@/src/lib/useMatchMedia";
 
 export function useTheme(initialState: Theme): {
@@ -9,23 +9,22 @@ export function useTheme(initialState: Theme): {
   resolvedTheme: Theme;
   setTheme: (newVal: Theme) => void;
 } {
-  const [theme, setTheme] = React.useState(initialState);
+  const [settings, setSettings] = useImmerAtom(settingsAtom);
   const matches = useMatchMedia(
     "(prefers-color-scheme: dark)",
     initialState === "dark"
   );
   const resolvedTheme = (() => {
-    if (theme !== "system") return theme;
+    if (settings.theme !== "system") return settings.theme;
     return matches ? "dark" : "light";
   })();
 
   const setAndPersistTheme = (newVal: Theme) => {
-    localStorage.setItem(storageKeys.config.theme.$, newVal);
-    setTheme(newVal);
+    setSettings((draft) => void (draft.theme = newVal));
   };
 
   return {
-    theme,
+    theme: settings.theme,
     resolvedTheme,
     setTheme: setAndPersistTheme,
   };

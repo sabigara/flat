@@ -12,8 +12,5 @@ export type RevalidateOnPost = ({
   replyTarget?: AppBskyFeedDefs.FeedViewPost;
 }) => void;
 
-export function isNonNullish<T>(
-  something: T
-): something is Exclude<T, undefined | null> {
-  return something != null;
-}
+export const postImageLayouts = ["stack", "compact"] as const;
+export type PostImageLayout = (typeof postImageLayouts)[number];
