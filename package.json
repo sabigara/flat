@@ -28,7 +28,6 @@
     "glightbox": "^3.2.0",
     "i18next": "^22.4.15",
     "i18next-browser-languagedetector": "^7.0.1",
-    "i18next-http-backend": "^2.2.0",
     "immer": "^9.0.21",
     "jotai": "^2.0.3",
     "match-sorter": "^6.3.1",
