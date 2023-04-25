@@ -1,0 +1,20 @@
+{
+  "title": "ユーザー設定",
+  "appearance": {
+    "title": "外観",
+    "theme": {
+      "title": "テーマ",
+      "options": {
+        "light": "ライト",
+        "dark": "ダーク",
+        "system": "システム"
+      }
+    }
+  },
+  "language": {
+    "title": "言語"
+  },
+  "account": {
+    "title": "アカウント"
+  }
+}

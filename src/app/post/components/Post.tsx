@@ -5,6 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import { Draft } from "immer";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { BsReplyFill } from "react-icons/bs";
 import { FaRetweet } from "react-icons/fa";
 import { TbDots, TbMessageCircle2, TbStar, TbStarFilled } from "react-icons/tb";
@@ -18,6 +19,7 @@ import { buildPostUrl } from "@/src/app/post/lib/buildPostUrl";
 import { MutatePostCache } from "@/src/app/post/lib/types";
 import { formatDistanceShort } from "@/src/app/time/lib/time";
 import Avatar from "@/src/app/user/components/Avatar";
+import { userToName } from "@/src/app/user/lib/userToName";
 import { Foldable } from "@/src/components/Foldable";
 import { RichTextRenderer } from "@/src/components/RichTextRenderer";
 import { bsky, atp } from "@/src/lib/atp";
@@ -47,6 +49,7 @@ export default function Post({
   id,
   className,
 }: Props) {
+  const { t } = useTranslation();
   const { data: account } = useAccountQuery();
   const { handleClickReply } = usePostComposer();
   const { post, reason, reply } = data;
@@ -175,7 +178,9 @@ export default function Post({
       type: "reply",
       icon: <TbMessageCircle2 />,
       iconReacted: <TbMessageCircle2 />,
-      "aria-label": `${post.replyCount ?? 0}件の返信`,
+      "aria-label": t("post.reply.btn-label", {
+        count: post.replyCount ?? 0,
+      }),
       count: post.replyCount ?? 0,
       onClick: () => handleClickReply(data),
       reacted: false,
@@ -184,7 +189,9 @@ export default function Post({
       type: "repost",
       icon: <FaRetweet />,
       iconReacted: <FaRetweet style={{ color: "#22c55e" }} />,
-      "aria-label": `${post.repostCount ?? 0}件のリポスト`,
+      "aria-label": t("post.repost.btn-label", {
+        count: post.repostCount ?? 0,
+      }),
       count: post.repostCount ?? 0,
       reacted: reposted,
       disabled: isMutatingRepost,
@@ -195,7 +202,9 @@ export default function Post({
       type: "like",
       icon: <TbStar />,
       iconReacted: <TbStarFilled style={{ color: "#eab308" }} />,
-      "aria-label": `${post.likeCount ?? 0}件のいいね`,
+      "aria-label": t("post.like.btn-label", {
+        count: post.likeCount ?? 0,
+      }),
       count: post.likeCount ?? 0,
       reacted: liked,
       disabled: isMutatingLike,
@@ -215,7 +224,7 @@ export default function Post({
   if (post.author.viewer?.muted) {
     return (
       <article className={clsx(styles.container, styles.muted, className)}>
-        ミュート中のユーザーの投稿
+        {t("post.muted-placeholder")}
       </article>
     );
   }
@@ -227,7 +236,7 @@ export default function Post({
       id={id}
     >
       <Link to={postUrl} className={styles.focusLink}>
-        投稿の詳細
+        {t("post.view-thread")}
       </Link>
       {!contentOnly && reason && AppBskyFeedDefs.isReasonRepost(reason) && (
         <Tag
@@ -239,7 +248,11 @@ export default function Post({
           onClick={(e) => e.stopPropagation()}
           className={styles.repost}
         >
-          <span>Repost by {reason.by.displayName}</span>
+          <span>
+            {t("post.repost.tag", {
+              actor: userToName(reason.by),
+            })}
+          </span>
         </Tag>
       )}
       <div className={styles.main}>
@@ -273,9 +286,9 @@ export default function Post({
               className={styles.reply}
             >
               <span>
-                Reply to{" "}
-                {reply.parent.author.displayName ??
-                  `@${reply.parent.author.handle}`}
+                {t("post.reply.tag", {
+                  actor: userToName(reply.parent.author),
+                })}
               </span>
             </Tag>
           )}

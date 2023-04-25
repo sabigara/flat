@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
@@ -8,6 +9,7 @@ import { bsky } from "@/src/lib/atp";
 import styles from "./FollowersRoute.module.scss";
 
 export function FollowersRoute() {
+  const { t } = useTranslation("users");
   const params = useParams();
   const handle = params.handle;
   // TODO: handle invalid state
@@ -26,7 +28,7 @@ export function FollowersRoute() {
       cursor: resp.data.cursor,
     };
   };
-  const title = `@${handle} のフォロワー`;
+  const title = t("followers.title", { actor: `@${handle}` });
   return (
     <>
       <Seo title={title} />

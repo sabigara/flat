@@ -1,0 +1,14 @@
+{
+  "profile": {
+    "title": "{{actor}}'s profile",
+    "banner-alt": "Banner image of {{actor}}",
+    "expand-avatar": "Expand avatar of {{actor}}",
+    "unfollow-description": "Click to unfollow {{actor}}"
+  },
+  "following": {
+    "title": "People {{actor}} is following"
+  },
+  "followers": {
+    "title": "Followers of {{actor}}"
+  }
+}

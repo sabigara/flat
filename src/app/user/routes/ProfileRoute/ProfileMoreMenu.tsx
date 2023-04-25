@@ -2,8 +2,10 @@ import { AppBskyActorDefs } from "@atproto/api";
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { toast } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import { TbVolume, TbVolumeOff } from "react-icons/tb";
 
+import { userToName } from "@/src/app/user/lib/userToName";
 import Menu, { MenuProps } from "@/src/components/Menu";
 import { atp, bsky } from "@/src/lib/atp";
 
@@ -18,6 +20,7 @@ export default function ProfileMoreMenu({
   button,
   revalidate,
 }: Props) {
+  const { t } = useTranslation();
   const muted = !!profile.viewer?.muted;
   const { mutate: muteMutation } = useMutation({
     async mutationFn({
@@ -36,9 +39,9 @@ export default function ProfileMoreMenu({
     onSuccess(_, { profile, muted }) {
       revalidate?.();
       toast.success(
-        `${profile.displayName} ${
-          muted ? "のミュートを解除しました" : "をミュートしました"
-        }`
+        t(muted ? "graph.unmute-success" : "graph.mute-success", {
+          actor: userToName(profile),
+        })
       );
     },
   });
@@ -47,7 +50,7 @@ export default function ProfileMoreMenu({
 
   if (atp.session && profile.did !== atp.session.did) {
     actions.push({
-      label: muted ? "ミュート解除" : "ミュートする",
+      label: muted ? t("graph.unmute") : t("graph.mute"),
       icon: muted ? <TbVolume /> : <TbVolumeOff />,
       onClick: () => muteMutation({ profile, muted }),
     });

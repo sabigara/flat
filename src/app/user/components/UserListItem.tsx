@@ -3,6 +3,7 @@ import { Button, ButtonProps } from "@camome/core/Button";
 import { Spinner } from "@camome/core/Spinner";
 import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 import Avatar from "@/src/app/user/components/Avatar";
@@ -19,6 +20,7 @@ type Props = {
 };
 
 export default function UserListItem({ user, revalidate, className }: Props) {
+  const { t } = useTranslation();
   const { mutate: mutateFollowState, isLoading: isMutating } = useMutation(
     async (isFollow: boolean) => {
       // TODO: error handling
@@ -70,7 +72,7 @@ export default function UserListItem({ user, revalidate, className }: Props) {
             onClick={() => mutateFollowState(false)}
             {...buttonProps}
           >
-            フォロー解除
+            {t("graph.unfollow")}
           </Button>
         ) : (
           <Button
@@ -79,7 +81,7 @@ export default function UserListItem({ user, revalidate, className }: Props) {
             onClick={() => mutateFollowState(true)}
             {...buttonProps}
           >
-            フォローする
+            {t("graph.follow")}
           </Button>
         )}
       </div>

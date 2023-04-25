@@ -2,6 +2,7 @@ import { Button } from "@camome/core/Button";
 import { Select } from "@camome/core/Select";
 import { Spinner } from "@camome/core/Spinner";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useOutletContext } from "react-router-dom";
 
 import type { RootContext } from "@/src/app/root/routes/RootRoute/RootRoute";
@@ -13,6 +14,8 @@ import { storageKeys } from "@/src/lib/storage";
 import styles from "./SettingsRoute.module.scss";
 
 export function SettingsRoute() {
+  const { t: commonT } = useTranslation();
+  const { t, i18n } = useTranslation("settings");
   const { theme } = useOutletContext<RootContext>();
   const [signingOut, setSigningOut] = React.useState(false);
   const signOut = () => {
@@ -27,26 +30,41 @@ export function SettingsRoute() {
   };
   return (
     <>
-      <Seo title="ユーザー設定" />
+      <Seo title={t("title")} />
       <div className={styles.container}>
-        <h1 className={styles.title}>ユーザー設定</h1>
+        <h1 className={styles.title}>{t("title")}</h1>
 
         <section className={styles.section}>
-          <h2>外観</h2>
+          <h2>{t("appearance.title")}</h2>
           <Select
-            label="テーマ"
+            label={t("appearance.theme.title")}
             size="md"
             value={theme.value}
             onChange={(e) => theme.set(e.target.value as Theme)}
           >
-            <option value="light">ライト</option>
-            <option value="dark">ダーク</option>
-            <option value="system">システム</option>
+            <option value="light">{t("appearance.theme.options.light")}</option>
+            <option value="dark">{t("appearance.theme.options.dark")}</option>
+            <option value="system">
+              {t("appearance.theme.options.system")}
+            </option>
           </Select>
         </section>
 
         <section className={styles.section}>
-          <h2>アカウント</h2>
+          <h2>{t("language.title")}</h2>
+          <Select
+            label={t("language.title")}
+            size="md"
+            value={i18n.resolvedLanguage}
+            onChange={(e) => i18n.changeLanguage(e.target.value)}
+          >
+            <option value="ja">日本語</option>
+            <option value="en">English</option>
+          </Select>
+        </section>
+
+        <section className={styles.section}>
+          <h2>{t("account.title")}</h2>
           <Button
             onClick={signOut}
             variant="soft"
@@ -54,7 +72,7 @@ export function SettingsRoute() {
             startDecorator={signingOut ? <Spinner size="sm" /> : false}
             disabled={signingOut}
           >
-            ログアウト
+            {commonT("auth.sign-out")}
           </Button>
         </section>
       </div>

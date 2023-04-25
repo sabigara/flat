@@ -1,0 +1,92 @@
+{
+  "close": "Close",
+  "auth": {
+    "sign-in": "Sign in",
+    "sign-out": "Sign out",
+    "identifier": {
+      "label": "Handle, email or did"
+    },
+    "password": {
+      "label": "Password",
+      "description": "<anchor>Generate an App Password</anchor> and use it"
+    }
+  },
+  "navigation": {
+    "profile": "Profile",
+    "settings": "Settings",
+    "about": "About Flat"
+  },
+  "post": {
+    "reply": {
+      "title": "Reply",
+      "tag": "Reply to {{actor}}",
+      "btn-label_one": "{{count}} reply",
+      "btn-label_other": "{{count}} replies"
+    },
+    "like": {
+      "title": "Like",
+      "btn-label_one": "{{count}} like",
+      "btn-label_other": "{{count}} likes"
+    },
+    "repost": {
+      "title": "Repost",
+      "tag": "Repost by {{actor}}",
+      "btn-label_one": "{{count}} repost",
+      "btn-label_other": "{{count}} reposts"
+    },
+    "quote": {
+      "do": "Quote post"
+    },
+    "delete": {
+      "do": "Delete post",
+      "confirm": "Are you sure you want to delete this post?",
+      "loading": "Deleting post",
+      "success": "Post deleted",
+      "error": "Failed to delete post"
+    },
+    "muted-placeholder": "ミュート中のユーザーの投稿",
+    "view-thread": "View thread",
+    "show-all": "Show all",
+    "composer": {
+      "compose": "Compose",
+      "submit": "Submit",
+      "textarea-placeholder": "What are you doing?",
+      "textarea-placeholder-reply": "What to say?",
+      "reply-to": "Reply to",
+      "content": "Content",
+      "errors": {
+        "img-max-number": "You can upload up to 4 images",
+        "img-accept-type": "Invalid file type",
+        "img-max-file-size": "Upload images up to 1MB",
+        "img-general": "Invalid image file"
+      }
+    }
+  },
+  "timeline": {
+    "load-new-posts": "Load new posts",
+    "filters": {
+      "title": "Filters",
+      "reply": {
+        "all": "All",
+        "following": "Following only",
+        "none": "None"
+      },
+      "repost": {
+        "all": "All",
+        "latest": "Latest only",
+        "none": "None"
+      }
+    }
+  },
+  "graph": {
+    "follow": "Follow",
+    "unfollow": "Unfollow",
+    "following": "Following",
+    "mute": "Mute",
+    "unmute": "Unmute",
+    "muted": "Muted",
+    "follows-you": "Follows you",
+    "mute-success": "Muted {{actor}}",
+    "unmute-success": "Unmuted {{actor}}"
+  }
+}

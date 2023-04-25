@@ -4,6 +4,7 @@ import { Spinner } from "@camome/core/Spinner";
 import { Tag } from "@camome/core/Tag";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { TbDots, TbVolumeOff } from "react-icons/tb";
 import { Link, useLoaderData, useRevalidator } from "react-router-dom";
 
@@ -21,6 +22,7 @@ import { useTimelineFilter } from "@/src/app/timeline/hooks/useTimelineFilter";
 import Avatar from "@/src/app/user/components/Avatar";
 import { followUser } from "@/src/app/user/lib/followUser";
 import { unfollowUser } from "@/src/app/user/lib/unfollowUser";
+import { userToName } from "@/src/app/user/lib/userToName";
 import ProfileMoreMenu from "@/src/app/user/routes/ProfileRoute/ProfileMoreMenu";
 import { RichTextRenderer } from "@/src/components/RichTextRenderer";
 import { atp, bsky } from "@/src/lib/atp";
@@ -28,8 +30,10 @@ import { atp, bsky } from "@/src/lib/atp";
 import styles from "./ProfileRoute.module.scss";
 
 export function ProfileRoute() {
+  const { t } = useTranslation();
+  const { t: usersT } = useTranslation("users");
   const { profile, richText } = useLoaderData() as ProfileRouteLoaderResult;
-  const username = profile.displayName ?? profile.handle;
+  const username = userToName(profile);
   const queryClient = useQueryClient();
   const queryKey = queryKeys.feed.author.$(profile.handle);
   const queryFn: TimelineQueryFn<typeof queryKey> = async ({
@@ -96,18 +100,24 @@ export function ProfileRoute() {
   return (
     <>
       <Seo
-        title={`${profile.displayName ?? profile.handle}のプロフィール`}
+        title={usersT("profile.title", { actor: username })}
         description={profile.description}
       />
       <article className={styles.container}>
         <header className={styles.header}>
           <div className={styles.banner}>
             {profile.banner && (
-              <img src={profile.banner} alt={`${username}のバナー画像`} />
+              <img
+                src={profile.banner}
+                alt={usersT("profile.banner-alt", { actor: username })}
+              />
             )}
           </div>
           <div className={styles.topRow}>
-            <button onClick={expandAvatar} aria-label="ユーザー画像を拡大">
+            <button
+              onClick={expandAvatar}
+              aria-label={usersT("profile.expand-avatar", { actor: username })}
+            >
               <Avatar
                 profile={profile}
                 stopPropagation={false}
@@ -141,14 +151,14 @@ export function ProfileRoute() {
                     onMouseLeave={() => setHoverUnfollow(false)}
                     onFocus={() => setHoverUnfollow(true)}
                     onBlur={() => setHoverUnfollow(false)}
-                    aria-describedby={UNFOLLOW_DESCRIBE_ID}
+                    aria-describedby={UNFOLLOW_DESCRIPTION_ID}
                     onClick={() => mutateFollowState(false)}
                     disabled={isLoadingFollow}
                     startDecorator={
                       isLoadingFollow ? <Spinner size="sm" /> : undefined
                     }
                   >
-                    {hoverUnfollow ? "フォロー解除" : "フォロー中"}
+                    {hoverUnfollow ? t("graph.unfollow") : t("graph.following")}
                   </Button>
                 ) : (
                   <Button
@@ -159,12 +169,11 @@ export function ProfileRoute() {
                       isLoadingFollow ? <Spinner size="sm" /> : undefined
                     }
                   >
-                    フォローする
+                    {t("graph.follow")}
                   </Button>
                 ))}
-              <span id={UNFOLLOW_DESCRIBE_ID} className="visually-hidden">
-                クリックして{profile.displayName ?? profile.handle}
-                さんのフォローを解除
+              <span id={UNFOLLOW_DESCRIPTION_ID} className="visually-hidden">
+                {usersT("profile.unfollow-description", { actor: username })}
               </span>
             </div>
           </div>
@@ -180,7 +189,7 @@ export function ProfileRoute() {
                     colorScheme="neutral"
                     className={styles.followedTag}
                   >
-                    フォローされています
+                    {t("graph.follows-you")}
                   </Tag>
                 )}
               </div>
@@ -206,7 +215,7 @@ export function ProfileRoute() {
           {muted && (
             <p className={styles.muted}>
               <TbVolumeOff aria-hidden />
-              ミュート中
+              {t("graph.muted")}
             </p>
           )}
           <div hidden={muted}>
@@ -224,4 +233,4 @@ export function ProfileRoute() {
   );
 }
 
-const UNFOLLOW_DESCRIBE_ID = "unfollow-describe" as const;
+const UNFOLLOW_DESCRIPTION_ID = "unfollow-describe" as const;

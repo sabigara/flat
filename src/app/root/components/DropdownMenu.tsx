@@ -3,6 +3,8 @@ import { useFloating, offset, flip } from "@floating-ui/react";
 import { Menu } from "@headlessui/react";
 import clsx from "clsx";
 import React from "react";
+import { useTranslation } from "react-i18next";
+import { TbExternalLink } from "react-icons/tb";
 import { Link, useLocation } from "react-router-dom";
 
 import { useAccountQuery } from "@/src/app/account/hooks/useAccountQuery";
@@ -10,23 +12,8 @@ import Avatar from "@/src/app/user/components/Avatar";
 
 import styles from "./DropdownMenu.module.scss";
 
-const links = (handle: string) =>
-  [
-    {
-      href: `/${handle}`,
-      label: "プロフィール",
-    },
-    {
-      href: "/settings",
-      label: "ユーザー設定",
-    },
-    {
-      href: "/about",
-      label: "Flatについて",
-    },
-  ] satisfies { href: string; label: string }[];
-
 export default function DropdownMenu() {
+  const { t, i18n } = useTranslation();
   const { data: account } = useAccountQuery();
   const { x, y, reference, floating, strategy } = useFloating({
     placement: "bottom-end",
@@ -34,6 +21,26 @@ export default function DropdownMenu() {
   });
   const location = useLocation();
   const isCurrentPage = (href: string) => href === location.pathname;
+
+  const links = (handle: string) =>
+    [
+      {
+        href: `/${handle}`,
+        label: t("navigation.profile"),
+      },
+      {
+        href: "/settings",
+        label: t("navigation.settings"),
+      },
+      {
+        href:
+          i18n.resolvedLanguage === "ja"
+            ? "https://sabigara.notion.site/sabigara/Flat-3be5369d5d6e4548885d02aa5a37a3e2"
+            : "https://sabigara.notion.site/sabigara/About-Flat-6b11ebee0aa843839a67180786174888",
+        label: t("navigation.about"),
+        external: true,
+      },
+    ] satisfies { href: string; label: string; external?: boolean }[];
 
   return (
     <Menu as="div" className={styles.menu}>
@@ -58,7 +65,7 @@ export default function DropdownMenu() {
             left: x ?? 0,
           }}
         >
-          {links(account.profile.handle).map(({ href, label }) => (
+          {links(account.profile.handle).map(({ href, label, external }) => (
             <Menu.Item
               key={href}
               as={React.Fragment}
@@ -74,8 +81,15 @@ export default function DropdownMenu() {
                     active && menuClassNames.itemActive,
                     disabled && menuClassNames.itemDisabled
                   )}
+                  {...(external
+                    ? {
+                        rel: "noreferrer noopener",
+                        target: "_blank",
+                      }
+                    : {})}
                 >
                   {label}
+                  {external && <TbExternalLink />}
                 </Link>
               )}
             </Menu.Item>
