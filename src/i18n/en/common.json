@@ -42,7 +42,7 @@
       "confirm": "Are you sure you want to delete this post?",
       "loading": "Deleting post",
       "success": "Post deleted",
-      "error": "Failed to delete"
+      "error": "Failed to delete post"
     },
     "muted-placeholder": "ミュート中のユーザーの投稿",
     "view-thread": "View thread",
@@ -50,7 +50,16 @@
     "composer": {
       "compose": "Compose",
       "submit": "Submit",
-      "textarea-placeholder": "What are you doing?"
+      "textarea-placeholder": "What are you doing?",
+      "textarea-placeholder-reply": "What to say?",
+      "reply-to": "Reply to",
+      "content": "Content",
+      "errors": {
+        "img-max-number": "You can upload up to 4 images",
+        "img-accept-type": "Invalid file type",
+        "img-max-file-size": "Upload images up to 1MB",
+        "img-general": "Invalid image file"
+      }
     }
   },
   "timeline": {
