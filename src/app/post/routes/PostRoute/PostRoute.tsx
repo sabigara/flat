@@ -83,7 +83,10 @@ export default function PostRoute() {
     <>
       <Seo
         title={
-          thread ? `${userToName(thread.post.author)}「${titlePostText}」` : ""
+          thread && titlePostText
+            ? // TODO: support quotation marks for non-Japanese
+              `${userToName(thread.post.author)}「${titlePostText}」`
+            : ""
         }
       />
       <div className={styles.container}>
