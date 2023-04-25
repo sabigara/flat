@@ -1,12 +1,15 @@
+@use "var";
+
 .preview {
   &__container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 0.5rem;
-    padding-inline: 1.5rem;
+    padding-inline: 1.25rem;
 
-    @media screen and (max-width: 28rem) {
+    @media screen and (max-width: var.$composerMaxWidth) {
       grid-template-columns: repeat(2, 1fr);
+      padding-inline: 1rem;
     }
   }
 
@@ -18,6 +21,7 @@
     aspect-ratio: 1;
     object-fit: cover;
     border-radius: var(--cmm-radius-md);
+    inline-size: 100%;
   }
 
   &__removeBtn {

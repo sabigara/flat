@@ -52,7 +52,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@/mixins": path.resolve("src/styles/mixins.scss"),
+      var: path.resolve("src/styles/var.scss"),
+      mixins: path.resolve("src/styles/mixins.scss"),
     },
   },
 });

@@ -1,3 +1,5 @@
+@use "mixins";
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-synthesis: none;
@@ -13,7 +15,7 @@
   --color-repost: #22c55e;
   --color-reply: #06b6d4;
 
-  @media screen and (max-width: 44rem) {
+  @include mixins.mq(md) {
     --container-pad-inline: 1rem;
   }
 }

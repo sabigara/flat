@@ -1,0 +1,13 @@
+$sm: 30rem;
+$md: 48rem;
+$lg: 62rem;
+$xl: 75rem;
+
+$breakpoints: (
+  "sm": $sm,
+  "md": $md,
+  "lg": $lg,
+  "xl": $xl,
+);
+
+$composerMaxWidth: 34rem;

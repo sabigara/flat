@@ -1,4 +1,4 @@
-@use "@/mixins";
+@use "mixins";
 
 .container {
   --col-gap: 1rem;
@@ -8,7 +8,7 @@
   column-gap: var(--col-gap);
   padding: 0.5rem 1rem;
 
-  @media screen and (max-width: 30rem) {
+  @include mixins.mq(sm) {
     --col-gap: 0.75rem;
   }
 }
@@ -25,7 +25,7 @@
     "avatar names"
     "avatar description";
 
-  @media screen and (max-width: 30rem) {
+  @include mixins.mq(sm) {
     grid-template-areas:
       "avatar names"
       "description description";
@@ -41,7 +41,7 @@
   display: grid;
   place-items: center;
 
-  @media screen and (max-width: 30rem) {
+  @include mixins.mq(sm) {
     :global(.Avatar) {
       --cmm-Avatar-size: 2.25rem;
     }
@@ -57,7 +57,7 @@
     align-items: baseline;
     column-gap: 0.5em;
 
-    @media screen and (max-width: 30rem) {
+    @include mixins.mq(sm) {
       display: block;
       line-height: 1.35;
     }

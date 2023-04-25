@@ -1,4 +1,4 @@
-@use "@/mixins";
+@use "mixins";
 @use "./postMixins";
 
 .container {
@@ -16,7 +16,7 @@
 
   // disable hover effect on mobile devices
   // 32rem is just a magic number...
-  @media screen and (max-width: 32rem) {
+  @include mixins.mq(sm) {
     &.link:hover {
       background: var(--cmm-color-surface-0);
     }

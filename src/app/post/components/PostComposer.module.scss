@@ -1,4 +1,4 @@
-$width: 34rem;
+@use "var";
 
 .container {
   --pad: 1.25rem;
@@ -6,7 +6,7 @@ $width: 34rem;
   flex-direction: column;
   row-gap: var(--pad);
 
-  @media screen and (max-width: $width) {
+  @media screen and (max-width: var.$composerMaxWidth) {
     --pad: 1rem;
   }
 
@@ -24,19 +24,19 @@ $width: 34rem;
     --cmm-Dialog-outer-margin: 0px;
 
     .Dialog__backdrop {
-      @media screen and (max-width: $width) {
+      @media screen and (max-width: var.$composerMaxWidth) {
         display: none;
       }
     }
 
     .Dialog__panel {
-      --cmm-Dialog-min-width: $width;
-      --cmm-Dialog-max-width: $width;
-      width: min($width, 100vw);
+      --cmm-Dialog-min-width: var.$composerMaxWidth;
+      --cmm-Dialog-max-width: var.$composerMaxWidth;
+      width: min(var.$composerMaxWidth, 100vw);
       padding: 0;
       overflow: auto;
 
-      @media screen and (max-width: $width) {
+      @media screen and (max-width: var.$composerMaxWidth) {
         border-radius: 0;
         height: 100dvh;
       }
@@ -67,7 +67,7 @@ $width: 34rem;
     scale: 1;
   }
 
-  @media screen and (max-width: $width) {
+  @media screen and (max-width: var.$composerMaxWidth) {
     transition-duration: 0.3s;
     transition-timing-function: ease;
 
@@ -96,7 +96,7 @@ $width: 34rem;
     scale: 0.95;
   }
 
-  @media screen and (max-width: $width) {
+  @media screen and (max-width: var.$composerMaxWidth) {
     transition-duration: 0.3s;
     transition-timing-function: ease;
 

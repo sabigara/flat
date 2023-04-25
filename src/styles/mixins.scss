@@ -1,3 +1,11 @@
+@use "var";
+
+@mixin mq($size) {
+  @media screen and (max-width: #{map-get(var.$breakpoints, $size)}) {
+    @content;
+  }
+}
+
 @mixin lineClamp($lines) {
   overflow: hidden;
   display: -webkit-box;
