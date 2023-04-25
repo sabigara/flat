@@ -28,8 +28,11 @@ export const resources = {
   },
 } as const;
 
-i18next.use(LanguageDetector).use(initReactI18next).init({
-  debug: true,
-  resources,
-  defaultNS,
-});
+i18next
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    debug: import.meta.env.DEV,
+    resources,
+    defaultNS,
+  });
