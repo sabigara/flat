@@ -35,4 +35,5 @@ i18next
     debug: import.meta.env.DEV,
     resources,
     defaultNS,
+    fallbackLng: import.meta.env.DEV ? "dev" : "en",
   });

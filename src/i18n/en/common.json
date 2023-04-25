@@ -88,5 +88,8 @@
     "follows-you": "Follows you",
     "mute-success": "Muted {{actor}}",
     "unmute-success": "Unmuted {{actor}}"
+  },
+  "errors": {
+    "general": "Something went wrong"
   }
 }

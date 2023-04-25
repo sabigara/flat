@@ -1,4 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
+import { t } from "i18next";
 
 import { notifyError } from "@/src/app/error/lib/notifyError";
 
@@ -10,7 +11,7 @@ export const queryClient = new QueryClient({
     },
     mutations: {
       onError(error) {
-        notifyError({ error, message: "エラーが発生しました" });
+        notifyError({ error, message: t("errors.general") });
       },
     },
   },

@@ -85,5 +85,8 @@
     "follows-you": "フォローされています",
     "mute-success": "{{actor}} をミュートしました",
     "unmute-success": "{{actor}} のミュートを解除しました"
+  },
+  "errors": {
+    "general": "エラーが発生しました"
   }
 }
