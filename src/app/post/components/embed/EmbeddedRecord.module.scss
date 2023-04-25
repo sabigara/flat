@@ -49,6 +49,10 @@
   @include mixins.lineClamp(3);
   margin-block-start: 0.2em;
   font-size: var(--cmm-font-size-sm);
+
+  &__imgCount {
+    margin-block-start: 0.2em;
+  }
 }
 
 .focusLink {

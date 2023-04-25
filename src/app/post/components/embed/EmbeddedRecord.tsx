@@ -1,5 +1,11 @@
-import { AppBskyEmbedRecord, AppBskyFeedPost } from "@atproto/api";
+import {
+  AppBskyEmbedImages,
+  AppBskyEmbedRecord,
+  AppBskyFeedPost,
+} from "@atproto/api";
+import { Tag } from "@camome/core/Tag";
 import clsx from "clsx";
+import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 
 import { buildPostUrl } from "@/src/app/post/lib/buildPostUrl";
@@ -18,6 +24,7 @@ export default function EmbeddedRecord({
   isLink = true,
   className,
 }: Props) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const author = record.author;
   const post = record.value;
@@ -41,6 +48,7 @@ export default function EmbeddedRecord({
       </article>
     );
   }
+  console.log(AppBskyEmbedImages.isView(post.embed));
 
   return (
     <article
@@ -65,7 +73,20 @@ export default function EmbeddedRecord({
         )}
         <span className={styles.handle}>@{author.handle}</span>
       </div>
-      <p className={styles.body}>{post.text}</p>
+      <div className={styles.body}>
+        <p>{post.text}</p>
+        {AppBskyEmbedImages.isMain(post.embed) && (
+          <Tag
+            size="sm"
+            colorScheme="neutral"
+            className={styles.body__imgCount}
+          >
+            {t("post.embedded.image-count", {
+              count: post.embed.images.length,
+            })}
+          </Tag>
+        )}
+      </div>
     </article>
   );
 }

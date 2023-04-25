@@ -44,6 +44,10 @@
       "success": "Post deleted",
       "error": "Failed to delete post"
     },
+    "embedded": {
+      "image-count_one": "+{{count}} image",
+      "image-count_other": "+{{count}} images"
+    },
     "muted-placeholder": "ミュート中のユーザーの投稿",
     "view-thread": "View thread",
     "show-all": "Show all",

@@ -41,6 +41,9 @@
       "success": "削除が完了しました",
       "error": "削除に失敗しました"
     },
+    "embedded": {
+      "image-count": "+{{count}}枚の画像"
+    },
     "muted-placeholder": "ミュート中のユーザーの投稿",
     "view-thread": "スレッドを表示",
     "show-all": "すべて表示",
