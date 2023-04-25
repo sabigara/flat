@@ -32,8 +32,14 @@ i18next
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    debug: import.meta.env.DEV,
-    resources,
     defaultNS,
+    resources,
+    debug: import.meta.env.DEV,
     fallbackLng: import.meta.env.DEV ? "dev" : "en",
+    interpolation: {
+      // It's safe to turn off escape according to the docs and an official example:
+      // - https://react.i18next.com/getting-started#basic-sample
+      // - https://github.com/i18next/react-i18next/blob/master/example/react/src/i18n.js#L22
+      escapeValue: false,
+    },
   });
