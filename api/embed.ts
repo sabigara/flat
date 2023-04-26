@@ -126,6 +126,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
+  console.debug(req.method, req.headers["content-type"], isDev, req.body.rul);
   if (
     req.method !== "POST" ||
     req.headers["content-type"] !== "application/json" ||
@@ -143,6 +144,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 function isSameOrigin(req: VercelRequest) {
   if (!req.headers.origin || !req.headers.host) return false;
   const baseUrl = getBaseUrl(req);
+  console.debug(req.headers.origin, baseUrl, req.headers.host);
   return req.headers.origin === baseUrl + req.headers.host;
 }
 
