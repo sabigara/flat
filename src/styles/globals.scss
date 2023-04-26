@@ -15,6 +15,14 @@
   --color-repost: #22c55e;
   --color-reply: #06b6d4;
 
+  &[data-theme="light"] {
+    --cmm-color-border-emphasis: var(--cmm-color-neutral-3);
+  }
+
+  &[data-theme="dark"] {
+    --cmm-color-border-emphasis: var(--cmm-color-neutral-7);
+  }
+
   @include mixins.mq(md) {
     --container-pad-inline: 1rem;
   }

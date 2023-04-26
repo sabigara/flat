@@ -7,7 +7,7 @@
   position: relative;
 
   &.link:hover {
-    background: var(--cmm-color-surface-2);
+    border-color: var(--cmm-color-border-emphasis);
     cursor: pointer;
   }
 
