@@ -74,18 +74,14 @@ export default function EmbeddedRecord({
       </div>
       <div className={styles.body}>
         <p>{post.text}</p>
-        {AppBskyEmbedImages.isMain(post.embed) && (
-          <Tag
-            size="sm"
-            colorScheme="neutral"
-            className={styles.body__imgCount}
-          >
-            {t("post.embedded.image-count", {
-              count: post.embed.images.length,
-            })}
-          </Tag>
-        )}
       </div>
+      {AppBskyEmbedImages.isMain(post.embed) && (
+        <Tag size="sm" colorScheme="neutral" className={styles.body__imgCount}>
+          {t("post.embedded.image-count", {
+            count: post.embed.images.length,
+          })}
+        </Tag>
+      )}
     </article>
   );
 }
