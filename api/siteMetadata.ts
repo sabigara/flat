@@ -71,6 +71,7 @@ const cacheStore = isDev
 async function getSiteMetadata(url: string): Promise<SiteMetadata> {
   if (isDev) {
     const cache = cacheStore?.get(url);
+    console.debug("cached siteMetadata for", url);
     if (cache) return cache;
   }
 

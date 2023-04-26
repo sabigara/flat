@@ -44,4 +44,7 @@ export const queryKeys = {
       $: ["notifications", "count"] as const,
     },
   },
+  siteMetadata: {
+    $: (params: { url: string }) => ["siteMetadata", params] as const,
+  },
 };

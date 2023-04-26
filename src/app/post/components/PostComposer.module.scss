@@ -143,6 +143,14 @@
   }
 }
 
+.linkCardGenerator {
+  padding-inline: var(--pad);
+}
+
+.linkCardPreview {
+  margin-inline: var(--pad);
+}
+
 .action {
   display: grid;
   grid-template-columns: 1fr auto;

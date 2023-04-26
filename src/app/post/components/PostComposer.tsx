@@ -18,6 +18,7 @@ import ImagePicker, {
 import Post from "@/src/app/post/components/Post";
 import { PostGraphemeCounter } from "@/src/app/post/components/PostGraphemeCounter";
 import EmbeddedRecord from "@/src/app/post/components/embed/EmbeddedRecord";
+import { useLinkCardGenerator } from "@/src/app/post/hooks/useLinkCardGenerator";
 import { usePostComposer } from "@/src/app/post/hooks/usePostComposer";
 import { createPostWithEmbed } from "@/src/app/post/lib/createPostWithEmbed";
 import { RevalidateOnPost } from "@/src/app/post/lib/types";
@@ -63,6 +64,15 @@ export default function PostComposer({
     React.useState<HTMLDivElement | null>(null);
   const exceedingId = React.useId();
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+
+  const linkCard = useLinkCardGenerator({
+    rt,
+    classNames: {
+      data: styles.linkCardPreview,
+      skelton: styles.linkCardPreview,
+      generator: styles.linkCardGenerator,
+    },
+  });
 
   const { mutate, isLoading } = useMutation({
     async mutationFn(params: PostMutateParams) {
@@ -219,6 +229,7 @@ export default function PostComposer({
               ref={textareaRef}
             />
           </div>
+          {linkCard.preview}
           {quoteTarget && (
             <div className={styles.quoteTarget}>
               <EmbeddedRecord
@@ -230,6 +241,7 @@ export default function PostComposer({
               />
             </div>
           )}
+          {linkCard.generator}
           {images.length > 0 && (
             <div
               ref={setPreviewContainer}
