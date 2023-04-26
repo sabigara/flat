@@ -1,6 +1,6 @@
 export const storageKeys = {
   session: {
-    $: "session",
+    $: "sessions",
   },
   settings: {
     $: "settings",

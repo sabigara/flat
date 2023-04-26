@@ -11,39 +11,37 @@ import {
 } from "react-router-dom";
 
 import { appPasswordRegex } from "@/src/app/account/lib/appPassword";
+import { getAtpAgent, loginWithPersist } from "@/src/app/account/states/atp";
 import LogoIcon from "@/src/assets/icon.svg";
-import { atp } from "@/src/lib/atp";
 
 import styles from "./index.module.scss";
 
 export const loader = (async () => {
   // TODO: always !atp.hasSession for first visit
-  if (atp.hasSession) return redirect("/");
+  if (getAtpAgent().hasSession) return redirect("/");
   return null;
 }) satisfies LoaderFunction;
 
 export const action = (async ({ request }) => {
   const data = await request.formData();
+  const service = data.get("service");
   const identifier = data.get("identifier");
   const password = data.get("password");
   // TODO: better validation?
   if (
+    typeof service !== "string" ||
     typeof identifier !== "string" ||
     typeof password !== "string" ||
     !password.match(appPasswordRegex)
   ) {
     throw new Error(`Validation error: ${{ identifier, password }}`);
   }
-  const resp = await atp.login({
-    identifier: identifier,
-    password: password,
-  });
-  if (!resp.success) {
-    throw new Error("Login failed.");
-  }
+  console.log("before");
+  await loginWithPersist({ service, identifier, password });
   // TODO: redirect has response?
-  redirect("/");
-  return null;
+  console.log("after");
+
+  return redirect("/");
 }) satisfies ActionFunction;
 
 export const element = <LoginRoute />;
@@ -59,6 +57,7 @@ function LoginRoute() {
         <span className={styles.logo__text}>Flat</span>
       </div>
       <Form method="post" className={styles.form}>
+        <Input label="Server" name="service" type="url" required />
         <Input
           label={t("auth.identifier.label")}
           name="identifier"
