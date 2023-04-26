@@ -129,7 +129,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (
     req.method !== "POST" ||
     req.headers["content-type"] !== "application/json" ||
-    (!isDev && !isSameOrigin(req)) ||
+    !isAllowedOrigin(req) ||
     typeof req.body.url !== "string"
   ) {
     return res.status(400).json({});
@@ -140,13 +140,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   });
 }
 
-function isSameOrigin(req: VercelRequest) {
+function isAllowedOrigin(req: VercelRequest) {
+  if (isDev) return true;
   if (!req.headers.origin || !req.headers.host) return false;
-  const baseUrl = getBaseUrl(req);
-  return req.headers.origin === baseUrl;
+  const allowedOrigins = getAllowedOrigins(req);
+  return allowedOrigins.includes(req.headers.origin);
 }
 
-function getBaseUrl(req: VercelRequest) {
+function getAllowedOrigins(req: VercelRequest) {
+  return [getServerUrl(req)];
+}
+
+function getServerUrl(req: VercelRequest) {
   const scheme = process.env.NODE_ENV === "development" ? "http" : "https";
   return scheme + "://" + req.headers.host;
 }
