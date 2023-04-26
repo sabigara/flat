@@ -43,7 +43,8 @@ function excludeRepliesToNoFollowing(
     // FIXME: check if the root is also a following account.
     if (post.reply?.parent.author.viewer) {
       return (
-        !!post.reply.parent.author.viewer.following ||
+        (!!post.reply.parent.author.viewer.following &&
+          !post.reply.parent.author.viewer.muted) ||
         post.reply.parent.author.did === myDid
       );
     }
