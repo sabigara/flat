@@ -119,10 +119,17 @@ async function getSiteMetadata(url: string): Promise<SiteMetadata> {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  if (isDev) {
+    res.setHeader("Access-Control-Allow-Headers", "content-type");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+  }
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
   if (
     req.method !== "POST" ||
     req.headers["content-type"] !== "application/json" ||
-    isCrossOrigin(req) ||
+    (!isDev && !isSameOrigin(req)) ||
     typeof req.body.url !== "string"
   ) {
     return res.status(400).json({});
@@ -133,7 +140,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   });
 }
 
-function isCrossOrigin(req: VercelRequest) {
-  console.debug({ origin: req.headers.origin, host: req.headers.host });
-  return !req.headers.origin || req.headers.origin !== req.headers.host;
+function isSameOrigin(req: VercelRequest) {
+  if (!req.headers.origin || !req.headers.host) return false;
+  const baseUrl = getBaseUrl(req);
+  return req.headers.origin === baseUrl + req.headers.host;
+}
+
+function getBaseUrl(req: VercelRequest) {
+  const scheme = process.env.NODE_ENV === "development" ? "http" : "https";
+  return scheme + "://" + req.headers.host;
 }
