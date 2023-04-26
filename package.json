@@ -50,6 +50,7 @@
     "@camome/utils": "^0.1.10",
     "@types/image-blob-reduce": "^4.1.1",
     "@types/jsdom": "^21.1.1",
+    "@types/node": "^18.16.1",
     "@types/pica": "^9.0.1",
     "@types/react": "^18.0.34",
     "@types/react-dom": "^18.0.10",

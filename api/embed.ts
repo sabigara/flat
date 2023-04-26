@@ -119,17 +119,21 @@ async function getSiteMetadata(url: string): Promise<SiteMetadata> {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (typeof req.query.url !== "string") {
+  if (
+    req.method !== "POST" ||
+    req.headers["content-type"] !== "application/json" ||
+    isCrossOrigin(req) ||
+    typeof req.body.url !== "string"
+  ) {
     return res.status(400).json({});
   }
-  console.debug(isCrossOrigin(req));
-  const metadata = await getSiteMetadata(req.query.url);
+  const metadata = await getSiteMetadata(req.body.url);
   res.status(200).json({
     metadata,
   });
 }
 
 function isCrossOrigin(req: VercelRequest) {
-  console.debug(req.headers);
+  console.debug({ origin: req.headers.origin, host: req.headers.host });
   return !req.headers.origin || req.headers.origin !== req.headers.host;
 }
