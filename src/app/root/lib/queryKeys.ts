@@ -45,6 +45,6 @@ export const queryKeys = {
     },
   },
   siteMetadata: {
-    $: (params: { url: string }) => ["siteMetadata", params] as const,
+    $: (params: { uri: string }) => ["siteMetadata", params] as const,
   },
 };

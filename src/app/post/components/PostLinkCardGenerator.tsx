@@ -1,46 +1,59 @@
-import { RichText } from "@atproto/api";
+import { RichText, RichTextSegment } from "@atproto/api";
 import clsx from "clsx";
 import React from "react";
 
 import { shortenUrl } from "@/src/lib/string";
-import { isNonNullish } from "@/src/lib/typing";
 
 import styles from "./PostLinkCardGenerator.module.scss";
 
 type Props = {
   rt: RichText;
   selected: string;
-  setSelected: React.Dispatch<React.SetStateAction<string>>;
+  onChange: (val: string) => void;
   className?: string;
 };
 
 export function PostLinkCardGenerator({
   rt,
   selected,
-  setSelected,
+  onChange,
   className,
 }: Props) {
   rt.detectFacetsWithoutResolution();
 
   const handleClick = (url: string) => {
-    setSelected((curr) => (curr === url ? "" : url));
+    onChange(url);
   };
+
+  const links = Array.from(rt.segments()).reduce<RichTextSegment[]>(
+    (acc, seg) => {
+      if (
+        !seg.isLink() ||
+        !seg.link ||
+        acc.find((s) => s.link?.uri === seg.link?.uri)
+      )
+        return acc;
+      return [...acc, seg];
+    },
+    []
+  );
+
+  if (!links.length) return null;
 
   return (
     <div className={clsx(styles.container, className)}>
       <ul className={styles.list}>
-        {Array.from(rt.segments())
-          .filter((seg) => seg.isLink())
-          .map((seg) => seg.link)
-          .filter(isNonNullish)
-          .map(({ uri }) => (
+        {links.map((seg) => {
+          if (!seg.link || !seg.facet) return null;
+          return (
             <GenLinkCardButton
-              key={uri} // TODO: possibly not unique
-              uri={uri}
-              selected={selected === uri}
+              key={seg.facet.index.byteStart + seg.facet.index.byteEnd} // TODO: possibly not unique
+              uri={seg.link.uri}
+              selected={selected === seg.link.uri}
               onClick={handleClick}
             />
-          ))}
+          );
+        })}
       </ul>
     </div>
   );

@@ -1,12 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
-import { fetchSiteMetadata } from "@/src/lib/siteMetadata";
+import { SiteMetadata, fetchSiteMetadata } from "@/src/lib/siteMetadata";
 
-export function useSiteMetadata(url: string) {
+type Params = {
+  uri: string;
+  onSuccess?: (data: SiteMetadata) => void;
+};
+
+export function useSiteMetadata({ uri, onSuccess }: Params) {
   return useQuery({
-    queryKey: queryKeys.siteMetadata.$({ url }),
-    queryFn: async () => fetchSiteMetadata(url),
-    enabled: !!url,
+    queryKey: queryKeys.siteMetadata.$({ uri }),
+    queryFn: async () => fetchSiteMetadata(uri),
+    onSuccess,
+    enabled: !!uri,
   });
 }

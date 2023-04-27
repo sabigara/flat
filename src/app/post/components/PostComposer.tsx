@@ -48,6 +48,7 @@ export default function PostComposer({
 }: PostComposerProps) {
   const { t } = useTranslation();
   const { data: account } = useAccountQuery();
+
   const {
     open,
     replyTarget,
@@ -57,22 +58,27 @@ export default function PostComposer({
   } = usePostComposer();
   const setOpen = (val: boolean) =>
     void setComposer((curr) => ({ ...curr, open: val }));
+
   const [text, setText] = React.useState("");
-  const [images, setImages] = React.useState<SelectedImage[]>([]);
   const rt = new RichText({ text });
-  const [imagePreviewContainer, setPreviewContainer] =
-    React.useState<HTMLDivElement | null>(null);
-  const exceedingId = React.useId();
-  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
   const linkCard = useLinkCardGenerator({
     rt,
+    onSuccess: (_, uri) => {
+      setText((curr) => curr.replaceAll(uri, ""));
+    },
     classNames: {
       data: styles.linkCardPreview,
       skelton: styles.linkCardPreview,
       generator: styles.linkCardGenerator,
     },
   });
+
+  const [images, setImages] = React.useState<SelectedImage[]>([]);
+  const [imagePreviewContainer, setPreviewContainer] =
+    React.useState<HTMLDivElement | null>(null);
+  const exceedingId = React.useId();
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
   const { mutate, isLoading } = useMutation({
     async mutationFn(params: PostMutateParams) {

@@ -13,18 +13,21 @@ export function usePostComposer() {
         open: true,
         replyTarget: undefined,
         quoteTarget: undefined,
+        linkCardUri: undefined,
       });
     },
     handleClickReply: (feedItem: AppBskyFeedDefs.FeedViewPost) => {
       setComposer({
         open: true,
         replyTarget: feedItem,
+        linkCardUri: undefined,
       });
     },
     handleClickQuote: (feedItem: AppBskyFeedDefs.PostView) => {
       setComposer({
         open: true,
         quoteTarget: feedItem,
+        linkCardUri: undefined,
       });
     },
   };
