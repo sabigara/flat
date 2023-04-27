@@ -4,7 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import Prose from "@/src/components/Prose";
-import { truncate } from "@/src/lib/string";
+import { shortenUrl } from "@/src/lib/string";
 
 type Props = RichTextProps & {
   className?: string;
@@ -56,7 +56,7 @@ function SegmentToElement({
         onClick={(e) => void e.stopPropagation()}
       >
         {/* Strip URL scheme and truncate */}
-        {truncate(segment.text.replace(/^.*:\/\//, ""), { max: 28 })}
+        {shortenUrl(segment.text)}
       </a>
     );
   } else if (segment.isMention() && segment.mention) {

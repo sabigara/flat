@@ -18,6 +18,7 @@ import ImagePicker, {
 import Post from "@/src/app/post/components/Post";
 import { PostGraphemeCounter } from "@/src/app/post/components/PostGraphemeCounter";
 import EmbeddedRecord from "@/src/app/post/components/embed/EmbeddedRecord";
+import { useLinkCardGenerator } from "@/src/app/post/hooks/useLinkCardGenerator";
 import { usePostComposer } from "@/src/app/post/hooks/usePostComposer";
 import { createPostWithEmbed } from "@/src/app/post/lib/createPostWithEmbed";
 import { RevalidateOnPost } from "@/src/app/post/lib/types";
@@ -25,6 +26,7 @@ import Avatar from "@/src/app/user/components/Avatar";
 import Dialog from "@/src/components/Dialog";
 import { atp, isPostValid } from "@/src/lib/atp";
 import { isModKey } from "@/src/lib/keybindings";
+import { SiteMetadata } from "@/src/lib/siteMetadata";
 
 import styles from "./PostComposer.module.scss";
 
@@ -34,6 +36,7 @@ type PostMutateParams = {
   myProfile: AppBskyActorDefs.ProfileViewDetailed;
   replyTarget?: AppBskyFeedDefs.FeedViewPost;
   quoteTarget?: AppBskyFeedDefs.PostView;
+  siteMetadata?: SiteMetadata;
 };
 
 export type PostComposerProps = {
@@ -47,6 +50,7 @@ export default function PostComposer({
 }: PostComposerProps) {
   const { t } = useTranslation();
   const { data: account } = useAccountQuery();
+
   const {
     open,
     replyTarget,
@@ -56,9 +60,24 @@ export default function PostComposer({
   } = usePostComposer();
   const setOpen = (val: boolean) =>
     void setComposer((curr) => ({ ...curr, open: val }));
+
   const [text, setText] = React.useState("");
-  const [images, setImages] = React.useState<SelectedImage[]>([]);
   const rt = new RichText({ text });
+
+  const linkCard = useLinkCardGenerator({
+    rt,
+    onSuccess: (_, uri) => {
+      setText((curr) => curr.replaceAll(uri, ""));
+    },
+    classNames: {
+      data: styles.linkCardPreview,
+      skelton: styles.linkCardPreview,
+      error: styles.linkCardError,
+      generator: styles.linkCardGenerator,
+    },
+  });
+
+  const [images, setImages] = React.useState<SelectedImage[]>([]);
   const [imagePreviewContainer, setPreviewContainer] =
     React.useState<HTMLDivElement | null>(null);
   const exceedingId = React.useId();
@@ -71,6 +90,7 @@ export default function PostComposer({
         images: params.images
           .map(({ file }) => file)
           .filter((file) => !!file) as File[],
+        external: params.siteMetadata,
         atp,
       });
     },
@@ -97,6 +117,7 @@ export default function PostComposer({
       myProfile: account.profile,
       replyTarget,
       quoteTarget,
+      siteMetadata: linkCard.siteMetadata,
     });
   };
 
@@ -104,7 +125,8 @@ export default function PostComposer({
     e
   ) => {
     if (!(isModKey(e.nativeEvent) && e.key === "Enter")) return;
-    if (!isPostValid(rt, images.length) || isLoading) return;
+    if (!isPostValid(rt, images.length, !!linkCard.siteMetadata) || isLoading)
+      return;
     handleClickSubmit();
   };
 
@@ -219,6 +241,18 @@ export default function PostComposer({
               ref={textareaRef}
             />
           </div>
+          {images.length === 0 && (
+            <>
+              {linkCard.preview}
+              {linkCard.generator}
+            </>
+          )}
+          {images.length > 0 && (
+            <div
+              ref={setPreviewContainer}
+              className={styles.imagePreviewContainer}
+            />
+          )}
           {quoteTarget && (
             <div className={styles.quoteTarget}>
               <EmbeddedRecord
@@ -230,25 +264,16 @@ export default function PostComposer({
               />
             </div>
           )}
-          {images.length > 0 && (
-            <div
-              ref={setPreviewContainer}
-              className={styles.imagePreviewContainer}
-            />
-          )}
           <hr />
           <div className={styles.action}>
             <div>
-              {/* a post can't have multiple embedded contents */}
-              {!quoteTarget && (
-                <ImagePicker
-                  images={images}
-                  onChange={setImages}
-                  onError={handleImagePickerError}
-                  max={4}
-                  previewContainer={imagePreviewContainer}
-                />
-              )}
+              <ImagePicker
+                images={images}
+                onChange={setImages}
+                onError={handleImagePickerError}
+                max={4}
+                previewContainer={imagePreviewContainer}
+              />
             </div>
             <div className={styles.postBtnWrap}>
               <PostGraphemeCounter
@@ -257,7 +282,10 @@ export default function PostComposer({
               />
               <Button
                 onClick={handleClickSubmit}
-                disabled={!isPostValid(rt, images.length) || isLoading}
+                disabled={
+                  !isPostValid(rt, images.length, !!linkCard.siteMetadata) ||
+                  isLoading
+                }
                 size="sm"
                 startDecorator={isLoading ? <Spinner size="sm" /> : undefined}
               >

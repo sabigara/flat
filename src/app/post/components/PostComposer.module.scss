@@ -143,6 +143,19 @@
   }
 }
 
+.linkCardGenerator {
+  padding-inline: var(--pad);
+}
+
+.linkCardPreview {
+  margin-inline: var(--pad);
+}
+
+.linkCardError {
+  margin-inline: var(--pad);
+  inline-size: fit-content;
+}
+
 .action {
   display: grid;
   grid-template-columns: 1fr auto;

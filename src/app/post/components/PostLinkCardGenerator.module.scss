@@ -1,0 +1,58 @@
+@use "var";
+
+.generator {
+  &__list {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  &__button {
+    font-size: var(--cmm-font-size-sm);
+    border: 1px solid var(--cmm-color-border-base);
+    border-radius: var(--cmm-radius-full);
+    padding-inline: 0.75em;
+    line-height: 1.55;
+    display: flex;
+    gap: 0.25em;
+    color: var(--cmm-color-link);
+
+    &:hover {
+      border-color: var(--cmm-color-border-emphasis);
+    }
+
+    &[aria-pressed="true"] {
+      background: var(--cmm-color-primary-solid-bg);
+      color: var(--cmm-color-primary-solid-font);
+    }
+
+    &__plus {
+      font-weight: var(--cmm-font-weight-medium);
+    }
+  }
+}
+
+.preview {
+  position: relative;
+
+  &__removeBtn {
+    --bg: 0 0 0;
+    --cmm-IconButton-size: 1.5rem;
+    --cmm-IconButton-icon-size: 1rem;
+    --cmm-Button-icon-margin: 0.25rem;
+    position: absolute;
+    inset-block-end: 0.5rem;
+    inset-inline-end: 1.75rem;
+    block-size: 1.65rem;
+
+    @media screen and (max-width: var.$composerMaxWidth) {
+      inset-block-end: 0.5rem;
+      inset-inline-end: 1.5rem;
+    }
+
+    > svg {
+      stroke-width: 2.25;
+    }
+  }
+}

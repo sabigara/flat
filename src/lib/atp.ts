@@ -24,8 +24,15 @@ export function isRichTextValid(rt: RichText) {
   return rt.length <= 3000 && rt.graphemeLength <= 300;
 }
 
-export function isPostValid(rt: RichText, imageLen: number) {
-  return isRichTextValid(rt) && (rt.graphemeLength > 0 || imageLen > 0);
+export function isPostValid(
+  rt: RichText,
+  imageLen: number,
+  hasExternal: boolean
+) {
+  return (
+    isRichTextValid(rt) &&
+    (rt.graphemeLength > 0 || imageLen > 0 || hasExternal)
+  );
 }
 
 export type AtpError = {

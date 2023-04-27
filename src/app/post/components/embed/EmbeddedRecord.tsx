@@ -82,6 +82,7 @@ export default function EmbeddedRecord({
       <div className={styles.body}>
         <p>{post.text}</p>
       </div>
+      {/* TODO: count images in `recordWithMedia` */}
       {AppBskyEmbedImages.isMain(post.embed) && (
         <Tag size="sm" colorScheme="neutral" className={styles.body__imgCount}>
           {t("post.embedded.image-count", {

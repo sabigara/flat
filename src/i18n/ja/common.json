@@ -54,6 +54,9 @@
       "textarea-placeholder-reply": "なんていう？",
       "reply-to": "返信先",
       "content": "投稿内容",
+      "link-card": {
+        "remove": "削除"
+      },
       "errors": {
         "img-max-number": "4枚までアップロードできます",
         "img-accept-type": "無効なファイル形式です",
