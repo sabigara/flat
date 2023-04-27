@@ -45,7 +45,7 @@ export default function Embed({ embed, isLink, className }: Props) {
   if (AppBskyEmbedImages.isView(embed)) {
     return <EmbeddedImages images={embed.images} className={className} />;
   } else if (AppBskyEmbedRecord.isView(embed)) {
-    return makeEmbeddedRecord(embed);
+    return makeEmbeddedRecord(embed, className);
   } else if (AppBskyEmbedExternal.isView(embed)) {
     return <EmbeddedExternal external={embed.external} className={className} />;
   } else if (AppBskyEmbedRecordWithMedia.isView(embed)) {
