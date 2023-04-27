@@ -5,10 +5,15 @@ import styles from "./EmbeddedExternal.module.scss";
 
 type Props = {
   external: AppBskyEmbedExternal.ViewExternal;
+  enabled?: boolean;
   className?: string;
 };
 
-export default function EmbeddedExternal({ external, className }: Props) {
+export default function EmbeddedExternal({
+  external,
+  enabled = true,
+  className,
+}: Props) {
   let hostname = "";
   try {
     hostname = new URL(external.uri).hostname;
@@ -18,7 +23,7 @@ export default function EmbeddedExternal({ external, className }: Props) {
   return (
     <article className={clsx(styles.container, className)}>
       <a
-        href={external.uri}
+        href={enabled ? external.uri : undefined}
         rel="noopener noreferrer"
         target="_blank"
         onClick={(e) => e.stopPropagation()}

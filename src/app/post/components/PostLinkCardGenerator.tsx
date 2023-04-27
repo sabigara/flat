@@ -1,7 +1,11 @@
 import { RichText, RichTextSegment } from "@atproto/api";
+import { Button } from "@camome/core/Button";
 import clsx from "clsx";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
+import EmbeddedExternal from "@/src/app/post/components/embed/EmbeddedExternal";
+import { SiteMetadata } from "@/src/lib/siteMetadata";
 import { shortenUrl } from "@/src/lib/string";
 
 import styles from "./PostLinkCardGenerator.module.scss";
@@ -41,13 +45,13 @@ export function PostLinkCardGenerator({
   if (!links.length) return null;
 
   return (
-    <div className={clsx(styles.container, className)}>
-      <ul className={styles.list}>
+    <div className={clsx(styles.generator, className)}>
+      <ul className={styles.generator__list}>
         {links.map((seg) => {
           if (!seg.link || !seg.facet) return null;
           return (
             <GenLinkCardButton
-              key={seg.facet.index.byteStart + seg.facet.index.byteEnd} // TODO: possibly not unique
+              key={seg.facet.index.byteStart + seg.facet.index.byteEnd}
               uri={seg.link.uri}
               selected={selected === seg.link.uri}
               onClick={handleClick}
@@ -71,14 +75,55 @@ function GenLinkCardButton({
   return (
     <button
       aria-pressed={selected}
+      // TODO: not accurate?
       aria-label={`${selected ? "Remove" : "Add"} link card for: ${uri}`}
       onClick={() => void onClick?.(uri)}
-      className={styles.button}
+      className={styles.generator__button}
     >
+      {/* TODO: show spinner */}
       <span aria-hidden className={styles.button__plus}>
         +
       </span>
       <span aria-hidden>{shortenUrl(uri, 22)}</span>
     </button>
+  );
+}
+
+type PostLinkCardPreviewProps = {
+  siteMetadata: SiteMetadata;
+  onClickRemove?: (metadata: SiteMetadata) => void;
+  className?: string;
+};
+
+export function PostLinkCardPreview({
+  siteMetadata,
+  onClickRemove,
+  className,
+}: PostLinkCardPreviewProps) {
+  const { t } = useTranslation();
+  return (
+    <div className={styles.preview}>
+      <EmbeddedExternal
+        external={{
+          uri: siteMetadata.url,
+          title: siteMetadata.ogp.title ?? siteMetadata.title ?? "",
+          description:
+            siteMetadata.ogp.description ?? siteMetadata.description ?? "",
+          thumb: siteMetadata.ogp.image,
+        }}
+        enabled={false}
+        className={className}
+      />
+      <Button
+        aria-label="Remove"
+        variant="soft"
+        colorScheme="neutral"
+        size="sm"
+        onClick={() => void onClickRemove?.(siteMetadata)}
+        className={styles.preview__removeBtn}
+      >
+        {t("post.composer.link-card.remove")}
+      </Button>
+    </div>
   );
 }

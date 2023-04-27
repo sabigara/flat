@@ -6,7 +6,7 @@
   padding: 0.75em;
   position: relative;
 
-  &:hover {
+  &[href]:hover {
     border-color: var(--cmm-color-border-emphasis);
     cursor: pointer;
   }

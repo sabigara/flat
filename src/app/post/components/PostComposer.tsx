@@ -241,17 +241,6 @@ export default function PostComposer({
               ref={textareaRef}
             />
           </div>
-          {quoteTarget && (
-            <div className={styles.quoteTarget}>
-              <EmbeddedRecord
-                record={{
-                  ...quoteTarget,
-                  value: quoteTarget.record,
-                }}
-                isLink={false}
-              />
-            </div>
-          )}
           {images.length === 0 && (
             <>
               {linkCard.preview}
@@ -263,6 +252,17 @@ export default function PostComposer({
               ref={setPreviewContainer}
               className={styles.imagePreviewContainer}
             />
+          )}
+          {quoteTarget && (
+            <div className={styles.quoteTarget}>
+              <EmbeddedRecord
+                record={{
+                  ...quoteTarget,
+                  value: quoteTarget.record,
+                }}
+                isLink={false}
+              />
+            </div>
           )}
           <hr />
           <div className={styles.action}>

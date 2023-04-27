@@ -58,6 +58,9 @@
       "textarea-placeholder-reply": "What to say?",
       "reply-to": "Reply to",
       "content": "Content",
+      "link-card": {
+        "remove": "Remove"
+      },
       "errors": {
         "img-max-number": "You can upload up to 4 images",
         "img-accept-type": "Invalid file type",
