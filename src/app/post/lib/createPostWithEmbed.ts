@@ -11,6 +11,8 @@ import { uploadImage } from "@/src/app/content/image/lib/uploadImage";
 import { embedExternal } from "@/src/app/post/lib/embedExternal";
 import { embedImages } from "@/src/app/post/lib/embedImages";
 import { embedRecord } from "@/src/app/post/lib/embedRecord";
+import { embedRecordWithExternal } from "@/src/app/post/lib/embedRecordWithExternal";
+import { embedRecordWithImages } from "@/src/app/post/lib/embedRecordWithImages";
 import { postToReply } from "@/src/app/post/lib/postToReply";
 import { bsky } from "@/src/lib/atp";
 import { SiteMetadata } from "@/src/lib/siteMetadata";
@@ -54,16 +56,45 @@ async function getEmbed({
   quoteTarget,
 }: Pick<Params, "images" | "external" | "quoteTarget">) {
   if (quoteTarget) {
+    // images wins over external
+    if (images.length) {
+      return uploadAndEmbedRecordWithImages(quoteTarget, images);
+    } else if (external) {
+      return embedRecordWithExternal({
+        record: quoteTarget,
+        external,
+      });
+    }
     return embedRecord(quoteTarget);
+  }
+
+  // images wins over external
+  if (images.length) {
+    return uploadAndEmbedImages(images);
   } else if (external) {
     return embedExternal(external);
-  } else if (images.length) {
-    const res = await uploadImageBulk(images);
-    return res.length ? embedImages(res) : undefined;
   } else {
     return undefined;
   }
 }
+
+const uploadAndEmbedImages = async (images: File[]) => {
+  const res = await uploadImageBulk(images);
+  return res.length ? embedImages(res) : undefined;
+};
+
+const uploadAndEmbedRecordWithImages = async (
+  record: AppBskyFeedDefs.PostView,
+  images: File[]
+) => {
+  const res = await uploadImageBulk(images);
+  return res.length
+    ? embedRecordWithImages({
+        record,
+        images: res,
+      })
+    : undefined;
+};
 
 const uploadImageBulk = async (images: File[]) => {
   const results: { blobRef: BlobRef }[] = [];

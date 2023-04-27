@@ -5,6 +5,9 @@ export function embedRecord(
 ): AppBskyEmbedRecord.Main {
   return {
     $type: "app.bsky.embed.record",
-    record,
+    record: {
+      cid: record.cid,
+      uri: record.uri,
+    },
   };
 }

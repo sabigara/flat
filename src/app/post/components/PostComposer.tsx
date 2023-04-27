@@ -26,6 +26,7 @@ import Avatar from "@/src/app/user/components/Avatar";
 import Dialog from "@/src/components/Dialog";
 import { atp, isPostValid } from "@/src/lib/atp";
 import { isModKey } from "@/src/lib/keybindings";
+import { SiteMetadata } from "@/src/lib/siteMetadata";
 
 import styles from "./PostComposer.module.scss";
 
@@ -35,6 +36,7 @@ type PostMutateParams = {
   myProfile: AppBskyActorDefs.ProfileViewDetailed;
   replyTarget?: AppBskyFeedDefs.FeedViewPost;
   quoteTarget?: AppBskyFeedDefs.PostView;
+  siteMetaData?: SiteMetadata;
 };
 
 export type PostComposerProps = {
@@ -88,7 +90,7 @@ export default function PostComposer({
         images: params.images
           .map(({ file }) => file)
           .filter((file) => !!file) as File[],
-        external: linkCard.siteMetadata,
+        external: params.siteMetaData,
         atp,
       });
     },
@@ -115,6 +117,7 @@ export default function PostComposer({
       myProfile: account.profile,
       replyTarget,
       quoteTarget,
+      siteMetaData: linkCard.siteMetadata,
     });
   };
 
@@ -249,8 +252,12 @@ export default function PostComposer({
               />
             </div>
           )}
-          {linkCard.preview}
-          {linkCard.generator}
+          {images.length === 0 && (
+            <>
+              {linkCard.preview}
+              {linkCard.generator}
+            </>
+          )}
           {images.length > 0 && (
             <div
               ref={setPreviewContainer}
@@ -260,16 +267,13 @@ export default function PostComposer({
           <hr />
           <div className={styles.action}>
             <div>
-              {/* a post can't have multiple embedded contents */}
-              {!quoteTarget && (
-                <ImagePicker
-                  images={images}
-                  onChange={setImages}
-                  onError={handleImagePickerError}
-                  max={4}
-                  previewContainer={imagePreviewContainer}
-                />
-              )}
+              <ImagePicker
+                images={images}
+                onChange={setImages}
+                onError={handleImagePickerError}
+                max={4}
+                previewContainer={imagePreviewContainer}
+              />
             </div>
             <div className={styles.postBtnWrap}>
               <PostGraphemeCounter
