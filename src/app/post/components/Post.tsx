@@ -297,20 +297,22 @@ export default function Post({
               </span>
             </Tag>
           )}
-          <div className={styles.prose}>
-            <Foldable lines={7} enabled={foldable}>
-              {AppBskyFeedPost.isRecord(post.record) && (
-                <RichTextRenderer {...post.record} />
-              )}
-            </Foldable>
+          <div className={styles.content}>
+            {AppBskyFeedPost.isRecord(post.record) && post.record.text && (
+              <div className={styles.prose}>
+                <Foldable lines={7} enabled={foldable}>
+                  <RichTextRenderer {...post.record} />
+                </Foldable>
+              </div>
+            )}
+            {post.embed && (
+              <Embed
+                embed={post.embed}
+                isLink={isEmbedLink}
+                className={styles.embed}
+              />
+            )}
           </div>
-          {post.embed && (
-            <Embed
-              embed={post.embed}
-              isLink={isEmbedLink}
-              className={styles.embed}
-            />
-          )}
           {!contentOnly && (
             <ul className={styles.reactionList}>
               {reactions.map((reaction) => (

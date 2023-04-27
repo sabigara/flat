@@ -24,8 +24,8 @@
   block-size: 1rem;
 }
 
-.prose {
-  @include postMixins.prose;
+.content {
+  @include postMixins.content;
   @extend %skelton;
   flex: unset;
   block-size: 4rem;

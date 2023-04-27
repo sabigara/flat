@@ -28,10 +28,9 @@
   line-height: 1.1;
 }
 
-@mixin prose {
-  flex: 1;
-  display: inline-block;
+@mixin content {
   margin-block-start: 0.3rem;
+  flex: 1;
 }
 
 @mixin avatar {

@@ -15,7 +15,9 @@ export function PostSkelton({ className }: Props) {
         </div>
         <div className={styles.right}>
           <div className={styles.header}></div>
-          <div className={styles.prose} />
+          <div className={styles.content}>
+            <div className={styles.prose} />
+          </div>
         </div>
       </div>
     </div>

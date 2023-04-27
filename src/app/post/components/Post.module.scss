@@ -86,8 +86,32 @@
   }
 }
 
+.content {
+  @include postMixins.content;
+
+  > * + * {
+    margin-block-start: 1rem;
+  }
+
+  > .prose:last-child {
+    margin-block-end: 0.5rem;
+  }
+
+  > .embed:first-child {
+    margin-block-start: 0.5rem;
+  }
+
+  > .embed:last-child {
+    margin-block-end: 1rem;
+  }
+}
+
 .prose {
-  @include postMixins.prose;
+  translate: inherit; // dummy
+}
+
+.embed {
+  translate: inherit; // dummy
 }
 
 .avatar {
@@ -101,7 +125,6 @@
 .reactionList {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  margin-block-start: 0.25rem;
 }
 
 .reaction {
@@ -141,10 +164,6 @@
       height: 1em;
     }
   }
-}
-
-.embed {
-  margin-block: 1rem;
 }
 
 .focusLink {

@@ -4,13 +4,10 @@ import {
   AppBskyEmbedRecord,
   AppBskyEmbedRecordWithMedia,
 } from "@atproto/api";
-import clsx from "clsx";
 
 import EmbeddedExternal from "@/src/app/post/components/embed/EmbeddedExternal";
 import EmbeddedImages from "@/src/app/post/components/embed/EmbeddedImages";
 import EmbeddedRecord from "@/src/app/post/components/embed/EmbeddedRecord";
-
-import styles from "./Embed.module.scss";
 
 type Props = {
   embed:
@@ -50,11 +47,10 @@ export default function Embed({ embed, isLink, className }: Props) {
     return <EmbeddedExternal external={embed.external} className={className} />;
   } else if (AppBskyEmbedRecordWithMedia.isView(embed)) {
     return (
-      // apply className only to the wrapper
-      <div className={clsx(className, styles.multiple)}>
-        <Embed embed={embed.media} />
-        {makeEmbeddedRecord(embed.record)}
-      </div>
+      <>
+        <Embed embed={embed.media} className={className} />
+        {makeEmbeddedRecord(embed.record, className)}
+      </>
     );
   } else {
     return null;
