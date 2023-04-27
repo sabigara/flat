@@ -1,4 +1,5 @@
 import { RichText, RichTextProps, RichTextSegment } from "@atproto/api";
+import { Tag } from "@camome/core/Tag";
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -16,7 +17,11 @@ export function RichTextRenderer({ text, facets, className }: Props) {
       rt = new RichText({ text, facets });
     } catch (e) {
       console.error(e);
-      return <span>Could&apos;nt parse RichText</span>;
+      return (
+        <Tag colorScheme="danger" size="sm">
+          Error: Could&apos;nt parse RichText
+        </Tag>
+      );
     }
     return (
       <>
