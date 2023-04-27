@@ -2,4 +2,4 @@
 
 Web client for Bluesky (bsky.app)
 
-🚧🚧🚧🚧🚧 WIP 🚧🚧🚧🚧🚧
+You need a vercel account for hosting API routes.

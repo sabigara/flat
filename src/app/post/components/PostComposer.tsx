@@ -36,7 +36,7 @@ type PostMutateParams = {
   myProfile: AppBskyActorDefs.ProfileViewDetailed;
   replyTarget?: AppBskyFeedDefs.FeedViewPost;
   quoteTarget?: AppBskyFeedDefs.PostView;
-  siteMetaData?: SiteMetadata;
+  siteMetadata?: SiteMetadata;
 };
 
 export type PostComposerProps = {
@@ -90,7 +90,7 @@ export default function PostComposer({
         images: params.images
           .map(({ file }) => file)
           .filter((file) => !!file) as File[],
-        external: params.siteMetaData,
+        external: params.siteMetadata,
         atp,
       });
     },
@@ -117,7 +117,7 @@ export default function PostComposer({
       myProfile: account.profile,
       replyTarget,
       quoteTarget,
-      siteMetaData: linkCard.siteMetadata,
+      siteMetadata: linkCard.siteMetadata,
     });
   };
 
