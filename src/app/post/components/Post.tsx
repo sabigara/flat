@@ -23,6 +23,7 @@ import { userToName } from "@/src/app/user/lib/userToName";
 import { Foldable } from "@/src/components/Foldable";
 import { RichTextRenderer } from "@/src/components/RichTextRenderer";
 import { bsky, atp } from "@/src/lib/atp";
+import { isModKey } from "@/src/lib/keybindings";
 
 import styles from "./Post.module.scss";
 
@@ -217,8 +218,12 @@ export default function Post({
     uri: post.uri,
   });
 
-  const handleClickBackground: React.MouseEventHandler = () => {
-    navigate(postUrl);
+  const handleClickBackground: React.MouseEventHandler = (e) => {
+    if (isModKey(e.nativeEvent)) {
+      window.open(postUrl, "_blank");
+    } else {
+      navigate(postUrl);
+    }
   };
 
   if (post.author.viewer?.muted) {

@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { buildPostUrl } from "@/src/app/post/lib/buildPostUrl";
 import Avatar from "@/src/app/user/components/Avatar";
+import { isModKey } from "@/src/lib/keybindings";
 
 import styles from "./EmbeddedRecord.module.scss";
 
@@ -38,7 +39,13 @@ export default function EmbeddedRecord({
 
   const handleClickBackground: React.MouseEventHandler = (e) => {
     e.stopPropagation();
-    if (isLink) navigate(postUrl);
+    if (isLink) {
+      if (isModKey(e.nativeEvent)) {
+        window.open(postUrl, "_blank");
+      } else {
+        navigate(postUrl);
+      }
+    }
   };
 
   if (author.viewer?.muted) {
