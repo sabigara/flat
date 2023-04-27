@@ -14,8 +14,6 @@
     color: var(--cmm-color-font-subtle);
   }
 
-  // disable hover effect on mobile devices
-  // 32rem is just a magic number...
   @include mixins.mq(sm) {
     &.link:hover {
       background: var(--cmm-color-surface-0);
