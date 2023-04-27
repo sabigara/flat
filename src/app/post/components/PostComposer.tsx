@@ -70,6 +70,7 @@ export default function PostComposer({
     classNames: {
       data: styles.linkCardPreview,
       skelton: styles.linkCardPreview,
+      error: styles.linkCardError,
       generator: styles.linkCardGenerator,
     },
   });
@@ -87,6 +88,7 @@ export default function PostComposer({
         images: params.images
           .map(({ file }) => file)
           .filter((file) => !!file) as File[],
+        external: linkCard.siteMetadata,
         atp,
       });
     },
@@ -120,7 +122,8 @@ export default function PostComposer({
     e
   ) => {
     if (!(isModKey(e.nativeEvent) && e.key === "Enter")) return;
-    if (!isPostValid(rt, images.length) || isLoading) return;
+    if (!isPostValid(rt, images.length, !!linkCard.siteMetadata) || isLoading)
+      return;
     handleClickSubmit();
   };
 
@@ -235,7 +238,6 @@ export default function PostComposer({
               ref={textareaRef}
             />
           </div>
-          {linkCard.preview}
           {quoteTarget && (
             <div className={styles.quoteTarget}>
               <EmbeddedRecord
@@ -247,6 +249,7 @@ export default function PostComposer({
               />
             </div>
           )}
+          {linkCard.preview}
           {linkCard.generator}
           {images.length > 0 && (
             <div
@@ -275,7 +278,10 @@ export default function PostComposer({
               />
               <Button
                 onClick={handleClickSubmit}
-                disabled={!isPostValid(rt, images.length) || isLoading}
+                disabled={
+                  !isPostValid(rt, images.length, !!linkCard.siteMetadata) ||
+                  isLoading
+                }
                 size="sm"
                 startDecorator={isLoading ? <Spinner size="sm" /> : undefined}
               >

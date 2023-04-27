@@ -1,4 +1,5 @@
 import { RichText } from "@atproto/api";
+import { Tag } from "@camome/core/Tag";
 import { useAtom } from "jotai";
 
 import { PostLinkCardGenerator } from "@/src/app/post/components/PostLinkCardGenerator";
@@ -14,6 +15,7 @@ type Params = {
   classNames?: {
     data?: string;
     skelton?: string;
+    error?: string;
     generator?: string;
   };
 };
@@ -39,7 +41,12 @@ export function useLinkCardGenerator({ rt, onSuccess, classNames }: Params) {
     if (!linkCardUri) return null;
     if (isFetching)
       return <EmbeddedExternalSkelton className={classNames?.skelton} />;
-    if (!siteMetadata) return <span>Error</span>;
+    if (!siteMetadata)
+      return (
+        <Tag size="sm" colorScheme="danger" className={classNames?.error}>
+          Error: Failed to fetch link card data.
+        </Tag>
+      );
     return (
       <EmbeddedExternal
         external={{
@@ -65,5 +72,6 @@ export function useLinkCardGenerator({ rt, onSuccess, classNames }: Params) {
     preview,
     generator,
     selectedUri: linkCardUri,
+    siteMetadata,
   };
 }
