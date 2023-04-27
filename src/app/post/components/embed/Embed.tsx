@@ -24,9 +24,7 @@ type Props = {
 };
 
 export default function Embed({ embed, isLink, className }: Props) {
-  if (AppBskyEmbedImages.isView(embed)) {
-    return <EmbeddedImages images={embed.images} className={className} />;
-  } else if (AppBskyEmbedRecord.isView(embed)) {
+  const makeEmbeddedRecord = (embed: AppBskyEmbedRecord.View) => {
     // TODO: support not found?
     if (AppBskyEmbedRecord.isViewNotFound(embed)) return null;
     if (!AppBskyEmbedRecord.isViewRecord(embed.record)) return null;
@@ -37,8 +35,20 @@ export default function Embed({ embed, isLink, className }: Props) {
         className={className}
       />
     );
+  };
+  if (AppBskyEmbedImages.isView(embed)) {
+    return <EmbeddedImages images={embed.images} className={className} />;
+  } else if (AppBskyEmbedRecord.isView(embed)) {
+    return makeEmbeddedRecord(embed);
   } else if (AppBskyEmbedExternal.isView(embed)) {
     return <EmbeddedExternal external={embed.external} className={className} />;
+  } else if (AppBskyEmbedRecordWithMedia.isView(embed)) {
+    return (
+      <>
+        <Embed embed={embed.media} className={className} />
+        {makeEmbeddedRecord(embed.record)}
+      </>
+    );
   } else {
     return null;
   }
