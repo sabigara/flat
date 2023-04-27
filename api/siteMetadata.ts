@@ -4,6 +4,8 @@ import { JSDOM } from "jsdom";
 
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 
+const isDev = process.env.VERCEL_ENV === "development";
+
 class JsonCache<T> {
   private cache: Map<string, T>;
 
@@ -63,7 +65,6 @@ type SiteMetadata = {
   url: string;
 };
 
-const isDev = process.env.NODE_ENV === "development";
 const cacheStore = isDev
   ? new JsonCache<SiteMetadata>("./site-metadata.cache.json")
   : null;
