@@ -1,10 +1,10 @@
 import { AtUri } from "@atproto/uri";
 
-import { bsky } from "@/src/lib/atp";
+import { getBskyApi } from "@/src/app/account/states/atp";
 
 export function unfollowUser({ uri }: { uri: string }) {
   const { host, rkey } = new AtUri(uri);
-  return bsky.graph.follow.delete({
+  return getBskyApi().graph.follow.delete({
     repo: host,
     rkey: rkey,
   });

@@ -47,4 +47,10 @@ export const queryKeys = {
   siteMetadata: {
     $: (params: { uri: string }) => ["siteMetadata", params] as const,
   },
+  repo: {
+    description: {
+      $: (params: { service: string; identifier: string }) =>
+        ["repo", "description", params] as const,
+    },
+  },
 };

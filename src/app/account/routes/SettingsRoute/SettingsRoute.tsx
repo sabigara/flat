@@ -1,41 +1,22 @@
-import { Button } from "@camome/core/Button";
 import { Select } from "@camome/core/Select";
-import { Spinner } from "@camome/core/Spinner";
 import { useImmerAtom } from "jotai-immer";
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { useOutletContext } from "react-router-dom";
 
 import type { RootContext } from "@/src/app/root/routes/RootRoute/RootRoute";
 import type { Theme } from "@/src/app/theme/lib/types";
 
-import { sessionsAtom } from "@/src/app/account/states/atp";
 import { settingsAtom } from "@/src/app/account/states/settingsAtom";
 import { PostImageLayout } from "@/src/app/post/lib/types";
 import Seo from "@/src/app/seo/Seo";
-// import { storageKeys } from "@/src/lib/storage";
 
 import styles from "./SettingsRoute.module.scss";
 
 export function SettingsRoute() {
-  const { t: commonT } = useTranslation();
   const { t, i18n } = useTranslation("settings");
   const [settings, setSettings] = useImmerAtom(settingsAtom);
-  const [, setSessions] = useImmerAtom(sessionsAtom);
   const { theme } = useOutletContext<RootContext>();
-  const [signingOut, setSigningOut] = React.useState(false);
-  const signOut = () => {
-    setSigningOut(true);
-    try {
-      setSessions((draft) => {
-        draft.currentDid = null;
-      });
-      window.location.reload();
-    } catch (e) {
-      console.error(e);
-      setSigningOut(false);
-    }
-  };
+
   return (
     <>
       <Seo title={t("title")} />
@@ -89,19 +70,6 @@ export function SettingsRoute() {
             <option value="ja">日本語</option>
             <option value="en">English</option>
           </Select>
-        </section>
-
-        <section className={styles.section}>
-          <h2>{t("account.title")}</h2>
-          <Button
-            onClick={signOut}
-            variant="soft"
-            colorScheme="neutral"
-            startDecorator={signingOut ? <Spinner size="sm" /> : false}
-            disabled={signingOut}
-          >
-            {commonT("auth.sign-out")}
-          </Button>
         </section>
       </div>
     </>

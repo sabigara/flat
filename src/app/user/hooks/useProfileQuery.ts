@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
+import { getBskyApi } from "@/src/app/account/states/atp";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
-import { bsky } from "@/src/lib/atp";
 
 type Params = {
   identifier?: string;
@@ -14,7 +14,7 @@ export function useProfileQuery({ identifier }: Params) {
     }),
     async queryFn() {
       if (!identifier) return;
-      const resp = await bsky.actor.getProfile({
+      const resp = await getBskyApi().actor.getProfile({
         actor: identifier,
       });
       return resp.data;

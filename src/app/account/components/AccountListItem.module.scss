@@ -1,0 +1,21 @@
+.container {
+  display: flex;
+  align-items: center;
+  padding: 0.25rem 1rem;
+}
+
+.accountRadio {
+  flex: 1;
+  text-align: start;
+}
+
+.handle {
+  font-weight: var(--cmm-font-weight-bold);
+}
+
+.service {
+  color: var(--cmm-color-font-subtle);
+}
+
+.action {
+}

@@ -10,6 +10,11 @@ import { Link, useLoaderData, useRevalidator } from "react-router-dom";
 
 import type { ProfileRouteLoaderResult } from "@/src/app/user/routes/ProfileRoute";
 
+import {
+  getAtpAgent,
+  getBskyApi,
+  useAtpAgent,
+} from "@/src/app/account/states/atp";
 import { useLightbox } from "@/src/app/content/image/hooks/useLightbox";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import Seo from "@/src/app/seo/Seo";
@@ -25,7 +30,6 @@ import { unfollowUser } from "@/src/app/user/lib/unfollowUser";
 import { userToName } from "@/src/app/user/lib/userToName";
 import ProfileMoreMenu from "@/src/app/user/routes/ProfileRoute/ProfileMoreMenu";
 import { RichTextRenderer } from "@/src/components/RichTextRenderer";
-import { atp, bsky } from "@/src/lib/atp";
 
 import styles from "./ProfileRoute.module.scss";
 
@@ -40,7 +44,7 @@ export function ProfileRoute() {
     queryKey,
     pageParam,
   }) => {
-    const resp = await bsky.feed.getAuthorFeed({
+    const resp = await getBskyApi().feed.getAuthorFeed({
       actor: queryKey[1].authorId,
       limit: 30,
       // passing `undefined` breaks the query somehow
@@ -55,7 +59,7 @@ export function ProfileRoute() {
     async () =>
       timelineFilter(
         (
-          await bsky.feed.getAuthorFeed({
+          await getBskyApi().feed.getAuthorFeed({
             actor: profile.handle,
             limit: 1,
           })
@@ -71,6 +75,7 @@ export function ProfileRoute() {
   const { mutate: mutateFollowState, isLoading: isMutating } = useMutation(
     async (isFollow: boolean) => {
       setHoverUnfollow(false);
+      const atp = getAtpAgent();
       // TODO: error handling
       if (!atp.session) return;
       if (isFollow) {
@@ -93,6 +98,7 @@ export function ProfileRoute() {
 
   const [hoverUnfollow, setHoverUnfollow] = React.useState(false);
 
+  const atp = useAtpAgent();
   const isMyself = atp.session && atp.session.did === profile.did;
   const isLoadingFollow = isMutating;
   const muted = !!profile.viewer?.muted;

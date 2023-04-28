@@ -6,10 +6,10 @@ import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
+import { getAtpAgent } from "@/src/app/account/states/atp";
 import Avatar from "@/src/app/user/components/Avatar";
 import { followUser } from "@/src/app/user/lib/followUser";
 import { unfollowUser } from "@/src/app/user/lib/unfollowUser";
-import { atp } from "@/src/lib/atp";
 
 import styles from "./UserListItem.module.scss";
 
@@ -23,6 +23,7 @@ export default function UserListItem({ user, revalidate, className }: Props) {
   const { t } = useTranslation();
   const { mutate: mutateFollowState, isLoading: isMutating } = useMutation(
     async (isFollow: boolean) => {
+      const atp = getAtpAgent();
       // TODO: error handling
       if (!atp.session) return;
       if (isFollow) {

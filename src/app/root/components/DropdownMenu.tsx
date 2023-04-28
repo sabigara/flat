@@ -33,6 +33,10 @@ export default function DropdownMenu() {
         label: t("navigation.settings"),
       },
       {
+        href: "/accounts",
+        label: t("navigation.accounts"),
+      },
+      {
         href:
           i18n.resolvedLanguage === "ja"
             ? "https://sabigara.notion.site/sabigara/Flat-3be5369d5d6e4548885d02aa5a37a3e2"

@@ -2,12 +2,12 @@ import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import InfiniteScroll from "react-infinite-scroller";
 
+import { getBskyApi } from "@/src/app/account/states/atp";
 import Notification from "@/src/app/notification/components/Notification";
 import PostComposer from "@/src/app/post/components/PostComposer";
 import { RevalidateOnPost } from "@/src/app/post/lib/types";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import SpinnerFill from "@/src/components/SpinnerFill";
-import { bsky } from "@/src/lib/atp";
 
 import styles from "./NotificationList.module.scss";
 
@@ -25,7 +25,7 @@ export default function NotificationList() {
   } = useInfiniteQuery({
     queryKey: queryKeys.notifications.$,
     async queryFn({ pageParam }) {
-      const resp = await bsky.notification.listNotifications({
+      const resp = await getBskyApi().notification.listNotifications({
         limit: 20,
         // passing `undefined` breaks the query somehow
         ...(pageParam ? { cursor: pageParam.cursor } : {}),
@@ -49,7 +49,7 @@ export default function NotificationList() {
 
   React.useEffect(() => {
     if (!mounted.current) {
-      bsky.notification.updateSeen({
+      getBskyApi().notification.updateSeen({
         seenAt: new Date().toISOString(),
       });
       queryClient.setQueryData(queryKeys.notifications.count.$, () => 0);

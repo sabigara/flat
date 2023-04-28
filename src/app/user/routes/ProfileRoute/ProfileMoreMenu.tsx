@@ -5,9 +5,9 @@ import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { TbVolume, TbVolumeOff } from "react-icons/tb";
 
+import { getBskyApi, useAtpAgent } from "@/src/app/account/states/atp";
 import { userToName } from "@/src/app/user/lib/userToName";
 import Menu, { MenuProps } from "@/src/components/Menu";
-import { atp, bsky } from "@/src/lib/atp";
 
 type Props = {
   profile: AppBskyActorDefs.ProfileViewDetailed;
@@ -31,9 +31,9 @@ export default function ProfileMoreMenu({
       muted: boolean;
     }) {
       if (muted) {
-        await bsky.graph.unmuteActor({ actor: profile.did });
+        await getBskyApi().graph.unmuteActor({ actor: profile.did });
       } else {
-        await bsky.graph.muteActor({ actor: profile.did });
+        await getBskyApi().graph.muteActor({ actor: profile.did });
       }
     },
     onSuccess(_, { profile, muted }) {
@@ -48,6 +48,7 @@ export default function ProfileMoreMenu({
 
   const actions: MenuProps["actions"] = [];
 
+  const atp = useAtpAgent();
   if (atp.session && profile.did !== atp.session.did) {
     actions.push({
       label: muted ? t("graph.unmute") : t("graph.mute"),

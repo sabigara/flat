@@ -12,6 +12,7 @@ import { TbDots, TbMessageCircle2, TbStar, TbStarFilled } from "react-icons/tb";
 import { Link, useNavigate } from "react-router-dom";
 
 import { useAccountQuery } from "@/src/app/account/hooks/useAccountQuery";
+import { getAtpAgent, getBskyApi } from "@/src/app/account/states/atp";
 import PostMoreMenu from "@/src/app/post/components/PostMoreMenu";
 import Embed from "@/src/app/post/components/embed/Embed";
 import { usePostComposer } from "@/src/app/post/hooks/usePostComposer";
@@ -22,7 +23,6 @@ import Avatar from "@/src/app/user/components/Avatar";
 import { userToName } from "@/src/app/user/lib/userToName";
 import { Foldable } from "@/src/components/Foldable";
 import { RichTextRenderer } from "@/src/components/RichTextRenderer";
-import { bsky, atp } from "@/src/lib/atp";
 import { isModKey } from "@/src/lib/keybindings";
 
 import styles from "./Post.module.scss";
@@ -76,12 +76,12 @@ export default function Post({
       let repostUri: string | undefined = undefined;
       if (post.viewer?.repost) {
         const uri = new AtUri(post.viewer.repost);
-        await bsky.feed.repost.delete({
+        await getBskyApi().feed.repost.delete({
           repo: uri.hostname,
           rkey: uri.rkey,
         });
       } else {
-        const resp = await bsky.feed.repost.create(
+        const resp = await getBskyApi().feed.repost.create(
           {
             repo: did,
           },
@@ -126,12 +126,12 @@ export default function Post({
       let likeUri: string | undefined = undefined;
       if (post.viewer?.like) {
         const uri = new AtUri(post.viewer.like);
-        await bsky.feed.like.delete({
+        await getBskyApi().feed.like.delete({
           repo: uri.hostname,
           rkey: uri.rkey,
         });
       } else {
-        const resp = await bsky.feed.like.create(
+        const resp = await getBskyApi().feed.like.create(
           {
             repo: did,
           },
@@ -196,8 +196,10 @@ export default function Post({
       count: post.repostCount ?? 0,
       reacted: reposted,
       disabled: isMutatingRepost,
-      onClick: () =>
-        atp.session && mutateRepost({ did: atp.session.did, post }),
+      onClick: () => {
+        const atp = getAtpAgent();
+        atp.session && mutateRepost({ did: atp.session.did, post });
+      },
     },
     {
       type: "like",
@@ -209,7 +211,10 @@ export default function Post({
       count: post.likeCount ?? 0,
       reacted: liked,
       disabled: isMutatingLike,
-      onClick: () => atp.session && mutateVote({ did: atp.session.did, post }),
+      onClick: () => {
+        const atp = getAtpAgent();
+        atp.session && mutateVote({ did: atp.session.did, post });
+      },
     },
   ] satisfies ReactionProps[];
 
