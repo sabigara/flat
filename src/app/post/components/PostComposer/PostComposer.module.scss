@@ -136,11 +136,11 @@
     grid-row: 1;
     font-size: var(--cmm-font-size-sm);
   }
+}
 
-  textarea {
-    grid-column: 2;
-    grid-row: 2;
-  }
+.editorContainer {
+  grid-column: 2;
+  grid-row: 2;
 }
 
 .linkCardGenerator {

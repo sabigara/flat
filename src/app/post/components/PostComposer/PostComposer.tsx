@@ -16,7 +16,6 @@ import ImagePicker, {
   SelectedImage,
 } from "@/src/app/post/components/ImagePicker";
 import Post from "@/src/app/post/components/Post";
-import { PostGraphemeCounter } from "@/src/app/post/components/PostGraphemeCounter";
 import EmbeddedRecord from "@/src/app/post/components/embed/EmbeddedRecord";
 import { useLinkCardGenerator } from "@/src/app/post/hooks/useLinkCardGenerator";
 import { usePostComposer } from "@/src/app/post/hooks/usePostComposer";
@@ -24,11 +23,13 @@ import { createPostWithEmbed } from "@/src/app/post/lib/createPostWithEmbed";
 import { RevalidateOnPost } from "@/src/app/post/lib/types";
 import Avatar from "@/src/app/user/components/Avatar";
 import Dialog from "@/src/components/Dialog";
-import { isPostValid } from "@/src/lib/atp";
+import { atp, isPostValid } from "@/src/lib/atp";
 import { isModKey } from "@/src/lib/keybindings";
 import { SiteMetadata } from "@/src/lib/siteMetadata";
 
 import styles from "./PostComposer.module.scss";
+
+import { PostGraphemeCounter } from "@/src/app/post/components/PostGraphemeCounter";
 
 type PostMutateParams = {
   text: string;
@@ -91,6 +92,7 @@ export default function PostComposer({
           .map(({ file }) => file)
           .filter((file) => !!file) as File[],
         external: params.siteMetadata,
+        atp,
       });
     },
     onSuccess() {

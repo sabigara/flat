@@ -3,7 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import produce from "immer";
 import { Link, useParams } from "react-router-dom";
 
-import PostComposer from "@/src/app/post/components/PostComposer";
+import { PostComposer } from "@/src/app/post/components/PostComposer";
 import Thread from "@/src/app/post/components/Thread";
 import { usePostThreadQuery } from "@/src/app/post/hooks/usePostThreadQuery";
 import { findPostFromThread } from "@/src/app/post/lib/findPostFromThread";

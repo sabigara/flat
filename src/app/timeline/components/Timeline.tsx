@@ -14,7 +14,7 @@ import InfiniteScroll from "react-infinite-scroller";
 import type { AppBskyFeedDefs } from "@atproto/api";
 
 import Post from "@/src/app/post/components/Post";
-import PostComposer from "@/src/app/post/components/PostComposer";
+import { PostComposer } from "@/src/app/post/components/PostComposer";
 import { feedItemToUniqueKey } from "@/src/app/post/lib/feedItemToUniqueKey";
 import {
   TimelineInfiniteData,

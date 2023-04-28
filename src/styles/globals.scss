@@ -108,3 +108,65 @@ body {
 .gZoomOut {
   animation-duration: 0.3s !important;
 }
+
+#typeahead-menu {
+  z-index: 100;
+  margin-block-start: 1.5rem;
+}
+
+.typeahead-popover {
+  background: #fff;
+  box-shadow: var(--cmm-shadow-md);
+  border: 1px solid var(--cmm-color-border-base);
+  inline-size: fit-content;
+  border-radius: var(--cmm-radius-md);
+  overflow: hidden;
+}
+
+.typeahead-popover ul {
+  max-block-size: 18rem;
+  overflow-y: scroll;
+  inline-size: fit-content;
+}
+
+.typeahead-popover ul::-webkit-scrollbar {
+  display: none;
+}
+
+.typeahead-popover ul {
+  scrollbar-width: none;
+}
+
+.typeahead-popover ul li {
+  margin: 0;
+  min-width: 180px;
+  font-size: 14px;
+  outline: none;
+  cursor: pointer;
+}
+
+.typeahead-popover ul li.selected {
+  background: #eee;
+}
+
+.typeahead-popover li {
+  margin: 0 8px 0 8px;
+  padding: 8px;
+  color: #050505;
+  cursor: pointer;
+  line-height: 16px;
+  font-size: 15px;
+  display: flex;
+  align-content: center;
+  flex-direction: row;
+  flex-shrink: 0;
+  background-color: #fff;
+  border: 0;
+}
+
+.typeahead-popover li.active {
+  display: flex;
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+}

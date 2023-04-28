@@ -5,7 +5,7 @@ import { useAtom } from "jotai";
 import {
   PostLinkCardGenerator,
   PostLinkCardPreview,
-} from "@/src/app/post/components/PostLinkCardGenerator";
+} from "@/src/app/post/components/PostComposer/PostLinkCardGenerator";
 import { EmbeddedExternalSkelton } from "@/src/app/post/components/embed/EmbeddedExternalSkelton";
 import { useSiteMetadata } from "@/src/app/post/hooks/useSiteMetadata";
 import { postComposerAtom } from "@/src/app/post/states/postComposerAtom";
