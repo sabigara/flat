@@ -10,8 +10,11 @@ export function AccountsRoute() {
     revalidator.revalidate();
   };
   return (
-    <div>
-      <AccountList onSwitchAccount={handleSwitchAccount} />
-    </div>
+    <>
+      <div className={styles.container}>
+        <h1 className={styles.title}>アカウント</h1>
+        <AccountList onSwitchAccount={handleSwitchAccount} />
+      </div>
+    </>
   );
 }

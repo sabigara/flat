@@ -1,6 +1,7 @@
 import { AtpAgent } from "@atproto/api";
 import { Button } from "@camome/core/Button";
 import clsx from "clsx";
+import { TbCheck } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 
 import { useRepoDescriptionQuery } from "@/src/app/account/hooks/useRepoDescription";
@@ -70,12 +71,24 @@ export function AccountListItem({
   return (
     <li className={clsx(styles.container, className)}>
       <button
-        className={styles.accountRadio}
+        className={clsx(styles.accountRadio)}
         onClick={handleClickSwitch}
         disabled={isLoggedIn}
       >
-        <div className={styles.handle}>@{data.handle}</div>
-        <div className={styles.service}>{account.service}</div>
+        <div className={styles.check}>
+          {isLoggedIn && (
+            <div className={styles.check__circle}>
+              <TbCheck
+                className={styles.check__icon}
+                title="Currently logged in"
+              />
+            </div>
+          )}
+        </div>
+        <div>
+          <div className={styles.handle}>@{data.handle}</div>
+          <div className={styles.service}>{account.service}</div>
+        </div>
       </button>
       <div className={styles.action}>
         <Button
@@ -83,6 +96,7 @@ export function AccountListItem({
           colorScheme="neutral"
           variant="ghost"
           onClick={handleClickSignOut}
+          className={styles.signOutBtn}
         >
           Sign out
         </Button>

@@ -1,12 +1,47 @@
 .container {
   display: flex;
   align-items: center;
-  padding: 0.25rem 1rem;
+}
+
+.check {
+  --size: 1.8rem;
+  --pad: 0.3rem;
+  inline-size: var(--size);
+  margin-inline-end: 0.5rem;
+
+  &__circle {
+    border-radius: var(--cmm-radius-full);
+    inline-size: calc(var(--size) - var(--pad));
+    block-size: calc(var(--size) - var(--pad));
+    background: var(--cmm-color-primary-solid-bg);
+    color: var(--cmm-color-primary-solid-font);
+    display: grid;
+    place-items: center;
+  }
+
+  &__icon {
+    stroke-width: 4px;
+    font-size: 0.9em;
+  }
 }
 
 .accountRadio {
   flex: 1;
   text-align: start;
+  padding-inline-start: 1rem;
+  padding-block: 0.5rem;
+  display: flex;
+  align-items: center;
+
+  &--selected {
+    border: 1px solid var(--cmm-color-primary-border);
+  }
+
+  &:disabled {
+    &:hover {
+      cursor: not-allowed;
+    }
+  }
 }
 
 .handle {
@@ -18,4 +53,5 @@
 }
 
 .action {
+  margin-inline: 1rem 0.5rem;
 }

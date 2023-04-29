@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { useAtom } from "jotai";
 
 import { AccountListItem } from "@/src/app/account/components/AccountListItem";
@@ -10,12 +11,13 @@ type Props = { onSwitchAccount?: () => void; className?: string };
 export function AccountList({ onSwitchAccount, className }: Props) {
   const [sessions] = useAtom(sessionsAtom);
   return (
-    <ul className={className}>
+    <ul className={clsx(styles.container, className)}>
       {Object.entries(sessions.accounts).map(([did, account]) => (
         <AccountListItem
           key={`${account.service}:${did}`}
           account={account}
           onSwitchAccount={onSwitchAccount}
+          className={styles.item}
         />
       ))}
     </ul>
