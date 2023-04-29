@@ -11,6 +11,7 @@ type Props = {
   thread:
     | AppBskyFeedDefs.ThreadViewPost
     | AppBskyFeedDefs.NotFoundPost
+    | AppBskyFeedDefs.BlockedPost
     | { [k: string]: unknown; $type: string };
   isSelected?: boolean;
   revalidate: () => void;
