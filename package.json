@@ -16,7 +16,7 @@
     "format:fix": "prettier --cache --write ."
   },
   "dependencies": {
-    "@atproto/api": "^0.2.7",
+    "@atproto/api": "^0.2.11",
     "@atproto/lexicon": "^0.1.0",
     "@atproto/uri": "^0.0.1",
     "@camome/core": "^0.0.29",

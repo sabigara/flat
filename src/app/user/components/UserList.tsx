@@ -50,7 +50,10 @@ export function UserList<K extends QueryKey>({
   const queryClient = useQueryClient();
   const revalidate = () => void queryClient.invalidateQueries(queryKey);
 
-  const allItems = data?.pages.flatMap((p) => p.users) ?? [];
+  const allItems =
+    data?.pages
+      .flatMap((p) => p.users)
+      .filter((u) => !u.viewer?.blocking && !u.viewer?.blockedBy) ?? [];
 
   if (status === "loading") {
     return <SpinnerFill />;

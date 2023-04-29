@@ -5,8 +5,8 @@ overrides:
 
 dependencies:
   '@atproto/api':
-    specifier: ^0.2.7
-    version: 0.2.7
+    specifier: ^0.2.11
+    version: 0.2.11
   '@atproto/lexicon':
     specifier: ^0.1.0
     version: 0.1.0
@@ -202,8 +202,8 @@ packages:
       leven: 3.1.0
     dev: true
 
-  /@atproto/api@0.2.7:
-    resolution: {integrity: sha512-Sz+lLD5apC2f0FSClkElIrt4w+aLgzqJ/wqtFO7xuQH8+hGfxdfGuVIK5GEDQ7epeDlWvVhVSouP6ZdGSKKtSA==}
+  /@atproto/api@0.2.11:
+    resolution: {integrity: sha512-5JY1Ii/81Bcy1ZTGRqALsaOdc8fIJTSlMNoSptpGH73uAPQE93weDrb8sc3KoxWi1G2ss3IIBSLPJWxALocJSQ==}
     dependencies:
       '@atproto/common-web': 0.1.0
       '@atproto/uri': 0.0.1
