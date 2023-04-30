@@ -3,12 +3,19 @@
   "auth": {
     "sign-in": "ログイン",
     "sign-out": "ログアウト",
+    "sign-in-again": "再ログイン",
+    "signed-in-accounts": "ログイン中アカウント",
     "identifier": {
       "label": "ハンドル、メールアドレスまたはdid"
     },
     "password": {
       "label": "パスワード",
       "description": "<anchor>アプリパスワードを生成</anchor>して入力してください"
+    },
+    "about": {
+      "description": "シンプル・ミニマルで使いやすい <anchor>Bluesky</anchor> クライアント",
+      "app-password": "安全にログインするため、Flatでは<anchor>アプリパスワード</anchor>のみ使用できます。",
+      "external-page": "Flatの詳細については<anchor>アプリ紹介ページ</anchor>をご覧ください。"
     }
   },
   "navigation": {

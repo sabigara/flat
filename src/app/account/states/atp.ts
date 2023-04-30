@@ -76,8 +76,11 @@ function makeAtpAgent(service: string) {
 const atpAgentCache = new Map<string, AtpAgent>();
 atpAgentCache.set("anonymous", makeAtpAgent("https://bsky.social"));
 
-function makeAtpAgentCacheKey({ service, did }: PartialBy<AccountKeys, "did">) {
-  return `${service.replace(/\/$/, "")}:${did ? did : "anonymous"}`;
+export function makeAtpAgentCacheKey({
+  service,
+  did,
+}: PartialBy<AccountKeys, "did">) {
+  return `${service.replace(/\/$/, "")}+${did ? did : "anonymous"}`;
 }
 
 const atpAgentAtom = atom<AtpAgent>((get) => {

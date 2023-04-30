@@ -1,18 +1,27 @@
-import { Button } from "@camome/core/Button";
-import { Input } from "@camome/core/Input";
-import { Spinner } from "@camome/core/Spinner";
+import { Markup } from "@camome/core/Markup";
+import clsx from "clsx";
+import { useAtom } from "jotai";
 import { Trans, useTranslation } from "react-i18next";
-import { useNavigation, Form, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
+import { AccountList } from "@/src/app/account/components/AccountList";
+import { LoginForm } from "@/src/app/account/components/LoginForm";
+import { sessionsAtom } from "@/src/app/account/states/atp";
 import LogoIcon from "@/src/assets/icon.svg";
+import { config } from "@/src/config";
+import { externalLinkAttrs } from "@/src/lib/html";
 
 import styles from "./LoginRoute.module.scss";
 
 export function LoginRoute() {
   const { t } = useTranslation();
-  const { state } = useNavigation();
-  const { search } = useLocation();
-  const searchParams = new URLSearchParams(search);
+  const navigate = useNavigate();
+  const [sessions] = useAtom(sessionsAtom);
+  const hasAccount = Object.keys(sessions.accounts).length > 0;
+
+  const handleSwitchAccount = () => {
+    navigate("/");
+  };
 
   return (
     <div className={styles.container}>
@@ -20,56 +29,69 @@ export function LoginRoute() {
         <LogoIcon />
         <span className={styles.logo__text}>Flat</span>
       </div>
-      <Form method="post" className={styles.form}>
-        <Input
-          label="Server"
-          name="service"
-          type="url"
-          defaultValue={searchParams.get("service") ?? undefined}
-          required
-        />
-        <Input
-          label={t("auth.identifier.label")}
-          name="identifier"
-          type="text"
-          placeholder="you.bsky.social"
-          defaultValue={searchParams.get("identifier") ?? undefined}
-          required
-        />
-        <Input
-          label={t("auth.password.label")}
-          description={
-            <span className={styles.passwordDescription}>
-              <Trans
-                i18nKey="auth.password.description"
-                components={{
-                  anchor: (
-                    <a
-                      href="https://staging.bsky.app/settings/app-passwords"
-                      rel="noreferrer noopener"
-                      target="_blank"
-                    />
-                  ),
-                }}
+      <div className={styles.content}>
+        <div className={styles.formSection}>
+          {!hasAccount && <About />}
+          <LoginForm className={styles.form} />
+        </div>
+
+        {hasAccount && (
+          <div className={styles.accountsSection}>
+            <About />
+            <div className={styles.accounts}>
+              <h2 className={styles.accounts__title}>
+                {t("auth.signed-in-accounts")}
+              </h2>
+              <AccountList
+                onSwitchAccount={handleSwitchAccount}
+                showLogOut={false}
+                className={styles.accounts__list}
               />
-            </span>
-          }
-          name="password"
-          type="password"
-          placeholder="xxxx-xxxx-xxxx-xxxx"
-          pattern={`.{4}-.{4}-.{4}-.{4}`} // TODO: is there any way to convert a RegExp to string?
-          required
-        />
-        <Button
-          type="submit"
-          disabled={state === "submitting"}
-          startDecorator={
-            state === "submitting" ? <Spinner size="sm" /> : undefined
-          }
-        >
-          {t("auth.sign-in")}
-        </Button>
-      </Form>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
+  );
+}
+
+function About({ className }: { className?: string }) {
+  const { i18n } = useTranslation();
+  const aboutUrl =
+    i18n.resolvedLanguage === "ja" ? config.aboutUrl.ja : config.aboutUrl.en;
+  return (
+    <Markup className={clsx(styles.about, styles.prose, className)}>
+      <p className={styles.description}>
+        <Trans
+          i18nKey="auth.about.description"
+          components={{
+            anchor: <a href="https://bsky.app/" {...externalLinkAttrs} />,
+          }}
+        />
+      </p>
+      <ul>
+        <li>
+          <Trans
+            i18nKey="auth.about.app-password"
+            components={{
+              anchor: (
+                <a
+                  href="https://staging.bsky.app/settings/app-passwords"
+                  {...externalLinkAttrs}
+                />
+              ),
+            }}
+          />
+        </li>
+        <li>
+          <Trans
+            i18nKey="auth.about.external-page"
+            components={{
+              anchor: <a href={aboutUrl} {...externalLinkAttrs} />,
+            }}
+          />
+        </li>
+      </ul>
+    </Markup>
   );
 }

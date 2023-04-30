@@ -3,12 +3,19 @@
   "auth": {
     "sign-in": "Sign in",
     "sign-out": "Sign out",
+    "sign-in-again": "Sign in again",
+    "signed-in-accounts": "Signed-in accounts",
     "identifier": {
       "label": "Handle, email or did"
     },
     "password": {
       "label": "Password",
       "description": "<anchor>Generate an App Password</anchor> and use it"
+    },
+    "about": {
+      "description": "A clean, minimal, easy-to-use web client for <anchor>Bluesky</anchor>",
+      "app-password": "For better security, Flat only allows <anchor>App Password</anchor> for sign-in.",
+      "external-page": "See the <anchor>about page</anchor> for details of this app."
     }
   },
   "navigation": {

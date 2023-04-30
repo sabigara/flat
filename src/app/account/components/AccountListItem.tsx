@@ -1,6 +1,7 @@
 import { AtpAgent } from "@atproto/api";
 import { Button } from "@camome/core/Button";
 import clsx from "clsx";
+import { useTranslation } from "react-i18next";
 import { TbCheck } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 
@@ -17,6 +18,7 @@ import styles from "./AccountListItem.module.scss";
 
 type Props = {
   account: Sessions["accounts"][number];
+  showLogOut?: boolean;
   onSwitchAccount?: () => void;
   className?: string;
 };
@@ -24,9 +26,11 @@ type Props = {
 // TODO: support deletion; not sign out
 export function AccountListItem({
   account,
+  showLogOut = true,
   onSwitchAccount,
   className,
 }: Props) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { data, isLoading } = useRepoDescriptionQuery({
     service: account.service,
@@ -34,28 +38,32 @@ export function AccountListItem({
   });
   const currAccount = useResolvedAccountWithSession();
 
+  const reSignIn = async () => {
+    const searchParams = new URLSearchParams();
+    searchParams.set("service", account.service);
+    searchParams.set("identifier", account.did);
+
+    try {
+      // Create new agent because `getAtpAgent()` may return an agent
+      // which is not connected to the account.
+      const resp = await new AtpAgent({
+        service: account.service,
+      }).com.atproto.repo.describeRepo({
+        repo: account.did,
+      });
+      searchParams.set("identifier", resp.data.handle);
+    } catch (e) {
+      console.error(e);
+    }
+    navigate("/login?" + searchParams.toString());
+  };
+
   const handleClickSwitch = async () => {
     if (account.session) {
       switchAccount(account.service, account.session.did);
       onSwitchAccount?.();
     } else {
-      const searchParams = new URLSearchParams();
-      searchParams.set("service", account.service);
-      searchParams.set("identifier", account.did);
-
-      try {
-        // Create new agent because `getAtpAgent()` may return an agent
-        // which is not connected to the account.
-        const resp = await new AtpAgent({
-          service: account.service,
-        }).com.atproto.repo.describeRepo({
-          repo: account.did,
-        });
-        searchParams.set("identifier", resp.data.handle);
-      } catch (e) {
-        console.error(e);
-      }
-      navigate("/login?" + searchParams.toString());
+      await reSignIn();
     }
   };
   const handleClickSignOut = () => {
@@ -91,15 +99,28 @@ export function AccountListItem({
         </div>
       </button>
       <div className={styles.action}>
-        <Button
-          size="sm"
-          colorScheme="neutral"
-          variant="ghost"
-          onClick={handleClickSignOut}
-          className={styles.signOutBtn}
-        >
-          Sign out
-        </Button>
+        {account.session ? (
+          showLogOut && (
+            <Button
+              size="sm"
+              colorScheme="neutral"
+              variant="ghost"
+              onClick={handleClickSignOut}
+              className={styles.signOutBtn}
+            >
+              {t("auth.sign-out")}
+            </Button>
+          )
+        ) : (
+          <Button
+            size="sm"
+            colorScheme="danger"
+            variant="ghost"
+            onClick={reSignIn}
+          >
+            {t("auth.sign-in-again")}
+          </Button>
+        )}
       </div>
     </li>
   );
