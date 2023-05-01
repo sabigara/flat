@@ -1,9 +1,10 @@
 import { AtpAgent } from "@atproto/api";
 import { Button } from "@camome/core/Button";
+import { useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
-import { TbCheck } from "react-icons/tb";
-import { useNavigate } from "react-router-dom";
+import { TbCheck, TbPlus } from "react-icons/tb";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useRepoDescriptionQuery } from "@/src/app/account/hooks/useRepoDescription";
 import { Sessions } from "@/src/app/account/lib/types";
@@ -12,6 +13,7 @@ import {
   switchAccount,
   useResolvedAccountWithSession,
 } from "@/src/app/account/states/atp";
+import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import SpinnerFill from "@/src/components/SpinnerFill";
 
 import styles from "./AccountListItem.module.scss";
@@ -19,6 +21,7 @@ import styles from "./AccountListItem.module.scss";
 type Props = {
   account: Sessions["accounts"][number];
   showLogOut?: boolean;
+  disableLoggedIn?: boolean;
   onSwitchAccount?: () => void;
   className?: string;
 };
@@ -27,11 +30,13 @@ type Props = {
 export function AccountListItem({
   account,
   showLogOut = true,
+  disableLoggedIn = true,
   onSwitchAccount,
   className,
 }: Props) {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { data, isLoading } = useRepoDescriptionQuery({
     service: account.service,
     identifier: account.did,
@@ -61,6 +66,7 @@ export function AccountListItem({
   const handleClickSwitch = async () => {
     if (account.session) {
       switchAccount(account.service, account.session.did);
+      queryClient.resetQueries(queryKeys.feed.home.$);
       onSwitchAccount?.();
     } else {
       await reSignIn();
@@ -81,13 +87,13 @@ export function AccountListItem({
       <button
         className={clsx(styles.accountRadio)}
         onClick={handleClickSwitch}
-        disabled={isLoggedIn}
+        disabled={disableLoggedIn && isLoggedIn}
       >
-        <div className={styles.check}>
+        <div className={styles.decorator}>
           {isLoggedIn && (
-            <div className={styles.check__circle}>
+            <div className={styles.decorator__circle}>
               <TbCheck
-                className={styles.check__icon}
+                className={styles.decorator__icon}
                 title="Currently logged in"
               />
             </div>
@@ -123,5 +129,18 @@ export function AccountListItem({
         )}
       </div>
     </li>
+  );
+}
+
+export function AccountListItemAdd({ className }: { className?: string }) {
+  return (
+    <Link to="/login" className={clsx(styles.container, styles.add, className)}>
+      <div className={styles.decorator}>
+        <div className={styles.decorator__circle}>
+          <TbPlus className={styles.decorator__icon} />
+        </div>
+      </div>
+      Add account
+    </Link>
   );
 }

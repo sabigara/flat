@@ -1,7 +1,10 @@
 import clsx from "clsx";
 import { useAtom } from "jotai";
 
-import { AccountListItem } from "@/src/app/account/components/AccountListItem";
+import {
+  AccountListItem,
+  AccountListItemAdd,
+} from "@/src/app/account/components/AccountListItem";
 import {
   makeAtpAgentCacheKey,
   sessionsAtom,
@@ -12,10 +15,18 @@ import styles from "./AccountList.module.scss";
 type Props = {
   onSwitchAccount?: () => void;
   showLogOut?: boolean;
+  showAdd?: boolean;
+  disableLoggedIn?: boolean;
   className?: string;
 };
 
-export function AccountList({ onSwitchAccount, showLogOut, className }: Props) {
+export function AccountList({
+  onSwitchAccount,
+  showLogOut,
+  showAdd = true,
+  disableLoggedIn,
+  className,
+}: Props) {
   const [sessions] = useAtom(sessionsAtom);
   return (
     <ul className={clsx(styles.container, className)}>
@@ -27,10 +38,14 @@ export function AccountList({ onSwitchAccount, showLogOut, className }: Props) {
           })}
           account={account}
           onSwitchAccount={onSwitchAccount}
+          disableLoggedIn={disableLoggedIn}
           showLogOut={showLogOut}
           className={styles.item}
         />
       ))}
+      {showAdd && (
+        <AccountListItemAdd className={clsx(styles.item, styles.add)} />
+      )}
     </ul>
   );
 }

@@ -5,12 +5,15 @@
     "sign-out": "Sign out",
     "sign-in-again": "Sign in again",
     "signed-in-accounts": "Signed-in accounts",
+    "service": {
+      "label": "Server"
+    },
     "identifier": {
-      "label": "Handle, email or did"
+      "label": "Handle, email or DID"
     },
     "password": {
       "label": "Password",
-      "description": "<anchor>Generate an App Password</anchor> and use it"
+      "description": "<anchor>Generate an App Password</anchor> to sign in"
     },
     "about": {
       "description": "A clean, minimal, easy-to-use web client for <anchor>Bluesky</anchor>",

@@ -56,9 +56,9 @@ function persistSessionFactory(service: string): AtpPersistSessionHandler {
       case "create-failed": {
         if (!session) return; // TODO: why?
         getDefaultStore().set(sessionsAtom, (draft) => {
-          delete draft.accounts[
-            makeAtpAgentCacheKey({ service, did: session.did })
-          ];
+          const account =
+            draft.accounts[makeAtpAgentCacheKey({ service, did: session.did })];
+          account.session = null;
         });
         break;
       }

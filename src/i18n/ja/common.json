@@ -5,8 +5,11 @@
     "sign-out": "ログアウト",
     "sign-in-again": "再ログイン",
     "signed-in-accounts": "ログイン中アカウント",
+    "service": {
+      "label": "サーバー"
+    },
     "identifier": {
-      "label": "ハンドル、メールアドレスまたはdid"
+      "label": "ハンドル、メールアドレスまたはDID"
     },
     "password": {
       "label": "パスワード",

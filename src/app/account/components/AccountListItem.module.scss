@@ -3,8 +3,8 @@
   align-items: center;
 }
 
-.check {
-  --size: 1.8em;
+.decorator {
+  --size: 1.6em;
   --pad: 0.3em;
   inline-size: var(--size);
   margin-inline-end: 0.5rem;
@@ -21,7 +21,7 @@
 
   &__icon {
     stroke-width: 4px;
-    font-size: 0.9em;
+    font-size: 0.75em;
   }
 }
 
@@ -50,8 +50,14 @@
 
 .service {
   color: var(--cmm-color-font-subtle);
+  font-size: var(--cmm-font-size-sm);
 }
 
 .action {
   margin-inline: 1rem 0.5rem;
+}
+
+.add {
+  padding: 1rem;
+  font-weight: var(--cmm-font-weight-bold);
 }

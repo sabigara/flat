@@ -22,7 +22,7 @@ export function LoginForm({ className }: Props) {
   return (
     <Form method="post" className={clsx(styles.container, className)}>
       <Input
-        label="Server"
+        label={t("auth.service.label")}
         name="service"
         type="url"
         defaultValue={searchParams.get("service") ?? "https://bsky.social"}

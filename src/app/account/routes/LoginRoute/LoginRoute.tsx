@@ -45,6 +45,8 @@ export function LoginRoute() {
               <AccountList
                 onSwitchAccount={handleSwitchAccount}
                 showLogOut={false}
+                showAdd={false}
+                disableLoggedIn={false}
                 className={styles.accounts__list}
               />
             </div>
