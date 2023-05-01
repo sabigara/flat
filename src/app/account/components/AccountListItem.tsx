@@ -2,6 +2,7 @@ import { AtpAgent } from "@atproto/api";
 import { Button } from "@camome/core/Button";
 import { useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
+import { useSetAtom } from "jotai";
 import { useTranslation } from "react-i18next";
 import { TbCheck, TbPlus } from "react-icons/tb";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,6 +14,7 @@ import {
   switchAccount,
   useResolvedAccountWithSession,
 } from "@/src/app/account/states/atp";
+import { loginFormDataAtom } from "@/src/app/account/states/loginFormAtom";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import SpinnerFill from "@/src/components/SpinnerFill";
 
@@ -42,11 +44,13 @@ export function AccountListItem({
     identifier: account.did,
   });
   const currAccount = useResolvedAccountWithSession();
+  const setLoginForm = useSetAtom(loginFormDataAtom);
 
   const reSignIn = async () => {
-    const searchParams = new URLSearchParams();
-    searchParams.set("service", account.service);
-    searchParams.set("identifier", account.did);
+    setLoginForm((draft) => {
+      draft.service = account.service ?? "";
+      draft.identifier = account.did;
+    });
 
     try {
       // Create new agent because `getAtpAgent()` may return an agent
@@ -56,11 +60,13 @@ export function AccountListItem({
       }).com.atproto.repo.describeRepo({
         repo: account.did,
       });
-      searchParams.set("identifier", resp.data.handle);
+      setLoginForm((draft) => {
+        draft.identifier = resp.data.handle;
+      });
     } catch (e) {
       console.error(e);
     }
-    navigate("/login?" + searchParams.toString());
+    navigate("/login");
   };
 
   const handleClickSwitch = async () => {

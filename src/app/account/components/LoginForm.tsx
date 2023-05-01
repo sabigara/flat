@@ -1,10 +1,20 @@
 import { Button } from "@camome/core/Button";
 import { Input } from "@camome/core/Input";
-import { Spinner } from "@camome/core/Spinner";
+import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
+import { useAtom } from "jotai";
+import React from "react";
+import { toast } from "react-hot-toast";
 import { Trans, useTranslation } from "react-i18next";
-import { useNavigation, Form, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
+import { loginWithPersist } from "@/src/app/account/states/atp";
+import {
+  LoginFormData,
+  loginFormDataAtom,
+  resetLoginFormData,
+} from "@/src/app/account/states/loginFormAtom";
+import { isButtonLoading } from "@/src/components/isButtonLoading";
 import { externalLinkAttrs } from "@/src/lib/html";
 
 import styles from "./LoginForm.module.scss";
@@ -15,17 +25,44 @@ type Props = {
 
 export function LoginForm({ className }: Props) {
   const { t } = useTranslation();
-  const { state } = useNavigation();
-  const { search } = useLocation();
-  const searchParams = new URLSearchParams(search);
+  const [values, setValues] = useAtom(loginFormDataAtom);
+  const { service, identifier, password } = values;
+  const navigate = useNavigate();
+
+  const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    setValues((draft) => {
+      draft[e.target.name as keyof LoginFormData] = e.target.value;
+    });
+  };
+
+  const { mutate, isLoading } = useMutation({
+    mutationFn: async (params: { values: LoginFormData }) => {
+      return loginWithPersist(params.values);
+    },
+    onSuccess: (resp) => {
+      resetLoginFormData();
+      toast.success(
+        t("auth.sign-in-success", {
+          actor: resp.handle,
+        })
+      );
+      navigate("/");
+    },
+  });
+
+  const handleSubmit: React.FormEventHandler = (e) => {
+    e.preventDefault();
+    mutate({ values });
+  };
 
   return (
-    <Form method="post" className={clsx(styles.container, className)}>
+    <form onSubmit={handleSubmit} className={clsx(styles.container, className)}>
       <Input
         label={t("auth.service.label")}
         name="service"
         type="url"
-        defaultValue={searchParams.get("service") ?? "https://bsky.social"}
+        onChange={handleChange}
+        value={service}
         required
       />
       <Input
@@ -33,7 +70,8 @@ export function LoginForm({ className }: Props) {
         name="identifier"
         type="text"
         placeholder="you.bsky.social"
-        defaultValue={searchParams.get("identifier") ?? undefined}
+        onChange={handleChange}
+        value={identifier}
         required
       />
       <Input
@@ -56,18 +94,14 @@ export function LoginForm({ className }: Props) {
         name="password"
         type="password"
         placeholder="xxxx-xxxx-xxxx-xxxx"
+        onChange={handleChange}
+        value={password}
         pattern={`.{4}-.{4}-.{4}-.{4}`} // TODO: is there any way to convert a RegExp to string?
         required
       />
-      <Button
-        type="submit"
-        disabled={state === "submitting"}
-        startDecorator={
-          state === "submitting" ? <Spinner size="sm" /> : undefined
-        }
-      >
+      <Button type="submit" {...isButtonLoading(isLoading)}>
         {t("auth.sign-in")}
       </Button>
-    </Form>
+    </form>
   );
 }

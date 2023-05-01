@@ -5,6 +5,7 @@
     "sign-out": "Sign out",
     "sign-in-again": "Sign in again",
     "signed-in-accounts": "Signed-in accounts",
+    "sign-in-success": "Signed in as {{actor}}",
     "service": {
       "label": "Server"
     },

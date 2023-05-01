@@ -67,7 +67,7 @@ function About({ className }: { className?: string }) {
         <Trans
           i18nKey="auth.about.description"
           components={{
-            anchor: <a href="https://bsky.app/" {...externalLinkAttrs} />,
+            anchor: <a href="https://bsky.app" {...externalLinkAttrs} />,
           }}
         />
       </p>

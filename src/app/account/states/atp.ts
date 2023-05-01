@@ -3,6 +3,7 @@ import { atom, getDefaultStore, useAtomValue } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { withImmer } from "jotai-immer";
 
+import { BSKY_SOCIAL } from "@/src/app/account/lib/constants";
 import { Account, AccountKeys, Sessions } from "@/src/app/account/lib/types";
 import { storageKeys } from "@/src/lib/storage";
 import { PartialBy } from "@/src/lib/typing";
@@ -74,7 +75,7 @@ function makeAtpAgent(service: string) {
 }
 
 const atpAgentCache = new Map<string, AtpAgent>();
-atpAgentCache.set("anonymous", makeAtpAgent("https://bsky.social"));
+atpAgentCache.set("anonymous", makeAtpAgent(BSKY_SOCIAL));
 
 export function makeAtpAgentCacheKey({
   service,
@@ -85,7 +86,7 @@ export function makeAtpAgentCacheKey({
 
 const atpAgentAtom = atom<AtpAgent>((get) => {
   const account = get(resolvedAccountWithSessionAtom);
-  const service = account?.service || "https://bsky.social";
+  const service = account?.service || BSKY_SOCIAL;
   const cacheKey = makeAtpAgentCacheKey({ service, did: account?.did });
   const cached = atpAgentCache.get(cacheKey);
   if (cached) return cached;
@@ -156,6 +157,7 @@ export async function loginWithPersist({
   getDefaultStore().set(sessionsAtom, (draft) => {
     draft.current = { service, did: resp.data.did };
   });
+  return resp.data;
 }
 
 export async function resumeSession() {
@@ -164,15 +166,9 @@ export async function resumeSession() {
   if (!atp.hasSession || !session) {
     const account = getResolvedAccountWithSession();
     if (!account || !account?.session) return;
-    session = {
-      accessJwt: account.session.accessJwt,
-      did: account.session.did,
-      handle: account.session.handle,
-      refreshJwt: account.session.refreshJwt,
-      email: account.session.email,
-    };
+    session = account.session;
     try {
-      await atp.resumeSession(session);
+      await atp.resumeSession({ ...session });
     } catch (e) {
       console.error(e);
       getDefaultStore().set(sessionsAtom, (draft) => {
