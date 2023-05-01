@@ -117,6 +117,7 @@ export function ProfileRoute() {
             <button
               onClick={expandAvatar}
               aria-label={usersT("profile.expand-avatar", { actor: username })}
+              className={styles.avatarWrap}
             >
               <Avatar
                 profile={profile}

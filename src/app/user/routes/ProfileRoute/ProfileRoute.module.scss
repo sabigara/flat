@@ -23,11 +23,18 @@
   gap: 0.75rem;
 }
 
-.avatar {
+.avatarWrap {
   --cmm-Avatar-size: max(20cqw, 6.5rem);
   margin-block-start: calc(
     var(--cmm-Avatar-size) / -2 - var(--container-pad-inline)
   );
+  border-radius: var(--cmm-radius-full);
+  display: block;
+  block-size: var(--cmm-Avatar-size);
+}
+
+.avatar {
+  --cmm-Avatar-size: inherit;
   --cmm-Avatar-ring-size: 0.25rem;
   // TODO: add --cmm--Avatar-ring-color
 }
