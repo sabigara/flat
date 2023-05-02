@@ -49,7 +49,7 @@
   @include mixins.lineClamp(2);
   font-size: var(--cmm-font-size-4xl);
   font-weight: var(--cmm-font-weight-bold);
-  line-height: 1;
+  line-height: 1.2;
   word-wrap: break-word;
   overflow-wrap: break-word;
 }

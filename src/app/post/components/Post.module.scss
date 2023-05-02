@@ -68,6 +68,8 @@
 
   &:hover {
     text-decoration: underline;
+    text-underline-position: from-font;
+    text-decoration-thickness: from-font;
     cursor: pointer;
   }
 }
