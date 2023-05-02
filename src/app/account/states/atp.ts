@@ -16,12 +16,26 @@ const initialSessions: Sessions = {
 const SESSION_KEY = storageKeys.session.$;
 const storedSessions = localStorage.getItem(SESSION_KEY);
 
-export const sessionsAtom = withImmer(
-  atomWithStorage<Sessions>(
-    SESSION_KEY,
-    storedSessions ? JSON.parse(storedSessions) : initialSessions
-  )
+export const sessionsAtom = atomWithStorage<Sessions>(
+  SESSION_KEY,
+  storedSessions ? JSON.parse(storedSessions) : initialSessions
 );
+
+export function updateSessionsByMerge({
+  accounts = {},
+  current = null,
+}: Partial<Sessions>) {
+  getDefaultStore().set(sessionsAtom, (state) => {
+    const newCurrent = state.current
+      ? { ...state.current, ...current }
+      : current;
+    const newAccounts = { ...state.accounts, ...accounts };
+    return {
+      accounts: newAccounts,
+      current: newCurrent,
+    };
+  });
+}
 
 const resolvedAccountWithSessionAtom = atom<Account | undefined>((get) => {
   const { accounts, current } = get(sessionsAtom);
@@ -37,29 +51,35 @@ const resolvedAccountWithSessionAtom = atom<Account | undefined>((get) => {
   return accountValues.find((account) => !!account.session);
 });
 
-function persistSessionFactory(service: string): AtpPersistSessionHandler {
+function makePersistSession(service: string): AtpPersistSessionHandler {
+  let did = "";
+  let key = "";
   return (e, session) => {
     switch (e) {
       case "create":
       case "update": {
-        if (!session) return; // TODO: why?
-        getDefaultStore().set(sessionsAtom, (draft) => {
-          draft.accounts[makeAtpAgentCacheKey({ service, did: session.did })] =
-            {
-              session: session,
+        if (!session) return;
+        did = session.did;
+        key = makeAtpAgentCacheKey({ service, did: session.did });
+        // FIXME: using immer causes weird bug related to `Object.freeze()` or something?
+        // https://github.com/sabigara/flat/issues/33
+        updateSessionsByMerge({
+          accounts: {
+            [key]: {
+              session,
               service,
               did: session.did,
-            };
+            },
+          },
         });
         break;
       }
       case "expired":
       case "create-failed": {
-        if (!session) return; // TODO: why?
-        getDefaultStore().set(sessionsAtom, (draft) => {
-          const account =
-            draft.accounts[makeAtpAgentCacheKey({ service, did: session.did })];
-          account.session = null;
+        if (!did) return;
+        getDefaultStore().set(withImmer(sessionsAtom), (draft) => {
+          const account = draft.accounts[key];
+          if (account) void (account.session = null);
         });
         break;
       }
@@ -70,10 +90,11 @@ function persistSessionFactory(service: string): AtpPersistSessionHandler {
 function makeAtpAgent(service: string) {
   return new AtpAgent({
     service,
-    persistSession: persistSessionFactory(service),
+    persistSession: makePersistSession(service),
   });
 }
 
+// TODO: should be an atom?
 const atpAgentCache = new Map<string, AtpAgent>();
 atpAgentCache.set("anonymous", makeAtpAgent(BSKY_SOCIAL));
 
@@ -143,7 +164,7 @@ export async function loginWithPersist({
 }: LoginParams) {
   const atp = new AtpAgent({
     service,
-    persistSession: persistSessionFactory(service),
+    persistSession: makePersistSession(service),
   });
 
   const resp = await atp.login({
@@ -154,7 +175,7 @@ export async function loginWithPersist({
     throw new Error("Login failed.");
   }
   atpAgentCache.set(makeAtpAgentCacheKey({ service, did: resp.data.did }), atp);
-  getDefaultStore().set(sessionsAtom, (draft) => {
+  getDefaultStore().set(withImmer(sessionsAtom), (draft) => {
     draft.current = { service, did: resp.data.did };
   });
   return resp.data;
@@ -171,7 +192,7 @@ export async function resumeSession() {
       await atp.resumeSession({ ...session });
     } catch (e) {
       console.error(e);
-      getDefaultStore().set(sessionsAtom, (draft) => {
+      getDefaultStore().set(withImmer(sessionsAtom), (draft) => {
         const key = makeAtpAgentCacheKey({
           service: atp.service.toString(),
           did: session?.did,
@@ -196,7 +217,7 @@ export function getFirstAccountWithSession() {
 }
 
 export function switchAccount(service: string, did: string) {
-  getDefaultStore().set(sessionsAtom, (draft) => {
+  getDefaultStore().set(withImmer(sessionsAtom), (draft) => {
     draft.current = {
       service,
       did,
@@ -206,7 +227,7 @@ export function switchAccount(service: string, did: string) {
 
 export function signOut({ service, did }: AccountKeys) {
   const keyToDelete = makeAtpAgentCacheKey({ service, did });
-  getDefaultStore().set(sessionsAtom, (draft) => {
+  getDefaultStore().set(withImmer(sessionsAtom), (draft) => {
     if (draft.current && draft.current?.did === did) {
       draft.current =
         Object.values(draft.accounts)
