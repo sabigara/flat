@@ -1,10 +1,10 @@
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 
+import { getBskyApi } from "@/src/app/account/states/atp";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import Seo from "@/src/app/seo/Seo";
 import { UserList, UserListQueryFn } from "@/src/app/user/components/UserList";
-import { bsky } from "@/src/lib/atp";
 
 import styles from "./FollowersRoute.module.scss";
 
@@ -16,7 +16,7 @@ export function FollowersRoute() {
   if (!handle) return null;
   const queryKey = queryKeys.users.followers.$({ user: handle });
   const queryFn: UserListQueryFn<typeof queryKey> = async ({ pageParam }) => {
-    const resp = await bsky.graph.getFollowers({
+    const resp = await getBskyApi().graph.getFollowers({
       actor: handle,
       limit: 25,
       ...(pageParam ? { cursor: pageParam.cursor } : {}),

@@ -1,0 +1,74 @@
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.decorator {
+  --size: 1.6em;
+  --pad: 0.3em;
+
+  inline-size: var(--size);
+  margin-inline-end: 0.5rem;
+
+  &--check {
+    --bg: var(--cmm-color-primary-solid-bg);
+    --fg: var(--cmm-color-primary-solid-font);
+  }
+
+  &--add {
+    --bg: var(--cmm-color-primary-soft-bg);
+    --fg: var(--cmm-color-primary-soft-font);
+  }
+
+  &__circle {
+    background: var(--bg);
+    color: var(--fg);
+    border-radius: var(--cmm-radius-full);
+    inline-size: calc(var(--size) - var(--pad));
+    block-size: calc(var(--size) - var(--pad));
+    display: grid;
+    place-items: center;
+  }
+
+  &__icon {
+    stroke-width: 4px;
+    font-size: 0.75em;
+  }
+}
+
+.add {
+  padding: 1rem;
+  font-weight: var(--cmm-font-weight-bold);
+}
+
+.accountRadio {
+  flex: 1;
+  text-align: start;
+  padding-inline-start: 1rem;
+  padding-block: 0.5rem;
+  display: flex;
+  align-items: center;
+
+  &--selected {
+    border: 1px solid var(--cmm-color-primary-border);
+  }
+
+  &:disabled {
+    &:hover {
+      cursor: not-allowed;
+    }
+  }
+}
+
+.handle {
+  font-weight: var(--cmm-font-weight-bold);
+}
+
+.service {
+  color: var(--cmm-color-font-subtle);
+  font-size: var(--cmm-font-size-sm);
+}
+
+.action {
+  margin-inline: 1rem 0.5rem;
+}

@@ -6,9 +6,9 @@ import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { TbTrash, TbQuote } from "react-icons/tb";
 
+import { getBskyApi } from "@/src/app/account/states/atp";
 import { usePostComposer } from "@/src/app/post/hooks/usePostComposer";
 import Menu from "@/src/components/Menu";
-import { bsky } from "@/src/lib/atp";
 
 type Props = {
   myProfile?: AppBskyActorDefs.ProfileViewDetailed;
@@ -30,7 +30,7 @@ export default function PostMoreMenu({
   const { mutate: deleteMutation } = useMutation({
     async mutationFn({ post }: { post: AppBskyFeedDefs.PostView }) {
       const { host, rkey } = new AtUri(post.uri);
-      await bsky.feed.post.delete({ repo: host, rkey });
+      await getBskyApi().feed.post.delete({ repo: host, rkey });
     },
     onMutate() {
       toastRef.current = toast.loading(t("post.delete.loading"));

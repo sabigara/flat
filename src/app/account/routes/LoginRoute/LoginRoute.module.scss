@@ -1,0 +1,110 @@
+@use "var";
+@use "mixins";
+
+.container {
+  background: var(--cmm-color-surface-2);
+  min-height: 100dvh;
+  padding-block-start: 4rem;
+  padding-block-end: 4rem;
+  padding-inline: 1rem;
+  margin-inline: auto;
+
+  @include mixins.mq(sm) {
+    padding-block-start: 3rem;
+  }
+}
+
+.logo {
+  display: flex;
+  margin-inline: auto;
+  inline-size: fit-content;
+  block-size: 6rem;
+  gap: 0.5rem;
+
+  svg {
+    inline-size: 3rem;
+    block-size: 3rem;
+  }
+
+  &__text {
+    font-weight: var(--cmm-font-weight-bold);
+    font-size: calc(var(--cmm-font-size-6xl) * 0.9);
+    line-height: 1;
+  }
+}
+
+.content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  max-inline-size: var.$lg;
+  margin-inline: auto;
+}
+
+.formSection {
+  flex: 1;
+  margin-inline: auto;
+  min-inline-size: min(30rem, 100%);
+  max-inline-size: 30rem;
+}
+
+.accountsSection {
+  flex: 1;
+  margin-inline: auto;
+  min-inline-size: min(30rem, 100%);
+  max-inline-size: 30rem;
+}
+
+.about {
+  .formSection > & {
+    margin-block-end: 2rem;
+  }
+}
+
+.description {
+  font-weight: var(--cmm-font-weight-bold);
+  font-size: var(--cmm-font-size-lg);
+}
+
+.prose {
+  font-size: var(--cmm-font-size-sm);
+
+  ul {
+    margin-block-start: 1em;
+    padding-inline-start: 1rem;
+
+    li::marker {
+      color: var(--cmm-color-font-subtle);
+    }
+  }
+}
+
+.form {
+  background: var(--cmm-color-surface-0);
+  border: 1px solid var(--cmm-color-border-base);
+  border-radius: var(--cmm-radius-2xl);
+  padding: 2rem;
+}
+
+.accounts {
+  margin-block-start: 2rem;
+
+  &__title {
+    font-weight: var(--cmm-font-weight-bold);
+  }
+
+  &__list {
+    overflow-y: auto;
+    margin-block-start: 1rem;
+    font-size: 0.9em;
+  }
+}
+
+.notSignedIn {
+  display: block;
+  color: var(--cmm-color-font-subtle);
+  font-size: var(--cmm-font-size-sm);
+  margin-block-start: 1rem;
+  padding-block-start: 1rem;
+  border-block-start: 1px solid var(--cmm-color-border-base);
+}

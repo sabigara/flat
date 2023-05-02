@@ -9,6 +9,7 @@ import { Link, useLocation } from "react-router-dom";
 
 import { useAccountQuery } from "@/src/app/account/hooks/useAccountQuery";
 import Avatar from "@/src/app/user/components/Avatar";
+import { config } from "@/src/config";
 
 import styles from "./DropdownMenu.module.scss";
 
@@ -33,10 +34,14 @@ export default function DropdownMenu() {
         label: t("navigation.settings"),
       },
       {
+        href: "/accounts",
+        label: t("navigation.accounts"),
+      },
+      {
         href:
           i18n.resolvedLanguage === "ja"
-            ? "https://sabigara.notion.site/sabigara/Flat-3be5369d5d6e4548885d02aa5a37a3e2"
-            : "https://sabigara.notion.site/sabigara/About-Flat-6b11ebee0aa843839a67180786174888",
+            ? config.aboutUrl.ja
+            : config.aboutUrl.en,
         label: t("navigation.about"),
         external: true,
       },

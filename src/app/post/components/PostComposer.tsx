@@ -24,7 +24,7 @@ import { createPostWithEmbed } from "@/src/app/post/lib/createPostWithEmbed";
 import { RevalidateOnPost } from "@/src/app/post/lib/types";
 import Avatar from "@/src/app/user/components/Avatar";
 import Dialog from "@/src/components/Dialog";
-import { atp, isPostValid } from "@/src/lib/atp";
+import { isPostValid } from "@/src/lib/atp";
 import { isModKey } from "@/src/lib/keybindings";
 import { SiteMetadata } from "@/src/lib/siteMetadata";
 
@@ -91,7 +91,6 @@ export default function PostComposer({
           .map(({ file }) => file)
           .filter((file) => !!file) as File[],
         external: params.siteMetadata,
-        atp,
       });
     },
     onSuccess() {

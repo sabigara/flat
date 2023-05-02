@@ -1,5 +1,6 @@
 import React from "react";
 
+import { getBskyApi } from "@/src/app/account/states/atp";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import Seo from "@/src/app/seo/Seo";
 import {
@@ -8,14 +9,13 @@ import {
 } from "@/src/app/timeline/components/Timeline";
 import { TimelineFilter } from "@/src/app/timeline/components/TimelineFilter";
 import { useTimelineFilter } from "@/src/app/timeline/hooks/useTimelineFilter";
-import { bsky } from "@/src/lib/atp";
 
 import styles from "./HomeTimelineRoute.module.scss";
 
 export function HomeTimelineRoute() {
   const queryKey = queryKeys.feed.home.$;
   const queryFn: TimelineQueryFn<typeof queryKey> = async ({ pageParam }) => {
-    const resp = await bsky.feed.getTimeline({
+    const resp = await getBskyApi().feed.getTimeline({
       limit: 30,
       // passing `undefined` breaks the query somehow
       ...(pageParam ? { cursor: pageParam.cursor } : {}),
@@ -28,9 +28,9 @@ export function HomeTimelineRoute() {
 
   const fetchLatest = React.useCallback(
     async () =>
-      timelineFilter((await bsky.feed.getTimeline({ limit: 5 })).data.feed).at(
-        0
-      ),
+      timelineFilter(
+        (await getBskyApi().feed.getTimeline({ limit: 5 })).data.feed
+      ).at(0),
     [timelineFilter]
   );
   return (

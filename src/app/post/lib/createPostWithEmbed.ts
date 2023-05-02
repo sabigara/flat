@@ -1,11 +1,7 @@
-import {
-  RichText,
-  AppBskyFeedDefs,
-  AtpAgent,
-  AppBskyActorDefs,
-} from "@atproto/api";
+import { RichText, AppBskyFeedDefs, AppBskyActorDefs } from "@atproto/api";
 import { type BlobRef } from "@atproto/lexicon";
 
+import { getAtpAgent, getBskyApi } from "@/src/app/account/states/atp";
 import { compressImage } from "@/src/app/content/image/lib/compressImage";
 import { uploadImage } from "@/src/app/content/image/lib/uploadImage";
 import { embedExternal } from "@/src/app/post/lib/embedExternal";
@@ -14,7 +10,6 @@ import { embedRecord } from "@/src/app/post/lib/embedRecord";
 import { embedRecordWithExternal } from "@/src/app/post/lib/embedRecordWithExternal";
 import { embedRecordWithImages } from "@/src/app/post/lib/embedRecordWithImages";
 import { postToReply } from "@/src/app/post/lib/postToReply";
-import { bsky } from "@/src/lib/atp";
 import { SiteMetadata } from "@/src/lib/siteMetadata";
 
 type Params = {
@@ -24,7 +19,6 @@ type Params = {
   external?: SiteMetadata;
   replyTarget?: AppBskyFeedDefs.FeedViewPost;
   quoteTarget?: AppBskyFeedDefs.PostView;
-  atp: AtpAgent;
 };
 
 export async function createPostWithEmbed({
@@ -34,11 +28,10 @@ export async function createPostWithEmbed({
   external,
   replyTarget,
   quoteTarget,
-  atp,
 }: Params) {
   const richText = new RichText({ text });
-  await richText.detectFacets(atp);
-  return bsky.feed.post.create(
+  await richText.detectFacets(getAtpAgent());
+  return getBskyApi().feed.post.create(
     { repo: myProfile.did },
     {
       text: richText.text,

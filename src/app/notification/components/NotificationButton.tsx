@@ -3,8 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { TbBell } from "react-icons/tb";
 import { Link } from "react-router-dom";
 
+import { getBskyApi } from "@/src/app/account/states/atp";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
-import { bsky } from "@/src/lib/atp";
 
 import styles from "./NotificationButton.module.scss";
 
@@ -12,7 +12,7 @@ export default function NotificationButton() {
   const { data: count } = useQuery({
     queryKey: queryKeys.notifications.count.$,
     async queryFn() {
-      const resp = await bsky.notification.getUnreadCount();
+      const resp = await getBskyApi().notification.getUnreadCount();
       return resp.data.count;
     },
     refetchInterval: 60 * 1 * 1000, // 1 minute

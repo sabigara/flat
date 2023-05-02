@@ -1,17 +1,9 @@
-import { AtpSessionData } from "@atproto/api";
-
-import { atp, bsky } from "@/src/lib/atp";
-import { storageKeys } from "@/src/lib/storage";
+import { resumeSession, getBskyApi } from "@/src/app/account/states/atp";
 
 export async function getAccount() {
-  let session = atp.session;
-  if (!session) {
-    const sessionStr = localStorage.getItem(storageKeys.session.$);
-    if (!sessionStr) return undefined;
-    session = JSON.parse(sessionStr) as AtpSessionData;
-    await atp.resumeSession(session);
-  }
-  const resp = await bsky.actor.getProfile({
+  const session = await resumeSession();
+  if (!session) return undefined;
+  const resp = await getBskyApi().actor.getProfile({
     actor: session.handle,
   });
   return {
