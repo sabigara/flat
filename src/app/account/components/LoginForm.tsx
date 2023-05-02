@@ -4,10 +4,9 @@ import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import { useAtom } from "jotai";
 import React from "react";
-import { toast } from "react-hot-toast";
 import { Trans, useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 
+import { useOnSwitchAccount } from "@/src/app/account/hooks/useOnSwitchAccount";
 import { loginWithPersist } from "@/src/app/account/states/atp";
 import {
   LoginFormData,
@@ -27,7 +26,9 @@ export function LoginForm({ className }: Props) {
   const { t } = useTranslation();
   const [values, setValues] = useAtom(loginFormDataAtom);
   const { service, identifier, password } = values;
-  const navigate = useNavigate();
+  const handleSwitchAccount = useOnSwitchAccount({
+    goHome: true,
+  });
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setValues((draft) => {
@@ -39,14 +40,11 @@ export function LoginForm({ className }: Props) {
     mutationFn: async (params: { values: LoginFormData }) => {
       return loginWithPersist(params.values);
     },
-    onSuccess: (resp) => {
+    onSuccess: () => {
       resetLoginFormData();
-      toast.success(
-        t("auth.sign-in-success", {
-          actor: resp.handle,
-        })
-      );
-      navigate("/");
+      handleSwitchAccount({
+        isSignIn: true,
+      });
     },
   });
 

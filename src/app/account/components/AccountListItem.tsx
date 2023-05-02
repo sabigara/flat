@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { TbCheck, TbPlus } from "react-icons/tb";
 import { Link, useNavigate } from "react-router-dom";
 
+import { SwitchAccountHandler } from "@/src/app/account/hooks/useOnSwitchAccount";
 import { useRepoDescriptionQuery } from "@/src/app/account/hooks/useRepoDescription";
 import { Sessions } from "@/src/app/account/lib/types";
 import {
@@ -24,7 +25,7 @@ type Props = {
   account: Sessions["accounts"][number];
   showLogOut?: boolean;
   disableLoggedIn?: boolean;
-  onSwitchAccount?: () => void;
+  onSwitchAccount?: SwitchAccountHandler;
   className?: string;
 };
 
@@ -73,14 +74,15 @@ export function AccountListItem({
     if (account.session) {
       switchAccount(account.service, account.session.did);
       queryClient.resetQueries(queryKeys.feed.home.$);
-      onSwitchAccount?.();
+      onSwitchAccount?.({ isSignIn: true });
     } else {
       await reSignIn();
     }
   };
+
   const handleClickSignOut = () => {
     signOut({ service: account.service, did: account.did });
-    onSwitchAccount?.();
+    onSwitchAccount?.({ isSignIn: false });
   };
 
   if (isLoading) return <SpinnerFill />;
@@ -95,7 +97,7 @@ export function AccountListItem({
         onClick={handleClickSwitch}
         disabled={disableLoggedIn && isLoggedIn}
       >
-        <div className={styles.decorator}>
+        <div className={clsx(styles.decorator, styles["decorator--check"])}>
           {isLoggedIn && (
             <div className={styles.decorator__circle}>
               <TbCheck
@@ -139,14 +141,15 @@ export function AccountListItem({
 }
 
 export function AccountListItemAdd({ className }: { className?: string }) {
+  const { t } = useTranslation();
   return (
     <Link to="/login" className={clsx(styles.container, styles.add, className)}>
-      <div className={styles.decorator}>
+      <div className={clsx(styles.decorator, styles["decorator--add"])}>
         <div className={styles.decorator__circle}>
           <TbPlus className={styles.decorator__icon} />
         </div>
       </div>
-      Add account
+      {t("auth.add-account")}
     </Link>
   );
 }

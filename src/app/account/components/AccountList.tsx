@@ -5,6 +5,7 @@ import {
   AccountListItem,
   AccountListItemAdd,
 } from "@/src/app/account/components/AccountListItem";
+import { SwitchAccountHandler } from "@/src/app/account/hooks/useOnSwitchAccount";
 import {
   makeAtpAgentCacheKey,
   sessionsAtom,
@@ -13,7 +14,7 @@ import {
 import styles from "./AccountList.module.scss";
 
 type Props = {
-  onSwitchAccount?: () => void;
+  onSwitchAccount?: SwitchAccountHandler;
   showLogOut?: boolean;
   showAdd?: boolean;
   disableLoggedIn?: boolean;

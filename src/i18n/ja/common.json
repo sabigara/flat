@@ -5,7 +5,9 @@
     "sign-out": "ログアウト",
     "sign-in-again": "再ログイン",
     "signed-in-accounts": "ログイン中アカウント",
-    "sign-in-success": "{{actor}}でログインしました",
+    "sign-in-success": "ログインしました",
+    "sign-out-success": "ログアウトしました",
+    "add-account": "アカウントを追加",
     "service": {
       "label": "サーバー"
     },

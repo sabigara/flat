@@ -2,10 +2,10 @@ import { Markup } from "@camome/core/Markup";
 import clsx from "clsx";
 import { useAtom } from "jotai";
 import { Trans, useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 
 import { AccountList } from "@/src/app/account/components/AccountList";
 import { LoginForm } from "@/src/app/account/components/LoginForm";
+import { useOnSwitchAccount } from "@/src/app/account/hooks/useOnSwitchAccount";
 import { sessionsAtom } from "@/src/app/account/states/atp";
 import LogoIcon from "@/src/assets/icon.svg";
 import { config } from "@/src/config";
@@ -15,13 +15,11 @@ import styles from "./LoginRoute.module.scss";
 
 export function LoginRoute() {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const [sessions] = useAtom(sessionsAtom);
   const hasAccount = Object.keys(sessions.accounts).length > 0;
-
-  const handleSwitchAccount = () => {
-    navigate("/");
-  };
+  const handleSwitchAccount = useOnSwitchAccount({
+    goHome: true,
+  });
 
   return (
     <div className={styles.container}>

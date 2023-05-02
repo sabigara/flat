@@ -1,18 +1,20 @@
-import { useRevalidator } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { AccountList } from "@/src/app/account/components/AccountList";
+import { useOnSwitchAccount } from "@/src/app/account/hooks/useOnSwitchAccount";
 
 import styles from "./AccountsRoute.module.scss";
 
 export function AccountsRoute() {
-  const revalidator = useRevalidator();
-  const handleSwitchAccount = () => {
-    revalidator.revalidate();
-  };
+  const { t } = useTranslation();
+  const handleSwitchAccount = useOnSwitchAccount({
+    goHome: false,
+  });
+
   return (
     <>
       <div className={styles.container}>
-        <h1 className={styles.title}>アカウント</h1>
+        <h1 className={styles.title}>{t("auth.signed-in-accounts")}</h1>
         <AccountList onSwitchAccount={handleSwitchAccount} />
       </div>
     </>

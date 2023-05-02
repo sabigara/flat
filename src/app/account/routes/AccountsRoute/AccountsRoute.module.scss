@@ -1,5 +1,4 @@
 .container {
-  padding-block-start: 1rem;
   padding-block-end: 2rem;
 }
 
@@ -7,5 +6,5 @@
   padding-inline: var(--container-pad-inline);
   font-weight: var(--cmm-font-weight-bold);
   font-size: var(--cmm-font-size-2xl);
-  margin-block-end: 1em;
+  margin-block: 1em;
 }
