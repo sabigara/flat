@@ -29,27 +29,32 @@ export function LoginRoute() {
       </div>
       <div className={styles.content}>
         <div className={styles.formSection}>
-          {!hasAccount && <About />}
           <LoginForm className={styles.form} />
         </div>
 
-        {hasAccount && (
+        {
           <div className={styles.accountsSection}>
             <About />
             <div className={styles.accounts}>
               <h2 className={styles.accounts__title}>
                 {t("auth.signed-in-accounts")}
               </h2>
-              <AccountList
-                onSwitchAccount={handleSwitchAccount}
-                showLogOut={false}
-                showAdd={false}
-                disableLoggedIn={false}
-                className={styles.accounts__list}
-              />
+              {hasAccount ? (
+                <AccountList
+                  onSwitchAccount={handleSwitchAccount}
+                  showLogOut={false}
+                  showAdd={false}
+                  disableLoggedIn={false}
+                  className={styles.accounts__list}
+                />
+              ) : (
+                <span className={styles.notSignedIn}>
+                  {t("auth.not-signed-in")}
+                </span>
+              )}
             </div>
           </div>
-        )}
+        }
       </div>
     </div>
   );

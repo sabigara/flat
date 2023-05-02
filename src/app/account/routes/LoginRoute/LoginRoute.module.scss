@@ -1,4 +1,5 @@
 @use "var";
+@use "mixins";
 
 .container {
   background: var(--cmm-color-surface-2);
@@ -7,6 +8,10 @@
   padding-block-end: 4rem;
   padding-inline: 1rem;
   margin-inline: auto;
+
+  @include mixins.mq(sm) {
+    padding-block-start: 3rem;
+  }
 }
 
 .logo {
@@ -93,4 +98,13 @@
     margin-block-start: 1rem;
     font-size: 0.9em;
   }
+}
+
+.notSignedIn {
+  display: block;
+  color: var(--cmm-color-font-subtle);
+  font-size: var(--cmm-font-size-sm);
+  margin-block-start: 1rem;
+  padding-block-start: 1rem;
+  border-block-start: 1px solid var(--cmm-color-border-base);
 }

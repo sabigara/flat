@@ -8,6 +8,7 @@
     "sign-in-success": "ログインしました",
     "sign-out-success": "ログアウトしました",
     "add-account": "アカウントを追加",
+    "not-signed-in": "まだログインしていません",
     "service": {
       "label": "サーバー"
     },

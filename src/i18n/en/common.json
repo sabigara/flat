@@ -8,6 +8,7 @@
     "sign-in-success": "Signed in",
     "sign-out-success": "Singed out",
     "add-account": "Add account",
+    "not-signed-in": "Not signed in yet",
     "service": {
       "label": "Server"
     },
@@ -20,7 +21,7 @@
     },
     "about": {
       "description": "A clean, minimal, easy-to-use web client for <anchor>Bluesky</anchor>",
-      "app-password": "For better security, Flat only allows <anchor>App Password</anchor> for sign-in.",
+      "app-password": "For better security, Flat only supports <anchor>App Password</anchor> to sign in.",
       "external-page": "See the <anchor>about page</anchor> for details of this app."
     }
   },
