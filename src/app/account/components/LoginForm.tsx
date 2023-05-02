@@ -24,14 +24,14 @@ type Props = {
 
 export function LoginForm({ className }: Props) {
   const { t } = useTranslation();
-  const [values, setValues] = useAtom(loginFormDataAtom);
-  const { service, identifier, password } = values;
+  const [formValues, setFormValues] = useAtom(loginFormDataAtom);
+  const { service, identifier, password } = formValues;
   const handleSwitchAccount = useOnSwitchAccount({
     goHome: true,
   });
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    setValues((draft) => {
+    setFormValues((draft) => {
       draft[e.target.name as keyof LoginFormData] = e.target.value;
     });
   };
@@ -50,8 +50,17 @@ export function LoginForm({ className }: Props) {
 
   const handleSubmit: React.FormEventHandler = (e) => {
     e.preventDefault();
-    mutate({ values });
+    mutate({ values: formValues });
   };
+
+  React.useEffect(() => {
+    return () => {
+      setFormValues((curr) => ({
+        ...curr,
+        password: "",
+      }));
+    };
+  }, [setFormValues]);
 
   return (
     <form onSubmit={handleSubmit} className={clsx(styles.container, className)}>
