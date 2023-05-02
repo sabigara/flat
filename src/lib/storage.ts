@@ -6,3 +6,8 @@ export const storageKeys = {
     $: "settings",
   },
 };
+
+// not clean but ok for now
+export function migrateLocalStorage() {
+  localStorage.removeItem("session");
+}

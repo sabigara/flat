@@ -21,8 +21,11 @@ import { defaultSeo } from "@/src/app/seo/defaultSeo";
 import * as Followers from "@/src/app/user/routes/FollowersRoute";
 import * as Following from "@/src/app/user/routes/FollowingRoute";
 import * as Profile from "@/src/app/user/routes/ProfileRoute";
+import { migrateLocalStorage } from "@/src/lib/storage";
 
 import "@/src/i18n/config";
+
+migrateLocalStorage();
 
 const router = createBrowserRouter([
   {
