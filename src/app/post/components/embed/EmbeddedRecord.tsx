@@ -74,10 +74,12 @@ export default function EmbeddedRecord({
             className={styles.avatar}
           />
         </div>
-        {author.displayName && (
-          <span className={styles.displayName}>{author.displayName}</span>
-        )}
-        <span className={styles.handle}>@{author.handle}</span>
+        <span className={styles.username}>
+          {author.displayName && (
+            <span className={styles.displayName}>{author.displayName}</span>
+          )}
+          <span className={styles.handle}>@{author.handle}</span>
+        </span>
       </div>
       <div className={styles.body}>
         <p>{post.text}</p>

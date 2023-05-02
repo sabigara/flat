@@ -34,7 +34,7 @@
   "post": {
     "reply": {
       "title": "リプライ",
-      "tag": "{{actor}} への返信",
+      "tag": "<wrap>{{actor}}</wrap> への返信",
       "btn-label": "{{count}}件の返信"
     },
     "like": {
@@ -43,7 +43,7 @@
     },
     "repost": {
       "title": "リポスト",
-      "tag": "{{actor}} がリポスト",
+      "tag": "<wrap>{{actor}}</wrap> がリポスト",
       "btn-label": "{{count}}件のリポスト"
     },
     "quote": {

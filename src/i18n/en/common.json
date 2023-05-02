@@ -34,7 +34,7 @@
   "post": {
     "reply": {
       "title": "Reply",
-      "tag": "Reply to {{actor}}",
+      "tag": "Reply to <wrap>{{actor}}</wrap>",
       "btn-label_one": "{{count}} reply",
       "btn-label_other": "{{count}} replies"
     },
@@ -45,7 +45,7 @@
     },
     "repost": {
       "title": "Repost",
-      "tag": "Repost by {{actor}}",
+      "tag": "Repost by <wrap>{{actor}}</wrap>",
       "btn-label_one": "{{count}} repost",
       "btn-label_other": "{{count}} reposts"
     },

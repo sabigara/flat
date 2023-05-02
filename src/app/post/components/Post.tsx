@@ -5,7 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import { Draft } from "immer";
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { BsReplyFill } from "react-icons/bs";
 import { FaRetweet } from "react-icons/fa";
 import { TbDots, TbMessageCircle2, TbStar, TbStarFilled } from "react-icons/tb";
@@ -258,11 +258,13 @@ export default function Post({
           onClick={(e) => e.stopPropagation()}
           className={styles.repost}
         >
-          <span>
-            {t("post.repost.tag", {
-              actor: userToName(reason.by),
-            })}
-          </span>
+          <Trans
+            i18nKey="post.repost.tag"
+            components={{
+              wrap: <span className={styles.tagActor} />,
+            }}
+            values={{ actor: userToName(reason.by) }}
+          />
         </Tag>
       )}
       <div className={styles.main}>
@@ -279,11 +281,17 @@ export default function Post({
             <Link
               to={profileHref(post.author.handle)}
               onClick={(e) => e.stopPropagation()}
-              className={styles.displayName}
+              className={styles.usernameLink}
             >
-              {post.author.displayName}
+              <div className={styles.usernameInner}>
+                {post.author.displayName && (
+                  <span className={styles.displayName}>
+                    {post.author.displayName}
+                  </span>
+                )}
+                <span className={styles.handle}>@{post.author.handle}</span>
+              </div>
             </Link>
-            <span className={styles.name}>@{post.author.handle}</span>
             <time dateTime={post.indexedAt} className={styles.time}>
               {formatDistanceShort(new Date(post.indexedAt))}
             </time>
@@ -295,11 +303,13 @@ export default function Post({
               startDecorator={<BsReplyFill />}
               className={styles.reply}
             >
-              <span>
-                {t("post.reply.tag", {
-                  actor: userToName(reply.parent.author),
-                })}
-              </span>
+              <Trans
+                i18nKey="post.reply.tag"
+                components={{
+                  wrap: <span className={styles.tagActor} />,
+                }}
+                values={{ actor: userToName(reply.parent.author) }}
+              />
             </Tag>
           )}
           <div className={styles.content}>

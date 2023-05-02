@@ -1,3 +1,5 @@
+@use "mixins";
+
 .banner {
   aspect-ratio: 3 / 1;
   width: 100%;
@@ -44,9 +46,12 @@
 }
 
 .displayName {
+  @include mixins.lineClamp(2);
   font-size: var(--cmm-font-size-4xl);
   font-weight: var(--cmm-font-weight-bold);
   line-height: 1;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .handleWrap {

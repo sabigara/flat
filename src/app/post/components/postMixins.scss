@@ -16,14 +16,10 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  min-width: 0;
+  min-inline-size: 0;
 }
 
 @mixin header {
-  display: flex;
-  gap: 0.25rem;
-  flex-wrap: wrap;
-  align-items: baseline;
   line-height: 1.1;
 }
 

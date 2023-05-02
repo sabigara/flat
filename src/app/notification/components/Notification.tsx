@@ -44,7 +44,7 @@ export default function Notification({ notification, className }: Props) {
                 className={styles.avatar}
               />
             </div>
-            <div>
+            <div className={styles.message}>
               <Trans
                 ns="notification"
                 i18nKey={reason}

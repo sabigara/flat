@@ -25,7 +25,7 @@
 
 %truncatedTag {
   > span {
-    max-width: 12rem;
+    max-width: 7rem;
     overflow: hidden;
     text-overflow: ellipsis;
   }
@@ -40,7 +40,6 @@
 
 .reply {
   @extend %truncatedTag;
-  width: fit-content;
   background: none;
   padding: 0;
   margin-block-start: 0.3rem;
@@ -58,10 +57,14 @@
 
 .header {
   @include postMixins.header;
+  display: flex;
+  gap: 0.25rem;
+  align-items: baseline;
 }
 
-.displayName {
-  font-weight: var(--cmm-font-weight-bold);
+.usernameLink {
+  min-inline-size: 0;
+  white-space: nowrap;
 
   &:hover {
     text-decoration: underline;
@@ -69,7 +72,17 @@
   }
 }
 
-.name {
+.usernameInner {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.displayName {
+  font-weight: var(--cmm-font-weight-bold);
+  margin-inline-end: 0.3em;
+}
+
+.handle {
   font-size: var(--cmm-font-size-sm);
   color: var(--cmm-color-font-subtle);
 }

@@ -33,8 +33,19 @@
   --cmm-Avatar-size: 2rem;
 }
 
+.message {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+
 .displayName {
   font-weight: var(--cmm-font-weight-bold);
+  max-inline-size: 12rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-inline-end: 0.3em;
 }
 
 .reason {
