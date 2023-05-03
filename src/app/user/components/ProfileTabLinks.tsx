@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
 
 import styles from "./ProfileTabLinks.module.scss";
@@ -8,11 +9,12 @@ type Props = {
 };
 
 export function ProfileTabLinks({ className }: Props) {
+  const { t } = useTranslation("users");
   return (
     <ul className={clsx(styles.list, className)}>
-      <Item to="." label="投稿" />
-      <Item to="./with-replies" label="返信" />
-      <Item to="./likes" label="いいね" />
+      <Item to="." label={t("tabs.posts")} />
+      <Item to="./with-replies" label={t("tabs.replies")} />
+      <Item to="./likes" label={t("tabs.likes")} />
     </ul>
   );
 }

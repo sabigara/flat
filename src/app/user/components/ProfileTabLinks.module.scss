@@ -11,10 +11,6 @@
   block-size: 2.25rem;
   font-size: 0.9em;
 
-  @include mixins.mq(sm) {
-    // block-size: 2.rem;
-  }
-
   > a {
     --border: 1px solid var(--cmm-color-border-base);
     --radius: var(--cmm-radius-full);
