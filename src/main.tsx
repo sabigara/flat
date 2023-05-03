@@ -9,7 +9,7 @@ import "@camome/system/dist/theme.css";
 import "@/src/styles/globals.scss";
 
 import * as Accounts from "@/src/app/account/routes/AccountsRoute";
-import * as HomeFeedRoute from "@/src/app/account/routes/HomeFeedRoute";
+import * as HomeTimelineRoute from "@/src/app/account/routes/HomeFeedRoute";
 import * as Login from "@/src/app/account/routes/LoginRoute";
 import * as Settings from "@/src/app/account/routes/SettingsRoute";
 import * as Notifications from "@/src/app/notification/routes/NotificationsRoute";
@@ -20,6 +20,7 @@ import Seo from "@/src/app/seo/Seo";
 import { defaultSeo } from "@/src/app/seo/defaultSeo";
 import * as Followers from "@/src/app/user/routes/FollowersRoute";
 import * as Following from "@/src/app/user/routes/FollowingRoute";
+import * as ProfileFeed from "@/src/app/user/routes/ProfileFeedRoute";
 import * as Profile from "@/src/app/user/routes/ProfileRoute";
 import { migrateLocalStorage } from "@/src/lib/storage";
 
@@ -34,7 +35,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        ...HomeFeedRoute,
+        ...HomeTimelineRoute,
       },
       {
         path: "/settings",
@@ -51,10 +52,12 @@ const router = createBrowserRouter([
       {
         path: "/:handle",
         ...Profile,
-      },
-      {
-        path: "/:handle/posts/:rkey",
-        ...Post,
+        children: [
+          {
+            path: "/:handle",
+            ...ProfileFeed,
+          },
+        ],
       },
       {
         path: "/:handle/followers",
@@ -63,6 +66,10 @@ const router = createBrowserRouter([
       {
         path: "/:handle/following",
         ...Following,
+      },
+      {
+        path: "/:handle/posts/:rkey",
+        ...Post,
       },
     ],
   },
