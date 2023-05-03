@@ -55,19 +55,28 @@ export default function PostMoreMenu({
     },
   });
 
-  const copyText = async () => {
-    if (!AppBskyFeedPost.isRecord(post.record)) return;
-    await navigator.clipboard.writeText(post.record.text);
-    toast.success(t("post.copy-content.success"));
+  const copyText = async (text: string, msg: string) => {
+    await navigator.clipboard.writeText(text);
+    toast.success(msg);
   };
 
-  const shareUrl = async () => {
+  const copyContent = () => {
     if (!AppBskyFeedPost.isRecord(post.record)) return;
-    await navigator.share({
-      url: `https://staging.bsky.app/profile/${post.author.handle}/post/${
-        new AtUri(post.uri).rkey
-      }`,
-    });
+    copyText(post.record.text, t("post.copy-content.success"));
+  };
+
+  const shareOrCopyUrl = async () => {
+    if (!AppBskyFeedPost.isRecord(post.record)) return;
+    const url = `https://staging.bsky.app/profile/${post.author.handle}/post/${
+      new AtUri(post.uri).rkey
+    }`;
+    if (isMobile()) {
+      await navigator.share({
+        url,
+      });
+    } else {
+      copyText(url, t("post.share.success"));
+    }
   };
 
   const moreActions: {
@@ -86,16 +95,14 @@ export default function PostMoreMenu({
   moreActions.push({
     label: t("post.copy-content.label"),
     icon: <TbClipboard />,
-    onClick: copyText,
+    onClick: copyContent,
   });
 
-  if (isMobile()) {
-    moreActions.push({
-      label: t("post.share.label"),
-      icon: <TbShare />,
-      onClick: shareUrl,
-    });
-  }
+  moreActions.push({
+    label: t("post.share.label"),
+    icon: <TbShare />,
+    onClick: shareOrCopyUrl,
+  });
 
   if (myProfile && post.author.did === myProfile.did) {
     moreActions.push({

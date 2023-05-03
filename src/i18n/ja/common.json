@@ -84,7 +84,8 @@
       "success": "コピーしました"
     },
     "share": {
-      "label": "シェア"
+      "label": "シェア",
+      "success": "URLをコピーしました"
     }
   },
   "feed": {
