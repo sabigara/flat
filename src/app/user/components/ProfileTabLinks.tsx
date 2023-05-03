@@ -27,7 +27,17 @@ type ItemProps = {
 function Item({ to, label }: ItemProps) {
   return (
     <li className={styles.item}>
-      <NavLink to={to} replace preventScrollReset end>
+      <NavLink
+        to={to}
+        replace
+        preventScrollReset
+        end
+        className={({ isActive, isPending }) =>
+          clsx(styles.item__link, {
+            [styles["item__link--active"]]: isActive || isPending,
+          })
+        }
+      >
         {label}
       </NavLink>
     </li>
