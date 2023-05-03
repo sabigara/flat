@@ -6,26 +6,26 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { TbDots, TbVolumeOff } from "react-icons/tb";
-import { Link, useLoaderData, useRevalidator } from "react-router-dom";
+import {
+  Link,
+  Outlet,
+  useLoaderData,
+  useOutletContext,
+  useRevalidator,
+} from "react-router-dom";
 
 import type { ProfileRouteLoaderResult } from "@/src/app/user/routes/ProfileRoute";
 
-import {
-  getAtpAgent,
-  getBskyApi,
-  useAtpAgent,
-} from "@/src/app/account/states/atp";
+import { getAtpAgent, useAtpAgent } from "@/src/app/account/states/atp";
 import { useLightbox } from "@/src/app/content/image/hooks/useLightbox";
-import { Feed, FeedQueryFn } from "@/src/app/feed/components/Feed";
-import { FeedFilter } from "@/src/app/feed/components/FeedFilter";
-import { useFeedFilter } from "@/src/app/feed/hooks/useFeedFilter";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import Seo from "@/src/app/seo/Seo";
 import Avatar from "@/src/app/user/components/Avatar";
+import ProfileMoreMenu from "@/src/app/user/components/ProfileMoreMenu";
+import { ProfileTabLinks } from "@/src/app/user/components/ProfileTabLinks";
 import { followUser } from "@/src/app/user/lib/followUser";
 import { unfollowUser } from "@/src/app/user/lib/unfollowUser";
 import { userToName } from "@/src/app/user/lib/userToName";
-import ProfileMoreMenu from "@/src/app/user/routes/ProfileRoute/ProfileMoreMenu";
 import { RichTextRenderer } from "@/src/components/RichTextRenderer";
 
 import styles from "./ProfileRoute.module.scss";
@@ -36,39 +36,14 @@ export function ProfileRoute() {
   const { profile, richText } = useLoaderData() as ProfileRouteLoaderResult;
   const username = userToName(profile);
   const queryClient = useQueryClient();
-  const queryKey = queryKeys.feed.author.$(profile.handle);
-  const queryFn: FeedQueryFn<typeof queryKey> = async ({
-    queryKey,
-    pageParam,
-  }) => {
-    const resp = await getBskyApi().feed.getAuthorFeed({
-      actor: queryKey[1].authorId,
-      limit: 30,
-      // passing `undefined` breaks the query somehow
-      ...(pageParam ? { cursor: pageParam.cursor } : {}),
-    });
-    // TODO: ?????
-    if (!resp.success) throw new Error("Fetch error");
-    return resp.data;
-  };
-  const { feedFilter } = useFeedFilter();
-  const fetchLatest = React.useCallback(
-    async () =>
-      feedFilter(
-        (
-          await getBskyApi().feed.getAuthorFeed({
-            actor: profile.handle,
-            limit: 1,
-          })
-        ).data.feed
-      ).at(0),
-    [feedFilter, profile.handle]
-  );
+  const queryKey = queryKeys.feed.author(profile.handle).$;
   const revalidator = useRevalidator();
+
   const revalidate = () => {
     revalidator.revalidate();
     queryClient.invalidateQueries(queryKey);
   };
+
   const { mutate: mutateFollowState, isLoading: isMutating } = useMutation(
     async (isFollow: boolean) => {
       setHoverUnfollow(false);
@@ -223,18 +198,20 @@ export function ProfileRoute() {
             </p>
           )}
           <div hidden={muted}>
-            <FeedFilter />
-            <Feed
-              queryKey={queryKey}
-              queryFn={queryFn}
-              fetchNewLatest={fetchLatest}
-              filter={feedFilter}
-            />
+            <ProfileTabLinks className={styles.tabLinks} />
+            <hr className={styles.hr} />
+            <Outlet context={{ profile, richText }} />
           </div>
         </div>
       </article>
     </>
   );
+}
+
+type ProfileOutletCtx = ProfileRouteLoaderResult;
+
+export function useProfileOutletCtx() {
+  return useOutletContext<ProfileOutletCtx>();
 }
 
 const UNFOLLOW_DESCRIPTION_ID = "unfollow-describe" as const;

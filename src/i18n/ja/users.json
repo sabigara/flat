@@ -10,5 +10,10 @@
   },
   "followers": {
     "title": "{{actor}} のフォロワー"
+  },
+  "tabs": {
+    "posts": "投稿",
+    "replies": "返信",
+    "likes": "いいね"
   }
 }

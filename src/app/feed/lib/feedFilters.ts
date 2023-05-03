@@ -8,13 +8,16 @@ export type FeedFilterFn = (
 
 export function feedFiltersToFn(
   { reply, repost }: FeedFilers,
-  myDid: string
+  myDid?: string
 ): FeedFilterFn {
   const replyFilter: FeedFilterFn = (() => {
     switch (reply) {
       case "all":
-        return tlFilterNoop;
+        return feedFilterNoop;
       case "following":
+        if (!myDid) {
+          throw new Error("`myDid` is required for reply.following filter.");
+        }
         return (posts) => excludeRepliesToNoFollowing(posts, myDid);
       case "none":
         return excludeReplies;
@@ -23,7 +26,7 @@ export function feedFiltersToFn(
   const repostFilter: FeedFilterFn = (() => {
     switch (repost) {
       case "all":
-        return tlFilterNoop;
+        return feedFilterNoop;
       case "latest":
         return excludeDuplicates;
       case "none":
@@ -33,7 +36,7 @@ export function feedFiltersToFn(
   return (posts) => replyFilter(repostFilter(posts));
 }
 
-export const tlFilterNoop: FeedFilterFn = (posts) => posts;
+export const feedFilterNoop: FeedFilterFn = (posts) => posts;
 
 function excludeRepliesToNoFollowing(
   posts: AppBskyFeedDefs.FeedViewPost[],

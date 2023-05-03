@@ -3,6 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import produce from "immer";
 import { Link, useParams } from "react-router-dom";
 
+import { FeedSkelton } from "@/src/app/feed/components/FeedSkelton";
 import PostComposer from "@/src/app/post/components/PostComposer";
 import Thread from "@/src/app/post/components/Thread";
 import { usePostThreadQuery } from "@/src/app/post/hooks/usePostThreadQuery";
@@ -10,7 +11,6 @@ import { findPostFromThread } from "@/src/app/post/lib/findPostFromThread";
 import { MutatePostCache } from "@/src/app/post/lib/types";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import Seo from "@/src/app/seo/Seo";
-import { FeedSkelton } from "@/src/app/feed/components/FeedSkelton";
 import { useProfileQuery } from "@/src/app/user/hooks/useProfileQuery";
 import { userToName } from "@/src/app/user/lib/userToName";
 import { truncate } from "@/src/lib/string";

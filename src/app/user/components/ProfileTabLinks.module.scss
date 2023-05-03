@@ -1,0 +1,34 @@
+@use "mixins";
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.item {
+  display: grid;
+  place-items: stretch center;
+  block-size: 2.25rem;
+  font-size: 0.9em;
+
+  > a {
+    --border: 1px solid var(--cmm-color-border-base);
+    --radius: var(--cmm-radius-full);
+
+    display: grid;
+    place-items: center;
+    inline-size: min(100%, 6.5rem);
+    font-weight: var(--cmm-font-weight-bold);
+    color: var(--cmm-color-font-subtle);
+    border-radius: var(--radius);
+
+    &:hover {
+      background: var(--cmm-color-surface-2);
+    }
+
+    &[aria-current="page"] {
+      color: var(--cmm-color-primary-soft-font);
+      background: var(--cmm-color-primary-soft-bg);
+    }
+  }
+}

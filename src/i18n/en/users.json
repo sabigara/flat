@@ -10,5 +10,10 @@
   },
   "followers": {
     "title": "Followers of {{actor}}"
+  },
+  "tabs": {
+    "posts": "Posts",
+    "replies": "Replies",
+    "likes": "Likes"
   }
 }
