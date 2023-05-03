@@ -1,3 +1,3 @@
-import { ProfileFeedPostsRoute } from "@/src/app/user/routes/ProfileFeedPostsRoute/ProfileFeedRoute";
+import { ProfileFeedPostsRoute } from "@/src/app/user/routes/ProfileFeedPostsRoute/ProfileFeedPostsRoute";
 
 export const element = <ProfileFeedPostsRoute />;
