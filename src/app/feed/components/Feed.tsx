@@ -39,7 +39,7 @@ export type FeedQueryFn<K extends QueryKey> = QueryFunction<
 type Props<K extends QueryKey> = {
   queryKey: K;
   queryFn: FeedQueryFn<K>;
-  fetchNewLatest: () => Promise<AppBskyFeedDefs.FeedViewPost | undefined>;
+  fetchNewLatest?: () => Promise<AppBskyFeedDefs.FeedViewPost | undefined>;
   maxPages?: number;
   filter?: (
     posts: AppBskyFeedDefs.FeedViewPost[]
@@ -80,7 +80,7 @@ export function Feed<K extends QueryKey>({
   const { data: isNewAvailable } = useQuery(
     queryKeys.feed.new.$(queryKey, currentLatestUri, fetchNewLatest),
     async () => {
-      const newLatest = await fetchNewLatest();
+      const newLatest = await fetchNewLatest?.();
       if (!newLatest) return false;
       // FIXME: consider about reposts which share the same URI
       return newLatest.post.uri !== currentLatestUri;
@@ -88,6 +88,7 @@ export function Feed<K extends QueryKey>({
     {
       refetchInterval: 15 * 1000, // 15 seconds; the same as the official web app
       refetchOnWindowFocus: import.meta.env.PROD,
+      enabled: !!fetchNewLatest,
     }
   );
 

@@ -21,10 +21,11 @@ import { useLightbox } from "@/src/app/content/image/hooks/useLightbox";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import Seo from "@/src/app/seo/Seo";
 import Avatar from "@/src/app/user/components/Avatar";
+import ProfileMoreMenu from "@/src/app/user/components/ProfileMoreMenu";
+import { ProfileTabLinks } from "@/src/app/user/components/ProfileTabLinks";
 import { followUser } from "@/src/app/user/lib/followUser";
 import { unfollowUser } from "@/src/app/user/lib/unfollowUser";
 import { userToName } from "@/src/app/user/lib/userToName";
-import ProfileMoreMenu from "@/src/app/user/routes/ProfileRoute/ProfileMoreMenu";
 import { RichTextRenderer } from "@/src/components/RichTextRenderer";
 
 import styles from "./ProfileRoute.module.scss";
@@ -35,7 +36,7 @@ export function ProfileRoute() {
   const { profile, richText } = useLoaderData() as ProfileRouteLoaderResult;
   const username = userToName(profile);
   const queryClient = useQueryClient();
-  const queryKey = queryKeys.feed.author.$(profile.handle);
+  const queryKey = queryKeys.feed.author(profile.handle).$;
   const revalidator = useRevalidator();
 
   const revalidate = () => {
@@ -197,6 +198,8 @@ export function ProfileRoute() {
             </p>
           )}
           <div hidden={muted}>
+            <ProfileTabLinks className={styles.tabLinks} />
+            <hr className={styles.hr} />
             <Outlet context={{ profile, richText }} />
           </div>
         </div>

@@ -20,7 +20,9 @@ import Seo from "@/src/app/seo/Seo";
 import { defaultSeo } from "@/src/app/seo/defaultSeo";
 import * as Followers from "@/src/app/user/routes/FollowersRoute";
 import * as Following from "@/src/app/user/routes/FollowingRoute";
-import * as ProfileFeed from "@/src/app/user/routes/ProfileFeedRoute";
+import * as ProfileFeedLikes from "@/src/app/user/routes/ProfileFeedLikesRoute";
+import * as ProfileFeedPosts from "@/src/app/user/routes/ProfileFeedPostsRoute";
+import * as ProfileFeedPostsWithReplies from "@/src/app/user/routes/ProfileFeedPostsWithRepliesRoute";
 import * as Profile from "@/src/app/user/routes/ProfileRoute";
 import { migrateLocalStorage } from "@/src/lib/storage";
 
@@ -55,7 +57,15 @@ const router = createBrowserRouter([
         children: [
           {
             path: "/:handle",
-            ...ProfileFeed,
+            ...ProfileFeedPosts,
+          },
+          {
+            path: "/:handle/with-replies",
+            ...ProfileFeedPostsWithReplies,
+          },
+          {
+            path: "/:handle/likes",
+            ...ProfileFeedLikes,
           },
         ],
       },

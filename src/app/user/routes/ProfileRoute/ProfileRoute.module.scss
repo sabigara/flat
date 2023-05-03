@@ -104,12 +104,6 @@
   font-size: calc(var(--cmm-font-size-xs) * 0.9);
 }
 
-.main {
-  border-top: 1px solid var(--cmm-color-border-base);
-  margin-block-start: 1rem;
-  padding-block-end: 5rem;
-}
-
 .muted {
   display: flex;
   align-items: center;
@@ -123,4 +117,14 @@
   > svg {
     font-size: var(--cmm-font-size-lg);
   }
+}
+
+.tabLinks {
+  margin-block-start: 1rem;
+  margin-block-end: 0.5rem;
+  padding-inline: 0.5rem;
+}
+
+.hr {
+  border-block-start: 1px solid var(--cmm-color-border-base);
 }

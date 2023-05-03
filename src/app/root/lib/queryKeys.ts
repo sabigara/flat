@@ -9,14 +9,15 @@ export const queryKeys = {
     home: {
       $: ["feed"] as const,
     },
-    author: {
-      $: (handle: string) => ["feed", { authorId: handle }] as const,
-    },
+    author: (handle: string) => ({
+      $: ["feed", { authorId: handle }] as const,
+      likes: ["feed", { authorId: handle }, "likes"] as const,
+    }),
     new: {
       $: (
         key: QueryKey,
         currentLatestId: string | undefined,
-        fetchNewLatestOne: () => Promise<
+        fetchNewLatestOne?: () => Promise<
           AppBskyFeedDefs.FeedViewPost | undefined
         >
       ) => [key, { currentLatestId, fetchNewLatestOne }] as const,
