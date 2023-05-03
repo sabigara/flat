@@ -72,3 +72,14 @@
 .action {
   margin-inline: 1rem 0.5rem;
 }
+
+.error {
+  padding-inline: 1rem 0.5rem;
+  padding-block: 1rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+
+  &__message {
+    color: var(--cmm-color-danger-emphasis);
+  }
+}

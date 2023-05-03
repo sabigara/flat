@@ -40,7 +40,7 @@ export function AccountListItem({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { data, isLoading } = useRepoDescriptionQuery({
+  const { data, isLoading, error } = useRepoDescriptionQuery({
     service: account.service,
     identifier: account.did,
   });
@@ -85,8 +85,26 @@ export function AccountListItem({
     onSwitchAccount?.({ isSignIn: false });
   };
 
+  const signOutBtn = (
+    <Button
+      size="sm"
+      colorScheme="neutral"
+      variant="ghost"
+      onClick={handleClickSignOut}
+      className={styles.signOutBtn}
+    >
+      {t("auth.sign-out")}
+    </Button>
+  );
+
   if (isLoading) return <SpinnerFill />;
-  if (!data) return <>Error</>;
+  if (!data)
+    return (
+      <div className={clsx(styles.error, className)}>
+        <span className={styles.error__message}>{String(error)}</span>
+        {signOutBtn}
+      </div>
+    );
 
   const isLoggedIn = currAccount && currAccount.did === account.did;
 
@@ -114,17 +132,7 @@ export function AccountListItem({
       </button>
       <div className={styles.action}>
         {account.session ? (
-          showLogOut && (
-            <Button
-              size="sm"
-              colorScheme="neutral"
-              variant="ghost"
-              onClick={handleClickSignOut}
-              className={styles.signOutBtn}
-            >
-              {t("auth.sign-out")}
-            </Button>
-          )
+          showLogOut && signOutBtn
         ) : (
           <Button
             size="sm"
