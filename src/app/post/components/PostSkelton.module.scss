@@ -2,7 +2,7 @@
 @use "./postMixins";
 
 %skelton {
-  background: var(--cmm-color-surface-2);
+  @include mixins.skelton;
   border-radius: var(--cmm-radius-xs);
 }
 

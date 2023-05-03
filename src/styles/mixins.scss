@@ -24,3 +24,18 @@
   white-space: nowrap;
   position: absolute;
 }
+
+@mixin skelton() {
+  background: var(--cmm-color-surface-2);
+  animation: loading 1.5s linear infinite;
+}
+
+@keyframes loading {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
