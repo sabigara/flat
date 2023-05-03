@@ -66,6 +66,7 @@ export function useLinkCardGenerator({ rt, onSuccess, classNames }: Params) {
     <PostLinkCardGenerator
       rt={rt}
       selected={linkCardUri ?? ""}
+      loading={isFetching}
       onChange={setLinkCardUri}
       className={classNames?.generator}
     />

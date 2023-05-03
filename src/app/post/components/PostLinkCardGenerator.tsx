@@ -1,5 +1,6 @@
 import { RichText, RichTextSegment } from "@atproto/api";
 import { Button } from "@camome/core/Button";
+import { Spinner } from "@camome/core/Spinner";
 import clsx from "clsx";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -13,6 +14,7 @@ import styles from "./PostLinkCardGenerator.module.scss";
 type Props = {
   rt: RichText;
   selected: string;
+  loading: boolean;
   onChange: (val: string) => void;
   className?: string;
 };
@@ -20,6 +22,7 @@ type Props = {
 export function PostLinkCardGenerator({
   rt,
   selected,
+  loading,
   onChange,
   className,
 }: Props) {
@@ -54,6 +57,7 @@ export function PostLinkCardGenerator({
               key={seg.facet.index.byteStart + seg.facet.index.byteEnd}
               uri={seg.link.uri}
               selected={selected === seg.link.uri}
+              loading={loading}
               onClick={handleClick}
             />
           );
@@ -66,10 +70,12 @@ export function PostLinkCardGenerator({
 function GenLinkCardButton({
   uri,
   selected,
+  loading,
   onClick,
 }: {
   uri: string;
   selected?: boolean;
+  loading?: boolean;
   onClick?: (uri: string) => void;
 }): React.ReactElement {
   return (
@@ -80,10 +86,11 @@ function GenLinkCardButton({
       onClick={() => void onClick?.(uri)}
       className={styles.generator__button}
     >
-      {/* TODO: show spinner */}
-      <span aria-hidden className={styles.button__plus}>
-        +
-      </span>
+      {loading ? (
+        <Spinner className={styles.generator__button__spinner} />
+      ) : (
+        <span aria-hidden>+</span>
+      )}
       <span aria-hidden>{shortenUrl(uri, 22)}</span>
     </button>
   );
