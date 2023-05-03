@@ -11,7 +11,6 @@ import SpinnerFill from "@/src/components/SpinnerFill";
 
 import styles from "./NotificationList.module.scss";
 
-// TODO: support infinite scroll
 export default function NotificationList() {
   const mounted = React.useRef(false);
   const queryClient = useQueryClient();
@@ -86,7 +85,7 @@ export default function NotificationList() {
           </div>
         )}
       </InfiniteScroll>
-      {/* used when reply */}
+      {/* used for reply */}
       <PostComposer revalidate={revalidateOnPost} showButton={false} />
     </>
   );
