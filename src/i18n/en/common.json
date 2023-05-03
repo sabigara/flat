@@ -84,7 +84,7 @@
       }
     }
   },
-  "timeline": {
+  "feed": {
     "load-new-posts": "Load new posts",
     "filters": {
       "title": "Filters",

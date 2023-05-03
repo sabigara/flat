@@ -1,6 +1,6 @@
 import { QueryClient, QueryKey } from "@tanstack/react-query";
 
-export function reloadTimelineForNewPosts(
+export function reloadFeedForNewPosts(
   queryClient: QueryClient,
   queryKey: QueryKey
 ) {

@@ -10,7 +10,7 @@ import { findPostFromThread } from "@/src/app/post/lib/findPostFromThread";
 import { MutatePostCache } from "@/src/app/post/lib/types";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import Seo from "@/src/app/seo/Seo";
-import { TimelineSkelton } from "@/src/app/timeline/components/TimelineSkelton";
+import { FeedSkelton } from "@/src/app/feed/components/FeedSkelton";
 import { useProfileQuery } from "@/src/app/user/hooks/useProfileQuery";
 import { userToName } from "@/src/app/user/lib/userToName";
 import { truncate } from "@/src/lib/string";
@@ -91,7 +91,7 @@ export default function PostRoute() {
       />
       <div className={styles.container}>
         {content}
-        {isLoading && <TimelineSkelton count={3} />}
+        {isLoading && <FeedSkelton count={3} />}
       </div>
       <PostComposer revalidate={revalidatePost} />
     </>

@@ -6,10 +6,10 @@ import {
   useRevalidator,
 } from "react-router-dom";
 
+import { reloadFeedForNewPosts } from "@/src/app/feed/lib/reloadFeedForNewPosts";
 import NotificationButton from "@/src/app/notification/components/NotificationButton";
 import DropdownMenu from "@/src/app/root/components/DropdownMenu";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
-import { reloadTimelineForNewPosts } from "@/src/app/timeline/lib/reloadTimelineForNewPosts";
 import LogoIcon from "@/src/assets/icon.svg";
 
 import styles from "./Header.module.scss";
@@ -22,7 +22,7 @@ export default function Header() {
   const location = useLocation();
   const handleClickLogo = () => {
     if (location.pathname === "/") {
-      reloadTimelineForNewPosts(queryClient, queryKeys.feed.home.$);
+      reloadFeedForNewPosts(queryClient, queryKeys.feed.home.$);
     }
   };
 

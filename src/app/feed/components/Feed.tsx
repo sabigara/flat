@@ -13,22 +13,22 @@ import InfiniteScroll from "react-infinite-scroller";
 
 import type { AppBskyFeedDefs } from "@atproto/api";
 
+import { FeedSkelton } from "@/src/app/feed/components/FeedSkelton";
+import { reloadFeedForNewPosts } from "@/src/app/feed/lib/reloadFeedForNewPosts";
 import Post from "@/src/app/post/components/Post";
 import PostComposer from "@/src/app/post/components/PostComposer";
 import { feedItemToUniqueKey } from "@/src/app/post/lib/feedItemToUniqueKey";
 import {
-  TimelineInfiniteData,
-  mutateTimelineItem,
-} from "@/src/app/post/lib/mutateTimelineItem";
+  FeedInfiniteData,
+  mutateFeedItem,
+} from "@/src/app/post/lib/mutateFeedItem";
 import { MutatePostCache } from "@/src/app/post/lib/types";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
-import { TimelineSkelton } from "@/src/app/timeline/components/TimelineSkelton";
-import { reloadTimelineForNewPosts } from "@/src/app/timeline/lib/reloadTimelineForNewPosts";
 import SpinnerFill from "@/src/components/SpinnerFill";
 
-import styles from "./Timeline.module.scss";
+import styles from "./Feed.module.scss";
 
-export type TimelineQueryFn<K extends QueryKey> = QueryFunction<
+export type FeedQueryFn<K extends QueryKey> = QueryFunction<
   {
     cursor?: string;
     feed: FeedViewPost[];
@@ -38,7 +38,7 @@ export type TimelineQueryFn<K extends QueryKey> = QueryFunction<
 
 type Props<K extends QueryKey> = {
   queryKey: K;
-  queryFn: TimelineQueryFn<K>;
+  queryFn: FeedQueryFn<K>;
   fetchNewLatest: () => Promise<AppBskyFeedDefs.FeedViewPost | undefined>;
   maxPages?: number;
   filter?: (
@@ -46,7 +46,7 @@ type Props<K extends QueryKey> = {
   ) => AppBskyFeedDefs.FeedViewPost[];
 };
 
-export function Timeline<K extends QueryKey>({
+export function Feed<K extends QueryKey>({
   queryKey,
   queryFn,
   fetchNewLatest,
@@ -92,7 +92,7 @@ export function Timeline<K extends QueryKey>({
   );
 
   const loadNewPosts = () => {
-    reloadTimelineForNewPosts(queryClient, queryKey);
+    reloadFeedForNewPosts(queryClient, queryKey);
   };
 
   const revalidateOnPost = () => {
@@ -100,13 +100,13 @@ export function Timeline<K extends QueryKey>({
   };
 
   const mutatePostCache: MutatePostCache = ({ uri, fn }) => {
-    queryClient.setQueryData<TimelineInfiniteData>(queryKey, (data) =>
-      mutateTimelineItem(data, uri, fn)
+    queryClient.setQueryData<FeedInfiniteData>(queryKey, (data) =>
+      mutateFeedItem(data, uri, fn)
     );
   };
 
   if (status === "loading") {
-    return <TimelineSkelton count={12} />;
+    return <FeedSkelton count={12} />;
   } else if (status === "error") {
     return <span>Error: {(error as Error).message}</span>;
   }
@@ -147,7 +147,7 @@ export function Timeline<K extends QueryKey>({
           {isFetching && !isFetchingNextPage ? (
             <Spinner size="sm" />
           ) : (
-            t("timeline.load-new-posts")
+            t("feed.load-new-posts")
           )}
         </Button>
       )}

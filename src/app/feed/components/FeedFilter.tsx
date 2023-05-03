@@ -6,13 +6,13 @@ import { useTranslation } from "react-i18next";
 import { TbFilter } from "react-icons/tb";
 
 import { settingsAtom } from "@/src/app/account/states/settingsAtom";
-import { TlFilterReply, TlFilterRepost } from "@/src/app/timeline/lib/types";
+import { FeedFilterReply, FeedFilterRepost } from "@/src/app/feed/lib/types";
 
-import styles from "./TimelineFilter.module.scss";
+import styles from "./FeedFilter.module.scss";
 
 type Register = (
   name: "reply" | "repost",
-  value: TlFilterReply | TlFilterRepost
+  value: FeedFilterReply | FeedFilterRepost
 ) => {
   name: string;
   value: string;
@@ -20,7 +20,7 @@ type Register = (
   onChange: React.FormEventHandler<HTMLInputElement>;
 };
 
-export function TimelineFilter() {
+export function FeedFilter() {
   const { t } = useTranslation();
   const [settings, setSettings] = useImmerAtom(settingsAtom);
   const {
@@ -28,7 +28,7 @@ export function TimelineFilter() {
   } = settings;
   const register: Register = (
     name: "reply" | "repost",
-    value: TlFilterReply | TlFilterRepost
+    value: FeedFilterReply | FeedFilterRepost
   ) => {
     return {
       name,
@@ -38,11 +38,12 @@ export function TimelineFilter() {
         if (e.currentTarget.checked) {
           if (e.currentTarget.name === "reply") {
             setSettings((draft) => {
-              draft.tlFilters.reply = e.currentTarget.value as TlFilterReply;
+              draft.tlFilters.reply = e.currentTarget.value as FeedFilterReply;
             });
           } else {
             setSettings((draft) => {
-              draft.tlFilters.repost = e.currentTarget.value as TlFilterRepost;
+              draft.tlFilters.repost = e.currentTarget
+                .value as FeedFilterRepost;
             });
           }
         }
@@ -54,9 +55,7 @@ export function TimelineFilter() {
     <details className={styles.details}>
       <summary className={styles.summary}>
         <TbFilter />
-        <span className={styles.summary__label}>
-          {t("timeline.filters.title")}
-        </span>
+        <span className={styles.summary__label}>{t("feed.filters.title")}</span>
       </summary>
       <div className={styles.content}>
         <RadioGroup
@@ -65,17 +64,17 @@ export function TimelineFilter() {
           orientation="horizontal"
         >
           <Radio
-            label={t("timeline.filters.reply.all")}
+            label={t("feed.filters.reply.all")}
             size={RADIO_SIZE}
             {...register("reply", "all")}
           />
           <Radio
-            label={t("timeline.filters.reply.following")}
+            label={t("feed.filters.reply.following")}
             size={RADIO_SIZE}
             {...register("reply", "following")}
           />
           <Radio
-            label={t("timeline.filters.reply.none")}
+            label={t("feed.filters.reply.none")}
             size={RADIO_SIZE}
             {...register("reply", "none")}
           />
@@ -86,17 +85,17 @@ export function TimelineFilter() {
           orientation="horizontal"
         >
           <Radio
-            label={t("timeline.filters.repost.all")}
+            label={t("feed.filters.repost.all")}
             size={RADIO_SIZE}
             {...register("repost", "all")}
           />
           <Radio
-            label={t("timeline.filters.repost.latest")}
+            label={t("feed.filters.repost.latest")}
             size={RADIO_SIZE}
             {...register("repost", "latest")}
           />
           <Radio
-            label={t("timeline.filters.repost.none")}
+            label={t("feed.filters.repost.none")}
             size={RADIO_SIZE}
             {...register("repost", "none")}
           />

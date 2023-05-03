@@ -16,14 +16,11 @@ import {
   useAtpAgent,
 } from "@/src/app/account/states/atp";
 import { useLightbox } from "@/src/app/content/image/hooks/useLightbox";
+import { Feed, FeedQueryFn } from "@/src/app/feed/components/Feed";
+import { FeedFilter } from "@/src/app/feed/components/FeedFilter";
+import { useFeedFilter } from "@/src/app/feed/hooks/useFeedFilter";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import Seo from "@/src/app/seo/Seo";
-import {
-  Timeline,
-  TimelineQueryFn,
-} from "@/src/app/timeline/components/Timeline";
-import { TimelineFilter } from "@/src/app/timeline/components/TimelineFilter";
-import { useTimelineFilter } from "@/src/app/timeline/hooks/useTimelineFilter";
 import Avatar from "@/src/app/user/components/Avatar";
 import { followUser } from "@/src/app/user/lib/followUser";
 import { unfollowUser } from "@/src/app/user/lib/unfollowUser";
@@ -40,7 +37,7 @@ export function ProfileRoute() {
   const username = userToName(profile);
   const queryClient = useQueryClient();
   const queryKey = queryKeys.feed.author.$(profile.handle);
-  const queryFn: TimelineQueryFn<typeof queryKey> = async ({
+  const queryFn: FeedQueryFn<typeof queryKey> = async ({
     queryKey,
     pageParam,
   }) => {
@@ -54,10 +51,10 @@ export function ProfileRoute() {
     if (!resp.success) throw new Error("Fetch error");
     return resp.data;
   };
-  const { timelineFilter } = useTimelineFilter();
+  const { feedFilter } = useFeedFilter();
   const fetchLatest = React.useCallback(
     async () =>
-      timelineFilter(
+      feedFilter(
         (
           await getBskyApi().feed.getAuthorFeed({
             actor: profile.handle,
@@ -65,7 +62,7 @@ export function ProfileRoute() {
           })
         ).data.feed
       ).at(0),
-    [profile.handle, timelineFilter]
+    [feedFilter, profile.handle]
   );
   const revalidator = useRevalidator();
   const revalidate = () => {
@@ -226,12 +223,12 @@ export function ProfileRoute() {
             </p>
           )}
           <div hidden={muted}>
-            <TimelineFilter />
-            <Timeline
+            <FeedFilter />
+            <Feed
               queryKey={queryKey}
               queryFn={queryFn}
               fetchNewLatest={fetchLatest}
-              filter={timelineFilter}
+              filter={feedFilter}
             />
           </div>
         </div>

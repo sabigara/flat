@@ -80,7 +80,7 @@
       }
     }
   },
-  "timeline": {
+  "feed": {
     "load-new-posts": "新しい投稿を見る",
     "filters": {
       "title": "表示オプション",

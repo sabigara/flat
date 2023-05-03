@@ -1,16 +1,16 @@
 import { AppBskyFeedDefs } from "@atproto/api";
 
-import { TlFilers } from "@/src/app/timeline/lib/types";
+import { FeedFilers } from "@/src/app/feed/lib/types";
 
-export type TlFilterFn = (
+export type FeedFilterFn = (
   posts: AppBskyFeedDefs.FeedViewPost[]
 ) => AppBskyFeedDefs.FeedViewPost[];
 
-export function tlFiltersToFn(
-  { reply, repost }: TlFilers,
+export function feedFiltersToFn(
+  { reply, repost }: FeedFilers,
   myDid: string
-): TlFilterFn {
-  const replyFilter: TlFilterFn = (() => {
+): FeedFilterFn {
+  const replyFilter: FeedFilterFn = (() => {
     switch (reply) {
       case "all":
         return tlFilterNoop;
@@ -20,7 +20,7 @@ export function tlFiltersToFn(
         return excludeReplies;
     }
   })();
-  const repostFilter: TlFilterFn = (() => {
+  const repostFilter: FeedFilterFn = (() => {
     switch (repost) {
       case "all":
         return tlFilterNoop;
@@ -33,7 +33,7 @@ export function tlFiltersToFn(
   return (posts) => replyFilter(repostFilter(posts));
 }
 
-export const tlFilterNoop: TlFilterFn = (posts) => posts;
+export const tlFilterNoop: FeedFilterFn = (posts) => posts;
 
 function excludeRepliesToNoFollowing(
   posts: AppBskyFeedDefs.FeedViewPost[],
@@ -52,11 +52,11 @@ function excludeRepliesToNoFollowing(
   });
 }
 
-const excludeReplies: TlFilterFn = (posts) => {
+const excludeReplies: FeedFilterFn = (posts) => {
   return posts.filter((post) => !post.reply);
 };
 
-const excludeDuplicates: TlFilterFn = (posts) => {
+const excludeDuplicates: FeedFilterFn = (posts) => {
   const ret: AppBskyFeedDefs.FeedViewPost[] = [];
   for (const p of posts) {
     if (ret.find((e) => e.post.uri === p.post.uri)) {
@@ -67,6 +67,6 @@ const excludeDuplicates: TlFilterFn = (posts) => {
   return ret;
 };
 
-const excludeReposts: TlFilterFn = (posts) => {
+const excludeReposts: FeedFilterFn = (posts) => {
   return posts.filter((p) => !AppBskyFeedDefs.isReasonRepost(p.reason));
 };

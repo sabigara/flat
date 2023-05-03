@@ -1,8 +1,8 @@
 import { AtpSessionData } from "@atproto/api";
 
+import { FeedFilers } from "@/src/app/feed/lib/types";
 import { PostImageLayout } from "@/src/app/post/lib/types";
 import { Theme } from "@/src/app/theme/lib/types";
-import { TlFilers } from "@/src/app/timeline/lib/types";
 
 export type Account = {
   session: AtpSessionData | null;
@@ -23,6 +23,6 @@ export type AccountKeys = {
 
 export type Settings = {
   theme: Theme;
-  tlFilters: TlFilers;
+  tlFilters: FeedFilers;
   postImageLayout: PostImageLayout;
 };
