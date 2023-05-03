@@ -44,7 +44,7 @@ type Props<K extends QueryKey> = {
   filter?: (
     posts: AppBskyFeedDefs.FeedViewPost[]
   ) => AppBskyFeedDefs.FeedViewPost[];
-  noCache?: boolean;
+  cacheTime?: number;
 };
 
 export function Feed<K extends QueryKey>({
@@ -53,7 +53,7 @@ export function Feed<K extends QueryKey>({
   fetchNewLatest,
   maxPages,
   filter = (posts) => posts,
-  noCache = false,
+  cacheTime,
 }: Props<K>) {
   const { t } = useTranslation();
   const {
@@ -73,7 +73,7 @@ export function Feed<K extends QueryKey>({
       return lastPage.cursor ? { cursor: lastPage.cursor } : undefined;
     },
     refetchOnMount: false,
-    cacheTime: noCache ? 0 : undefined,
+    cacheTime,
   });
   const queryClient = useQueryClient();
 
