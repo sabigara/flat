@@ -110,9 +110,11 @@
   justify-content: center;
   gap: 0.5rem;
   margin-inline: auto;
+  margin-block-start: 1rem;
   padding-block: 1rem;
   color: var(--cmm-color-font-subtle);
   font-size: var(--cmm-font-size-sm);
+  border-block-start: 1px solid var(--cmm-color-border-base);
 
   > svg {
     font-size: var(--cmm-font-size-lg);
