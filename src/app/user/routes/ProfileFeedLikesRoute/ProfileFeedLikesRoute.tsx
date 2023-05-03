@@ -47,7 +47,7 @@ export function ProfileFeedLikesRoute() {
         title={usersT("profile.title", { actor: username })}
         description={profile.description}
       />
-      <Feed queryKey={queryKey} queryFn={queryFn} />
+      <Feed queryKey={queryKey} queryFn={queryFn} noCache />
     </>
   );
 }
