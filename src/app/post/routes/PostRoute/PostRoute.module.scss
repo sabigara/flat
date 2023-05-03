@@ -1,3 +1,5 @@
+@use "mixins";
+
 .container {
   padding-block-end: 6rem;
 }
@@ -7,8 +9,8 @@
   padding-inline: var(--container-pad-inline);
 
   a {
+    @include mixins.underline;
     display: inline-block;
-    text-decoration: underline;
     margin-block-start: 1rem;
   }
 }

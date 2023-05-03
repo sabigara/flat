@@ -79,7 +79,7 @@
     gap: 0.25rem;
 
     &:hover {
-      text-decoration: underline;
+      @include mixins.underline;
     }
   }
 
