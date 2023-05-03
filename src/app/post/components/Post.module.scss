@@ -36,6 +36,11 @@
   margin-inline-start: 3.5rem;
   margin-block-end: 0.5rem;
   column-gap: 0.4em;
+  border: 1px solid transparent;
+
+  &:hover {
+    border: 1px solid var(--cmm-color-border-base);
+  }
 }
 
 .reply {
