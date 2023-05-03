@@ -1,14 +1,19 @@
-import { AppBskyActorDefs, AppBskyFeedDefs } from "@atproto/api";
+import {
+  AppBskyActorDefs,
+  AppBskyFeedDefs,
+  AppBskyFeedPost,
+} from "@atproto/api";
 import { AtUri } from "@atproto/uri";
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-import { TbTrash, TbQuote } from "react-icons/tb";
+import { TbTrash, TbQuote, TbClipboard, TbShare } from "react-icons/tb";
 
 import { getBskyApi } from "@/src/app/account/states/atp";
 import { usePostComposer } from "@/src/app/post/hooks/usePostComposer";
 import Menu from "@/src/components/Menu";
+import { isMobile } from "@/src/lib/platform";
 
 type Props = {
   myProfile?: AppBskyActorDefs.ProfileViewDetailed;
@@ -50,6 +55,21 @@ export default function PostMoreMenu({
     },
   });
 
+  const copyText = async () => {
+    if (!AppBskyFeedPost.isRecord(post.record)) return;
+    await navigator.clipboard.writeText(post.record.text);
+    toast.success(t("post.copy-content.success"));
+  };
+
+  const shareUrl = async () => {
+    if (!AppBskyFeedPost.isRecord(post.record)) return;
+    await navigator.share({
+      url: `https://staging.bsky.app/profile/${post.author.handle}/post/${
+        new AtUri(post.uri).rkey
+      }`,
+    });
+  };
+
   const moreActions: {
     label: string;
     icon: React.ReactNode;
@@ -62,6 +82,20 @@ export default function PostMoreMenu({
     icon: <TbQuote />,
     onClick: () => handleClickQuote(post),
   });
+
+  moreActions.push({
+    label: t("post.copy-content.label"),
+    icon: <TbClipboard />,
+    onClick: copyText,
+  });
+
+  if (isMobile()) {
+    moreActions.push({
+      label: t("post.share.label"),
+      icon: <TbShare />,
+      onClick: shareUrl,
+    });
+  }
 
   if (myProfile && post.author.did === myProfile.did) {
     moreActions.push({

@@ -78,6 +78,13 @@
         "img-max-file-size": "サイズは1MBまでアップロードできます",
         "img-general": "無効な画像です"
       }
+    },
+    "copy-content": {
+      "label": "内容をコピー",
+      "success": "コピーしました"
+    },
+    "share": {
+      "label": "シェア"
     }
   },
   "feed": {
