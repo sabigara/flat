@@ -108,6 +108,8 @@
     "unmute-success": "{{actor}} のミュートを解除しました"
   },
   "errors": {
-    "general": "エラーが発生しました"
+    "general": "エラーが発生しました",
+    "not-found": "お探しのものは見つかりませんでした",
+    "go-home": "トップへもどる"
   }
 }

@@ -1,8 +1,9 @@
 import { AppBskyFeedDefs, AppBskyFeedPost } from "@atproto/api";
 import { useQueryClient } from "@tanstack/react-query";
 import produce from "immer";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
+import { NotFoundErrorComponent } from "@/src/app/error/components/NotFoundErrorComponent";
 import { FeedSkelton } from "@/src/app/feed/components/FeedSkelton";
 import PostComposer from "@/src/app/post/components/PostComposer";
 import Thread from "@/src/app/post/components/Thread";
@@ -54,12 +55,7 @@ export default function PostRoute() {
   const content: React.ReactNode = (() => {
     if (isLoading) return null;
     if (!AppBskyFeedDefs.isThreadViewPost(thread)) {
-      return (
-        <div className={styles.notFound}>
-          <p>存在しない投稿です</p>
-          <Link to="/">ホームへもどる</Link>
-        </div>
-      );
+      return <NotFoundErrorComponent />;
     }
     // key shouldn't be required but posts are duplicated only when transitioned by the router.
     return (

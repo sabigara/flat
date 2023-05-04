@@ -112,6 +112,8 @@
     "unmute-success": "Unmuted {{actor}}"
   },
   "errors": {
-    "general": "Something went wrong"
+    "general": "Something went wrong",
+    "not-found": "What you're looking for was not found",
+    "go-home": "Go home"
   }
 }

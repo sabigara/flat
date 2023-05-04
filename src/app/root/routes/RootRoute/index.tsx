@@ -1,6 +1,7 @@
 import { LoaderFunction, redirect } from "react-router-dom";
 
 import { getAccount } from "@/src/app/account/lib/getAccount";
+import { DefaultErrorBoundary } from "@/src/app/error/components/DefaultErrorBoundary";
 import { queryClient } from "@/src/app/root/lib/queryClient";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import { RootRoute } from "@/src/app/root/routes/RootRoute/RootRoute";
@@ -19,3 +20,4 @@ export const loader = (async () => {
 // separate the file for the content of `element` to
 // avoid full-reload caused by tiny code changes like CSS.
 export const element = <RootRoute />;
+export const errorElement = <DefaultErrorBoundary />;

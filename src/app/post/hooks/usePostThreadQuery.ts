@@ -15,16 +15,11 @@ export function usePostThreadQuery({ uri }: Params) {
     }),
     async queryFn() {
       if (!uri) return;
-      try {
-        const resp = await getBskyApi().feed.getPostThread({
-          uri: uri,
-        });
-        if (!AppBskyFeedDefs.isThreadViewPost(resp.data.thread)) return null;
-        return resp.data.thread;
-      } catch (e) {
-        console.error(e);
-        return null;
-      }
+      const resp = await getBskyApi().feed.getPostThread({
+        uri: uri,
+      });
+      if (!AppBskyFeedDefs.isThreadViewPost(resp.data.thread)) return null;
+      return resp.data.thread;
     },
     enabled: !!uri,
   });

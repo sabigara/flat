@@ -1,0 +1,19 @@
+.container {
+  padding: 1.5rem;
+}
+
+.number {
+  font-weight: var(--cmm-font-weight-bold);
+  font-size: var(--cmm-font-size-6xl);
+  line-height: 1;
+}
+
+.notFound {
+  margin-block-start: 1rem;
+  font-size: var(--cmm-font-size-md);
+  color: var(--cmm-color-font-subtle);
+}
+
+.button {
+  margin-block-start: 2rem;
+}
