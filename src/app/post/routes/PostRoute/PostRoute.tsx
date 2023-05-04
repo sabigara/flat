@@ -5,8 +5,8 @@ import { useParams } from "react-router-dom";
 
 import { NotFoundErrorComponent } from "@/src/app/error/components/NotFoundErrorComponent";
 import { FeedSkelton } from "@/src/app/feed/components/FeedSkelton";
-import PostComposer from "@/src/app/post/components/PostComposer";
 import Thread from "@/src/app/post/components/Thread";
+import PostComposer from "@/src/app/post/components/composer/PostComposer";
 import { usePostThreadQuery } from "@/src/app/post/hooks/usePostThreadQuery";
 import { findPostFromThread } from "@/src/app/post/lib/findPostFromThread";
 import { MutatePostCache } from "@/src/app/post/lib/types";

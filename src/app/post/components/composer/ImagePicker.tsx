@@ -8,6 +8,7 @@ import styles from "./ImagePicker.module.scss";
 export type SelectedImage = {
   dataURL?: string;
   file?: File;
+  alt?: string;
 };
 
 export type ImagePickerProps = {

@@ -4,7 +4,7 @@ import InfiniteScroll from "react-infinite-scroller";
 
 import { getBskyApi } from "@/src/app/account/states/atp";
 import Notification from "@/src/app/notification/components/Notification";
-import PostComposer from "@/src/app/post/components/PostComposer";
+import PostComposer from "@/src/app/post/components/composer/PostComposer";
 import { RevalidateOnPost } from "@/src/app/post/lib/types";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import SpinnerFill from "@/src/components/SpinnerFill";
