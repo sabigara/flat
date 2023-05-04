@@ -1,14 +1,19 @@
-import { AppBskyActorDefs, AppBskyFeedDefs } from "@atproto/api";
+import {
+  AppBskyActorDefs,
+  AppBskyFeedDefs,
+  AppBskyFeedPost,
+} from "@atproto/api";
 import { AtUri } from "@atproto/uri";
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-import { TbTrash, TbQuote } from "react-icons/tb";
+import { TbTrash, TbQuote, TbClipboard, TbShare } from "react-icons/tb";
 
 import { getBskyApi } from "@/src/app/account/states/atp";
 import { usePostComposer } from "@/src/app/post/hooks/usePostComposer";
 import Menu from "@/src/components/Menu";
+import { isMobile } from "@/src/lib/platform";
 
 type Props = {
   myProfile?: AppBskyActorDefs.ProfileViewDetailed;
@@ -50,6 +55,30 @@ export default function PostMoreMenu({
     },
   });
 
+  const copyText = async (text: string, msg: string) => {
+    await navigator.clipboard.writeText(text);
+    toast.success(msg);
+  };
+
+  const copyContent = () => {
+    if (!AppBskyFeedPost.isRecord(post.record)) return;
+    copyText(post.record.text, t("post.copy-content.success"));
+  };
+
+  const shareOrCopyUrl = async () => {
+    if (!AppBskyFeedPost.isRecord(post.record)) return;
+    const url = `https://staging.bsky.app/profile/${post.author.handle}/post/${
+      new AtUri(post.uri).rkey
+    }`;
+    if (isMobile()) {
+      await navigator.share({
+        url,
+      });
+    } else {
+      copyText(url, t("post.share.success"));
+    }
+  };
+
   const moreActions: {
     label: string;
     icon: React.ReactNode;
@@ -61,6 +90,18 @@ export default function PostMoreMenu({
     label: t("post.quote.do"),
     icon: <TbQuote />,
     onClick: () => handleClickQuote(post),
+  });
+
+  moreActions.push({
+    label: t("post.copy-content.label"),
+    icon: <TbClipboard />,
+    onClick: copyContent,
+  });
+
+  moreActions.push({
+    label: t("post.share.label"),
+    icon: <TbShare />,
+    onClick: shareOrCopyUrl,
   });
 
   if (myProfile && post.author.did === myProfile.did) {

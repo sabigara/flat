@@ -82,6 +82,14 @@
         "img-max-file-size": "Upload images up to 1MB",
         "img-general": "Invalid image file"
       }
+    },
+    "copy-content": {
+      "label": "Copy content",
+      "success": "Copied"
+    },
+    "share": {
+      "label": "Share",
+      "success": "Copied post URL"
     }
   },
   "feed": {
