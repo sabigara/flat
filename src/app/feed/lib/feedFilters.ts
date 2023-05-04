@@ -1,4 +1,4 @@
-import { AppBskyFeedDefs } from "@atproto/api";
+import { AppBskyEmbedRecord, AppBskyFeedDefs } from "@atproto/api";
 
 import { FeedFilers } from "@/src/app/feed/lib/types";
 
@@ -33,22 +33,44 @@ export function feedFiltersToFn(
         return excludeReposts;
     }
   })();
-  return (posts) => replyFilter(repostFilter(posts));
+  return (posts) => replyFilter(repostFilter(defaultFilters(posts)));
 }
 
 export const feedFilterNoop: FeedFilterFn = (posts) => posts;
+
+function defaultFilters(posts: AppBskyFeedDefs.FeedViewPost[]) {
+  return excludeMuted(posts);
+}
+
+function excludeMuted(posts: AppBskyFeedDefs.FeedViewPost[]) {
+  return posts.filter((view) => !isReplyToMuted(view) && !isQuoteOfMuted(view));
+}
+
+function isReplyToMuted(view: AppBskyFeedDefs.FeedViewPost): boolean {
+  return (
+    !!view.reply?.parent.author.viewer &&
+    !!view.reply.parent.author.viewer.muted
+  );
+}
+
+function isQuoteOfMuted(view: AppBskyFeedDefs.FeedViewPost): boolean {
+  const record = view.post.embed?.record;
+  if (!AppBskyEmbedRecord.isViewRecord(record)) {
+    return false;
+  }
+  return !!record.author.viewer && !!record.author.viewer.muted;
+}
 
 function excludeRepliesToNoFollowing(
   posts: AppBskyFeedDefs.FeedViewPost[],
   myDid: string
 ) {
-  return posts.filter((post) => {
+  return posts.filter((view) => {
     // FIXME: check if the root is also a following account.
-    if (post.reply?.parent.author.viewer) {
+    if (view.reply?.parent.author.viewer) {
       return (
-        (!!post.reply.parent.author.viewer.following &&
-          !post.reply.parent.author.viewer.muted) ||
-        post.reply.parent.author.did === myDid
+        !!view.reply.parent.author.viewer.following ||
+        view.reply.parent.author.did === myDid
       );
     }
     return true;
@@ -56,7 +78,7 @@ function excludeRepliesToNoFollowing(
 }
 
 const excludeReplies: FeedFilterFn = (posts) => {
-  return posts.filter((post) => !post.reply);
+  return posts.filter((view) => !view.reply);
 };
 
 const excludeDuplicates: FeedFilterFn = (posts) => {
@@ -71,5 +93,5 @@ const excludeDuplicates: FeedFilterFn = (posts) => {
 };
 
 const excludeReposts: FeedFilterFn = (posts) => {
-  return posts.filter((p) => !AppBskyFeedDefs.isReasonRepost(p.reason));
+  return posts.filter((view) => !AppBskyFeedDefs.isReasonRepost(view.reason));
 };
