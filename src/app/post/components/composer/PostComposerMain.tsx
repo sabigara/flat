@@ -39,20 +39,32 @@ type PostMutateParams = {
 };
 
 export type PostComposerProps = {
-  revalidate?: RevalidateOnPost;
+  openImgEditor: (idx: number) => void;
   textareaRef: React.Ref<HTMLTextAreaElement>;
+  revalidate?: RevalidateOnPost;
 };
 
 export default function PostComposerMain({
-  revalidate,
+  openImgEditor,
   textareaRef,
+  revalidate,
 }: PostComposerProps) {
   const { t } = useTranslation();
   const { data: account } = useAccountQuery();
 
-  const { replyTarget, quoteTarget, set: setComposer } = usePostComposer();
+  const {
+    replyTarget,
+    quoteTarget,
+    images,
+    set: setComposer,
+  } = usePostComposer();
   const setOpen = (val: boolean) =>
     void setComposer((curr) => ({ ...curr, open: val }));
+  const setImages = (images: SelectedImage[]) =>
+    void setComposer((curr) => ({
+      ...curr,
+      images,
+    }));
 
   const [text, setText] = React.useState("");
   const rt = new RichText({ text });
@@ -70,7 +82,6 @@ export default function PostComposerMain({
     },
   });
 
-  const [images, setImages] = React.useState<SelectedImage[]>([]);
   const [imagePreviewContainer, setPreviewContainer] =
     React.useState<HTMLDivElement | null>(null);
   const exceedingId = React.useId();
@@ -79,19 +90,20 @@ export default function PostComposerMain({
     async mutationFn(params: PostMutateParams) {
       await createPostWithEmbed({
         ...params,
-        images: params.images
-          .map(({ file }) => file)
-          .filter((file) => !!file) as File[],
+        images: params.images.filter(({ file }) => !!file) as {
+          file: File;
+          alt?: string;
+        }[],
         external: params.siteMetadata,
       });
     },
     onSuccess() {
       setText("");
-      setImages([]);
       setComposer((curr) => ({
         ...curr,
         quoteTarget: undefined,
         replyTarget: undefined,
+        images: [],
       }));
       setOpen(false);
       revalidate?.({
@@ -234,6 +246,7 @@ export default function PostComposerMain({
           <ImagePicker
             images={images}
             onChange={setImages}
+            onClickPreview={(idx) => openImgEditor(idx)}
             onError={handleImagePickerError}
             max={4}
             previewContainer={imagePreviewContainer}

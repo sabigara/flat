@@ -1,5 +1,17 @@
 @use "var";
 
+@mixin overlayBtn() {
+  --bg: 0 0 0;
+
+  position: absolute;
+  background: rgba(0 0 0 / 0.6);
+  color: white;
+
+  &:hover {
+    background: rgba(0 0 0 / 0.9);
+  }
+}
+
 .preview {
   &__container {
     display: grid;
@@ -25,21 +37,30 @@
   }
 
   &__removeBtn {
-    --bg: 0 0 0;
+    @include overlayBtn();
     --cmm-IconButton-size: 1.5rem;
     --cmm-IconButton-icon-size: 1rem;
-    position: absolute;
-    top: 0.25rem;
-    left: 0.25rem;
-    background: rgba(0 0 0 / 0.6);
-    color: white;
-
-    &:hover {
-      background: rgba(0 0 0 / 0.9);
-    }
+    inset-block-start: 0.25rem;
+    inset-inline-start: 0.25rem;
 
     > svg {
       stroke-width: 2.25;
+    }
+  }
+
+  &__altBtn {
+    @include overlayBtn();
+
+    inset-block-end: 0.5rem;
+    inset-inline-end: 0.25rem;
+    font-weight: var(--cmm-font-weight-bold);
+    font-size: var(--cmm-font-size-sm);
+    line-height: 1;
+    padding: 0.25em;
+    border-radius: var(--cmm-radius-md);
+
+    &:hover {
+      cursor: pointer;
     }
   }
 }

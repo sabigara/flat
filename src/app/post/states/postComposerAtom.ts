@@ -1,16 +1,24 @@
 import { AppBskyFeedDefs } from "@atproto/api";
-import { atom } from "jotai";
+import { atomWithImmer } from "jotai-immer";
+
+export type SelectedImage = {
+  dataURL?: string;
+  file?: File;
+  alt?: string;
+};
 
 type PostComposerAtom = {
   open: boolean;
   replyTarget?: AppBskyFeedDefs.FeedViewPost;
   quoteTarget?: AppBskyFeedDefs.PostView;
   linkCardUri?: string;
+  images: SelectedImage[];
 };
 
-export const postComposerAtom = atom<PostComposerAtom>({
+export const postComposerAtom = atomWithImmer<PostComposerAtom>({
   open: false,
   replyTarget: undefined,
   quoteTarget: undefined,
   linkCardUri: undefined,
+  images: [],
 });

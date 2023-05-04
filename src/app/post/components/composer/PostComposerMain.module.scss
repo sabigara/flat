@@ -1,18 +1,8 @@
 @use "var";
+@use "./composerMixins.scss";
 
 .container {
-  --pad: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  row-gap: var(--pad);
-
-  @media screen and (max-width: var.$composerMaxWidth) {
-    --pad: 1rem;
-  }
-
-  > button {
-    align-self: flex-end;
-  }
+  @include composerMixins.container;
 
   hr {
     border-top: 1px solid var(--cmm-color-border-base);
@@ -20,7 +10,7 @@
 }
 
 .closeBtn {
-  margin: calc(var(--pad) - 0.5rem) 0 0 calc(var(--pad) - 0.5rem);
+  @include composerMixins.headerBtn;
 }
 
 .post {

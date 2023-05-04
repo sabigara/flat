@@ -25,6 +25,16 @@
   position: absolute;
 }
 
+@mixin owl($orientation: block, $margin: 1rem) {
+  & > * + * {
+    @if $orientation == block {
+      margin-block-start: $margin;
+    } @else {
+      margin-inline-start: $margin;
+    }
+  }
+}
+
 @mixin underline() {
   text-decoration: underline;
   text-underline-position: from-font;

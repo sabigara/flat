@@ -1,0 +1,31 @@
+@use "mixins";
+@use "./composerMixins.scss";
+
+.container {
+  @include composerMixins.container;
+  padding-block-end: var(--pad);
+}
+
+.backBtn {
+  @include composerMixins.headerBtn;
+}
+
+.preview {
+  padding-inline: var(--pad);
+
+  > img {
+    inline-size: 100%;
+    object-fit: contain;
+  }
+}
+
+.form {
+  @include mixins.owl();
+  padding-inline: var(--pad);
+}
+
+.button {
+  display: block;
+  margin-inline-start: auto;
+  min-inline-size: 6rem;
+}

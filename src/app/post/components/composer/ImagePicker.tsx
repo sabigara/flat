@@ -14,6 +14,7 @@ export type SelectedImage = {
 export type ImagePickerProps = {
   images: SelectedImage[];
   onChange: (images: SelectedImage[]) => void;
+  onClickPreview: (idx: number) => void;
   onError?: (errors: ErrorsType) => void;
   max?: number;
   previewContainer: HTMLElement | null;
@@ -22,6 +23,7 @@ export type ImagePickerProps = {
 export default function ImagePicker({
   images,
   onChange,
+  onClickPreview,
   onError,
   max,
   previewContainer,
@@ -59,11 +61,13 @@ export default function ImagePicker({
                 <div className={styles.preview__container}>
                   {imageList.map((image, index) => (
                     <div key={index} className={styles.preview__item}>
-                      <img
-                        src={image.dataURL}
-                        alt="選択された画像プレビュー"
-                        className={styles.preview__img}
-                      />
+                      <button onClick={() => void onClickPreview(index)}>
+                        <img
+                          src={image.dataURL}
+                          alt="選択された画像プレビュー"
+                          className={styles.preview__img}
+                        />
+                      </button>
                       <IconButton
                         aria-label="Remove"
                         variant="soft"
@@ -74,6 +78,12 @@ export default function ImagePicker({
                       >
                         <TbX />
                       </IconButton>
+                      <span
+                        className={styles.preview__altBtn}
+                        onClick={() => void onClickPreview(index)}
+                      >
+                        ALT
+                      </span>
                     </div>
                   ))}
                 </div>,

@@ -15,7 +15,7 @@ import { SiteMetadata } from "@/src/lib/siteMetadata";
 type Params = {
   myProfile: AppBskyActorDefs.ProfileViewDetailed;
   text: string;
-  images: File[];
+  images: { file: File; alt?: string }[];
   external?: SiteMetadata;
   replyTarget?: AppBskyFeedDefs.FeedViewPost;
   quoteTarget?: AppBskyFeedDefs.PostView;
@@ -71,14 +71,14 @@ async function getEmbed({
   }
 }
 
-const uploadAndEmbedImages = async (images: File[]) => {
+const uploadAndEmbedImages = async (images: { file: File; alt?: string }[]) => {
   const res = await uploadImageBulk(images);
   return res.length ? embedImages(res) : undefined;
 };
 
 const uploadAndEmbedRecordWithImages = async (
   record: AppBskyFeedDefs.PostView,
-  images: File[]
+  images: { file: File; alt?: string }[]
 ) => {
   const res = await uploadImageBulk(images);
   return res.length
@@ -89,12 +89,12 @@ const uploadAndEmbedRecordWithImages = async (
     : undefined;
 };
 
-const uploadImageBulk = async (images: File[]) => {
-  const results: { blobRef: BlobRef }[] = [];
+const uploadImageBulk = async (images: { file: File; alt?: string }[]) => {
+  const results: { blobRef: BlobRef; alt?: string }[] = [];
   for (const img of images) {
     if (!img) continue;
-    const res = await uploadImage(await compressImage(img));
-    results.push(res);
+    const res = await uploadImage(await compressImage(img.file));
+    results.push({ blobRef: res.blobRef, alt: img.alt });
   }
   return results;
 };
