@@ -3,34 +3,58 @@ import { IconButton } from "@camome/core/IconButton";
 import { Textarea } from "@camome/core/Textarea";
 import React from "react";
 import { TbArrowLeft } from "react-icons/tb";
+import ReactCrop, { Crop, PixelCrop } from "react-image-crop";
 
-import { SelectedImage } from "@/src/app/post/states/postComposerAtom";
+import {
+  SelectedImage,
+  SelectedImageEdit,
+} from "@/src/app/post/states/postComposerAtom";
 
+import "react-image-crop/dist/ReactCrop.css";
 import styles from "./PostComposerImgEditor.module.scss";
 
 type Props = {
   image: SelectedImage;
-  onChangeAltSubmit: (alt: string) => void;
-  defaultAlt: string;
+  onSubmit: (params: SelectedImageEdit) => void;
+  defaultValues?: {
+    alt?: string;
+    crop?: PixelCrop;
+  };
   onClose: () => void;
 };
 
 export function PostComposerImgEditor({
   image,
-  onChangeAltSubmit,
-  defaultAlt,
+  onSubmit,
+  defaultValues,
   onClose,
 }: Props) {
-  const [alt, setAlt] = React.useState(defaultAlt);
+  const imgRef = React.useRef<HTMLImageElement>(null);
+  const [crop, setCrop] = React.useState<Crop | undefined>(defaultValues?.crop);
+  const [completedCrop, setCompletedCrop] = React.useState<
+    PixelCrop | undefined
+  >(defaultValues?.crop);
+
+  const [alt, setAlt] = React.useState(defaultValues?.alt);
   const handleChangeAlt: React.ChangeEventHandler<HTMLTextAreaElement> = (
     e
   ) => {
     setAlt(e.target.value);
   };
-  const handleChangeAltSubmit = () => {
-    onChangeAltSubmit(alt);
+
+  const handleSubmit = async () => {
+    if (!imgRef.current) throw new Error("");
+    const rendered = {
+      height: imgRef.current.height,
+      width: imgRef.current.width,
+    };
+    onSubmit({
+      alt,
+      crop: completedCrop ? { ...completedCrop, rendered } : undefined,
+    });
     onClose();
   };
+
   return (
     <div className={styles.container}>
       <div>
@@ -46,7 +70,14 @@ export function PostComposerImgEditor({
         </IconButton>
       </div>
       <div className={styles.preview}>
-        <img src={image.dataURL} alt={image.alt} />
+        <ReactCrop
+          crop={crop}
+          onChange={(_, percentCrop) => setCrop(percentCrop)}
+          onComplete={(c) => setCompletedCrop(c)}
+          ruleOfThirds
+        >
+          <img src={image.dataURL} ref={imgRef} />
+        </ReactCrop>
       </div>
       <div className={styles.form}>
         <Textarea
@@ -55,11 +86,7 @@ export function PostComposerImgEditor({
           value={alt}
           onChange={handleChangeAlt}
         />
-        <Button
-          size="sm"
-          className={styles.button}
-          onClick={handleChangeAltSubmit}
-        >
+        <Button size="sm" className={styles.button} onClick={handleSubmit}>
           決定
         </Button>
       </div>

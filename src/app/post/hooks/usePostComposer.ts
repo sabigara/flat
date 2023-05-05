@@ -15,6 +15,7 @@ export function usePostComposer() {
         quoteTarget: undefined,
         linkCardUri: undefined,
         images: [],
+        imageEdits: [],
       });
     },
     handleClickReply: (feedItem: AppBskyFeedDefs.FeedViewPost) => {
@@ -23,6 +24,7 @@ export function usePostComposer() {
         replyTarget: feedItem,
         linkCardUri: undefined,
         images: [],
+        imageEdits: [],
       });
     },
     handleClickQuote: (feedItem: AppBskyFeedDefs.PostView) => {
@@ -31,6 +33,7 @@ export function usePostComposer() {
         quoteTarget: feedItem,
         linkCardUri: undefined,
         images: [],
+        imageEdits: [],
       });
     },
   };

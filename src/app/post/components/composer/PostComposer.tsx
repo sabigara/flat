@@ -5,6 +5,7 @@ import { PostComposerImgEditor } from "@/src/app/post/components/composer/PostCo
 import PostComposerMain from "@/src/app/post/components/composer/PostComposerMain";
 import { usePostComposer } from "@/src/app/post/hooks/usePostComposer";
 import { RevalidateOnPost } from "@/src/app/post/lib/types";
+import { SelectedImageEdit } from "@/src/app/post/states/postComposerAtom";
 import Dialog from "@/src/components/Dialog";
 
 import styles from "./PostComposer.module.scss";
@@ -18,26 +19,29 @@ export default function PostComposer({
   showButton = true,
   revalidate,
 }: PostComposerProps) {
-  const { open: outerOpen, set: setComposer, images } = usePostComposer();
+  const {
+    open: outerOpen,
+    set: setComposer,
+    images,
+    imageEdits,
+  } = usePostComposer();
 
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const outerPanelRef = React.useRef<HTMLDivElement>(null);
 
-  const [selectedImgIdx, setSelectedImgIdx] = React.useState<number>();
-  const selectedImg =
-    selectedImgIdx !== undefined ? images[selectedImgIdx] : undefined;
-  const innerOpen = selectedImgIdx !== undefined;
+  const [selectedImgIdx, setSelectedImgIdx] = React.useState<number>(-1);
+  const selectedImg = images[selectedImgIdx];
+  const selectedImgEdit = imageEdits[selectedImgIdx];
+  const innerOpen = selectedImgIdx >= 0;
 
   const handleOuterClose = () => {
     setComposer((draft) => void (draft.open = false));
   };
 
-  const handleChangeAlt = (alt: string) => {
+  const handleSubmit = (val: SelectedImageEdit) => {
     if (selectedImgIdx === undefined) return;
     setComposer((draft) => {
-      const target = draft.images[selectedImgIdx];
-      if (!target) return;
-      target.alt = alt;
+      draft.imageEdits[selectedImgIdx] = val;
     });
   };
 
@@ -49,7 +53,7 @@ export default function PostComposer({
   };
 
   const handleInnerClose = () => {
-    setSelectedImgIdx(undefined);
+    setSelectedImgIdx(-1);
     if (outerPanelRef.current) {
       outerPanelRef.current.style.opacity = "1";
     }
@@ -100,8 +104,8 @@ export default function PostComposer({
           {selectedImg && (
             <PostComposerImgEditor
               image={selectedImg}
-              onChangeAltSubmit={handleChangeAlt}
-              defaultAlt={selectedImg.alt ?? ""}
+              onSubmit={handleSubmit}
+              defaultValues={selectedImgEdit}
               onClose={handleInnerClose}
             />
           )}

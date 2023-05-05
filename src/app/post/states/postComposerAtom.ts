@@ -1,18 +1,25 @@
 import { AppBskyFeedDefs } from "@atproto/api";
 import { atomWithImmer } from "jotai-immer";
 
+import { Crop } from "@/src/app/content/image/lib/types";
+
 export type SelectedImage = {
-  dataURL?: string;
-  file?: File;
-  alt?: string;
+  file: File;
+  dataURL: string;
 };
 
-type PostComposerAtom = {
+export type SelectedImageEdit = {
+  alt?: string;
+  crop?: Crop;
+};
+
+export type PostComposerAtom = {
   open: boolean;
   replyTarget?: AppBskyFeedDefs.FeedViewPost;
   quoteTarget?: AppBskyFeedDefs.PostView;
   linkCardUri?: string;
   images: SelectedImage[];
+  imageEdits: SelectedImageEdit[];
 };
 
 export const postComposerAtom = atomWithImmer<PostComposerAtom>({
@@ -21,4 +28,5 @@ export const postComposerAtom = atomWithImmer<PostComposerAtom>({
   quoteTarget: undefined,
   linkCardUri: undefined,
   images: [],
+  imageEdits: [],
 });

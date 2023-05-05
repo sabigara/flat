@@ -108,3 +108,8 @@ body {
 .gZoomOut {
   animation-duration: 0.3s !important;
 }
+
+// For react-image-crop
+.ReactCrop {
+  inline-size: 100%;
+}

@@ -14,7 +14,6 @@ import { useAccountQuery } from "@/src/app/account/hooks/useAccountQuery";
 import Post from "@/src/app/post/components/Post";
 import ImagePicker, {
   ImagePickerProps,
-  SelectedImage,
 } from "@/src/app/post/components/composer/ImagePicker";
 import { PostGraphemeCounter } from "@/src/app/post/components/composer/PostGraphemeCounter";
 import EmbeddedRecord from "@/src/app/post/components/embed/EmbeddedRecord";
@@ -22,6 +21,10 @@ import { useLinkCardGenerator } from "@/src/app/post/hooks/useLinkCardGenerator"
 import { usePostComposer } from "@/src/app/post/hooks/usePostComposer";
 import { createPostWithEmbed } from "@/src/app/post/lib/createPostWithEmbed";
 import { RevalidateOnPost } from "@/src/app/post/lib/types";
+import {
+  SelectedImage,
+  SelectedImageEdit,
+} from "@/src/app/post/states/postComposerAtom";
 import Avatar from "@/src/app/user/components/Avatar";
 import { isPostValid } from "@/src/lib/atp";
 import { isModKey } from "@/src/lib/keybindings";
@@ -32,6 +35,7 @@ import styles from "./PostComposerMain.module.scss";
 type PostMutateParams = {
   text: string;
   images: SelectedImage[];
+  imageEdits: SelectedImageEdit[];
   myProfile: AppBskyActorDefs.ProfileViewDetailed;
   replyTarget?: AppBskyFeedDefs.FeedViewPost;
   quoteTarget?: AppBskyFeedDefs.PostView;
@@ -56,15 +60,23 @@ export default function PostComposerMain({
     replyTarget,
     quoteTarget,
     images,
+    imageEdits,
     set: setComposer,
   } = usePostComposer();
   const setOpen = (val: boolean) =>
     void setComposer((curr) => ({ ...curr, open: val }));
-  const setImages = (images: SelectedImage[]) =>
-    void setComposer((curr) => ({
+  const setImages = (images: SelectedImage[]) => {
+    setComposer((curr) => ({
       ...curr,
       images,
     }));
+  };
+  const handleRemoveImage = (idx: number) => {
+    setComposer((draft) => {
+      draft.images.splice(idx, 1);
+      draft.imageEdits.splice(idx, 1);
+    });
+  };
 
   const [text, setText] = React.useState("");
   const rt = new RichText({ text });
@@ -90,10 +102,6 @@ export default function PostComposerMain({
     async mutationFn(params: PostMutateParams) {
       await createPostWithEmbed({
         ...params,
-        images: params.images.filter(({ file }) => !!file) as {
-          file: File;
-          alt?: string;
-        }[],
         external: params.siteMetadata,
       });
     },
@@ -117,6 +125,7 @@ export default function PostComposerMain({
     mutate({
       text,
       images,
+      imageEdits: imageEdits,
       myProfile: account.profile,
       replyTarget,
       quoteTarget,
@@ -245,7 +254,9 @@ export default function PostComposerMain({
         <div>
           <ImagePicker
             images={images}
+            edits={imageEdits}
             onChange={setImages}
+            onRemove={handleRemoveImage}
             onClickPreview={(idx) => openImgEditor(idx)}
             onError={handleImagePickerError}
             max={4}

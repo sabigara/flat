@@ -3,17 +3,19 @@ import ReactDOM from "react-dom";
 import { TbPhotoPlus, TbX } from "react-icons/tb";
 import ImageUploading, { type ErrorsType } from "react-images-uploading";
 
-import styles from "./ImagePicker.module.scss";
+import { ImagePickerPreview } from "@/src/app/post/components/composer/ImagePickerPreview";
+import {
+  SelectedImageEdit,
+  SelectedImage,
+} from "@/src/app/post/states/postComposerAtom";
 
-export type SelectedImage = {
-  dataURL?: string;
-  file?: File;
-  alt?: string;
-};
+import styles from "./ImagePicker.module.scss";
 
 export type ImagePickerProps = {
   images: SelectedImage[];
+  edits: SelectedImageEdit[];
   onChange: (images: SelectedImage[]) => void;
+  onRemove: (idx: number) => void;
   onClickPreview: (idx: number) => void;
   onError?: (errors: ErrorsType) => void;
   max?: number;
@@ -22,32 +24,42 @@ export type ImagePickerProps = {
 
 export default function ImagePicker({
   images,
+  edits,
   onChange,
+  onRemove,
   onClickPreview,
   onError,
   max,
   previewContainer,
 }: ImagePickerProps) {
+  const handleChange = (newImages: Partial<SelectedImage>[]) => {
+    const filtered: SelectedImage[] = [];
+    for (const { dataURL, file } of newImages) {
+      if (!dataURL || !file) {
+        throw new Error("Failed to load image");
+      }
+      filtered.push({ dataURL, file });
+    }
+    onChange(filtered);
+  };
+
+  const handleRemove = (idx: number) => {
+    onRemove(idx);
+  };
+
   return (
     <div>
       <ImageUploading
         multiple
         value={images}
-        onChange={onChange}
+        onChange={handleChange}
         onError={onError}
         maxNumber={max}
       >
-        {({
-          imageList,
-          onImageUpload,
-          onImageRemove,
-          isDragging,
-          dragProps,
-        }) => (
+        {({ imageList, onImageUpload, dragProps }) => (
           <div>
             <IconButton
               aria-label="画像を選択"
-              style={isDragging ? { color: "red" } : undefined}
               onClick={onImageUpload}
               variant="soft"
               size="sm"
@@ -59,28 +71,30 @@ export default function ImagePicker({
               !!imageList.length &&
               ReactDOM.createPortal(
                 <div className={styles.preview__container}>
-                  {imageList.map((image, index) => (
-                    <div key={index} className={styles.preview__item}>
-                      <button onClick={() => void onClickPreview(index)}>
-                        <img
-                          src={image.dataURL}
-                          alt="選択された画像プレビュー"
-                          className={styles.preview__img}
-                        />
-                      </button>
+                  {imageList.map(({ dataURL }, idx) => (
+                    <div key={idx} className={styles.preview__item}>
+                      {dataURL && (
+                        <button onClick={() => void onClickPreview(idx)}>
+                          <ImagePickerPreview
+                            src={dataURL}
+                            crop={edits[idx]?.crop}
+                            className={styles.preview__img}
+                          />
+                        </button>
+                      )}
                       <IconButton
                         aria-label="Remove"
                         variant="soft"
                         colorScheme="neutral"
                         size="sm"
-                        onClick={() => onImageRemove(index)}
+                        onClick={() => handleRemove(idx)}
                         className={styles.preview__removeBtn}
                       >
                         <TbX />
                       </IconButton>
                       <span
                         className={styles.preview__altBtn}
-                        onClick={() => void onClickPreview(index)}
+                        onClick={() => void onClickPreview(idx)}
                       >
                         ALT
                       </span>

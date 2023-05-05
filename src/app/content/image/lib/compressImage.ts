@@ -1,6 +1,6 @@
 import Compressor from "compressorjs";
 
-export async function compressImage(file: File): Promise<Blob> {
+export async function compressImage(file: File | Blob): Promise<Blob> {
   return new Promise((resolve, reject) => {
     new Compressor(file, {
       quality: 0.7,
