@@ -2,8 +2,14 @@
 @use "./composerMixins.scss";
 
 .container {
+  --header-height: 2.75rem;
+  --form-height: 9.25rem;
   @include composerMixins.container;
   padding-block-end: var(--pad);
+}
+
+.header {
+  block-size: var(--header-height);
 }
 
 .backBtn {
@@ -14,14 +20,20 @@
   padding-inline: var(--pad);
 
   img {
-    inline-size: 100%;
     object-fit: contain;
+    // FIXME: shouldn't use calc but `grid-template-rows: auto 1fr auto` to .container
+    // didn't work as expected with react-image-crop
+    max-block-size: calc(
+      100dvh - var(--header-height) - var(--form-height) - var(--pad) * 4
+    );
+    user-select: none;
   }
 }
 
 .form {
   @include mixins.owl();
   padding-inline: var(--pad);
+  block-size: var(--form-height);
 }
 
 .button {

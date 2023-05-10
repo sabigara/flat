@@ -81,11 +81,12 @@ export default function ImagePicker({
                           aria-label={t(
                             "post.composer.image-editor.crop-image-or-edit-alt"
                           )}
+                          className={styles.preview__button}
                         >
                           <ImagePickerPreview
                             src={dataURL}
                             crop={edits[idx]?.crop}
-                            className={styles.preview__img}
+                            className={styles.preview__canvas}
                           />
                         </button>
                       )}

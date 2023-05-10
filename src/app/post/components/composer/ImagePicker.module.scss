@@ -29,11 +29,17 @@
     position: relative;
   }
 
-  &__img {
-    aspect-ratio: 1;
+  &__button {
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  &__canvas {
     object-fit: cover;
+    aspect-ratio: 1;
     border-radius: var(--cmm-radius-md);
     inline-size: 100%;
+    block-size: 100%;
   }
 
   &__removeBtn {

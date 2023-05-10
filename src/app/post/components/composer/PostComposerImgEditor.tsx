@@ -59,7 +59,7 @@ export function PostComposerImgEditor({
 
   return (
     <div className={styles.container}>
-      <div>
+      <div className={styles.header}>
         <IconButton
           aria-label="back"
           size="sm"
@@ -77,6 +77,7 @@ export function PostComposerImgEditor({
           onChange={(_, percentCrop) => setCrop(percentCrop)}
           onComplete={(c) => setCompletedCrop(c)}
           ruleOfThirds
+          disabled // disabled until crop has good UX
         >
           <img src={image.dataURL} ref={imgRef} />
         </ReactCrop>

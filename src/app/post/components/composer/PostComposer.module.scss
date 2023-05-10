@@ -16,6 +16,8 @@
       width: min(var.$composerMaxWidth, 100vw);
       padding: 0;
       overflow: auto;
+      transition-property: all;
+      transition-duration: 0.2s;
 
       @media screen and (max-width: var.$composerMaxWidth) {
         border-radius: 0;
