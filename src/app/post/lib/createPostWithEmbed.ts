@@ -87,18 +87,18 @@ async function getEmbed({
 
 const uploadAndEmbedImages = async (
   images: SelectedImage[],
-  meta: SelectedImageEdit[]
+  edits: SelectedImageEdit[]
 ) => {
-  const res = await uploadImageBulk(images, meta);
+  const res = await uploadImageBulk(images, edits);
   return res.length ? embedImages(res) : undefined;
 };
 
 const uploadAndEmbedRecordWithImages = async (
   record: AppBskyFeedDefs.PostView,
   images: SelectedImage[],
-  meta: SelectedImageEdit[]
+  edits: SelectedImageEdit[]
 ) => {
-  const res = await uploadImageBulk(images, meta);
+  const res = await uploadImageBulk(images, edits);
   return res.length
     ? embedRecordWithImages({
         record,
@@ -109,18 +109,18 @@ const uploadAndEmbedRecordWithImages = async (
 
 const uploadImageBulk = async (
   images: SelectedImage[],
-  meta: SelectedImageEdit[]
+  edits: SelectedImageEdit[]
 ) => {
   const results: { blobRef: BlobRef; alt?: string }[] = [];
   for (const [i, img] of images.entries()) {
-    const m = meta[i];
+    const edit = edits[i];
     const { canvas } = await drawImageToCanvas({
       src: img.dataURL,
-      crop: m.crop,
+      crop: edit?.crop,
     });
     const blob = await canvasToBlob(canvas);
     const res = await uploadImage(await compressImage(blob));
-    results.push({ blobRef: res.blobRef, alt: m?.alt });
+    results.push({ blobRef: res.blobRef, alt: edit?.alt });
   }
   return results;
 };

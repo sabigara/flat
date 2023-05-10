@@ -1,4 +1,6 @@
 import { Crop } from "@/src/app/content/image/lib/types";
+import { MAX_CANVAS_AREA } from "@/src/lib/constants";
+import { limitDimensions } from "@/src/lib/math";
 
 type Params = {
   canvas?: HTMLCanvasElement;
@@ -36,9 +38,18 @@ export async function drawImageToCanvas({
   const scaleY = image.naturalHeight / crop.rendered.height;
   const pixelRatio = window.devicePixelRatio;
 
-  canvas.width = Math.floor(crop.width * scaleX * pixelRatio);
-  canvas.height = Math.floor(crop.height * scaleY * pixelRatio);
-
+  const {
+    width: canvasWidth,
+    height: canvasHeight,
+    scale: canvasScale,
+  } = limitDimensions({
+    width: Math.floor(crop.width * scaleX * pixelRatio),
+    height: Math.floor(crop.height * scaleY * pixelRatio),
+    maxArea: MAX_CANVAS_AREA,
+  });
+  canvas.width = canvasWidth;
+  canvas.height = canvasHeight;
+  ctx.scale(canvasScale, canvasScale);
   ctx.scale(pixelRatio, pixelRatio);
   ctx.imageSmoothingQuality = "high";
 
