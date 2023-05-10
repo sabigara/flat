@@ -150,7 +150,7 @@ function isAllowedOrigin(req: VercelRequest) {
 }
 
 function getAllowedOrigins(req: VercelRequest) {
-  return [getServerUrl(req)];
+  return [getServerUrl(req), "https://flat-bs.vercel.app"];
 }
 
 function getServerUrl(req: VercelRequest) {
