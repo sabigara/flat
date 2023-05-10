@@ -76,6 +76,11 @@
       "link-card": {
         "remove": "Remove"
       },
+      "image-editor": {
+        "edit": "Edit",
+        "crop-image-or-edit-alt": "Crop image or edit alt",
+        "save": "Save"
+      },
       "errors": {
         "img-max-number": "You can upload up to 4 images",
         "img-accept-type": "Invalid file type",

@@ -48,16 +48,17 @@
     }
   }
 
-  &__altBtn {
+  &__editBtn {
     @include overlayBtn();
 
-    inset-block-end: 0.5rem;
-    inset-inline-end: 0.25rem;
+    inset-block-end: 0.72rem;
+    inset-inline-end: 0.3rem;
     font-weight: var(--cmm-font-weight-bold);
     font-size: var(--cmm-font-size-sm);
     line-height: 1;
-    padding: 0.25em;
-    border-radius: var(--cmm-radius-md);
+    padding-block: 0.3em;
+    padding-inline: 0.7em;
+    border-radius: var(--cmm-radius-full);
 
     &:hover {
       cursor: pointer;

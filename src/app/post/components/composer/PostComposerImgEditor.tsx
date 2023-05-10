@@ -2,6 +2,7 @@ import { Button } from "@camome/core/Button";
 import { IconButton } from "@camome/core/IconButton";
 import { Textarea } from "@camome/core/Textarea";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { TbArrowLeft } from "react-icons/tb";
 import ReactCrop, { Crop, PixelCrop } from "react-image-crop";
 
@@ -29,6 +30,7 @@ export function PostComposerImgEditor({
   defaultValues,
   onClose,
 }: Props) {
+  const { t } = useTranslation();
   const imgRef = React.useRef<HTMLImageElement>(null);
   const [crop, setCrop] = React.useState<Crop | undefined>(defaultValues?.crop);
   const [completedCrop, setCompletedCrop] = React.useState<
@@ -87,7 +89,7 @@ export function PostComposerImgEditor({
           onChange={handleChangeAlt}
         />
         <Button size="sm" className={styles.button} onClick={handleSubmit}>
-          決定
+          {t("post.composer.image-editor.save")}
         </Button>
       </div>
     </div>

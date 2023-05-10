@@ -72,6 +72,11 @@
       "link-card": {
         "remove": "削除"
       },
+      "image-editor": {
+        "edit": "編集",
+        "crop-image-or-edit-alt": "画像を切り抜く、またはaltを編集",
+        "save": "保存"
+      },
       "errors": {
         "img-max-number": "4枚までアップロードできます",
         "img-accept-type": "無効なファイル形式です",

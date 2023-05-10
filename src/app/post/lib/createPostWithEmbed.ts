@@ -114,9 +114,11 @@ const uploadImageBulk = async (
   const results: { blobRef: BlobRef; alt?: string }[] = [];
   for (const [i, img] of images.entries()) {
     const m = meta[i];
-    const blob = await canvasToBlob(
-      await drawImageToCanvas({ src: img.dataURL, crop: m.crop })
-    );
+    const { canvas } = await drawImageToCanvas({
+      src: img.dataURL,
+      crop: m.crop,
+    });
+    const blob = await canvasToBlob(canvas);
     const res = await uploadImage(await compressImage(blob));
     results.push({ blobRef: res.blobRef, alt: m?.alt });
   }

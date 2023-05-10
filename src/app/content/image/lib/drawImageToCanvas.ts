@@ -67,7 +67,7 @@ export async function drawImageToCanvas({
 
   ctx.restore();
 
-  return canvas;
+  return { image, canvas };
 }
 
 async function loadImgSrc(src: string) {

@@ -1,5 +1,6 @@
 import { IconButton } from "@camome/core/IconButton";
 import ReactDOM from "react-dom";
+import { useTranslation } from "react-i18next";
 import { TbPhotoPlus, TbX } from "react-icons/tb";
 import ImageUploading, { type ErrorsType } from "react-images-uploading";
 
@@ -32,6 +33,7 @@ export default function ImagePicker({
   max,
   previewContainer,
 }: ImagePickerProps) {
+  const { t } = useTranslation();
   const handleChange = (newImages: Partial<SelectedImage>[]) => {
     const filtered: SelectedImage[] = [];
     for (const { dataURL, file } of newImages) {
@@ -74,7 +76,12 @@ export default function ImagePicker({
                   {imageList.map(({ dataURL }, idx) => (
                     <div key={idx} className={styles.preview__item}>
                       {dataURL && (
-                        <button onClick={() => void onClickPreview(idx)}>
+                        <button
+                          onClick={() => void onClickPreview(idx)}
+                          aria-label={t(
+                            "post.composer.image-editor.crop-image-or-edit-alt"
+                          )}
+                        >
                           <ImagePickerPreview
                             src={dataURL}
                             crop={edits[idx]?.crop}
@@ -93,10 +100,10 @@ export default function ImagePicker({
                         <TbX />
                       </IconButton>
                       <span
-                        className={styles.preview__altBtn}
+                        className={styles.preview__editBtn}
                         onClick={() => void onClickPreview(idx)}
                       >
-                        ALT
+                        {t("post.composer.image-editor.edit")}
                       </span>
                     </div>
                   ))}
