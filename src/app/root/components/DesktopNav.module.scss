@@ -34,6 +34,10 @@
   }
 }
 
+.notif {
+  --cmm-IconButton-icon-size: 1.65em;
+}
+
 .avatar {
   --cmm-Avatar-size: calc(var(--btn-size) - 0.4rem);
 }

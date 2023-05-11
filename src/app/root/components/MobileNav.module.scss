@@ -1,5 +1,5 @@
 .container {
-  block-size: 3.5rem;
+  block-size: var(--mobile-nav-block-size);
   padding: 0 1rem;
   display: flex;
   align-items: center;

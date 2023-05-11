@@ -1,7 +1,7 @@
 import { IconButton } from "@camome/core/IconButton";
 import { useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
-import { TbBell } from "react-icons/tb";
+import { RiNotification2Line } from "react-icons/ri";
 import { Link } from "react-router-dom";
 
 import { getBskyApi } from "@/src/app/account/states/atp";
@@ -33,7 +33,7 @@ export default function NotificationButton({ className }: Props) {
       variant="ghost"
       className={clsx(styles.button, className)}
     >
-      <TbBell />
+      <RiNotification2Line />
       {!!count && count > 0 && (
         <span className={styles.badge}>
           <span className="visually-hidden">{count}件の通知</span>

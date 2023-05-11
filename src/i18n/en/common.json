@@ -4,7 +4,7 @@
     "sign-in": "Sign in",
     "sign-out": "Sign out",
     "sign-in-again": "Sign in again",
-    "signed-in-accounts": "Signed-in accounts",
+    "signed-in-accounts": "Your accounts",
     "sign-in-success": "Signed in",
     "sign-out-success": "Singed out",
     "add-account": "Add account",
@@ -63,7 +63,7 @@
       "image-count_one": "+{{count}} image",
       "image-count_other": "+{{count}} images"
     },
-    "muted-placeholder": "ミュート中のユーザーの投稿",
+    "muted-placeholder": "Post by muted user",
     "view-thread": "View thread",
     "show-all": "Show all",
     "composer": {

@@ -1,4 +1,5 @@
 import { IconButton } from "@camome/core/IconButton";
+import clsx from "clsx";
 import { RiNotification2Line } from "react-icons/ri";
 import { TbSearch, TbSettings, TbHome2, TbUser } from "react-icons/tb";
 import { Link, useLocation } from "react-router-dom";
@@ -21,6 +22,7 @@ export function DesktopNav() {
     to: string;
     showBadge?: boolean;
     badgeLabel?: string;
+    className?: string;
   }[] = [
     {
       label: "Home",
@@ -33,6 +35,7 @@ export function DesktopNav() {
       to: "/notifications",
       showBadge: !!count && count > 0,
       badgeLabel: `${count}件の通知`, // TODO: i18n
+      className: styles.notif,
     },
     {
       label: "Search",
@@ -58,30 +61,33 @@ export function DesktopNav() {
           <Link to="/" className={styles.logo}>
             <LogoIcon />
           </Link>
-          {navItems.map(({ label, icon, to, showBadge, badgeLabel }) => (
-            <IconButton
-              aria-label={label}
-              component={Link}
-              to={to}
-              colorScheme="neutral"
-              variant="ghost"
-              aria-current={pathname === to}
-              className={styles.button}
-              key={to}
-            >
-              {icon}
-              {showBadge && (
-                <span className={styles.badge}>
-                  <span className="visually-hidden">{badgeLabel}</span>
-                </span>
-              )}
-            </IconButton>
-          ))}
+          {navItems.map(
+            ({ label, icon, to, showBadge, badgeLabel, className }) => (
+              <IconButton
+                aria-label={label}
+                component={Link}
+                to={to}
+                colorScheme="neutral"
+                variant="ghost"
+                aria-current={pathname === to}
+                className={clsx(styles.button, className)}
+                key={to}
+              >
+                {icon}
+                {showBadge && (
+                  <span className={styles.badge}>
+                    <span className="visually-hidden">{badgeLabel}</span>
+                  </span>
+                )}
+              </IconButton>
+            )
+          )}
         </div>
         <Avatar
           profile={account?.profile}
           size="md"
           isLink
+          to="/accounts"
           className={styles.avatar}
         />
       </nav>

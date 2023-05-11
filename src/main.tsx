@@ -52,6 +52,14 @@ const router = createBrowserRouter([
         ...Notifications,
       },
       {
+        path: "/search",
+        element: (
+          <div style={{ padding: "2rem", fontSize: "1.75em" }}>
+            🚧 Work in progress… 🚧
+          </div>
+        ),
+      },
+      {
         path: "/:handle",
         ...Profile,
         children: [

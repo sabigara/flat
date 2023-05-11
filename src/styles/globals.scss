@@ -11,6 +11,7 @@
   --column-inline-size: 46rem;
   --column-pad-inline: 1.5rem;
   --desktop-nav-inline-size: 4.5rem;
+  --mobile-nav-block-size: 3.5rem;
   --color-upvote: #eab308;
   --color-repost: #22c55e;
   --color-reply: #06b6d4;
@@ -27,6 +28,7 @@
 
   @include mixins.mq(md) {
     --column-pad-inline: 1rem;
+    scrollbar-gutter: auto;
   }
 }
 
