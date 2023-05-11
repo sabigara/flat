@@ -8,7 +8,7 @@ import styles from "./AccountsRoute.module.scss";
 export function AccountsRoute() {
   const { t } = useTranslation();
   const handleSwitchAccount = useOnSwitchAccount({
-    goHome: false,
+    goHome: true,
   });
 
   return (
