@@ -5,16 +5,17 @@ import { NavLink } from "react-router-dom";
 import styles from "./ProfileTabLinks.module.scss";
 
 type Props = {
+  showLikes: boolean;
   className?: string;
 };
 
-export function ProfileTabLinks({ className }: Props) {
+export function ProfileTabLinks({ showLikes, className }: Props) {
   const { t } = useTranslation("users");
   return (
     <ul className={clsx(styles.list, className)}>
       <Item to="." label={t("tabs.posts")} />
       <Item to="./with-replies" label={t("tabs.replies")} />
-      <Item to="./likes" label={t("tabs.likes")} />
+      {showLikes && <Item to="./likes" label={t("tabs.likes")} />}
     </ul>
   );
 }

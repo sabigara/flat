@@ -75,7 +75,7 @@ export function ProfileRoute() {
   const [hoverUnfollow, setHoverUnfollow] = React.useState(false);
 
   const atp = useAtpAgent();
-  const isMyself = atp.session && atp.session.did === profile.did;
+  const isMyself = !!atp.session && atp.session.did === profile.did;
   const isLoadingFollow = isMutating;
   const muted = !!profile.viewer?.muted;
 
@@ -204,7 +204,7 @@ export function ProfileRoute() {
             </p>
           )}
           <div hidden={muted}>
-            <ProfileTabLinks className={styles.tabLinks} />
+            <ProfileTabLinks showLikes={isMyself} className={styles.tabLinks} />
             <hr className={styles.hr} />
             <Outlet context={{ profile, richText }} />
           </div>
