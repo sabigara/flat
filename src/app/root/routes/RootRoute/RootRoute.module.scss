@@ -1,15 +1,29 @@
-.container {
-  max-width: var(--container-width);
-  margin-left: auto;
-  margin-right: auto;
-  position: relative;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  grid-template-columns: 100%;
-  min-height: 101vh; // always show scrollbar
-  background: var(--cmm-color-surface-0);
-}
+@use "mixins";
 
-.header {
-  height: var(--header-height);
+.container {
+  display: flex;
+  inline-size: calc(var(--column-inline-size) + var(--desktop-nav-inline-size));
+  margin-inline: auto;
+  border-inline: 1px solid var(--cmm-color-border-base);
+
+  main {
+    inline-size: var(--column-inline-size);
+    background: var(--cmm-color-surface-0);
+  }
+
+  @include mixins.mq(md) {
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 100%;
+    min-height: 101vh; // always show scrollbar
+    background: var(--cmm-color-surface-0);
+    inline-size: 100%;
+
+    main {
+      inline-size: 100%;
+    }
+  }
 }

@@ -1,5 +1,6 @@
 import { IconButton } from "@camome/core/IconButton";
 import { useQuery } from "@tanstack/react-query";
+import clsx from "clsx";
 import { TbBell } from "react-icons/tb";
 import { Link } from "react-router-dom";
 
@@ -8,7 +9,11 @@ import { queryKeys } from "@/src/app/root/lib/queryKeys";
 
 import styles from "./NotificationButton.module.scss";
 
-export default function NotificationButton() {
+type Props = {
+  className?: string;
+};
+
+export default function NotificationButton({ className }: Props) {
   const { data: count } = useQuery({
     queryKey: queryKeys.notifications.count.$,
     async queryFn() {
@@ -24,10 +29,9 @@ export default function NotificationButton() {
       component={Link}
       to="/notifications"
       aria-label="通知を表示"
-      size="sm"
       colorScheme="neutral"
       variant="ghost"
-      className={styles.button}
+      className={clsx(styles.button, className)}
     >
       <TbBell />
       {!!count && count > 0 && (

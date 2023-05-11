@@ -1,0 +1,70 @@
+.container {
+  --btn-size: 2.75rem;
+
+  position: sticky;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  block-size: 100dvh;
+  inline-size: var(--desktop-nav-inline-size);
+  padding-block: 1rem;
+  background: var(--cmm-color-surface-0);
+  border-inline-end: 1px solid var(--cmm-color-border-base);
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  block-size: 100%;
+}
+
+.upper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 1rem;
+}
+
+.logo {
+  --logo-size: calc(var(--btn-size) - 0.4rem);
+  svg {
+    inline-size: var(--logo-size);
+    block-size: var(--logo-size);
+  }
+}
+
+.avatar {
+  --cmm-Avatar-size: calc(var(--btn-size) - 0.4rem);
+}
+
+.button {
+  --cmm-IconButton-size: var(--btn-size);
+
+  position: relative;
+
+  &:hover {
+    .badge {
+      box-shadow: 0 0 0 2px var(--cmm-color-surface-2);
+    }
+  }
+
+  &[aria-current="true"] {
+    background: var(--cmm-color-primary-soft-bg);
+  }
+}
+
+.badge {
+  $size: 0.55rem;
+  position: absolute;
+  top: 0.35rem;
+  right: 0.35rem;
+  width: $size;
+  height: $size;
+  border-radius: var(--cmm-radius-full);
+  display: grid;
+  place-items: center;
+  color: var(--cmm-color-font-on-emphasis);
+  background: var(--cmm-color-primary-emphasis);
+  box-shadow: 0 0 0 2px var(--cmm-color-surface-0);
+}

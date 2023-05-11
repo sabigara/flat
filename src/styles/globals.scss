@@ -8,12 +8,14 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 
-  --container-width: 44rem;
-  --container-pad-inline: 1.5rem;
-  --header-height: 3.5rem;
+  --column-inline-size: 46rem;
+  --column-pad-inline: 1.5rem;
+  --desktop-nav-inline-size: 4.5rem;
   --color-upvote: #eab308;
   --color-repost: #22c55e;
   --color-reply: #06b6d4;
+
+  scrollbar-gutter: stable;
 
   &[data-theme="light"] {
     --cmm-color-border-emphasis: var(--cmm-color-neutral-3);
@@ -24,14 +26,12 @@
   }
 
   @include mixins.mq(md) {
-    --container-pad-inline: 1rem;
+    --column-pad-inline: 1rem;
   }
 }
 
 body {
-  [data-theme="light"] & {
-    background: var(--cmm-color-surface-2);
-  }
+  background: var(--cmm-color-surface-2);
 }
 
 .scrollbar {
@@ -114,15 +114,4 @@ body {
   display: block !important;
   margin-inline: auto;
   width: fit-content;
-  // display: block !important;
-  // block-size: fit-content;
-  // block-size: 100%;
-  // margin-inline: auto;
-  // inline-size: fit-content;
-
-  &__child-wrapper {
-    // block-size: 100%;
-    // block-size: 100%;
-    // block-size: fit-content;
-  }
 }
