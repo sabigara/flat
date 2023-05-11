@@ -16,7 +16,7 @@ import type { AppBskyFeedDefs } from "@atproto/api";
 import { FeedSkelton } from "@/src/app/feed/components/FeedSkelton";
 import { reloadFeedForNewPosts } from "@/src/app/feed/lib/reloadFeedForNewPosts";
 import Post from "@/src/app/post/components/Post";
-import PostComposer from "@/src/app/post/components/PostComposer";
+import PostComposer from "@/src/app/post/components/composer/PostComposer";
 import { feedItemToUniqueKey } from "@/src/app/post/lib/feedItemToUniqueKey";
 import {
   FeedInfiniteData,

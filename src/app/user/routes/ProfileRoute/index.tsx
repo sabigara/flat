@@ -2,6 +2,7 @@ import { RichText } from "@atproto/api";
 import { LoaderFunction } from "react-router-dom";
 
 import { getAtpAgent, getBskyApi } from "@/src/app/account/states/atp";
+import { DefaultErrorBoundary } from "@/src/app/error/components/DefaultErrorBoundary";
 import { ProfileRoute } from "@/src/app/user/routes/ProfileRoute/ProfileRoute";
 
 // TODO: handle not found
@@ -21,3 +22,4 @@ export const loader = (async ({ params }) => {
 export type ProfileRouteLoaderResult = Awaited<ReturnType<typeof loader>>;
 
 export const element = <ProfileRoute />;
+export const errorElement = <DefaultErrorBoundary />;

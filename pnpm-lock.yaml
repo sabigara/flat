@@ -82,6 +82,9 @@ dependencies:
   react-icons:
     specifier: ^4.8.0
     version: 4.8.0(react@18.2.0)
+  react-image-crop:
+    specifier: ^10.0.9
+    version: 10.0.9(react@18.2.0)
   react-images-uploading:
     specifier: ^3.1.7
     version: 3.1.7(react-dom@18.2.0)(react@18.2.0)
@@ -7989,6 +7992,15 @@ packages:
     peerDependencies:
       react: '*'
     dependencies:
+      react: 18.2.0
+    dev: false
+
+  /react-image-crop@10.0.9(react@18.2.0):
+    resolution: {integrity: sha512-fqn6a811cx/sE7jtu8txL4lBTwgZYuEVNvy7UPKMNMWeRcZa6v0ja11+Gd9nZQiBfaxDal3PBcKhGBLQ956UNg==}
+    peerDependencies:
+      react: '>=16.13.1'
+    dependencies:
+      clsx: 1.2.1
       react: 18.2.0
     dev: false
 

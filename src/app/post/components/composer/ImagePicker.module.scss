@@ -1,0 +1,73 @@
+@use "var";
+
+@mixin overlayBtn() {
+  --bg: 0 0 0;
+
+  position: absolute;
+  background: rgba(0 0 0 / 0.6);
+  color: white;
+
+  &:hover {
+    background: rgba(0 0 0 / 0.9);
+  }
+}
+
+.preview {
+  &__container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    padding-inline: 1.25rem;
+
+    @media screen and (max-width: var.$composerMaxWidth) {
+      grid-template-columns: repeat(2, 1fr);
+      padding-inline: 1rem;
+    }
+  }
+
+  &__item {
+    position: relative;
+  }
+
+  &__button {
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  &__canvas {
+    object-fit: cover;
+    aspect-ratio: 1;
+    border-radius: var(--cmm-radius-md);
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  &__removeBtn {
+    @include overlayBtn();
+    --cmm-IconButton-size: 1.5rem;
+    --cmm-IconButton-icon-size: 1rem;
+    inset-block-start: 0.25rem;
+    inset-inline-start: 0.25rem;
+
+    > svg {
+      stroke-width: 2.25;
+    }
+  }
+
+  &__editBtn {
+    @include overlayBtn();
+
+    inset-block-end: 0.3rem;
+    inset-inline-end: 0.3rem;
+    font-weight: var(--cmm-font-weight-bold);
+    font-size: var(--cmm-font-size-sm);
+    line-height: 1;
+    padding-block: 0.3em;
+    padding-inline: 0.7em;
+    border-radius: var(--cmm-radius-full);
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

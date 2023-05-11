@@ -35,7 +35,7 @@ export function useProfileRouteFeed({ withReply }: Params) {
     ? feedFilterNoop
     : feedFiltersToFn({
         reply: "none",
-        repost: "all",
+        repost: "latest",
       });
   const fetchLatest = React.useCallback(
     async () =>

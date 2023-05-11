@@ -9,23 +9,29 @@ import React from "react";
 
 type Props = {
   open: boolean;
-  setOpen: (open: boolean) => void;
+  onClose: () => void;
   title?: React.ReactNode;
   initialFocus?: React.MutableRefObject<HTMLElement | null>;
   transitions?: {
     backdrop?: TransitionClasses;
     panel?: TransitionClasses;
   };
+  refs?: {
+    panel?: React.Ref<HTMLDivElement>;
+  };
+  showBackdrop?: boolean;
   children?: React.ReactNode;
   className?: string;
 };
 
 export default function Dialog({
   open,
-  setOpen,
+  onClose,
   title,
   initialFocus,
   transitions,
+  refs,
+  showBackdrop,
   children,
   className,
 }: Props) {
@@ -33,23 +39,28 @@ export default function Dialog({
     <Transition appear show={open} as={React.Fragment}>
       <HeadlessDialog
         as="div"
-        onClose={setOpen}
+        onClose={onClose}
         initialFocus={initialFocus}
         className={clsx(dialogClassNames.container, className)}
       >
-        <Transition.Child
-          as={React.Fragment}
-          {...(transitions?.backdrop ? transitions.backdrop : {})}
-        >
-          <div className={dialogClassNames.backdrop} />
-        </Transition.Child>
+        {showBackdrop && (
+          <Transition.Child
+            as={React.Fragment}
+            {...(transitions?.backdrop ? transitions.backdrop : {})}
+          >
+            <div className={dialogClassNames.backdrop} />
+          </Transition.Child>
+        )}
         <div className={dialogClassNames.panelWrapper}>
           <Transition.Child
             as={React.Fragment}
             {...(transitions?.panel ? transitions.panel : {})}
           >
-            <HeadlessDialog.Panel className={dialogClassNames.panel}>
-              <CamomeDialog.Close onClick={() => setOpen(false)} />
+            <HeadlessDialog.Panel
+              className={clsx(dialogClassNames.panel, "scrollbar")}
+              ref={refs?.panel}
+            >
+              <CamomeDialog.Close onClick={onClose} />
               <HeadlessDialog.Title className={dialogClassNames.title}>
                 {title}
               </HeadlessDialog.Title>

@@ -108,3 +108,21 @@ body {
 .gZoomOut {
   animation-duration: 0.3s !important;
 }
+
+// For react-image-crop
+.ReactCrop {
+  display: block !important;
+  margin-inline: auto;
+  width: fit-content;
+  // display: block !important;
+  // block-size: fit-content;
+  // block-size: 100%;
+  // margin-inline: auto;
+  // inline-size: fit-content;
+
+  &__child-wrapper {
+    // block-size: 100%;
+    // block-size: 100%;
+    // block-size: fit-content;
+  }
+}

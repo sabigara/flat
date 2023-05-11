@@ -1,0 +1,30 @@
+@use "var";
+
+@mixin mobile() {
+  @media screen and (max-width: var.$composerMaxWidth) {
+    @content;
+  }
+}
+
+@mixin container() {
+  --pad: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--pad);
+
+  @include mobile() {
+    --pad: 1rem;
+  }
+
+  > button {
+    align-self: flex-end;
+  }
+
+  hr {
+    border-top: 1px solid var(--cmm-color-border-base);
+  }
+}
+
+@mixin headerBtn {
+  margin: calc(var(--pad) - 0.5rem) 0 0 calc(var(--pad) - 0.5rem);
+}

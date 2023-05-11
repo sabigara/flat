@@ -1,0 +1,102 @@
+@use "var";
+@use "./composerMixins";
+
+.dialog {
+  :global {
+    --cmm-Dialog-outer-margin: 0px;
+
+    .Dialog__backdrop {
+      @include composerMixins.mobile() {
+        display: none;
+      }
+    }
+
+    .Dialog__panel {
+      --cmm-Dialog-min-width: var.$composerMaxWidth;
+      --cmm-Dialog-max-width: var.$composerMaxWidth;
+      width: min(var.$composerMaxWidth, 100vw);
+      padding: 0;
+      overflow: auto;
+
+      @include composerMixins.mobile() {
+        border-radius: 0;
+        height: 100dvh;
+      }
+    }
+
+    .Dialog__content {
+      margin: 0;
+    }
+
+    .Dialog__close {
+      display: none;
+    }
+  }
+}
+
+.panelEnter {
+  transition-property: all;
+  transition-timing-function: ease-out;
+  transition-duration: 0.2s;
+
+  &From {
+    opacity: 0;
+    scale: 0.95;
+  }
+
+  &To {
+    opacity: 1;
+    scale: 1;
+  }
+
+  @include composerMixins.mobile() {
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+
+    &From {
+      translate: 0 100%;
+    }
+
+    &To {
+      translate: 0;
+    }
+  }
+}
+
+.panelLeave {
+  transition-property: all;
+  transition-timing-function: ease-in;
+  transition-duration: 0.2s;
+
+  &From {
+    opacity: 1;
+    scale: 1;
+  }
+
+  &To {
+    opacity: 0;
+    scale: 0.95;
+  }
+
+  @include composerMixins.mobile() {
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+
+    &From {
+      translate: 0;
+    }
+
+    &To {
+      translate: 0 100%;
+    }
+  }
+}
+
+// applied when image editor is open
+.panelHidden {
+  opacity: 0;
+
+  @include composerMixins.mobile() {
+    opacity: 1;
+  }
+}

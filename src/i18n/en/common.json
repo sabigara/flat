@@ -76,6 +76,12 @@
       "link-card": {
         "remove": "Remove"
       },
+      "image-editor": {
+        "edit": "Edit",
+        "crop-image-or-edit-alt": "Crop image or edit alt",
+        "save": "Save",
+        "alt-label": "Alt text"
+      },
       "errors": {
         "img-max-number": "You can upload up to 4 images",
         "img-accept-type": "Invalid file type",
@@ -120,6 +126,8 @@
     "unmute-success": "Unmuted {{actor}}"
   },
   "errors": {
-    "general": "Something went wrong"
+    "general": "Something went wrong",
+    "not-found": "What you're looking for was not found",
+    "go-home": "Go home"
   }
 }
