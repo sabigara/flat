@@ -4,6 +4,7 @@ import { Tag } from "@camome/core/Tag";
 import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import { Draft } from "immer";
+import { useAtomValue } from "jotai";
 import React from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { BsReplyFill } from "react-icons/bs";
@@ -13,6 +14,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { useAccountQuery } from "@/src/app/account/hooks/useAccountQuery";
 import { getAtpAgent, getBskyApi } from "@/src/app/account/states/atp";
+import { settingsAtom } from "@/src/app/account/states/settingsAtom";
 import PostMoreMenu from "@/src/app/post/components/PostMoreMenu";
 import Embed from "@/src/app/post/components/embed/Embed";
 import { usePostComposer } from "@/src/app/post/hooks/usePostComposer";
@@ -51,6 +53,8 @@ export default function Post({
   className,
 }: Props) {
   const { t } = useTranslation();
+  const { mode } = useAtomValue(settingsAtom);
+  const isZenMode = mode === "zen";
   const { data: account } = useAccountQuery();
   const { handleClickReply } = usePostComposer();
   const { post, reason, reply } = data;
@@ -179,10 +183,13 @@ export default function Post({
       type: "reply",
       icon: <TbMessageCircle2 />,
       iconReacted: <TbMessageCircle2 />,
-      "aria-label": t("post.reply.btn-label", {
-        count: post.replyCount ?? 0,
-      }),
+      "aria-label": isZenMode
+        ? t("post.reply.title")
+        : t("post.reply.btn-label", {
+            count: post.replyCount ?? 0,
+          }),
       count: post.replyCount ?? 0,
+      showCount: !isZenMode,
       onClick: () => handleClickReply(data),
       reacted: false,
     },
@@ -190,10 +197,13 @@ export default function Post({
       type: "repost",
       icon: <FaRetweet />,
       iconReacted: <FaRetweet style={{ color: "#22c55e" }} />,
-      "aria-label": t("post.repost.btn-label", {
-        count: post.repostCount ?? 0,
-      }),
+      "aria-label": isZenMode
+        ? t("post.repost.title")
+        : t("post.repost.btn-label", {
+            count: post.repostCount ?? 0,
+          }),
       count: post.repostCount ?? 0,
+      showCount: !isZenMode,
       reacted: reposted,
       disabled: isMutatingRepost,
       onClick: () => {
@@ -205,10 +215,13 @@ export default function Post({
       type: "like",
       icon: <TbStar />,
       iconReacted: <TbStarFilled style={{ color: "#eab308" }} />,
-      "aria-label": t("post.like.btn-label", {
-        count: post.likeCount ?? 0,
-      }),
+      "aria-label": isZenMode
+        ? t("post.like.title")
+        : t("post.like.btn-label", {
+            count: post.likeCount ?? 0,
+          }),
       count: post.likeCount ?? 0,
+      showCount: !isZenMode,
       reacted: liked,
       disabled: isMutatingLike,
       onClick: () => {
@@ -366,6 +379,7 @@ type ReactionProps = {
   icon: React.ReactNode;
   iconReacted: React.ReactNode;
   count: number;
+  showCount: boolean;
   onClick?: () => void;
   disabled?: boolean;
   ["aria-label"]: string;
@@ -377,6 +391,7 @@ function Reaction({
   icon,
   iconReacted,
   count,
+  showCount,
   onClick,
   reacted,
   disabled,
@@ -395,7 +410,9 @@ function Reaction({
       <span className={styles.reaction__icon}>
         {reacted ? iconReacted : icon}
       </span>
-      <span aria-hidden>{count}</span>
+      <span aria-hidden className={styles.reaction__count}>
+        {showCount && count > 0 && count}
+      </span>
     </button>
   );
 }

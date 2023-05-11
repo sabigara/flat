@@ -7,7 +7,7 @@ function createMergedJsonStorage(initialState: Settings) {
   const storage = createJSONStorage<Settings>(() => localStorage);
   const getItem = (key: string) => {
     const value = storage.getItem(key);
-    return { ...(typeof value === "symbol" ? {} : value), ...initialState };
+    return { ...initialState, ...(typeof value === "symbol" ? {} : value) };
   };
   return { ...storage, getItem };
 }
@@ -19,7 +19,7 @@ const initialState: Settings = {
     repost: "latest",
   },
   postImageLayout: "stack",
-  mode: "normal",
+  mode: "all",
 };
 
 export const settingsAtom = atomWithStorage(

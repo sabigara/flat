@@ -3,9 +3,9 @@
   "appearance": {
     "title": "外観",
     "mode": {
-      "title": "表示モード",
+      "title": "表示する情報量",
       "options": {
-        "normal": "ノーマル",
+        "all": "すべて",
         "zen": "禅"
       }
     },

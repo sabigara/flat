@@ -3,9 +3,9 @@
   "appearance": {
     "title": "Appearance",
     "mode": {
-      "title": "Mode",
+      "title": "Amount of data you see",
       "options": {
-        "normal": "Normal",
+        "all": "All",
         "zen": "Zen"
       }
     },

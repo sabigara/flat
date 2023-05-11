@@ -21,7 +21,7 @@ export type AccountKeys = {
   service: string;
 };
 
-export type Mode = "normal" | "zen";
+export type Mode = "all" | "zen";
 
 export type Settings = {
   theme: Theme;

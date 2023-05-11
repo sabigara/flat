@@ -35,9 +35,7 @@ export function SettingsRoute() {
               setSettings((draft) => void (draft.mode = e.target.value as Mode))
             }
           >
-            <option value="normal">
-              {t("appearance.mode.options.normal")}
-            </option>
+            <option value="all">{t("appearance.mode.options.all")}</option>
             <option value="zen">{t("appearance.mode.options.zen")}</option>
           </Select>
 
