@@ -3,6 +3,7 @@ import { IconButton } from "@camome/core/IconButton";
 import { Spinner } from "@camome/core/Spinner";
 import { Tag } from "@camome/core/Tag";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAtomValue } from "jotai";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { TbDots, TbVolumeOff } from "react-icons/tb";
@@ -17,6 +18,7 @@ import {
 import type { ProfileRouteLoaderResult } from "@/src/app/user/routes/ProfileRoute";
 
 import { getAtpAgent, useAtpAgent } from "@/src/app/account/states/atp";
+import { settingsAtom } from "@/src/app/account/states/settingsAtom";
 import { useLightbox } from "@/src/app/content/image/hooks/useLightbox";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import Seo from "@/src/app/seo/Seo";
@@ -33,6 +35,8 @@ import styles from "./ProfileRoute.module.scss";
 export function ProfileRoute() {
   const { t } = useTranslation();
   const { t: usersT } = useTranslation("users");
+  const { mode } = useAtomValue(settingsAtom);
+  const isZenMode = mode === "zen";
   const { profile, richText } = useLoaderData() as ProfileRouteLoaderResult;
   const username = userToName(profile);
   const queryClient = useQueryClient();
@@ -71,7 +75,7 @@ export function ProfileRoute() {
   const [hoverUnfollow, setHoverUnfollow] = React.useState(false);
 
   const atp = useAtpAgent();
-  const isMyself = atp.session && atp.session.did === profile.did;
+  const isMyself = !!atp.session && atp.session.did === profile.did;
   const isLoadingFollow = isMutating;
   const muted = !!profile.viewer?.muted;
 
@@ -161,7 +165,7 @@ export function ProfileRoute() {
               <h1 className={styles.displayName}>{profile.displayName}</h1>
               <div className={styles.handleWrap}>
                 <span className={styles.handle}>@{profile.handle}</span>
-                {profile.viewer?.followedBy && (
+                {!isZenMode && profile.viewer?.followedBy && (
                   <Tag
                     size="sm"
                     variant="soft"
@@ -173,16 +177,18 @@ export function ProfileRoute() {
                 )}
               </div>
             </hgroup>
-            <div className={styles.dl}>
-              <Link to="followers">
-                <div className={styles.term}>Followers</div>
-                <div className={styles.data}>{profile.followersCount}</div>
-              </Link>
-              <Link to="following">
-                <div className={styles.term}>Following</div>
-                <div className={styles.data}>{profile.followsCount}</div>
-              </Link>
-            </div>
+            {!isZenMode && (
+              <div className={styles.dl}>
+                <Link to="followers">
+                  <div className={styles.term}>Followers</div>
+                  <div className={styles.data}>{profile.followersCount}</div>
+                </Link>
+                <Link to="following">
+                  <div className={styles.term}>Following</div>
+                  <div className={styles.data}>{profile.followsCount}</div>
+                </Link>
+              </div>
+            )}
             <RichTextRenderer
               text={richText.text}
               facets={richText.facets}
@@ -198,7 +204,7 @@ export function ProfileRoute() {
             </p>
           )}
           <div hidden={muted}>
-            <ProfileTabLinks className={styles.tabLinks} />
+            <ProfileTabLinks showLikes={isMyself} className={styles.tabLinks} />
             <hr className={styles.hr} />
             <Outlet context={{ profile, richText }} />
           </div>

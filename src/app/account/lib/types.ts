@@ -21,8 +21,11 @@ export type AccountKeys = {
   service: string;
 };
 
+export type Mode = "all" | "zen";
+
 export type Settings = {
   theme: Theme;
   tlFilters: FeedFilers;
   postImageLayout: PostImageLayout;
+  mode: Mode;
 };
