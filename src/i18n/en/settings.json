@@ -2,6 +2,13 @@
   "title": "Settings",
   "appearance": {
     "title": "Appearance",
+    "mode": {
+      "title": "Mode",
+      "options": {
+        "normal": "Normal",
+        "zen": "Zen"
+      }
+    },
     "theme": {
       "title": "Theme",
       "options": {

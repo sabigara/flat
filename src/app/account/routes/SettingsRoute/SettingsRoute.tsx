@@ -6,6 +6,7 @@ import { useOutletContext } from "react-router-dom";
 import type { RootContext } from "@/src/app/root/routes/RootRoute/RootRoute";
 import type { Theme } from "@/src/app/theme/lib/types";
 
+import { Mode } from "@/src/app/account/lib/types";
 import { settingsAtom } from "@/src/app/account/states/settingsAtom";
 import { PostImageLayout } from "@/src/app/post/lib/types";
 import Seo from "@/src/app/seo/Seo";
@@ -25,6 +26,21 @@ export function SettingsRoute() {
 
         <section className={styles.section}>
           <h2>{t("appearance.title")}</h2>
+
+          <Select
+            label={t("appearance.mode.title")}
+            size="md"
+            value={settings.mode}
+            onChange={(e) =>
+              setSettings((draft) => void (draft.mode = e.target.value as Mode))
+            }
+          >
+            <option value="normal">
+              {t("appearance.mode.options.normal")}
+            </option>
+            <option value="zen">{t("appearance.mode.options.zen")}</option>
+          </Select>
+
           <Select
             label={t("appearance.theme.title")}
             size="md"

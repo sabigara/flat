@@ -2,6 +2,13 @@
   "title": "ユーザー設定",
   "appearance": {
     "title": "外観",
+    "mode": {
+      "title": "表示モード",
+      "options": {
+        "normal": "ノーマル",
+        "zen": "禅"
+      }
+    },
     "theme": {
       "title": "テーマ",
       "options": {
