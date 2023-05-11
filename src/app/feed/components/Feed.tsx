@@ -1,6 +1,5 @@
 import { FeedViewPost } from "@atproto/api/dist/client/types/app/bsky/feed/defs";
 import { Button } from "@camome/core/Button";
-import { Spinner } from "@camome/core/Spinner";
 import {
   useInfiniteQuery,
   type QueryKey,
@@ -9,6 +8,7 @@ import {
   useQuery,
 } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
+import { TbArrowUp } from "react-icons/tb";
 import InfiniteScroll from "react-infinite-scroller";
 
 import type { AppBskyFeedDefs } from "@atproto/api";
@@ -25,6 +25,7 @@ import {
 import { MutatePostCache } from "@/src/app/post/lib/types";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import SpinnerFill from "@/src/components/SpinnerFill";
+import { isButtonLoading } from "@/src/components/isButtonLoading";
 
 import styles from "./Feed.module.scss";
 
@@ -116,7 +117,7 @@ export function Feed<K extends QueryKey>({
   }
 
   return (
-    <>
+    <div className={styles.container}>
       <InfiniteScroll
         pageStart={0}
         loadMore={() => !isFetchingNextPage && fetchNextPage()}
@@ -144,18 +145,14 @@ export function Feed<K extends QueryKey>({
         <Button
           size="sm"
           onClick={loadNewPosts}
-          variant="soft"
           className={styles.newItemBtn}
-          disabled={isFetching && !isFetchingNextPage}
+          startDecorator={<TbArrowUp />}
+          {...isButtonLoading(isFetching && !isFetchingNextPage)}
         >
-          {isFetching && !isFetchingNextPage ? (
-            <Spinner size="sm" />
-          ) : (
-            t("feed.load-new-posts")
-          )}
+          {t("feed.load-new-posts")}
         </Button>
       )}
       <PostComposer revalidate={revalidateOnPost} />
-    </>
+    </div>
   );
 }

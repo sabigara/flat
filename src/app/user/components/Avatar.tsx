@@ -14,6 +14,7 @@ type Props = {
     "avatar" | "displayName" | "handle"
   >;
   isLink?: boolean;
+  to?: string;
   innerRef?: React.Ref<HTMLImageElement | HTMLAnchorElement>;
   stopPropagation?: boolean;
 } & CmmAvatarProps;
@@ -21,13 +22,14 @@ type Props = {
 export default function Avatar({
   profile,
   isLink,
+  to,
   innerRef,
   stopPropagation = true,
   ...props
 }: Props) {
   const linkProps = {
     component: Link,
-    to: `/${profile?.handle}`,
+    to: to ?? `/${profile?.handle}`,
   };
   return (
     // @ts-ignore

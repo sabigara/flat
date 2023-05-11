@@ -4,7 +4,7 @@
     "sign-in": "ログイン",
     "sign-out": "ログアウト",
     "sign-in-again": "再ログイン",
-    "signed-in-accounts": "ログイン中アカウント",
+    "signed-in-accounts": "あなたのアカウント",
     "sign-in-success": "ログインしました",
     "sign-out-success": "ログアウトしました",
     "add-account": "アカウントを追加",
@@ -26,9 +26,12 @@
     }
   },
   "navigation": {
+    "home": "ホーム",
+    "notifications": "通知",
     "profile": "プロフィール",
     "settings": "ユーザー設定",
     "accounts": "アカウント",
+    "search": "検索",
     "about": "Flatについて"
   },
   "post": {

@@ -1,5 +1,9 @@
 @use "mixins";
 
+.container {
+  background: var(--cmm-color-surface-0);
+}
+
 .banner {
   aspect-ratio: 3 / 1;
   width: 100%;
@@ -15,7 +19,7 @@
 .topRow {
   display: flex;
   justify-content: space-between;
-  padding: 1rem var(--container-pad-inline) 0.25rem var(--container-pad-inline);
+  padding: 1rem var(--column-pad-inline) 0.25rem var(--column-pad-inline);
   container-type: inline-size;
 }
 
@@ -28,7 +32,7 @@
 .avatarWrap {
   --cmm-Avatar-size: max(20cqw, 6.5rem);
   margin-block-start: calc(
-    var(--cmm-Avatar-size) / -2 - var(--container-pad-inline)
+    var(--cmm-Avatar-size) / -2 - var(--column-pad-inline)
   );
   border-radius: var(--cmm-radius-full);
   display: block;
@@ -42,7 +46,7 @@
 }
 
 .about {
-  padding: 1rem var(--container-pad-inline);
+  padding: 1rem var(--column-pad-inline);
 }
 
 .displayName {

@@ -1,3 +1,9 @@
+@use "mixins";
+
+.container {
+  position: relative;
+}
+
 .row {
   position: absolute;
   top: 0;
@@ -24,9 +30,26 @@
 
 .newItemBtn {
   position: fixed;
-  top: 0.75rem;
-  left: 50%;
+  inset-block-start: 1rem;
+  inset-inline-start: calc(50% + var(--desktop-nav-inline-size) / 2);
   translate: -50%;
   z-index: 60;
-  min-width: 9rem;
+  min-inline-size: 9rem;
+  color: var(--cmm-color-primary-font);
+  background: var(--cmm-color-surface-0);
+  border: 1px solid var(--cmm-color-border-base);
+  box-shadow: var(--cmm-shadow-lg);
+
+  &:hover {
+    background: var(--cmm-color-surface-2);
+  }
+
+  &:disabled {
+    opacity: 1;
+  }
+
+  @include mixins.mq(md) {
+    inset-block-start: calc(var(--mobile-nav-block-size) + 0.75rem);
+    inset-inline-start: 50%;
+  }
 }

@@ -12,9 +12,9 @@ import DropdownMenu from "@/src/app/root/components/DropdownMenu";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import LogoIcon from "@/src/assets/icon.svg";
 
-import styles from "./Header.module.scss";
+import styles from "./MobileNav.module.scss";
 
-export default function Header() {
+export default function MobileNav() {
   const { state: navState } = useNavigation();
   const { state: revalidateState } = useRevalidator();
   const progressBusy = navState === "loading" || revalidateState === "loading";

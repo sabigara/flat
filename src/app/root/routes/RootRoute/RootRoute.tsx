@@ -2,7 +2,9 @@ import React from "react";
 import { Outlet, useLoaderData, ScrollRestoration } from "react-router-dom";
 
 import { useClearNotifQueryData } from "@/src/app/notification/hooks/useClearNotifQueryData";
-import Header from "@/src/app/root/components/Header";
+import { DesktopNav } from "@/src/app/root/components/DesktopNav";
+import MobileNav from "@/src/app/root/components/MobileNav";
+import { useMobileSize } from "@/src/app/root/hooks/useMobileSize";
 import { useTheme } from "@/src/app/theme/hooks/useTheme";
 import { Theme } from "@/src/app/theme/lib/types";
 
@@ -15,6 +17,7 @@ export function RootRoute() {
     theme: Theme;
   };
   const { setTheme, theme, resolvedTheme } = useTheme(loadedTheme);
+  const isMobileSize = useMobileSize();
 
   const rootContext: RootContext = {
     theme: {
@@ -33,7 +36,7 @@ export function RootRoute() {
     <>
       <ScrollRestoration />
       <div className={styles.container}>
-        <Header />
+        {isMobileSize ? <MobileNav /> : <DesktopNav />}
         <main>
           <Outlet context={rootContext} />
         </main>

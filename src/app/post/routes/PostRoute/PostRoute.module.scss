@@ -6,7 +6,7 @@
 
 .notFound {
   padding-block: 1rem;
-  padding-inline: var(--container-pad-inline);
+  padding-inline: var(--column-pad-inline);
 
   a {
     @include mixins.underline;

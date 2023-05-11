@@ -28,7 +28,7 @@ export default function Thread({
     if (!isSelected || !AppBskyFeedDefs.isThreadViewPost(thread)) return;
     const target = document.getElementById(thread.post.uri);
     if (!target) return;
-    const headerOffset = 3.5 * 16; // FIXME: get value of var(--header-height)
+    const headerOffset = 3.5 * 16; // FIXME: better way to get height of header
     const offsetPosition =
       target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
     window.scrollTo({
