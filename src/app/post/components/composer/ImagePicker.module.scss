@@ -57,7 +57,7 @@
   &__editBtn {
     @include overlayBtn();
 
-    inset-block-end: 0.72rem;
+    inset-block-end: 0.3rem;
     inset-inline-end: 0.3rem;
     font-weight: var(--cmm-font-weight-bold);
     font-size: var(--cmm-font-size-sm);

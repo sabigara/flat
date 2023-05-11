@@ -79,7 +79,8 @@
       "image-editor": {
         "edit": "Edit",
         "crop-image-or-edit-alt": "Crop image or edit alt",
-        "save": "Save"
+        "save": "Save",
+        "alt-label": "Alt text"
       },
       "errors": {
         "img-max-number": "You can upload up to 4 images",

@@ -48,14 +48,14 @@ export default function PostComposer({
   const handleInnerOpen = (idx: number) => {
     setSelectedImgIdx(idx);
     if (outerPanelRef.current) {
-      outerPanelRef.current.style.opacity = "0";
+      outerPanelRef.current.classList.add(styles.panelHidden);
     }
   };
 
   const handleInnerClose = () => {
     setSelectedImgIdx(-1);
     if (outerPanelRef.current) {
-      outerPanelRef.current.style.opacity = "1";
+      outerPanelRef.current.classList.remove(styles.panelHidden);
     }
   };
 

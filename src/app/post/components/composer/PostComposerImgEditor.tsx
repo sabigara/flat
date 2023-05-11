@@ -83,8 +83,9 @@ export function PostComposerImgEditor({
         </ReactCrop>
       </div>
       <div className={styles.form}>
+        {/* TODO: max length */}
         <Textarea
-          label="画像の説明文"
+          label={t("post.composer.image-editor.alt-label")}
           rows={2}
           value={alt}
           onChange={handleChangeAlt}

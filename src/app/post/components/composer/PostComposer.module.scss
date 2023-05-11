@@ -1,11 +1,12 @@
 @use "var";
+@use "./composerMixins";
 
 .dialog {
   :global {
     --cmm-Dialog-outer-margin: 0px;
 
     .Dialog__backdrop {
-      @media screen and (max-width: var.$composerMaxWidth) {
+      @include composerMixins.mobile() {
         display: none;
       }
     }
@@ -16,10 +17,8 @@
       width: min(var.$composerMaxWidth, 100vw);
       padding: 0;
       overflow: auto;
-      transition-property: all;
-      transition-duration: 0.2s;
 
-      @media screen and (max-width: var.$composerMaxWidth) {
+      @include composerMixins.mobile() {
         border-radius: 0;
         height: 100dvh;
       }
@@ -50,7 +49,7 @@
     scale: 1;
   }
 
-  @media screen and (max-width: var.$composerMaxWidth) {
+  @include composerMixins.mobile() {
     transition-duration: 0.3s;
     transition-timing-function: ease;
 
@@ -79,7 +78,7 @@
     scale: 0.95;
   }
 
-  @media screen and (max-width: var.$composerMaxWidth) {
+  @include composerMixins.mobile() {
     transition-duration: 0.3s;
     transition-timing-function: ease;
 
@@ -90,5 +89,14 @@
     &To {
       translate: 0 100%;
     }
+  }
+}
+
+// applied when image editor is open
+.panelHidden {
+  opacity: 0;
+
+  @include composerMixins.mobile() {
+    opacity: 1;
   }
 }

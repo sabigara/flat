@@ -1,12 +1,18 @@
 @use "var";
 
+@mixin mobile() {
+  @media screen and (max-width: var.$composerMaxWidth) {
+    @content;
+  }
+}
+
 @mixin container() {
   --pad: 1.25rem;
   display: flex;
   flex-direction: column;
   row-gap: var(--pad);
 
-  @media screen and (max-width: var.$composerMaxWidth) {
+  @include mobile() {
     --pad: 1rem;
   }
 
