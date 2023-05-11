@@ -26,9 +26,12 @@
     }
   },
   "navigation": {
+    "home": "Home",
+    "notifications": "Notifications",
     "profile": "Profile",
     "settings": "Settings",
     "accounts": "Accounts",
+    "search": "Search",
     "about": "About Flat"
   },
   "post": {

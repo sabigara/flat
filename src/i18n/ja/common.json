@@ -26,9 +26,12 @@
     }
   },
   "navigation": {
+    "home": "ホーム",
+    "notifications": "通知",
     "profile": "プロフィール",
     "settings": "ユーザー設定",
     "accounts": "アカウント",
+    "search": "検索",
     "about": "Flatについて"
   },
   "post": {

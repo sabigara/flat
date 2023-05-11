@@ -54,7 +54,9 @@ const router = createBrowserRouter([
       {
         path: "/search",
         element: (
-          <div style={{ padding: "2rem", fontSize: "1.75em" }}>
+          <div
+            style={{ padding: "2rem", fontSize: "1.75em", textAlign: "center" }}
+          >
             🚧 Work in progress… 🚧
           </div>
         ),

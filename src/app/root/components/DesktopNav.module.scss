@@ -26,8 +26,17 @@
   row-gap: 1rem;
 }
 
+.lower {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 1rem;
+}
+
 .logo {
-  --logo-size: calc(var(--btn-size) - 0.4rem);
+  --logo-size: calc(var(--btn-size) - 0.3rem);
+  margin-block-end: 0.25rem;
+
   svg {
     inline-size: var(--logo-size);
     block-size: var(--logo-size);
@@ -71,4 +80,12 @@
   color: var(--cmm-color-font-on-emphasis);
   background: var(--cmm-color-primary-emphasis);
   box-shadow: 0 0 0 2px var(--cmm-color-surface-0);
+}
+
+.info {
+  color: var(--cmm-color-font-subtle);
+
+  &:hover {
+    color: var(--cmm-color-font-base);
+  }
 }
