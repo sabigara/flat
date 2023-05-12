@@ -14,10 +14,10 @@
 }
 
 .targetWrap {
-  // I have no idea why only display: grid satisfies my needs:
+  // I have no idea why only display: inline-grid (or grid) satisfies my needs:
   //   1. Truncates too long displayName or/and handle with ellipsis.
   //   2. Popover is positioned correctly.
-  display: grid;
+  display: inline-grid;
 }
 
 .content {
