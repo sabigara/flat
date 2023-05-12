@@ -6,6 +6,8 @@
     --cmm-Dialog-outer-margin: 0px;
 
     .Dialog__backdrop {
+      background: rgba(0, 0, 0, 0.6);
+
       @include composerMixins.mobile() {
         display: none;
       }

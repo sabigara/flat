@@ -1,12 +1,12 @@
 .container {
   block-size: var(--mobile-nav-block-size);
+  inline-size: 100%;
   padding: 0 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--cmm-color-border-base);
-  position: sticky;
-  top: 0;
+  position: fixed;
   background: var(--cmm-color-surface-0);
   z-index: 50;
 }

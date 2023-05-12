@@ -10,6 +10,8 @@
   main {
     inline-size: var(--column-inline-size);
     background: var(--cmm-color-surface-0);
+    margin-inline-start: var(--desktop-nav-inline-size);
+    min-block-size: 100dvh;
   }
 
   @include mixins.mq(md) {
@@ -26,6 +28,8 @@
 
     main {
       inline-size: 100%;
+      margin-inline-start: 0;
+      margin-block-start: var(--mobile-nav-block-size);
     }
   }
 }
