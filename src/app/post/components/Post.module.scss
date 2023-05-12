@@ -156,15 +156,16 @@
 .line--up {
   @extend %line;
   inset-block-start: -1rem;
-  block-size: calc(1rem - 0.3rem);
+  block-size: calc(1rem - 0.25rem);
   border-end-start-radius: var(--cmm-radius-full);
   border-end-end-radius: var(--cmm-radius-full);
 }
 
 .line--down {
   @extend %line;
-  inset-block-start: calc(2.5rem + 0.3rem);
-  block-size: 100%;
+  --offset: calc(2.5rem + 0.25rem);
+  inset-block-start: var(--offset);
+  block-size: calc(100% - var(--offset) + 1rem);
   border-start-start-radius: var(--cmm-radius-full);
   border-start-end-radius: var(--cmm-radius-full);
 }
