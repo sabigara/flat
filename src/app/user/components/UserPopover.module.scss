@@ -13,6 +13,13 @@
   position: relative;
 }
 
+.targetWrap {
+  // I have no idea why only display: grid satisfies my needs:
+  //   1. Truncates too long displayName or/and handle with ellipsis.
+  //   2. Popover is positioned correctly.
+  display: grid;
+}
+
 .content {
   inline-size: 20rem;
   z-index: 50;
