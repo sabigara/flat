@@ -1,0 +1,91 @@
+@use "mixins";
+
+.container {
+  position: relative;
+}
+
+.content {
+  inline-size: 20rem;
+  z-index: 50;
+  padding: 1rem;
+  background: var(--cmm-color-surface-0);
+  border: 1px solid var(--cmm-color-border-base);
+  border-radius: var(--cmm-radius-lg);
+  box-shadow: var(--cmm-shadow-md);
+
+  [data-theme="dark"] & {
+    background: var(--cmm-color-surface-1);
+  }
+
+  &:hover {
+    cursor: default;
+  }
+
+  a {
+    display: block;
+    inline-size: fit-content;
+
+    &:hover {
+      @include mixins.underline();
+    }
+  }
+}
+
+.avatarRow {
+  display: flex;
+  justify-content: space-between;
+  margin-block-end: 0.75rem;
+}
+
+.displayName {
+  font-weight: var(--cmm-font-weight-bold);
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.handle {
+  color: var(--cmm-color-font-subtle);
+  margin-block-start: 0.25em;
+  font-size: var(--cmm-font-size-sm);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.description {
+  @include mixins.lineClamp(6);
+  font-size: 0.95em;
+  margin-block-start: 1em;
+  line-height: 1.5;
+}
+
+.skelton {
+  &__avatar {
+    @include mixins.skelton();
+    inline-size: 4rem;
+    block-size: 4rem;
+    border-radius: var(--cmm-radius-full);
+    margin-block-end: 0.75rem;
+  }
+
+  &__displayName {
+    @include mixins.skelton();
+    block-size: 1.2rem;
+    inline-size: 40%;
+  }
+
+  &__handle {
+    @include mixins.skelton();
+    block-size: var(--cmm-font-size-sm);
+    inline-size: 60%;
+    margin-block-start: 0.25em;
+  }
+
+  &__description {
+    @include mixins.skelton();
+    block-size: 3rem;
+    margin-block-start: 0.95rem;
+  }
+}

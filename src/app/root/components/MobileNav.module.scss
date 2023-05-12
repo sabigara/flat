@@ -11,38 +11,6 @@
   z-index: 50;
 }
 
-.progressBar {
-  position: absolute;
-  height: 3px;
-  top: 0;
-  left: 0;
-  overflow: hidden;
-  width: 100%;
-
-  > [role="status"] {
-    background: var(--cmm-color-primary-4);
-
-    position: absolute;
-    bottom: 0;
-    top: 0;
-    width: 50%;
-    height: 100%;
-
-    animation-duration: 1.5s;
-    animation-iteration-count: infinite;
-    animation-name: indeterminate-progress-bar;
-  }
-
-  @keyframes indeterminate-progress-bar {
-    from {
-      left: -50%;
-    }
-    to {
-      left: 100%;
-    }
-  }
-}
-
 .sectionStart {
   display: flex;
   align-items: center;

@@ -12,6 +12,11 @@
   --column-pad-inline: 1.5rem;
   --desktop-nav-inline-size: 4.5rem;
   --mobile-nav-block-size: 3.5rem;
+  --container-inline-size: min(
+    calc(var(--column-inline-size) + var(--desktop-nav-inline-size)),
+    100%
+  );
+
   --color-upvote: #eab308;
   --color-repost: #22c55e;
   --color-reply: #06b6d4;

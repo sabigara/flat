@@ -1,11 +1,9 @@
 @use "mixins";
 
 .container {
+  position: relative;
   display: flex;
-  inline-size: min(
-    calc(var(--column-inline-size) + var(--desktop-nav-inline-size)),
-    100%
-  );
+  inline-size: var(--container-inline-size);
   margin-inline: auto;
   border-inline: 1px solid var(--cmm-color-border-base);
 

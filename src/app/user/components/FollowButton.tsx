@@ -15,7 +15,7 @@ import styles from "./FollowButton.module.scss";
 
 type Props = {
   profile: AppBskyActorDefs.ProfileViewDetailed;
-  size: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg";
   onSuccess?: () => void;
   className?: string;
 };

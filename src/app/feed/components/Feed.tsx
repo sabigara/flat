@@ -111,7 +111,7 @@ export function Feed<K extends QueryKey>({
   };
 
   if (status === "loading") {
-    return <FeedSkelton count={12} />;
+    return <FeedSkelton count={18} />;
   } else if (status === "error") {
     return <span>Error: {(error as Error).message}</span>;
   }
