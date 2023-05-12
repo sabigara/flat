@@ -1,10 +1,7 @@
-import { Button } from "@camome/core/Button";
 import { IconButton } from "@camome/core/IconButton";
-import { Spinner } from "@camome/core/Spinner";
 import { Tag } from "@camome/core/Tag";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { TbDots, TbVolumeOff } from "react-icons/tb";
 import {
@@ -17,16 +14,15 @@ import {
 
 import type { ProfileRouteLoaderResult } from "@/src/app/user/routes/ProfileRoute";
 
-import { getAtpAgent, useAtpAgent } from "@/src/app/account/states/atp";
+import { useAtpAgent } from "@/src/app/account/states/atp";
 import { settingsAtom } from "@/src/app/account/states/settingsAtom";
 import { useLightbox } from "@/src/app/content/image/hooks/useLightbox";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import Seo from "@/src/app/seo/Seo";
 import Avatar from "@/src/app/user/components/Avatar";
+import { FollowButton } from "@/src/app/user/components/FollowButton";
 import ProfileMoreMenu from "@/src/app/user/components/ProfileMoreMenu";
 import { ProfileTabLinks } from "@/src/app/user/components/ProfileTabLinks";
-import { followUser } from "@/src/app/user/lib/followUser";
-import { unfollowUser } from "@/src/app/user/lib/unfollowUser";
 import { userToName } from "@/src/app/user/lib/userToName";
 import { RichTextRenderer } from "@/src/components/RichTextRenderer";
 
@@ -40,43 +36,24 @@ export function ProfileRoute() {
   const { profile, richText } = useLoaderData() as ProfileRouteLoaderResult;
   const username = userToName(profile);
   const queryClient = useQueryClient();
-  const queryKey = queryKeys.feed.author(profile.handle).$;
   const revalidator = useRevalidator();
 
   const revalidate = () => {
+    queryClient.invalidateQueries(
+      queryKeys.users.single.$({
+        identifier: profile.handle,
+      })
+    );
     revalidator.revalidate();
-    queryClient.invalidateQueries(queryKey);
   };
-
-  const { mutate: mutateFollowState, isLoading: isMutating } = useMutation(
-    async (isFollow: boolean) => {
-      setHoverUnfollow(false);
-      const atp = getAtpAgent();
-      // TODO: error handling
-      if (!atp.session) return;
-      if (isFollow) {
-        await followUser({
-          repo: atp.session.did,
-          did: profile.did,
-        });
-      } else {
-        if (!profile.viewer?.following) return;
-        await unfollowUser({ uri: profile.viewer.following });
-      }
-      revalidate();
-    }
-  );
 
   const { openAt } = useLightbox({
     images: profile.avatar ? [{ src: profile.avatar }] : [],
   });
   const expandAvatar = () => void openAt(0);
 
-  const [hoverUnfollow, setHoverUnfollow] = React.useState(false);
-
   const atp = useAtpAgent();
   const isMyself = !!atp.session && atp.session.did === profile.did;
-  const isLoadingFollow = isMutating;
   const muted = !!profile.viewer?.muted;
 
   return (
@@ -122,39 +99,13 @@ export function ProfileRoute() {
                 }
                 revalidate={revalidate}
               />
-              {!isMyself &&
-                (profile.viewer?.following ? (
-                  <Button
-                    colorScheme={
-                      hoverUnfollow || isLoadingFollow ? "danger" : "neutral"
-                    }
-                    variant="soft"
-                    className={styles.followUnfollowBtn}
-                    onMouseEnter={() => setHoverUnfollow(true)}
-                    onMouseLeave={() => setHoverUnfollow(false)}
-                    onFocus={() => setHoverUnfollow(true)}
-                    onBlur={() => setHoverUnfollow(false)}
-                    aria-describedby={UNFOLLOW_DESCRIPTION_ID}
-                    onClick={() => mutateFollowState(false)}
-                    disabled={isLoadingFollow}
-                    startDecorator={
-                      isLoadingFollow ? <Spinner size="sm" /> : undefined
-                    }
-                  >
-                    {hoverUnfollow ? t("graph.unfollow") : t("graph.following")}
-                  </Button>
-                ) : (
-                  <Button
-                    className={styles.followUnfollowBtn}
-                    onClick={() => mutateFollowState(true)}
-                    disabled={isLoadingFollow}
-                    startDecorator={
-                      isLoadingFollow ? <Spinner size="sm" /> : undefined
-                    }
-                  >
-                    {t("graph.follow")}
-                  </Button>
-                ))}
+              {!isMyself && (
+                <FollowButton
+                  profile={profile}
+                  size="md"
+                  onSuccess={revalidate}
+                />
+              )}
               <span id={UNFOLLOW_DESCRIPTION_ID} className="visually-hidden">
                 {usersT("profile.unfollow-description", { actor: username })}
               </span>

@@ -4,6 +4,7 @@ import { Outlet, useLoaderData, ScrollRestoration } from "react-router-dom";
 import { useClearNotifQueryData } from "@/src/app/notification/hooks/useClearNotifQueryData";
 import { DesktopNav } from "@/src/app/root/components/DesktopNav";
 import MobileNav from "@/src/app/root/components/MobileNav";
+import { PageTransitionProgress } from "@/src/app/root/components/PageTransitionProgress";
 import { useMobileSize } from "@/src/app/root/hooks/useMobileSize";
 import { useTheme } from "@/src/app/theme/hooks/useTheme";
 import { Theme } from "@/src/app/theme/lib/types";
@@ -36,6 +37,7 @@ export function RootRoute() {
     <>
       <ScrollRestoration />
       <div className={styles.container}>
+        <PageTransitionProgress />
         {isMobileSize ? <MobileNav /> : <DesktopNav />}
         <main>
           <Outlet context={rootContext} />

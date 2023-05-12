@@ -22,6 +22,7 @@ import { buildPostUrl } from "@/src/app/post/lib/buildPostUrl";
 import { MutatePostCache } from "@/src/app/post/lib/types";
 import { formatDistanceShort } from "@/src/app/time/lib/time";
 import Avatar from "@/src/app/user/components/Avatar";
+import UserPopover from "@/src/app/user/components/UserPopover";
 import { userToName } from "@/src/app/user/lib/userToName";
 import { Foldable } from "@/src/components/Foldable";
 import { RichTextRenderer } from "@/src/components/RichTextRenderer";
@@ -282,29 +283,38 @@ export default function Post({
       )}
       <div className={styles.main}>
         <div className={styles.left}>
-          <Avatar
-            isLink
-            profile={post.author}
-            size="sm"
-            className={styles.avatar}
-          />
+          {/* Use handle as identifier to share the cache with the loader for PostRoute */}
+          <UserPopover identifier={post.author.handle} placement="bottom-start">
+            <Avatar
+              isLink
+              profile={post.author}
+              size="sm"
+              className={styles.avatar}
+            />
+          </UserPopover>
         </div>
         <div className={styles.right}>
           <div className={styles.header}>
-            <Link
-              to={profileHref(post.author.handle)}
-              onClick={(e) => e.stopPropagation()}
-              className={styles.usernameLink}
+            {/* TODO: fix overflow */}
+            <UserPopover
+              identifier={post.author.handle}
+              placement="bottom-start"
             >
-              <div className={styles.usernameInner}>
-                {post.author.displayName && (
-                  <span className={styles.displayName}>
-                    {post.author.displayName}
-                  </span>
-                )}
-                <span className={styles.handle}>@{post.author.handle}</span>
-              </div>
-            </Link>
+              <Link
+                to={profileHref(post.author.handle)}
+                onClick={(e) => e.stopPropagation()}
+                className={styles.usernameLink}
+              >
+                <div className={styles.usernameInner}>
+                  {post.author.displayName && (
+                    <span className={styles.displayName}>
+                      {post.author.displayName}
+                    </span>
+                  )}
+                  <span className={styles.handle}>@{post.author.handle}</span>
+                </div>
+              </Link>
+            </UserPopover>
             <time dateTime={post.indexedAt} className={styles.time}>
               {formatDistanceShort(new Date(post.indexedAt))}
             </time>

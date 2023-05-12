@@ -1,0 +1,40 @@
+@use "mixins";
+
+.container {
+  position: fixed;
+  block-size: 3px;
+  inline-size: var(--column-inline-size);
+  inset-block-start: 0;
+  inset-inline-start: calc(50% + var(--desktop-nav-inline-size) / 2);
+  translate: -50%;
+  overflow: hidden;
+  z-index: 60;
+
+  @include mixins.mq(md) {
+    inline-size: 100%;
+    inset-inline-start: 0;
+    translate: 0;
+  }
+
+  > [role="status"] {
+    background: var(--cmm-color-primary-4);
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    width: 50%;
+    height: 100%;
+
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-name: indeterminate-progress-bar;
+  }
+
+  @keyframes indeterminate-progress-bar {
+    from {
+      left: -50%;
+    }
+    to {
+      left: 100%;
+    }
+  }
+}

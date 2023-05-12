@@ -15,7 +15,7 @@ import styles from "./UserListItem.module.scss";
 
 type Props = {
   user: AppBskyActorDefs.ProfileViewDetailed;
-  revalidate?: () => void;
+  revalidate?: (identifier: string) => void;
   className?: string;
 };
 
@@ -35,7 +35,7 @@ export default function UserListItem({ user, revalidate, className }: Props) {
         if (!user.viewer?.following) return;
         await unfollowUser({ uri: user.viewer.following });
       }
-      revalidate?.();
+      revalidate?.(user.handle);
     }
   );
 
