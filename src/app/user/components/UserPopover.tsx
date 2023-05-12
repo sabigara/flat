@@ -53,13 +53,13 @@ export default function UserPopover({
 
   return (
     <span className={styles.container}>
-      <div
+      <span
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         ref={reference}
       >
         {children}
-      </div>
+      </span>
       <AnimatePresence>
         {open && (
           <motion.div

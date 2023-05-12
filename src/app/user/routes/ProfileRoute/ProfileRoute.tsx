@@ -36,12 +36,15 @@ export function ProfileRoute() {
   const { profile, richText } = useLoaderData() as ProfileRouteLoaderResult;
   const username = userToName(profile);
   const queryClient = useQueryClient();
-  const queryKey = queryKeys.feed.author(profile.handle).$;
   const revalidator = useRevalidator();
 
   const revalidate = () => {
+    queryClient.invalidateQueries(
+      queryKeys.users.single.$({
+        identifier: profile.handle,
+      })
+    );
     revalidator.revalidate();
-    queryClient.invalidateQueries(queryKey);
   };
 
   const { openAt } = useLightbox({

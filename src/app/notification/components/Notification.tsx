@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 
 import NotificationPost from "@/src/app/notification/components/NotificationPost";
 import Avatar from "@/src/app/user/components/Avatar";
+import UserPopover from "@/src/app/user/components/UserPopover";
 import { userToName } from "@/src/app/user/lib/userToName";
 
 import styles from "./Notification.module.scss";
@@ -37,13 +38,16 @@ export default function Notification({ notification, className }: Props) {
       <div className={styles.endSection}>
         {col2 && (
           <>
-            <div>
+            <UserPopover
+              identifier={notification.author.handle}
+              placement="bottom-start"
+            >
               <Avatar
                 profile={notification.author}
                 isLink
                 className={styles.avatar}
               />
-            </div>
+            </UserPopover>
             <div className={styles.message}>
               <Trans
                 ns="notification"
@@ -51,6 +55,7 @@ export default function Notification({ notification, className }: Props) {
                 values={{ actor: userToName(notification.author) }}
                 components={{
                   anchor: (
+                    // TODO: show popover
                     <Link
                       to={`/${notification.author.handle}`}
                       className={styles.displayName}

@@ -13,7 +13,6 @@ export const loader = (async ({ params }) => {
   if (!params.handle) {
     throw new Error("Invalid params");
   }
-  // TODO: Cache is empty if the query is still loading.
   const profile = await queryClient.fetchQuery({
     queryKey: queryKeys.users.single.$({ identifier: params.handle }),
     queryFn: fetchProfile,

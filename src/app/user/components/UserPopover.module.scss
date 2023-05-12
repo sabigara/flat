@@ -1,5 +1,14 @@
 @use "mixins";
 
+@mixin link() {
+  display: block;
+  max-inline-size: fit-content;
+
+  &:hover {
+    @include mixins.underline();
+  }
+}
+
 .container {
   position: relative;
 }
@@ -20,15 +29,6 @@
   &:hover {
     cursor: default;
   }
-
-  a {
-    display: block;
-    inline-size: fit-content;
-
-    &:hover {
-      @include mixins.underline();
-    }
-  }
 }
 
 .avatarRow {
@@ -38,6 +38,7 @@
 }
 
 .displayName {
+  @include link();
   font-weight: var(--cmm-font-weight-bold);
   line-height: 1.2;
   text-overflow: ellipsis;
@@ -46,6 +47,7 @@
 }
 
 .handle {
+  @include link();
   color: var(--cmm-color-font-subtle);
   margin-block-start: 0.25em;
   font-size: var(--cmm-font-size-sm);
