@@ -8,6 +8,7 @@ import InfiniteScroll from "react-infinite-scroller";
 
 import type { AppBskyActorDefs } from "@atproto/api";
 
+import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import UserListItem from "@/src/app/user/components/UserListItem";
 import SpinnerFill from "@/src/components/SpinnerFill";
 
@@ -48,7 +49,10 @@ export function UserList<K extends QueryKey>({
     refetchOnMount: false,
   });
   const queryClient = useQueryClient();
-  const revalidate = () => void queryClient.invalidateQueries(queryKey);
+  const revalidate = (identifier: string) => {
+    queryClient.invalidateQueries(queryKey);
+    queryClient.invalidateQueries(queryKeys.users.single.$({ identifier }));
+  };
 
   const allItems =
     data?.pages
