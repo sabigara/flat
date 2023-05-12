@@ -1,7 +1,10 @@
 .post {
-  border-bottom: 1px solid var(--cmm-color-border-base);
+  &:not(.withLine) {
+    border-block-end: 1px solid var(--cmm-color-border-base);
+  }
 }
 
 .selected {
-  box-shadow: inset 0px 0px 0px 2px var(--cmm-color-neutral-muted);
+  border-block-start: 1px solid var(--cmm-color-border-base);
+  background: rgb(59 130 246 / 0.1);
 }

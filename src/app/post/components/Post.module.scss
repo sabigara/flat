@@ -56,6 +56,10 @@
   @include postMixins.main;
 }
 
+.left {
+  position: relative;
+}
+
 .right {
   @include postMixins.right;
 }
@@ -138,6 +142,31 @@
   &:hover {
     filter: brightness(0.9);
   }
+}
+
+%line {
+  position: absolute;
+  inset-inline-start: 50%;
+  translate: -50%;
+  inline-size: 3px;
+  background: var(--cmm-color-border-emphasis);
+}
+
+// TODO: don't hard-code
+.line--up {
+  @extend %line;
+  inset-block-start: -1rem;
+  block-size: calc(1rem - 0.3rem);
+  border-end-start-radius: var(--cmm-radius-full);
+  border-end-end-radius: var(--cmm-radius-full);
+}
+
+.line--down {
+  @extend %line;
+  inset-block-start: calc(2.5rem + 0.3rem);
+  block-size: 100%;
+  border-start-start-radius: var(--cmm-radius-full);
+  border-start-end-radius: var(--cmm-radius-full);
 }
 
 .reactionList {

@@ -38,6 +38,7 @@ type Props = {
   revalidate?: () => void;
   mutatePostCache?: MutatePostCache;
   foldable?: boolean;
+  line?: { up: boolean; down: boolean };
   id?: string;
   className?: string;
 };
@@ -50,6 +51,7 @@ export default function Post({
   revalidate,
   mutatePostCache,
   foldable = true,
+  line,
   id,
   className,
 }: Props) {
@@ -292,6 +294,8 @@ export default function Post({
               className={styles.avatar}
             />
           </UserPopover>
+          {!!line?.up && <div className={styles["line--up"]} />}
+          {!!line?.down && <div className={styles["line--down"]} />}
         </div>
         <div className={styles.right}>
           <div className={styles.header}>

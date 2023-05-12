@@ -13,6 +13,8 @@ type Props = {
     | AppBskyFeedDefs.NotFoundPost
     | AppBskyFeedDefs.BlockedPost
     | { [k: string]: unknown; $type: string };
+  lineUp?: boolean;
+  isParent?: boolean;
   isSelected?: boolean;
   revalidate: () => void;
   mutatePostCache?: MutatePostCache;
@@ -20,6 +22,8 @@ type Props = {
 
 export default function Thread({
   thread,
+  lineUp,
+  isParent,
   isSelected,
   revalidate,
   mutatePostCache,
@@ -40,12 +44,15 @@ export default function Thread({
   // TODO: consider other cases
   if (!AppBskyFeedDefs.isThreadViewPost(thread)) return null;
 
+  const lineDown = (!!thread.replies?.length && !isSelected) || isParent;
+
   return (
     <>
       {thread.parent && (
         <Thread
           thread={thread.parent}
           revalidate={revalidate}
+          isParent
           mutatePostCache={mutatePostCache}
         />
       )}
@@ -56,14 +63,22 @@ export default function Thread({
         revalidate={revalidate}
         mutatePostCache={mutatePostCache}
         foldable={!isSelected}
-        className={clsx(styles.post, { [styles.selected]: isSelected })}
+        line={{
+          down: !!lineDown,
+          up: !!lineUp || (!!thread.parent && !isSelected),
+        }}
+        className={clsx(styles.post, {
+          [styles.selected]: isSelected,
+          [styles.withLine]: lineDown,
+        })}
         id={thread.post.uri}
       />
-      {thread.replies?.map((reply) => (
+      {thread.replies?.map((reply, i) => (
         <Thread
           thread={reply}
           revalidate={revalidate}
           mutatePostCache={mutatePostCache}
+          lineUp={lineDown && i === 0}
           key={thread.post.uri as string}
         />
       ))}
