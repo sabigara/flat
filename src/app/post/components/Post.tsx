@@ -192,7 +192,7 @@ export default function Post({
             count: post.replyCount ?? 0,
           }),
       count: post.replyCount ?? 0,
-      showCount: !isZenMode,
+      showCount: true,
       onClick: () => handleClickReply(data),
       reacted: false,
     },
