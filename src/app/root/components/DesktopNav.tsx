@@ -32,6 +32,7 @@ export function DesktopNav() {
     to: string;
     showBadge?: boolean;
     badgeLabel?: string;
+    isCurrent?: (pathname: string) => boolean;
     className?: string;
   }[] = [
     {
@@ -56,6 +57,8 @@ export function DesktopNav() {
       label: t("navigation.profile"),
       icon: <TbUser />,
       to: `/${account?.session.handle}`,
+      isCurrent: (pathname) =>
+        !!pathname.match(new RegExp(`^/${account?.session.handle}/?[^/]*$`)),
     },
     {
       label: t("navigation.settings"),
@@ -72,14 +75,22 @@ export function DesktopNav() {
             <LogoIcon />
           </Link>
           {navItems.map(
-            ({ label, icon, to, showBadge, badgeLabel, className }) => (
+            ({
+              label,
+              icon,
+              to,
+              showBadge,
+              badgeLabel,
+              isCurrent,
+              className,
+            }) => (
               <IconButton
                 aria-label={label}
                 component={Link}
                 to={to}
                 colorScheme="neutral"
                 variant="ghost"
-                aria-current={pathname === to}
+                aria-current={isCurrent ? isCurrent(pathname) : pathname === to}
                 className={clsx(styles.button, className)}
                 key={to}
               >
