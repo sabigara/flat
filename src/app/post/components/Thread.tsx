@@ -73,15 +73,37 @@ export default function Thread({
         })}
         id={thread.post.uri}
       />
-      {thread.replies?.map((reply, i) => (
+      {thread.replies?.sort(makeSort(thread.post.author.did))?.map((reply) => (
         <Thread
           thread={reply}
           revalidate={revalidate}
           mutatePostCache={mutatePostCache}
-          lineUp={lineDown && i === 0}
+          lineUp={lineDown}
           key={thread.post.uri as string}
         />
       ))}
     </>
   );
+}
+
+type Reply =
+  | AppBskyFeedDefs.ThreadViewPost
+  | AppBskyFeedDefs.NotFoundPost
+  | AppBskyFeedDefs.BlockedPost
+  | {
+      $type: string;
+      [k: string]: unknown;
+    };
+
+// the reply by the author of the post should be shown.
+// TODO: consider root author
+function makeSort(parentAuthorDid: string) {
+  return (a: Reply, b: Reply) => {
+    if (
+      !AppBskyFeedDefs.isThreadViewPost(a) ||
+      !AppBskyFeedDefs.isThreadViewPost(b)
+    )
+      return 0;
+    return a.post.author.did === parentAuthorDid ? -1 : 1;
+  };
 }
