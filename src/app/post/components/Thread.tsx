@@ -73,15 +73,17 @@ export default function Thread({
         })}
         id={thread.post.uri}
       />
-      {thread.replies?.sort(makeSort(thread.post.author.did))?.map((reply) => (
-        <Thread
-          thread={reply}
-          revalidate={revalidate}
-          mutatePostCache={mutatePostCache}
-          lineUp={lineDown}
-          key={thread.post.uri as string}
-        />
-      ))}
+      {[...(thread.replies ?? [])]
+        .sort(makeSort(thread.post.author.did))
+        ?.map((reply) => (
+          <Thread
+            thread={reply}
+            revalidate={revalidate}
+            mutatePostCache={mutatePostCache}
+            lineUp={lineDown}
+            key={thread.post.uri as string}
+          />
+        ))}
     </>
   );
 }
