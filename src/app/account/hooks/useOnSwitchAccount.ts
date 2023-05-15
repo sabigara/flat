@@ -24,10 +24,10 @@ export function useOnSwitchAccount(opt: Options) {
     queryClient.resetQueries(queryKeys.notifications.$);
     if (fnOpt.isSignIn) {
       toast.success(t("auth.sign-in-success"));
+      if (opt.goHome) void navigate("/");
     } else {
       toast.success(t("auth.sign-out-success"));
     }
-    if (opt.goHome) void navigate("/");
   };
 
   return onSwitchAccount;
