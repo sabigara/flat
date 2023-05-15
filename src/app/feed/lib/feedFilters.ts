@@ -6,9 +6,14 @@ export type FeedFilterFn = (
   posts: AppBskyFeedDefs.FeedViewPost[]
 ) => AppBskyFeedDefs.FeedViewPost[];
 
+type Options = {
+  myDid?: string;
+  authorDid?: string;
+};
+
 export function feedFiltersToFn(
   { reply, repost }: FeedFilers,
-  myDid?: string
+  { authorDid, myDid }: Options
 ): FeedFilterFn {
   const replyFilter: FeedFilterFn = (() => {
     switch (reply) {
@@ -18,7 +23,12 @@ export function feedFiltersToFn(
         if (!myDid) {
           throw new Error("`myDid` is required for reply.following filter.");
         }
-        return (posts) => excludeRepliesToNoFollowing(posts, myDid);
+        return (posts) => excludeRepliesToNonFollowing(posts, myDid);
+      case "author":
+        if (!authorDid) {
+          throw new Error("`authorDid` is required for reply.myself filter.");
+        }
+        return (posts) => excludeRepliesToOthers(posts, authorDid);
       case "none":
         return excludeReplies;
     }
@@ -28,7 +38,7 @@ export function feedFiltersToFn(
       case "all":
         return feedFilterNoop;
       case "latest":
-        return excludeDuplicates;
+        return deduplicateByPostUri;
       case "none":
         return excludeReposts;
     }
@@ -61,7 +71,7 @@ function isQuoteOfMuted(view: AppBskyFeedDefs.FeedViewPost): boolean {
   return !!record.author.viewer && !!record.author.viewer.muted;
 }
 
-function excludeRepliesToNoFollowing(
+function excludeRepliesToNonFollowing(
   posts: AppBskyFeedDefs.FeedViewPost[],
   myDid: string
 ) {
@@ -77,11 +87,21 @@ function excludeRepliesToNoFollowing(
   });
 }
 
+function excludeRepliesToOthers(
+  posts: AppBskyFeedDefs.FeedViewPost[],
+  myDid: string
+) {
+  return posts.filter((view) => {
+    if (!view.reply) return true;
+    return view.reply.parent.author.did === myDid;
+  });
+}
+
 const excludeReplies: FeedFilterFn = (posts) => {
   return posts.filter((view) => !view.reply);
 };
 
-const excludeDuplicates: FeedFilterFn = (posts) => {
+const deduplicateByPostUri: FeedFilterFn = (posts) => {
   const ret: AppBskyFeedDefs.FeedViewPost[] = [];
   for (const p of posts) {
     if (ret.find((e) => e.post.uri === p.post.uri)) {

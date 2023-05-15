@@ -33,10 +33,15 @@ export function useProfileRouteFeed({ withReply }: Params) {
 
   const feedFilter = withReply
     ? feedFilterNoop
-    : feedFiltersToFn({
-        reply: "none",
-        repost: "latest",
-      });
+    : feedFiltersToFn(
+        {
+          reply: "author",
+          repost: "latest",
+        },
+        {
+          authorDid: profile.did,
+        }
+      );
   const fetchLatest = React.useCallback(
     async () =>
       feedFilter(
