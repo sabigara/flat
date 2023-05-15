@@ -75,7 +75,7 @@ export default function Thread({
       />
       {[...(thread.replies ?? [])]
         .sort(makeSort(thread.post.author.did))
-        ?.map((reply) => (
+        .map((reply) => (
           <Thread
             thread={reply}
             revalidate={revalidate}
