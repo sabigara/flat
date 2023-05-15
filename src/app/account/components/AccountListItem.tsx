@@ -8,7 +8,6 @@ import { TbCheck, TbPlus } from "react-icons/tb";
 import { Link, useNavigate } from "react-router-dom";
 
 import { SwitchAccountHandler } from "@/src/app/account/hooks/useOnSwitchAccount";
-import { useRepoDescriptionQuery } from "@/src/app/account/hooks/useRepoDescription";
 import { Sessions } from "@/src/app/account/lib/types";
 import {
   signOut,
@@ -17,6 +16,8 @@ import {
 } from "@/src/app/account/states/atp";
 import { loginFormDataAtom } from "@/src/app/account/states/loginFormAtom";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
+import Avatar from "@/src/app/user/components/Avatar";
+import { useProfileQuery } from "@/src/app/user/hooks/useProfileQuery";
 import SpinnerFill from "@/src/components/SpinnerFill";
 
 import styles from "./AccountListItem.module.scss";
@@ -40,8 +41,7 @@ export function AccountListItem({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { data, isLoading, error } = useRepoDescriptionQuery({
-    service: account.service,
+  const { data, isLoading, error } = useProfileQuery({
     identifier: account.did,
   });
   const currAccount = useResolvedAccountWithSession();
@@ -115,18 +115,15 @@ export function AccountListItem({
         onClick={handleClickSwitch}
         disabled={disableLoggedIn && isLoggedIn}
       >
-        <div className={clsx(styles.decorator, styles["decorator--check"])}>
-          {isLoggedIn && (
-            <div className={styles.decorator__circle}>
-              <TbCheck
-                className={styles.decorator__icon}
-                title="Currently logged in"
-              />
-            </div>
-          )}
+        <div className={styles.avatar__wrap}>
+          <Avatar profile={data} size="sm" className={clsx(styles.avatark)} />
+          {isLoggedIn && <TbCheck className={styles.avatar__check} />}
         </div>
-        <div>
-          <div className={styles.handle}>@{data.handle}</div>
+        <div className={styles.text}>
+          <div className={styles.usernames}>
+            <span className={styles.displayName}>{data.displayName}</span>
+            <span className={styles.handle}>@{data.handle}</span>
+          </div>
           <div className={styles.service}>{account.service}</div>
         </div>
       </button>
@@ -152,7 +149,7 @@ export function AccountListItemAdd({ className }: { className?: string }) {
   const { t } = useTranslation();
   return (
     <Link to="/login" className={clsx(styles.container, styles.add, className)}>
-      <div className={clsx(styles.decorator, styles["decorator--add"])}>
+      <div className={styles.decorator}>
         <div className={styles.decorator__circle}>
           <TbPlus className={styles.decorator__icon} />
         </div>
