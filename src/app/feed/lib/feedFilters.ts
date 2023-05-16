@@ -2,9 +2,9 @@ import { AppBskyEmbedRecord, AppBskyFeedDefs } from "@atproto/api";
 
 import { FeedFilers } from "@/src/app/feed/lib/types";
 
-export type FeedFilterFn = (
-  posts: AppBskyFeedDefs.FeedViewPost[]
-) => AppBskyFeedDefs.FeedViewPost[];
+type FeedViewPost = AppBskyFeedDefs.FeedViewPost;
+
+export type FeedFilterFn = (posts: FeedViewPost[]) => FeedViewPost[];
 
 type Options = {
   myDid?: string;
@@ -102,7 +102,7 @@ const excludeReplies: FeedFilterFn = (posts) => {
 };
 
 const deduplicateByPostUri: FeedFilterFn = (posts) => {
-  const ret: AppBskyFeedDefs.FeedViewPost[] = [];
+  const ret: FeedViewPost[] = [];
   for (const p of posts) {
     if (ret.find((e) => e.post.uri === p.post.uri)) {
       continue;

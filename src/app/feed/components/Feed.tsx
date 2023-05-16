@@ -7,6 +7,7 @@ import {
   useQueryClient,
   useQuery,
 } from "@tanstack/react-query";
+import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { TbArrowUp } from "react-icons/tb";
 import InfiniteScroll from "react-infinite-scroller";
@@ -15,8 +16,10 @@ import type { AppBskyFeedDefs } from "@atproto/api";
 
 import { FeedSkelton } from "@/src/app/feed/components/FeedSkelton";
 import { reloadFeedForNewPosts } from "@/src/app/feed/lib/reloadFeedForNewPosts";
+import InFeedThread from "@/src/app/post/components/InFeedThread";
 import Post from "@/src/app/post/components/Post";
 import PostComposer from "@/src/app/post/components/composer/PostComposer";
+import { aggregateInFeedThreads } from "@/src/app/post/lib/aggreagateInFeedThreads";
 import { feedItemToUniqueKey } from "@/src/app/post/lib/feedItemToUniqueKey";
 import {
   FeedInfiniteData,
@@ -125,15 +128,27 @@ export function Feed<K extends QueryKey>({
         loader={<SpinnerFill key="__loader" />}
       >
         <>
-          {allItems.map((item) => (
-            <Post
-              data={item}
-              key={feedItemToUniqueKey(item)}
-              revalidate={refetch}
-              mutatePostCache={mutatePostCache}
-              className={styles.post}
-            />
-          ))}
+          {aggregateInFeedThreads(allItems).map((item) =>
+            Array.isArray(item) ? (
+              <InFeedThread
+                postViews={item}
+                revalidate={refetch}
+                mutatePostCache={mutatePostCache}
+                className={(idx) =>
+                  clsx(idx === item.length - 1 && styles.post)
+                }
+                key={item.map(feedItemToUniqueKey).join(",")}
+              />
+            ) : (
+              <Post
+                data={item}
+                key={feedItemToUniqueKey(item)}
+                revalidate={refetch}
+                mutatePostCache={mutatePostCache}
+                className={styles.post}
+              />
+            )
+          )}
           {!hasNextPage && (
             <div className={styles.noMore} key="__noMore">
               nothing more to say...
