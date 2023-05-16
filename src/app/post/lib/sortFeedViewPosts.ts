@@ -2,7 +2,8 @@ import { AppBskyFeedDefs } from "@atproto/api";
 
 export function sortFeedViewPosts(
   a: AppBskyFeedDefs.FeedViewPost,
-  b: AppBskyFeedDefs.FeedViewPost
+  b: AppBskyFeedDefs.FeedViewPost,
+  reverse = true
 ) {
   const indexedAtA = AppBskyFeedDefs.isReasonRepost(a.reason)
     ? a.reason.indexedAt
@@ -10,5 +11,7 @@ export function sortFeedViewPosts(
   const indexedAtB = AppBskyFeedDefs.isReasonRepost(b.reason)
     ? b.reason.indexedAt
     : b.post.indexedAt;
-  return new Date(indexedAtB).getTime() - new Date(indexedAtA).getTime();
+  const timeA = new Date(indexedAtA).getTime();
+  const timeB = new Date(indexedAtB).getTime();
+  return reverse ? timeB - timeA : timeA - timeB;
 }

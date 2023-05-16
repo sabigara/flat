@@ -7,40 +7,41 @@ type FeedViewPost = AppBskyFeedDefs.FeedViewPost;
 export function aggregateInFeedThreads(
   posts: FeedViewPost[]
 ): (FeedViewPost | FeedViewPost[])[] {
-  const pendingReplies = new Map<string, FeedViewPost[]>();
+  const threads = new Map<string, FeedViewPost[]>();
   const ret: (FeedViewPost | FeedViewPost[])[] = [];
   for (const p of posts) {
     if (p.reply) {
-      pendingReplies.set(p.reply.root.uri, [
+      const rootUri = p.reply.root.uri;
+      const curr = threads.get(rootUri);
+      threads.set(rootUri, [
+        ...(curr ? curr : [{ post: p.reply.root }]), // Prepend root post
         p,
-        ...(pendingReplies.get(p.reply.root.uri) ?? []),
       ]);
-      continue;
-    }
-    const replies = pendingReplies.get(p.post.uri);
-
-    if (replies) {
-      ret.push([p, ...replies]);
-      pendingReplies.delete(p.post.uri);
     } else {
-      ret.push(p);
+      const thread = threads.get(p.post.uri);
+      if (thread) {
+        if (thread.at(0)?.post.uri === p.post.uri) continue;
+        threads.set(p.post.uri, [p, ...thread]);
+      } else {
+        ret.push(p);
+      }
     }
   }
-  for (const [, replies] of pendingReplies.entries()) {
-    const root = replies[0].reply?.root;
-    if (!replies || !root) continue;
-    ret.push(...replies);
+  for (const [, replies] of threads.entries()) {
+    ret.push(replies.sort(makeSort(false)));
+    console.dir(replies);
   }
-
-  return [...ret.sort(sort)];
+  return [...ret.sort(makeSort(true))];
 }
 
-const sort = (
-  a: FeedViewPost | FeedViewPost[],
-  b: FeedViewPost | FeedViewPost[]
-) => {
-  const itemA = Array.isArray(a) ? a.at(-1) : a;
-  const itemB = Array.isArray(b) ? b.at(-1) : b;
-  if (!itemA || !itemB) return 0;
-  return sortFeedViewPosts(itemA, itemB);
+const makeSort = (reverse = true) => {
+  return (
+    a: FeedViewPost | FeedViewPost[],
+    b: FeedViewPost | FeedViewPost[]
+  ) => {
+    const itemA = Array.isArray(a) ? a.at(-1) : a;
+    const itemB = Array.isArray(b) ? b.at(-1) : b;
+    if (!itemA || !itemB) return 0;
+    return sortFeedViewPosts(itemA, itemB, reverse);
+  };
 };
