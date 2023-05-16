@@ -1,5 +1,7 @@
+import { useAtomValue } from "jotai";
 import { useTranslation } from "react-i18next";
 
+import { settingsAtom } from "@/src/app/account/states/settingsAtom";
 import { Feed } from "@/src/app/feed/components/Feed";
 import Seo from "@/src/app/seo/Seo";
 import { useProfileRouteFeed } from "@/src/app/user/hooks/useProfileRouteFeed";
@@ -10,6 +12,7 @@ export function ProfileFeedPostsWithRepliesRoute() {
   const { t: usersT } = useTranslation("users");
   const { profile } = useProfileOutletCtx();
   const username = userToName(profile);
+  const { inFeedThreadMode } = useAtomValue(settingsAtom);
   const { queryKey, queryFn, fetchLatest, feedFilter } = useProfileRouteFeed({
     withReply: true,
   });
@@ -25,6 +28,7 @@ export function ProfileFeedPostsWithRepliesRoute() {
         queryFn={queryFn}
         fetchNewLatest={fetchLatest}
         filter={feedFilter}
+        aggregateThreads={inFeedThreadMode === "aggregate"}
       />
     </>
   );

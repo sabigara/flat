@@ -23,6 +23,13 @@
         "stack": "スタック",
         "compact": "コンパクト"
       }
+    },
+    "in-feed-thread": {
+      "title": "フィード内スレッド",
+      "options": {
+        "aggregate": "まとめる",
+        "reverse-chronological": "時系列順"
+      }
     }
   },
   "language": {

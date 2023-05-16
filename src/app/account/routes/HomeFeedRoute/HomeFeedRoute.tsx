@@ -1,6 +1,8 @@
+import { useAtomValue } from "jotai";
 import React from "react";
 
 import { getBskyApi } from "@/src/app/account/states/atp";
+import { settingsAtom } from "@/src/app/account/states/settingsAtom";
 import { Feed, FeedQueryFn } from "@/src/app/feed/components/Feed";
 import { FeedFilter } from "@/src/app/feed/components/FeedFilter";
 import { useFeedFilter } from "@/src/app/feed/hooks/useFeedFilter";
@@ -22,6 +24,7 @@ export function HomeFeedRoute() {
     return resp.data;
   };
   const { feedFilter } = useFeedFilter();
+  const { inFeedThreadMode } = useAtomValue(settingsAtom);
 
   const fetchLatest = React.useCallback(
     async () =>
@@ -40,6 +43,7 @@ export function HomeFeedRoute() {
           queryFn={queryFn}
           fetchNewLatest={fetchLatest}
           filter={feedFilter}
+          aggregateThreads={inFeedThreadMode === "aggregate"}
         />
       </div>
     </>

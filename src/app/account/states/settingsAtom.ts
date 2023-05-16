@@ -20,6 +20,7 @@ const initialState: Settings = {
   },
   postImageLayout: "stack",
   mode: "all",
+  inFeedThreadMode: "aggregate",
 };
 
 export const settingsAtom = atomWithStorage(

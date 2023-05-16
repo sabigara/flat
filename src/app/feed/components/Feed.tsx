@@ -49,6 +49,7 @@ type Props<K extends QueryKey> = {
     posts: AppBskyFeedDefs.FeedViewPost[]
   ) => AppBskyFeedDefs.FeedViewPost[];
   cacheTime?: number;
+  aggregateThreads?: boolean;
 };
 
 export function Feed<K extends QueryKey>({
@@ -58,6 +59,7 @@ export function Feed<K extends QueryKey>({
   maxPages,
   filter = (posts) => posts,
   cacheTime,
+  aggregateThreads = true,
 }: Props<K>) {
   const { t } = useTranslation();
   const {
@@ -128,26 +130,27 @@ export function Feed<K extends QueryKey>({
         loader={<SpinnerFill key="__loader" />}
       >
         <>
-          {aggregateInFeedThreads(allItems).map((item) =>
-            Array.isArray(item) ? (
-              <InFeedThread
-                postViews={item}
-                revalidate={refetch}
-                mutatePostCache={mutatePostCache}
-                className={(idx) =>
-                  clsx(idx === item.length - 1 && styles.post)
-                }
-                key={item.map(feedItemToUniqueKey).join(",")}
-              />
-            ) : (
-              <Post
-                data={item}
-                key={feedItemToUniqueKey(item)}
-                revalidate={refetch}
-                mutatePostCache={mutatePostCache}
-                className={styles.post}
-              />
-            )
+          {(aggregateThreads ? aggregateInFeedThreads(allItems) : allItems).map(
+            (item) =>
+              Array.isArray(item) ? (
+                <InFeedThread
+                  postViews={item}
+                  revalidate={refetch}
+                  mutatePostCache={mutatePostCache}
+                  className={(idx) =>
+                    clsx(idx === item.length - 1 && styles.post)
+                  }
+                  key={item.map(feedItemToUniqueKey).join(",")}
+                />
+              ) : (
+                <Post
+                  data={item}
+                  key={feedItemToUniqueKey(item)}
+                  revalidate={refetch}
+                  mutatePostCache={mutatePostCache}
+                  className={styles.post}
+                />
+              )
           )}
           {!hasNextPage && (
             <div className={styles.noMore} key="__noMore">
