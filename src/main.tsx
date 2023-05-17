@@ -16,6 +16,7 @@ import * as Notifications from "@/src/app/notification/routes/NotificationsRoute
 import * as Post from "@/src/app/post/routes/PostRoute";
 import { queryClient } from "@/src/app/root/lib/queryClient";
 import * as RootRoute from "@/src/app/root/routes/RootRoute";
+import * as SearchUsers from "@/src/app/search/routes/SearchUsersRoute";
 import Seo from "@/src/app/seo/Seo";
 import { defaultSeo } from "@/src/app/seo/defaultSeo";
 import * as Followers from "@/src/app/user/routes/FollowersRoute";
@@ -53,13 +54,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/search",
-        element: (
-          <div
-            style={{ padding: "2rem", fontSize: "1.75em", textAlign: "center" }}
-          >
-            🚧 Work in progress… 🚧
-          </div>
-        ),
+        ...SearchUsers,
       },
       {
         path: "/:handle",

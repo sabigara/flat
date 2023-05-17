@@ -1,0 +1,34 @@
+@use "mixins";
+
+.title {
+  font-weight: var(--cmm-font-weight-bold);
+  font-size: var(--cmm-font-size-xl);
+  margin-block: 1rem;
+  padding-inline: var(--column-pad-inline);
+}
+
+.search {
+  padding-inline: var(--column-pad-inline);
+  margin-block-end: 2rem;
+
+  :global {
+    --cmm-Input-end-decor-width: 2.5rem;
+
+    .InputGroup {
+      inline-size: 100%;
+    }
+
+    .FormFieldLabel {
+      @include mixins.visuallyHidden;
+    }
+
+    .Input {
+      border-radius: var(--cmm-radius-full);
+      padding-inline-end: calc(var(--cmm-Input-end-decor-width) + 0.5rem);
+    }
+  }
+}
+
+.list {
+  border-top: 1px solid var(--cmm-color-border-base);
+}

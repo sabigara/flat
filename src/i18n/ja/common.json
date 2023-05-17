@@ -124,6 +124,13 @@
     "mute-success": "{{actor}} をミュートしました",
     "unmute-success": "{{actor}} のミュートを解除しました"
   },
+  "search": {
+    "title": "ユーザー検索",
+    "field": {
+      "label": "検索ワード",
+      "placeholder": "ユーザー名またはハンドル"
+    }
+  },
   "errors": {
     "general": "エラーが発生しました",
     "not-found": "お探しのものは見つかりませんでした",
