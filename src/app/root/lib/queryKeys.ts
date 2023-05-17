@@ -54,4 +54,7 @@ export const queryKeys = {
         ["repo", "description", params] as const,
     },
   },
+  search: {
+    $: (params: { term: string }) => ["search", params] as const,
+  },
 };

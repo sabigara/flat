@@ -128,6 +128,14 @@
     "mute-success": "Muted {{actor}}",
     "unmute-success": "Unmuted {{actor}}"
   },
+  "search": {
+    "title": "Search users",
+    "description": "Search for posts will be supported once the engine becomes better.",
+    "field": {
+      "label": "Search term",
+      "placeholder": "Username or handle"
+    }
+  },
   "errors": {
     "general": "Something went wrong",
     "not-found": "What you're looking for was not found",

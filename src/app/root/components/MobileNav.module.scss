@@ -41,15 +41,9 @@
   }
 }
 
-.reloadBtn {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  translate: -50% -50%;
-  color: var(--cmm-color-font-subtle);
-
-  &:hover {
-    color: var(--cmm-color-font-base);
+.button {
+  > svg {
+    --cmm-IconButton-icon-size: 1.4rem;
   }
 }
 

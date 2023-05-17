@@ -17,7 +17,7 @@ import styles from "./UserList.module.scss";
 export type UserListQueryFn<K extends QueryKey> = QueryFunction<
   {
     cursor?: string;
-    users: AppBskyActorDefs.ProfileViewDetailed[];
+    users: AppBskyActorDefs.ProfileView[];
   },
   K
 >;
@@ -25,12 +25,14 @@ export type UserListQueryFn<K extends QueryKey> = QueryFunction<
 type Props<K extends QueryKey> = {
   queryKey: K;
   queryFn: UserListQueryFn<K>;
+  enabled?: boolean;
   className?: string;
 };
 
 export function UserList<K extends QueryKey>({
   queryKey,
   queryFn,
+  enabled = true,
   className,
 }: Props<K>) {
   const {
@@ -47,6 +49,7 @@ export function UserList<K extends QueryKey>({
       return lastPage.cursor ? { cursor: lastPage.cursor } : undefined;
     },
     refetchOnMount: false,
+    enabled,
   });
   const queryClient = useQueryClient();
   const revalidate = (identifier: string) => {
@@ -58,8 +61,9 @@ export function UserList<K extends QueryKey>({
     data?.pages
       .flatMap((p) => p.users)
       .filter((u) => !u.viewer?.blocking && !u.viewer?.blockedBy) ?? [];
-
-  if (status === "loading") {
+  if (!enabled) {
+    return null;
+  } else if (status === "loading") {
     return <SpinnerFill />;
   } else if (status === "error") {
     return <span>Error: {(error as Error).message}</span>;
