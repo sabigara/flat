@@ -1,11 +1,13 @@
 import { AppBskyFeedDefs } from "@atproto/api";
 
+import { FeedFilterFn } from "@/src/app/feed/lib/feedFilters";
 import { sortFeedViewPosts } from "@/src/app/post/lib/sortFeedViewPosts";
 
 type FeedViewPost = AppBskyFeedDefs.FeedViewPost;
 
 export function aggregateInFeedThreads(
-  posts: FeedViewPost[]
+  posts: FeedViewPost[],
+  filter: FeedFilterFn
 ): (FeedViewPost | FeedViewPost[])[] {
   const threads = new Map<string, FeedViewPost[]>();
   const ret: (FeedViewPost | FeedViewPost[])[] = [];
@@ -14,7 +16,7 @@ export function aggregateInFeedThreads(
       const rootUri = p.reply.root.uri;
       const curr = threads.get(rootUri);
       threads.set(rootUri, [
-        ...(curr ? curr : [{ post: p.reply.root }]), // Prepend root post
+        ...filter(curr ? curr : [{ post: p.reply.root }]), // Prepend root post
         p,
       ]);
     } else {

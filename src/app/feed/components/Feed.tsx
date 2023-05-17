@@ -15,6 +15,7 @@ import InfiniteScroll from "react-infinite-scroller";
 import type { AppBskyFeedDefs } from "@atproto/api";
 
 import { FeedSkelton } from "@/src/app/feed/components/FeedSkelton";
+import { FeedFilterFn } from "@/src/app/feed/lib/feedFilters";
 import { reloadFeedForNewPosts } from "@/src/app/feed/lib/reloadFeedForNewPosts";
 import InFeedThread from "@/src/app/post/components/InFeedThread";
 import Post from "@/src/app/post/components/Post";
@@ -45,9 +46,7 @@ type Props<K extends QueryKey> = {
   queryFn: FeedQueryFn<K>;
   fetchNewLatest?: () => Promise<AppBskyFeedDefs.FeedViewPost | undefined>;
   maxPages?: number;
-  filter?: (
-    posts: AppBskyFeedDefs.FeedViewPost[]
-  ) => AppBskyFeedDefs.FeedViewPost[];
+  filter?: FeedFilterFn;
   cacheTime?: number;
   aggregateThreads?: boolean;
 };
@@ -130,27 +129,29 @@ export function Feed<K extends QueryKey>({
         loader={<SpinnerFill key="__loader" />}
       >
         <>
-          {(aggregateThreads ? aggregateInFeedThreads(allItems) : allItems).map(
-            (item) =>
-              Array.isArray(item) ? (
-                <InFeedThread
-                  postViews={item}
-                  revalidate={refetch}
-                  mutatePostCache={mutatePostCache}
-                  className={(idx) =>
-                    clsx(idx === item.length - 1 && styles.post)
-                  }
-                  key={item.map(feedItemToUniqueKey).join(",")}
-                />
-              ) : (
-                <Post
-                  data={item}
-                  key={feedItemToUniqueKey(item)}
-                  revalidate={refetch}
-                  mutatePostCache={mutatePostCache}
-                  className={styles.post}
-                />
-              )
+          {(aggregateThreads
+            ? aggregateInFeedThreads(allItems, filter)
+            : allItems
+          ).map((item) =>
+            Array.isArray(item) ? (
+              <InFeedThread
+                postViews={item}
+                revalidate={refetch}
+                mutatePostCache={mutatePostCache}
+                className={(idx) =>
+                  clsx(idx === item.length - 1 && styles.post)
+                }
+                key={item.map(feedItemToUniqueKey).join(",")}
+              />
+            ) : (
+              <Post
+                data={item}
+                key={feedItemToUniqueKey(item)}
+                revalidate={refetch}
+                mutatePostCache={mutatePostCache}
+                className={styles.post}
+              />
+            )
           )}
           {!hasNextPage && (
             <div className={styles.noMore} key="__noMore">

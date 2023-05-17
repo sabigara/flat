@@ -89,11 +89,14 @@ function excludeRepliesToNonFollowing(
 
 function excludeRepliesToOthers(
   posts: AppBskyFeedDefs.FeedViewPost[],
-  myDid: string
+  authorDid: string
 ) {
   return posts.filter((view) => {
     if (!view.reply) return true;
-    return view.reply.parent.author.did === myDid;
+    return (
+      view.reply.parent.author.did === authorDid &&
+      view.reply.root.author.did === authorDid
+    );
   });
 }
 
