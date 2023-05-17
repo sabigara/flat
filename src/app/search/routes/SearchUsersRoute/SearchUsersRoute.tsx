@@ -51,7 +51,6 @@ export function SearchUsersRoute() {
     <>
       <Seo title={title} />
       <h1 className={styles.title}>{title}</h1>
-      <p className={styles.description}>{t("search.description")}</p>
       <div role="search" className={styles.search}>
         <form onSubmit={handleSubmit}>
           <InputGroup
@@ -61,6 +60,7 @@ export function SearchUsersRoute() {
                 type="search"
                 placeholder={t("search.field.placeholder")}
                 defaultValue={term}
+                enterKeyHint="search"
                 fill
                 autoFocus
                 required
@@ -80,6 +80,7 @@ export function SearchUsersRoute() {
           />
         </form>
       </div>
+      <p className={styles.description}>{t("search.description")}</p>
       <UserList
         queryKey={queryKey}
         queryFn={queryFn}

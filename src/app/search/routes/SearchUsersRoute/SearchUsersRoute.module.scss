@@ -3,20 +3,20 @@
 .title {
   font-weight: var(--cmm-font-weight-bold);
   font-size: var(--cmm-font-size-xl);
-  margin-block: 1rem;
   padding-inline: var(--column-pad-inline);
+  margin-block: 1rem;
 }
 
 .description {
   color: var(--cmm-color-font-subtle);
   font-size: var(--cmm-font-size-sm);
   padding-inline: var(--column-pad-inline);
-  margin-block-end: 1rem;
+  margin-block-end: 2rem;
 }
 
 .search {
   padding-inline: var(--column-pad-inline);
-  margin-block-end: 2rem;
+  margin-block-end: 1rem;
 
   :global {
     --cmm-Input-end-decor-width: 2.5rem;

@@ -1,4 +1,7 @@
+import { IconButton } from "@camome/core/IconButton";
 import { useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
+import { TbSearch } from "react-icons/tb";
 import { Link, useLocation } from "react-router-dom";
 
 import { reloadFeedForNewPosts } from "@/src/app/feed/lib/reloadFeedForNewPosts";
@@ -10,6 +13,7 @@ import LogoIcon from "@/src/assets/icon.svg";
 import styles from "./MobileNav.module.scss";
 
 export default function MobileNav() {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const location = useLocation();
   const handleClickLogo = () => {
@@ -27,6 +31,16 @@ export default function MobileNav() {
         </Link>
       </div>
       <div className={styles.sectionEnd}>
+        <IconButton
+          component={Link}
+          to="/search"
+          aria-label={t("search.title")}
+          colorScheme="neutral"
+          variant="ghost"
+          className={styles.button}
+        >
+          <TbSearch />
+        </IconButton>
         <NotificationButton />
         <DropdownMenu />
       </div>
