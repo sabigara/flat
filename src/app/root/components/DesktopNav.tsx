@@ -1,14 +1,9 @@
 import { IconButton } from "@camome/core/IconButton";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
+import { BiHomeAlt2 } from "react-icons/bi";
 import { RiNotification2Line } from "react-icons/ri";
-import {
-  TbSearch,
-  TbSettings,
-  TbHome2,
-  TbUser,
-  TbInfoCircle,
-} from "react-icons/tb";
+import { TbSearch, TbSettings, TbUser, TbInfoCircle } from "react-icons/tb";
 import { Link, useLocation } from "react-router-dom";
 
 import { useAccountQuery } from "@/src/app/account/hooks/useAccountQuery";
@@ -37,7 +32,7 @@ export function DesktopNav() {
   }[] = [
     {
       label: t("navigation.home"),
-      icon: <TbHome2 />,
+      icon: <BiHomeAlt2 />,
       to: "/",
     },
     {
