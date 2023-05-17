@@ -23,6 +23,13 @@
         "stack": "Stack",
         "compact": "Compact"
       }
+    },
+    "in-feed-thread": {
+      "title": "Threads in feeds",
+      "options": {
+        "aggregate": "Aggregate",
+        "reverse-chronological": "Reverse chronological"
+      }
     }
   },
   "language": {

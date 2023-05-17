@@ -10,7 +10,7 @@ export function useFeedFilter() {
   } = useAtomValue(settingsAtom);
   const atp = getAtpAgent();
   const feedFilter: FeedFilterFn = atp.session
-    ? feedFiltersToFn({ reply, repost }, atp.session.did)
+    ? feedFiltersToFn({ reply, repost }, { myDid: atp.session.did })
     : (posts) => posts;
   return {
     feedFilter,

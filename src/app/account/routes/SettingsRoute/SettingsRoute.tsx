@@ -8,7 +8,7 @@ import type { Theme } from "@/src/app/theme/lib/types";
 
 import { Mode } from "@/src/app/account/lib/types";
 import { settingsAtom } from "@/src/app/account/states/settingsAtom";
-import { PostImageLayout } from "@/src/app/post/lib/types";
+import { InFeedThreadMode, PostImageLayout } from "@/src/app/post/lib/types";
 import Seo from "@/src/app/seo/Seo";
 
 import styles from "./SettingsRoute.module.scss";
@@ -69,6 +69,26 @@ export function SettingsRoute() {
             </option>
             <option value="compact">
               {t("appearance.image-layout.options.compact")}
+            </option>
+          </Select>
+
+          <Select
+            label={t("appearance.in-feed-thread.title")}
+            size="md"
+            value={settings.inFeedThreadMode}
+            onChange={(e) =>
+              setSettings(
+                (draft) =>
+                  void (draft.inFeedThreadMode = e.target
+                    .value as InFeedThreadMode)
+              )
+            }
+          >
+            <option value="aggregate">
+              {t("appearance.in-feed-thread.options.aggregate")}
+            </option>
+            <option value="reverse-chronological">
+              {t("appearance.in-feed-thread.options.reverse-chronological")}
             </option>
           </Select>
         </section>

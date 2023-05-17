@@ -264,25 +264,28 @@ export default function Post({
       <Link to={postUrl} className={styles.focusLink}>
         {t("post.view-thread")}
       </Link>
-      {!contentOnly && reason && AppBskyFeedDefs.isReasonRepost(reason) && (
-        <Tag
-          component={Link}
-          to={profileHref(reason.by.handle)}
-          colorScheme="neutral"
-          size="sm"
-          startDecorator={<FaRetweet />}
-          onClick={(e) => e.stopPropagation()}
-          className={styles.repost}
-        >
-          <Trans
-            i18nKey="post.repost.tag"
-            components={{
-              wrap: <span className={styles.tagActor} />,
-            }}
-            values={{ actor: userToName(reason.by) }}
-          />
-        </Tag>
-      )}
+      {!contentOnly &&
+        reason &&
+        AppBskyFeedDefs.isReasonRepost(reason) &&
+        !line?.up && (
+          <Tag
+            component={Link}
+            to={profileHref(reason.by.handle)}
+            colorScheme="neutral"
+            size="sm"
+            startDecorator={<FaRetweet />}
+            onClick={(e) => e.stopPropagation()}
+            className={styles.repost}
+          >
+            <Trans
+              i18nKey="post.repost.tag"
+              components={{
+                wrap: <span className={styles.tagActor} />,
+              }}
+              values={{ actor: userToName(reason.by) }}
+            />
+          </Tag>
+        )}
       <div className={styles.main}>
         <div className={styles.left}>
           {/* Use handle as identifier to share the cache with the loader for PostRoute */}
@@ -323,7 +326,8 @@ export default function Post({
               {formatDistanceShort(new Date(post.indexedAt))}
             </time>
           </div>
-          {!contentOnly && reply && (
+          {/* Don't show tag if the line explains it's a thread */}
+          {!contentOnly && reply && !line?.up && (
             <Tag
               colorScheme="neutral"
               size="sm"

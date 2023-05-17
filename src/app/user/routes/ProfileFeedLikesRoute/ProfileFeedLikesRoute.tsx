@@ -1,7 +1,9 @@
 import { AppBskyFeedLike } from "@atproto/api";
+import { useAtomValue } from "jotai";
 import { useTranslation } from "react-i18next";
 
 import { getAtpAgent, getBskyApi } from "@/src/app/account/states/atp";
+import { settingsAtom } from "@/src/app/account/states/settingsAtom";
 import { Feed, FeedQueryFn } from "@/src/app/feed/components/Feed";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import Seo from "@/src/app/seo/Seo";
@@ -12,6 +14,7 @@ export function ProfileFeedLikesRoute() {
   const { t: usersT } = useTranslation("users");
   const { profile } = useProfileOutletCtx();
   const username = userToName(profile);
+  const { inFeedThreadMode } = useAtomValue(settingsAtom);
   const queryKey = queryKeys.feed.author(profile.handle).likes;
   const queryFn: FeedQueryFn<typeof queryKey> = async ({ pageParam }) => {
     const likesResp = await getAtpAgent().api.app.bsky.feed.like.list({
@@ -47,7 +50,12 @@ export function ProfileFeedLikesRoute() {
         title={usersT("profile.title", { actor: username })}
         description={profile.description}
       />
-      <Feed queryKey={queryKey} queryFn={queryFn} cacheTime={0} />
+      <Feed
+        queryKey={queryKey}
+        queryFn={queryFn}
+        cacheTime={0}
+        aggregateThreads={inFeedThreadMode === "aggregate"}
+      />
     </>
   );
 }

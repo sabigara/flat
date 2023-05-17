@@ -14,3 +14,6 @@ export type RevalidateOnPost = ({
 
 export const postImageLayouts = ["stack", "compact"] as const;
 export type PostImageLayout = (typeof postImageLayouts)[number];
+
+export const inFeedTheadModes = ["aggregate", "reverse-chronological"] as const;
+export type InFeedThreadMode = (typeof inFeedTheadModes)[number];

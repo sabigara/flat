@@ -1,7 +1,7 @@
 import { AtpSessionData } from "@atproto/api";
 
 import { FeedFilers } from "@/src/app/feed/lib/types";
-import { PostImageLayout } from "@/src/app/post/lib/types";
+import { InFeedThreadMode, PostImageLayout } from "@/src/app/post/lib/types";
 import { Theme } from "@/src/app/theme/lib/types";
 
 export type Account = {
@@ -28,4 +28,5 @@ export type Settings = {
   tlFilters: FeedFilers;
   postImageLayout: PostImageLayout;
   mode: Mode;
+  inFeedThreadMode: InFeedThreadMode;
 };
