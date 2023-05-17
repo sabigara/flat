@@ -58,8 +58,9 @@ function excludeMuted(posts: AppBskyFeedDefs.FeedViewPost[]) {
 
 function isReplyToMuted(view: AppBskyFeedDefs.FeedViewPost): boolean {
   return (
-    !!view.reply?.parent.author.viewer &&
-    !!view.reply.parent.author.viewer.muted
+    (!!view.reply?.parent.author.viewer &&
+      !!view.reply.parent.author.viewer.muted) ||
+    (!!view.reply?.root.author.viewer && !!view.reply.root.author.viewer?.muted)
   );
 }
 
