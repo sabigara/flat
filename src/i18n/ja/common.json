@@ -120,9 +120,15 @@
     "mute": "ミュートする",
     "unmute": "ミュート解除",
     "muted": "ミュート中",
+    "block": "ブロックする",
+    "unblock": "ブロック解除",
+    "blocking": "ブロック中",
+    "blocked": "ブロックされています",
     "follows-you": "フォローされています",
     "mute-success": "{{actor}} をミュートしました",
-    "unmute-success": "{{actor}} のミュートを解除しました"
+    "unmute-success": "{{actor}} のミュートを解除しました",
+    "block-success": "{{actor}} をブロックしました",
+    "unblock-success": "{{actor}} のブロックを解除しました"
   },
   "search": {
     "title": "ユーザー検索",

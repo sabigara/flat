@@ -124,9 +124,15 @@
     "mute": "Mute",
     "unmute": "Unmute",
     "muted": "Muted",
+    "block": "Block",
+    "unblock": "Unblock",
+    "blocking": "Blocking",
+    "blocked": "Blocked",
     "follows-you": "Follows you",
     "mute-success": "Muted {{actor}}",
-    "unmute-success": "Unmuted {{actor}}"
+    "unmute-success": "Unmuted {{actor}}",
+    "block-success": "Blocked {{actor}}",
+    "unblock-success": "Unblocked {{actor}}"
   },
   "search": {
     "title": "Search users",

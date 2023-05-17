@@ -3,7 +3,7 @@ import { Tag } from "@camome/core/Tag";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
 import { useTranslation } from "react-i18next";
-import { TbDots, TbVolumeOff } from "react-icons/tb";
+import { TbBan, TbDots, TbVolumeOff } from "react-icons/tb";
 import {
   Link,
   Outlet,
@@ -54,7 +54,9 @@ export function ProfileRoute() {
 
   const atp = useAtpAgent();
   const isMyself = !!atp.session && atp.session.did === profile.did;
-  const muted = !!profile.viewer?.muted;
+  const isMuted = !!profile.viewer?.muted;
+  const isBlocked = !!profile.viewer?.blockedBy;
+  const isBlocking = !!profile.viewer?.blocking;
 
   return (
     <>
@@ -148,17 +150,28 @@ export function ProfileRoute() {
           </div>
         </header>
         <div className={styles.main}>
-          {muted && (
+          {isMuted && !isBlocked && !isBlocking && (
             <p className={styles.muted}>
               <TbVolumeOff aria-hidden />
               {t("graph.muted")}
             </p>
           )}
-          <div hidden={muted}>
-            <ProfileTabLinks showLikes={isMyself} className={styles.tabLinks} />
-            <hr className={styles.hr} />
-            <Outlet context={{ profile, richText }} />
-          </div>
+          {(isBlocked || isBlocking) && (
+            <p className={styles.muted}>
+              <TbBan aria-hidden />
+              {isBlocking ? t("graph.blocking") : t("graph.blocked")}
+            </p>
+          )}
+          {!isMuted && !isBlocked && !isBlocking && (
+            <div>
+              <ProfileTabLinks
+                showLikes={isMyself}
+                className={styles.tabLinks}
+              />
+              <hr className={styles.hr} />
+              <Outlet context={{ profile, richText }} />
+            </div>
+          )}
         </div>
       </article>
     </>
