@@ -31,7 +31,6 @@ export function aggregateInFeedThreads(
   }
   for (const [, replies] of threads.entries()) {
     ret.push(replies.sort(makeSort(false)));
-    console.dir(replies);
   }
   return [...ret.sort(makeSort(true))];
 }
