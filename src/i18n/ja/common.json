@@ -126,6 +126,7 @@
   },
   "search": {
     "title": "ユーザー検索",
+    "description": "投稿の検索は精度が向上してから実装します。",
     "field": {
       "label": "検索ワード",
       "placeholder": "ユーザー名またはハンドル"

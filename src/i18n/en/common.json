@@ -130,6 +130,7 @@
   },
   "search": {
     "title": "Search users",
+    "description": "Search for posts will be supported once the engine becomes better.",
     "field": {
       "label": "Search term",
       "placeholder": "Username or handle"

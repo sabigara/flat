@@ -7,6 +7,13 @@
   padding-inline: var(--column-pad-inline);
 }
 
+.description {
+  color: var(--cmm-color-font-subtle);
+  font-size: var(--cmm-font-size-sm);
+  padding-inline: var(--column-pad-inline);
+  margin-block-end: 1rem;
+}
+
 .search {
   padding-inline: var(--column-pad-inline);
   margin-block-end: 2rem;

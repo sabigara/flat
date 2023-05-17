@@ -51,6 +51,7 @@ export function SearchUsersRoute() {
     <>
       <Seo title={title} />
       <h1 className={styles.title}>{title}</h1>
+      <p className={styles.description}>{t("search.description")}</p>
       <div role="search" className={styles.search}>
         <form onSubmit={handleSubmit}>
           <InputGroup
