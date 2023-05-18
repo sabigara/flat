@@ -81,7 +81,7 @@ function About({ className }: { className?: string }) {
             components={{
               anchor: (
                 <a
-                  href="https://staging.bsky.app/settings/app-passwords"
+                  href="https://bsky.app/settings/app-passwords"
                   {...externalLinkAttrs}
                 />
               ),

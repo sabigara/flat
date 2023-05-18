@@ -67,7 +67,7 @@ export default function PostMoreMenu({
 
   const shareOrCopyUrl = async () => {
     if (!AppBskyFeedPost.isRecord(post.record)) return;
-    const url = `https://staging.bsky.app/profile/${post.author.handle}/post/${
+    const url = `https://bsky.app/profile/${post.author.handle}/post/${
       new AtUri(post.uri).rkey
     }`;
     if (isMobile()) {
