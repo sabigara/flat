@@ -14,7 +14,14 @@ export function RichTextRenderer({ text, facets, className }: Props) {
   const content = React.useMemo(() => {
     let rt: RichText;
     try {
-      rt = new RichText({ text, facets });
+      rt = new RichText({
+        text,
+        facets:
+          // Avoid the following error that's thrown by facets.sort():
+          //  `Cannot assign to read only property '0' of object '[object Array]'`
+          // Not sure why but it's immutable?
+          [...(facets ? facets : [])],
+      });
     } catch (e) {
       console.error(e);
       return (
