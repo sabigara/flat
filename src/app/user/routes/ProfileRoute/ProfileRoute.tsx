@@ -39,11 +39,14 @@ export function ProfileRoute() {
   const revalidator = useRevalidator();
 
   const revalidate = () => {
-    queryClient.invalidateQueries(
-      queryKeys.users.single.$({
-        identifier: profile.handle,
-      })
-    );
+    const invalidate = (identifier: string) =>
+      queryClient.invalidateQueries(
+        queryKeys.users.single.$({
+          identifier,
+        })
+      );
+    invalidate(profile.handle);
+    invalidate(profile.did);
     revalidator.revalidate();
   };
 
