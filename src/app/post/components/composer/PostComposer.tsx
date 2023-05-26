@@ -7,6 +7,7 @@ import { usePostComposer } from "@/src/app/post/hooks/usePostComposer";
 import { RevalidateOnPost } from "@/src/app/post/lib/types";
 import { SelectedImageEdit } from "@/src/app/post/states/postComposerAtom";
 import Dialog from "@/src/components/Dialog";
+import { isIOS } from "@/src/lib/platform";
 
 import styles from "./PostComposer.module.scss";
 
@@ -76,6 +77,7 @@ export default function PostComposer({
             leaveTo: styles.panelLeaveTo,
           },
         }}
+        transitionEnabled={!isIOS}
         showBackdrop
         refs={{ panel: outerPanelRef }}
         className={styles.dialog}

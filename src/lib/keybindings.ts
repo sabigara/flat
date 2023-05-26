@@ -1,5 +1,5 @@
-import { isIPhone, isMac } from "@/src/lib/platform";
+import { isIOS, isMac } from "@/src/lib/platform";
 
-export const modKeyLabel = isMac || isIPhone ? "⌘" : "Ctrl";
+export const modKeyLabel = isMac || isIOS ? "⌘" : "Ctrl";
 export const isModKey = (e: KeyboardEvent | MouseEvent) =>
-  isMac || isIPhone ? e.metaKey : e.ctrlKey;
+  isMac || isIOS ? e.metaKey : e.ctrlKey;

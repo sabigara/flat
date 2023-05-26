@@ -55,6 +55,7 @@ export default function PostComposerMain({
 }: PostComposerProps) {
   const { t } = useTranslation();
   const { data: account } = useAccountQuery();
+  const formRef = React.useRef<HTMLDivElement>(null);
 
   const {
     replyTarget,
@@ -168,8 +169,27 @@ export default function PostComposerMain({
     setText("");
   }, [replyTarget, quoteTarget]);
 
+  React.useEffect(() => {
+    let timeout: number | undefined = undefined;
+    if (formRef.current && replyTarget) {
+      timeout = window.setTimeout(() => {
+        // Doesn't work properly on iOS.
+        // - `window.scrollTo()` does work but sometimes scroll the document root.
+        // - passing a scroll parent doesn't work
+        formRef.current!.scrollIntoView({
+          behavior: "smooth",
+        });
+      }, 500);
+    }
+    return () => {
+      if (timeout) {
+        window.clearTimeout(timeout);
+      }
+    };
+  }, [replyTarget]);
+
   return (
-    <div className={styles.container}>
+    <div className={styles.container} id="container">
       <div>
         <IconButton
           aria-label={t("close")}
@@ -195,7 +215,7 @@ export default function PostComposerMain({
           <hr />
         </>
       )}
-      <div className={styles.form}>
+      <div className={styles.form} ref={formRef}>
         <Avatar profile={account?.profile} className={styles.avatar} />
         {/* TODO: Textarea isn't passing id to textarea */}
         <label
