@@ -2,5 +2,5 @@ import { SeoProps } from "@/src/app/seo/Seo";
 
 export const defaultSeo: SeoProps = {
   title: "Flat",
-  description: "An experimental Bluesky client.",
+  description: "Clean, minimal web client for Bluesky.",
 };
