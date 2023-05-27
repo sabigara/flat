@@ -13,6 +13,9 @@ export const queryKeys = {
       $: ["feed", { authorId: handle }] as const,
       likes: ["feed", { authorId: handle }, "likes"] as const,
     }),
+    custom: (feed: string) => ({
+      $: ["feed", { feed }] as const,
+    }),
     new: {
       $: (
         key: QueryKey,

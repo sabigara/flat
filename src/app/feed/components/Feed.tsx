@@ -1,11 +1,9 @@
-import { FeedViewPost } from "@atproto/api/dist/client/types/app/bsky/feed/defs";
 import { Button } from "@camome/core/Button";
 import {
   useInfiniteQuery,
-  type QueryKey,
-  type QueryFunction,
   useQueryClient,
   useQuery,
+  QueryKey,
 } from "@tanstack/react-query";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
@@ -16,6 +14,7 @@ import type { AppBskyFeedDefs } from "@atproto/api";
 
 import { FeedSkelton } from "@/src/app/feed/components/FeedSkelton";
 import { FeedFilterFn } from "@/src/app/feed/lib/feedFilters";
+import { FeedQueryFn } from "@/src/app/feed/lib/feedQuery";
 import { reloadFeedForNewPosts } from "@/src/app/feed/lib/reloadFeedForNewPosts";
 import InFeedThread from "@/src/app/post/components/InFeedThread";
 import Post from "@/src/app/post/components/Post";
@@ -32,14 +31,6 @@ import SpinnerFill from "@/src/components/SpinnerFill";
 import { isButtonLoading } from "@/src/components/isButtonLoading";
 
 import styles from "./Feed.module.scss";
-
-export type FeedQueryFn<K extends QueryKey> = QueryFunction<
-  {
-    cursor?: string;
-    feed: FeedViewPost[];
-  },
-  K
->;
 
 type Props<K extends QueryKey> = {
   queryKey: K;
