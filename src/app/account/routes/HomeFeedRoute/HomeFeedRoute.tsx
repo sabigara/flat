@@ -38,6 +38,7 @@ export function HomeFeedRoute() {
           fetchNewLatest={fetchLatest}
           filter={feedFilter}
           staleTime={msInMinutes(60)}
+          cacheTime={msInMinutes(60)}
           aggregateThreads={inFeedThreadMode === "aggregate"}
         />
       </div>
