@@ -37,8 +37,4 @@
     background: var(--cmm-color-primary-soft-bg);
     color: var(--cmm-color-primary-soft-font);
   }
-
-  @include mixins.mq(md) {
-    font-size: var(--cmm-font-size-sm);
-  }
 }
