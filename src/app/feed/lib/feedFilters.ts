@@ -1,4 +1,8 @@
-import { AppBskyEmbedRecord, AppBskyFeedDefs } from "@atproto/api";
+import {
+  AppBskyEmbedRecord,
+  AppBskyEmbedRecordWithMedia,
+  AppBskyFeedDefs,
+} from "@atproto/api";
 
 import { FeedFilers } from "@/src/app/feed/lib/types";
 
@@ -69,11 +73,23 @@ function isReplyToMuted(view: AppBskyFeedDefs.FeedViewPost): boolean {
 }
 
 function isQuoteOfMuted(view: AppBskyFeedDefs.FeedViewPost): boolean {
-  const record = view.post.embed?.record;
-  if (!AppBskyEmbedRecord.isViewRecord(record)) {
-    return false;
-  }
-  return !!record.author.viewer && !!record.author.viewer.muted;
+  const embed = view.post.embed;
+  const record = (() => {
+    if (
+      AppBskyEmbedRecord.isView(embed) &&
+      AppBskyEmbedRecord.isViewRecord(embed.record)
+    ) {
+      return embed.record;
+    }
+    if (
+      AppBskyEmbedRecordWithMedia.isView(embed) &&
+      AppBskyEmbedRecord.isViewRecord(embed.record.record)
+    ) {
+      return embed.record.record;
+    }
+  })();
+  if (!record) return false;
+  return !!record.author.viewer && !!record.author.viewer?.muted;
 }
 
 function excludeRepliesToNonFollowing(
