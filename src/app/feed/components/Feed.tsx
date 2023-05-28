@@ -101,7 +101,9 @@ export function Feed<K extends QueryKey>({
   };
 
   const revalidateOnPost = () => {
-    queryClient.invalidateQueries(queryKey);
+    queryClient.invalidateQueries(queryKey, {
+      exact: true,
+    });
   };
 
   const mutatePostCache: MutatePostCache = ({ uri, fn }) => {
