@@ -1,22 +1,18 @@
-import { useAtomValue } from "jotai";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useAtom, useAtomValue } from "jotai";
 
 import { useHomeFeedProps } from "@/src/app/account/hooks/useHomeFeedProps";
 import { settingsAtom } from "@/src/app/account/states/settingsAtom";
 import { Feed } from "@/src/app/feed/components/Feed";
 import { FeedGeneratorSelector } from "@/src/app/feed/components/FeedGeneratorSelector";
+import { currentFeedAtom } from "@/src/app/feed/states/currentFeedAtom";
 import Seo from "@/src/app/seo/Seo";
 
 import styles from "./HomeFeedRoute.module.scss";
 
 export function HomeFeedRoute() {
-  const { search } = useLocation();
-  const navigate = useNavigate();
-  const feed = new URLSearchParams(search).get("feed") ?? undefined;
+  const [feed, setFeed] = useAtom(currentFeedAtom);
   const handleChangeFeed = (newVal?: string) => {
-    navigate({
-      search: newVal ? new URLSearchParams({ feed: newVal }).toString() : "",
-    });
+    setFeed(newVal ?? "");
   };
   const { queryKey, queryFn, fetchLatest, feedFilter } = useHomeFeedProps({
     feed,

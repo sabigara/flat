@@ -1,6 +1,8 @@
 @use "mixins";
 
 .container {
+  --btn-block-size: 2em;
+  --btn-font-size: 0.9rem;
   padding-block: 0.5rem;
 
   &--mobile {
@@ -22,9 +24,9 @@
   color: var(--cmm-color-font-subtle);
   border-radius: var(--cmm-radius-full);
   padding-inline: 0.75em;
-  font-size: 0.9rem;
+  font-size: var(--btn-font-size);
   font-weight: var(--cmm-font-weight-semibold);
-  block-size: 2em;
+  block-size: var(--btn-block-size);
   white-space: nowrap;
   scroll-margin-inline: 0.5rem;
 
@@ -37,4 +39,14 @@
     background: var(--cmm-color-primary-soft-bg);
     color: var(--cmm-color-primary-soft-font);
   }
+}
+
+.skelton {
+  @include mixins.skelton;
+
+  font-size: var(--btn-font-size);
+  block-size: var(--btn-block-size);
+  inline-size: 6rem;
+  border-radius: var(--cmm-radius-full);
+  margin-inline-start: 0.5rem;
 }

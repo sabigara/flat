@@ -1,3 +1,4 @@
+import { Tag } from "@camome/core/Tag";
 import clsx from "clsx";
 import { motion } from "framer-motion";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
@@ -17,59 +18,93 @@ type Props = {
 };
 
 export function FeedGeneratorSelector({ value, onChange, className }: Props) {
-  const { data } = useCustomFeedsQuery();
+  const { data, status } = useCustomFeedsQuery();
   const makeHandleClick: (newVal?: string) => React.MouseEventHandler =
     (newVal) => () => {
       if (newVal !== value) {
         onChange?.(newVal);
       }
     };
+  const wrapperRef = React.useRef<HTMLDivElement>(null);
+
+  const feeds = (() => {
+    if (status === "loading") {
+      return (
+        <>
+          <ItemSkelton />
+          <ItemSkelton />
+          <ItemSkelton />
+          <ItemSkelton />
+        </>
+      );
+    }
+    if (status === "error" || !data) {
+      return (
+        <Tag colorScheme="danger" size="sm">
+          Failed to fetch feeds
+        </Tag>
+      );
+    }
+    return (
+      <>
+        {data?.map((feed) => (
+          <Item
+            key={feed.uri}
+            onClick={makeHandleClick(feed.uri)}
+            aria-pressed={value === feed.uri}
+          >
+            {feed.displayName}
+          </Item>
+        ))}
+      </>
+    );
+  })();
+
+  React.useEffect(() => {
+    const wrapperElm = isMobile()
+      ? wrapperRef.current
+      : wrapperRef.current?.querySelector(".os-viewport");
+    if (!wrapperElm) return;
+    const pressedElm = wrapperElm.querySelector(`[aria-pressed="true"]`);
+    wrapperElm.scrollTo({
+      behavior: "smooth",
+      left: pressedElm
+        ? wrapperElm.scrollLeft + pressedElm.getBoundingClientRect().left - 16
+        : 0,
+    });
+  }, [status, value]);
 
   return (
-    <Wrapper className={className}>
+    <Wrapper className={className} ref={wrapperRef}>
       <Item onClick={makeHandleClick()} aria-pressed={!value}>
         フォロー中
       </Item>
-      {data?.map((feed) => (
-        <Item
-          key={feed.uri}
-          onClick={makeHandleClick(feed.uri)}
-          aria-pressed={value === feed.uri}
-        >
-          {feed.displayName}
-        </Item>
-      ))}
+      {feeds}
     </Wrapper>
   );
 }
 
 type ItemProps = React.ComponentProps<"button">;
 
-function Item({ ...props }: ItemProps) {
-  const ref = React.useRef<HTMLButtonElement>(null);
-  // eslint-disable-next-line react/prop-types
-  const ariaPressed = props["aria-pressed"];
+const Item = React.forwardRef<HTMLButtonElement, ItemProps>(
+  ({ ...props }, forwardedRef) => {
+    return <button className={styles.button} ref={forwardedRef} {...props} />;
+  }
+);
 
-  React.useEffect(() => {
-    if (ariaPressed) {
-      ref.current?.scrollIntoView({
-        behavior: "smooth",
-        inline: "start",
-        block: "center",
-      });
-    }
-  }, [ariaPressed]);
+Item.displayName = "Item";
 
-  return <button className={styles.button} ref={ref} {...props} />;
+function ItemSkelton() {
+  return <div className={styles.skelton} />;
 }
 
-function Wrapper({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
+const Wrapper = React.forwardRef<
+  HTMLDivElement,
+  {
+    children: React.ReactNode;
+    className?: string;
+  }
+>(({ children, className }, forwardedRef) => {
   const [shown, setShown] = React.useState(true);
   const scrollPosBuf = React.useRef<number>();
   const downThreshold = 20;
@@ -112,12 +147,12 @@ function Wrapper({
         },
       }}
       transition={{ type: "spring", duration: 0.3, bounce: 0 }}
+      ref={forwardedRef}
     >
       {children}
     </motion.div>
   ) : (
-    <OverlayScrollbarsComponent
-      defer
+    <OverlayScrollbarsComponent<"div">
       options={{
         scrollbars: {
           autoHide: "leave",
@@ -125,8 +160,18 @@ function Wrapper({
         },
       }}
       className={clsx(styles.container, className, "feedGenerator")}
+      ref={(ins) => {
+        const elm = ins?.getElement() ?? null;
+        if (typeof forwardedRef === "function") {
+          forwardedRef(elm);
+        } else if (forwardedRef) {
+          forwardedRef.current = elm;
+        }
+      }}
     >
       {children}
     </OverlayScrollbarsComponent>
   );
-}
+});
+
+Wrapper.displayName = "Wrapper";

@@ -40,6 +40,7 @@ type Props<K extends QueryKey> = {
   filter?: FeedFilterFn;
   cacheTime?: number;
   aggregateThreads?: boolean;
+  style?: React.CSSProperties;
 };
 
 export function Feed<K extends QueryKey>({
@@ -50,6 +51,7 @@ export function Feed<K extends QueryKey>({
   filter = (posts) => posts,
   cacheTime,
   aggregateThreads = true,
+  style,
 }: Props<K>) {
   const { t } = useTranslation();
   const {
@@ -112,7 +114,7 @@ export function Feed<K extends QueryKey>({
   }
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} style={style}>
       <InfiniteScroll
         pageStart={0}
         loadMore={() => !isFetchingNextPage && fetchNextPage()}
@@ -155,7 +157,7 @@ export function Feed<K extends QueryKey>({
         <Button
           size="sm"
           onClick={loadNewPosts}
-          className={styles.newItemBtn}
+          className={styles.newPostsBtn}
           startDecorator={<TbArrowUp />}
           {...isButtonLoading(isFetching && !isFetchingNextPage)}
         >
