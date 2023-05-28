@@ -2,6 +2,7 @@ import { AppBskyActorDefs } from "@atproto/api";
 import { useQuery } from "@tanstack/react-query";
 
 import { getBskyApi } from "@/src/app/account/states/atp";
+import { msInMinutes } from "@/src/app/time/lib/msInMinutes";
 
 // pinned only currently
 export function useCustomFeedsQuery() {
@@ -18,5 +19,6 @@ export function useCustomFeedsQuery() {
       });
       return feedsResp.data.feeds;
     },
+    staleTime: msInMinutes(5),
   });
 }

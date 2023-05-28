@@ -38,6 +38,7 @@ type Props<K extends QueryKey> = {
   fetchNewLatest?: () => Promise<AppBskyFeedDefs.FeedViewPost | undefined>;
   maxPages?: number;
   filter?: FeedFilterFn;
+  staleTime?: number;
   cacheTime?: number;
   aggregateThreads?: boolean;
   style?: React.CSSProperties;
@@ -49,6 +50,7 @@ export function Feed<K extends QueryKey>({
   fetchNewLatest,
   maxPages,
   filter = (posts) => posts,
+  staleTime,
   cacheTime,
   aggregateThreads = true,
   style,
@@ -71,6 +73,7 @@ export function Feed<K extends QueryKey>({
       return lastPage.cursor ? { cursor: lastPage.cursor } : undefined;
     },
     refetchOnMount: false,
+    staleTime,
     cacheTime,
   });
   const queryClient = useQueryClient();

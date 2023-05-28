@@ -6,6 +6,7 @@ import { Feed } from "@/src/app/feed/components/Feed";
 import { FeedGeneratorSelector } from "@/src/app/feed/components/FeedGeneratorSelector";
 import { currentFeedAtom } from "@/src/app/feed/states/currentFeedAtom";
 import Seo from "@/src/app/seo/Seo";
+import { msInMinutes } from "@/src/app/time/lib/msInMinutes";
 
 import styles from "./HomeFeedRoute.module.scss";
 
@@ -36,6 +37,7 @@ export function HomeFeedRoute() {
           queryFn={queryFn}
           fetchNewLatest={fetchLatest}
           filter={feedFilter}
+          staleTime={msInMinutes(60)}
           aggregateThreads={inFeedThreadMode === "aggregate"}
         />
       </div>
