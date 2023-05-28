@@ -69,7 +69,10 @@ export function FeedGeneratorSelector({ value, onChange, className }: Props) {
     wrapperElm.scrollTo({
       behavior: "smooth",
       left: pressedElm
-        ? wrapperElm.scrollLeft + pressedElm.getBoundingClientRect().left - 16
+        ? pressedElm.getBoundingClientRect().left -
+          wrapperElm.getBoundingClientRect().left +
+          wrapperElm.scrollLeft -
+          16
         : 0,
     });
   }, [status, value]);
