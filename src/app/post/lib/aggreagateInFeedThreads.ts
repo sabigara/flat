@@ -4,6 +4,7 @@ import { FeedFilterFn } from "@/src/app/feed/lib/feedFilters";
 import { sortFeedViewPosts } from "@/src/app/post/lib/sortFeedViewPosts";
 
 type FeedViewPost = AppBskyFeedDefs.FeedViewPost;
+const isPostView = AppBskyFeedDefs.isPostView;
 
 export function aggregateInFeedThreads(
   posts: FeedViewPost[],
@@ -12,7 +13,7 @@ export function aggregateInFeedThreads(
   const threads = new Map<string, FeedViewPost[]>();
   const ret: (FeedViewPost | FeedViewPost[])[] = [];
   for (const p of posts) {
-    if (p.reply) {
+    if (p.reply && isPostView(p.reply.root)) {
       const rootUri = p.reply.root.uri;
       const curr = threads.get(rootUri);
       threads.set(rootUri, [

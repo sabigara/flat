@@ -1,0 +1,38 @@
+.container {
+  padding-block: 0.5rem;
+
+  &--mobile {
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding-inline: 0.5rem;
+  }
+
+  :global(.os-viewport) {
+    display: flex !important;
+    gap: 0.25rem !important;
+    padding-inline: 1rem !important;
+  }
+}
+
+.button {
+  color: var(--cmm-color-font-subtle);
+  border-radius: var(--cmm-radius-full);
+  padding-inline: 0.75em;
+  font-size: var(--cmm-font-size-sm);
+  font-weight: var(--cmm-font-weight-semibold);
+  block-size: 2em;
+  white-space: nowrap;
+  scroll-margin-inline: 0.5rem;
+
+  &:hover {
+    background: var(--cmm-color-neutral-soft-bg);
+    color: var(--cmm-color-font-base);
+  }
+
+  &[aria-pressed="true"] {
+    background: var(--cmm-color-primary-soft-bg);
+    color: var(--cmm-color-primary-soft-font);
+  }
+}

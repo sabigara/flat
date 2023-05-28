@@ -67,6 +67,12 @@ dependencies:
   match-sorter:
     specifier: ^6.3.1
     version: 6.3.1
+  overlayscrollbars:
+    specifier: ^2.1.1
+    version: 2.1.1
+  overlayscrollbars-react:
+    specifier: ^0.5.0
+    version: 0.5.0(overlayscrollbars@2.1.1)(react@18.2.0)
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -7513,6 +7519,20 @@ packages:
   /outdent@0.8.0:
     resolution: {integrity: sha512-KiOAIsdpUTcAXuykya5fnVVT+/5uS0Q1mrkRHcF89tpieSmY33O/tmc54CqwA+bfhbtEfZUNLHaPUiB9X3jt1A==}
     dev: true
+
+  /overlayscrollbars-react@0.5.0(overlayscrollbars@2.1.1)(react@18.2.0):
+    resolution: {integrity: sha512-uCNTnkfWW74veoiEv3kSwoLelKt4e8gTNv65D771X3il0x5g5Yo0fUbro7SpQzR9yNgi23cvB2mQHTTdQH96pA==}
+    peerDependencies:
+      overlayscrollbars: ^2.0.0
+      react: '>=16.8.0'
+    dependencies:
+      overlayscrollbars: 2.1.1
+      react: 18.2.0
+    dev: false
+
+  /overlayscrollbars@2.1.1:
+    resolution: {integrity: sha512-xvs2g8Tcq9+CZDpLEUchN3YUzjJhnTWw9kwqT/qcC53FIkOyP9mqnRMot5sW16tcsPT1KaMyzF0AMXw/7E4a8g==}
+    dev: false
 
   /p-cancelable@2.1.1:
     resolution: {integrity: sha512-BZOr3nRQHOntUjTrH8+Lh54smKHoHyur8We1V8DSMVrl5A2malOOwuJRnKRDjSnkoeBh4at6BwEnb5I7Jl31wg==}

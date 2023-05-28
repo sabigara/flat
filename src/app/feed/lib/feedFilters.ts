@@ -3,6 +3,7 @@ import { AppBskyEmbedRecord, AppBskyFeedDefs } from "@atproto/api";
 import { FeedFilers } from "@/src/app/feed/lib/types";
 
 type FeedViewPost = AppBskyFeedDefs.FeedViewPost;
+const isPostView = AppBskyFeedDefs.isPostView;
 
 export type FeedFilterFn = (posts: FeedViewPost[]) => FeedViewPost[];
 
@@ -58,9 +59,12 @@ function excludeMuted(posts: AppBskyFeedDefs.FeedViewPost[]) {
 
 function isReplyToMuted(view: AppBskyFeedDefs.FeedViewPost): boolean {
   return (
-    (!!view.reply?.parent.author.viewer &&
+    (isPostView(view.reply?.parent) &&
+      !!view.reply?.parent.author.viewer &&
       !!view.reply.parent.author.viewer.muted) ||
-    (!!view.reply?.root.author.viewer && !!view.reply.root.author.viewer?.muted)
+    (isPostView(view.reply?.root) &&
+      !!view.reply?.root.author.viewer &&
+      !!view.reply.root.author.viewer?.muted)
   );
 }
 
@@ -78,7 +82,11 @@ function excludeRepliesToNonFollowing(
 ) {
   return posts.filter((view) => {
     // FIXME: check if the root is also a following account.
-    if (view.reply?.parent.author.viewer) {
+    if (
+      view.reply &&
+      isPostView(view.reply.parent) &&
+      view.reply.parent.author.viewer
+    ) {
       return (
         !!view.reply.parent.author.viewer.following ||
         view.reply.parent.author.did === myDid
@@ -95,7 +103,9 @@ function excludeRepliesToOthers(
   return posts.filter((view) => {
     if (!view.reply) return true;
     return (
+      isPostView(view.reply.parent) &&
       view.reply.parent.author.did === authorDid &&
+      isPostView(view.reply.root) &&
       view.reply.root.author.did === authorDid
     );
   });

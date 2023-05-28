@@ -1,3 +1,5 @@
+@use "mixins";
+
 .container {
   position: fixed;
   inset-inline-end: 1.5rem;
@@ -7,5 +9,10 @@
 
   > svg {
     stroke-width: 1.7;
+  }
+
+  @include mixins.mq(md) {
+    inset-inline-end: 1rem;
+    inset-block-end: 1rem;
   }
 }

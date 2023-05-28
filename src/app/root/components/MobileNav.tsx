@@ -1,5 +1,6 @@
 import { IconButton } from "@camome/core/IconButton";
 import { useQueryClient } from "@tanstack/react-query";
+import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { TbSearch } from "react-icons/tb";
 import { Link, useLocation } from "react-router-dom";
@@ -41,8 +42,8 @@ export default function MobileNav() {
         >
           <TbSearch />
         </IconButton>
-        <NotificationButton />
-        <DropdownMenu />
+        <NotificationButton className={clsx(styles.button, styles.notif)} />
+        <DropdownMenu className={styles.avatar} />
       </div>
     </header>
   );

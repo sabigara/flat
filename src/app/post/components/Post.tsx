@@ -339,7 +339,11 @@ export default function Post({
                 components={{
                   wrap: <span className={styles.tagActor} />,
                 }}
-                values={{ actor: userToName(reply.parent.author) }}
+                values={{
+                  actor: AppBskyFeedDefs.isPostView(reply.parent)
+                    ? userToName(reply.parent.author)
+                    : "",
+                }}
               />
             </Tag>
           )}

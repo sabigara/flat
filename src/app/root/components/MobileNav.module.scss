@@ -8,7 +8,7 @@
   border-bottom: 1px solid var(--cmm-color-border-base);
   position: fixed;
   background: var(--cmm-color-surface-0);
-  z-index: 50;
+  z-index: 100;
 }
 
 .sectionStart {
@@ -20,7 +20,6 @@
 .sectionEnd {
   display: flex;
   align-items: center;
-  gap: 1rem;
 }
 
 .logo {
@@ -42,15 +41,19 @@
 }
 
 .button {
+  --cmm-IconButton-size: 2.25rem;
+
   > svg {
     --cmm-IconButton-icon-size: 1.4rem;
   }
 }
 
+.notif {
+  margin-inline-start: 0.5rem;
+}
+
 .avatar {
-  &:hover {
-    filter: brightness(0.9);
-  }
+  margin-inline-start: 1rem;
 }
 
 .aboutBtn {

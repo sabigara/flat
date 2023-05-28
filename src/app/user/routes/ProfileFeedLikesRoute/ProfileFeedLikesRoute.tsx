@@ -4,7 +4,8 @@ import { useTranslation } from "react-i18next";
 
 import { getAtpAgent, getBskyApi } from "@/src/app/account/states/atp";
 import { settingsAtom } from "@/src/app/account/states/settingsAtom";
-import { Feed, FeedQueryFn } from "@/src/app/feed/components/Feed";
+import { Feed } from "@/src/app/feed/components/Feed";
+import { FeedQueryFn } from "@/src/app/feed/lib/feedQuery";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import Seo from "@/src/app/seo/Seo";
 import { userToName } from "@/src/app/user/lib/userToName";

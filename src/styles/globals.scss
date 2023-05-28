@@ -11,7 +11,7 @@
   --column-inline-size: 46rem;
   --column-pad-inline: 1.5rem;
   --desktop-nav-inline-size: 4rem;
-  --mobile-nav-block-size: 3.5rem;
+  --mobile-nav-block-size: 2.75rem;
   --container-inline-size: min(
     calc(var(--column-inline-size) + var(--desktop-nav-inline-size)),
     100%
@@ -121,4 +121,23 @@ body {
   display: block !important;
   margin-inline: auto;
   width: fit-content;
+}
+
+.os {
+  &-theme-dark {
+    --os-handle-bg: var(--cmm-color-gray-3) !important;
+    --os-handle-bg-hover: var(--cmm-color-gray-4) !important;
+    --os-handle-bg-active: var(--cmm-color-gray-4) !important;
+
+    [data-theme="dark"] & {
+      --os-handle-bg: var(--cmm-color-gray-7) !important;
+      --os-handle-bg-hover: var(--cmm-color-gray-6) !important;
+      --os-handle-bg-active: var(--cmm-color-gray-6) !important;
+    }
+  }
+
+  &-theme-dark,
+  &-theme-light {
+    --os-size: 8px !important;
+  }
 }

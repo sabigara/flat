@@ -1,4 +1,3 @@
-import { Box } from "@camome/core/Box";
 import { Dialog as CamomeDialog, dialogClassNames } from "@camome/core/Dialog";
 import {
   Dialog as HeadlessDialog,
@@ -8,7 +7,7 @@ import {
 import clsx from "clsx";
 import React from "react";
 
-import { createPolymorphicComponent } from "@/src/lib/createPolymorphicComponent";
+import { WrapIf } from "@/src/app/root/components/WrapIf";
 
 type Props = {
   open: boolean;
@@ -88,20 +87,3 @@ export default function Dialog({
     </WrapIf>
   );
 }
-
-type WrapIfProps = {
-  component: any;
-  condition: boolean;
-  children: React.ReactNode;
-};
-
-function _WrapIf({ component, condition, children, ...props }: WrapIfProps) {
-  if (!condition) return children;
-  return (
-    <Box component={component} {...props}>
-      {children}
-    </Box>
-  );
-}
-
-export const WrapIf = createPolymorphicComponent<"div", WrapIfProps>(_WrapIf);
