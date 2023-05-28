@@ -1,3 +1,5 @@
+@use "mixins";
+
 .container {
   padding-block: 0.5rem;
 
@@ -20,7 +22,7 @@
   color: var(--cmm-color-font-subtle);
   border-radius: var(--cmm-radius-full);
   padding-inline: 0.75em;
-  font-size: var(--cmm-font-size-sm);
+  font-size: 0.9rem;
   font-weight: var(--cmm-font-weight-semibold);
   block-size: 2em;
   white-space: nowrap;
@@ -34,5 +36,9 @@
   &[aria-pressed="true"] {
     background: var(--cmm-color-primary-soft-bg);
     color: var(--cmm-color-primary-soft-font);
+  }
+
+  @include mixins.mq(md) {
+    font-size: var(--cmm-font-size-sm);
   }
 }
