@@ -12,7 +12,9 @@ type Params = {
 };
 
 export function useHomeFeedProps({ feed }: Params) {
-  const queryKey = feed ? queryKeys.feed.custom(feed).$ : queryKeys.feed.home.$;
+  const queryKey = feed
+    ? queryKeys.feed.custom(feed).$
+    : queryKeys.feed.timeline.$;
   const queryFn: FeedQueryFn<typeof queryKey> = async ({
     pageParam,
     queryKey,

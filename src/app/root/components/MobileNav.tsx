@@ -19,7 +19,7 @@ export default function MobileNav() {
   const location = useLocation();
   const handleClickLogo = () => {
     if (location.pathname === "/") {
-      reloadFeedForNewPosts(queryClient, queryKeys.feed.home.$);
+      reloadFeedForNewPosts(queryClient, queryKeys.feed.timeline.$);
     }
   };
 

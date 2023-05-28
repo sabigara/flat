@@ -6,7 +6,7 @@ export const queryKeys = {
     $: ["session"],
   },
   feed: {
-    home: {
+    timeline: {
       $: ["feed"] as const,
     },
     author: (handle: string) => ({
