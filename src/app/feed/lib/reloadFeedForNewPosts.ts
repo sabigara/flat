@@ -20,7 +20,9 @@ export function reloadFeedForNewPosts(
       pages: data.pages.slice(0, 1),
       pageParams: data.pageParams.slice(0, 1),
     }));
-    queryClient.invalidateQueries(queryKey);
+    queryClient.invalidateQueries(queryKey, {
+      exact: true,
+    });
   };
   window.requestAnimationFrame(refetchOnTop);
 }

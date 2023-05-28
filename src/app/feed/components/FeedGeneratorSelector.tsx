@@ -80,7 +80,7 @@ export function FeedGeneratorSelector({ value, onChange, className }: Props) {
   return (
     <Wrapper className={className} ref={wrapperRef}>
       <Item onClick={makeHandleClick()} aria-pressed={!value}>
-        フォロー中
+        Following
       </Item>
       {feeds}
     </Wrapper>
