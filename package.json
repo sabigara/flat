@@ -16,7 +16,7 @@
     "format:fix": "prettier --cache --write ."
   },
   "dependencies": {
-    "@atproto/api": "^0.2.11",
+    "@atproto/api": "^0.3.8",
     "@atproto/lexicon": "^0.1.0",
     "@atproto/uri": "^0.0.1",
     "@camome/core": "^0.0.29",
@@ -24,6 +24,7 @@
     "@floating-ui/react": "^0.20.1",
     "@headlessui/react": "^1.7.13",
     "@tanstack/react-query": "^4.29.1",
+    "@tanstack/react-query-devtools": "^4.29.11",
     "@vercel/node": "^2.12.0",
     "clsx": "^1.2.1",
     "compressorjs": "^1.2.1",
@@ -37,6 +38,8 @@
     "jotai-immer": "^0.2.0",
     "jsdom": "^21.1.1",
     "match-sorter": "^6.3.1",
+    "overlayscrollbars": "^2.1.1",
+    "overlayscrollbars-react": "^0.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet-async": "^1.3.0",

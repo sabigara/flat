@@ -1,4 +1,18 @@
+@use "mixins";
+
 .container {
   background: var(--cmm-color-surface-0);
   padding-block-end: 5rem;
+}
+
+.feedGenerator {
+  position: sticky;
+  inset-block-start: 0;
+  border-block-end: 1px solid var(--cmm-color-border-base);
+  z-index: 50;
+  background: var(--cmm-color-surface-0);
+
+  @include mixins.mq(md) {
+    inset-block-start: var(--mobile-nav-block-size);
+  }
 }

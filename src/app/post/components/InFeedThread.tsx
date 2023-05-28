@@ -31,6 +31,7 @@ export default function InFeedThread({
         {showViewFullThread &&
           i > 0 &&
           view.reply &&
+          AppBskyFeedDefs.isPostView(view.reply.parent) &&
           postViews.at(i - 1)?.post.uri !== view.reply.parent.uri && (
             <ViewFullThread post={view.reply.parent} />
           )}

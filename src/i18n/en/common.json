@@ -102,7 +102,7 @@
     }
   },
   "feed": {
-    "load-new-posts": "Load new posts",
+    "load-new-posts": "New posts",
     "filters": {
       "title": "Filters",
       "reply": {

@@ -6,12 +6,15 @@ export const queryKeys = {
     $: ["session"],
   },
   feed: {
-    home: {
+    timeline: {
       $: ["feed"] as const,
     },
     author: (handle: string) => ({
       $: ["feed", { authorId: handle }] as const,
       likes: ["feed", { authorId: handle }, "likes"] as const,
+    }),
+    custom: (feed: string) => ({
+      $: ["feed", { feed }] as const,
     }),
     new: {
       $: (

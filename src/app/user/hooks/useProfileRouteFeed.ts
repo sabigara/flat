@@ -1,11 +1,11 @@
 import React from "react";
 
 import { getBskyApi } from "@/src/app/account/states/atp";
-import { FeedQueryFn } from "@/src/app/feed/components/Feed";
 import {
   feedFiltersToFn,
   feedFilterNoop,
 } from "@/src/app/feed/lib/feedFilters";
+import { FeedQueryFn } from "@/src/app/feed/lib/feedQuery";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import { useProfileOutletCtx } from "@/src/app/user/routes/ProfileRoute/ProfileRoute";
 

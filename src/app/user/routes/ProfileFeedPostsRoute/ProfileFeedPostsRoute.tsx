@@ -29,6 +29,11 @@ export function ProfileFeedPostsRoute() {
         fetchNewLatest={fetchLatest}
         filter={feedFilter}
         aggregateThreads={inFeedThreadMode === "aggregate"}
+        style={
+          {
+            ["--new-posts-btn-inset-block-start"]: "1rem",
+          } as React.CSSProperties
+        }
       />
     </>
   );

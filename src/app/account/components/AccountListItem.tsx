@@ -73,7 +73,7 @@ export function AccountListItem({
   const handleClickSwitch = async () => {
     if (account.session) {
       switchAccount(account.service, account.session.did);
-      queryClient.resetQueries(queryKeys.feed.home.$);
+      queryClient.resetQueries(queryKeys.feed.timeline.$);
       onSwitchAccount?.({ isSignIn: true });
     } else {
       await reSignIn();

@@ -1,11 +1,9 @@
-import { FeedViewPost } from "@atproto/api/dist/client/types/app/bsky/feed/defs";
 import { Button } from "@camome/core/Button";
 import {
   useInfiniteQuery,
-  type QueryKey,
-  type QueryFunction,
   useQueryClient,
   useQuery,
+  QueryKey,
 } from "@tanstack/react-query";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
@@ -16,6 +14,7 @@ import type { AppBskyFeedDefs } from "@atproto/api";
 
 import { FeedSkelton } from "@/src/app/feed/components/FeedSkelton";
 import { FeedFilterFn } from "@/src/app/feed/lib/feedFilters";
+import { FeedQueryFn } from "@/src/app/feed/lib/feedQuery";
 import { reloadFeedForNewPosts } from "@/src/app/feed/lib/reloadFeedForNewPosts";
 import InFeedThread from "@/src/app/post/components/InFeedThread";
 import Post from "@/src/app/post/components/Post";
@@ -33,22 +32,16 @@ import { isButtonLoading } from "@/src/components/isButtonLoading";
 
 import styles from "./Feed.module.scss";
 
-export type FeedQueryFn<K extends QueryKey> = QueryFunction<
-  {
-    cursor?: string;
-    feed: FeedViewPost[];
-  },
-  K
->;
-
 type Props<K extends QueryKey> = {
   queryKey: K;
   queryFn: FeedQueryFn<K>;
   fetchNewLatest?: () => Promise<AppBskyFeedDefs.FeedViewPost | undefined>;
   maxPages?: number;
   filter?: FeedFilterFn;
+  staleTime?: number;
   cacheTime?: number;
   aggregateThreads?: boolean;
+  style?: React.CSSProperties;
 };
 
 export function Feed<K extends QueryKey>({
@@ -57,8 +50,10 @@ export function Feed<K extends QueryKey>({
   fetchNewLatest,
   maxPages,
   filter = (posts) => posts,
+  staleTime,
   cacheTime,
   aggregateThreads = true,
+  style,
 }: Props<K>) {
   const { t } = useTranslation();
   const {
@@ -78,6 +73,7 @@ export function Feed<K extends QueryKey>({
       return lastPage.cursor ? { cursor: lastPage.cursor } : undefined;
     },
     refetchOnMount: false,
+    staleTime,
     cacheTime,
   });
   const queryClient = useQueryClient();
@@ -105,7 +101,9 @@ export function Feed<K extends QueryKey>({
   };
 
   const revalidateOnPost = () => {
-    queryClient.invalidateQueries(queryKey);
+    queryClient.invalidateQueries(queryKey, {
+      exact: true,
+    });
   };
 
   const mutatePostCache: MutatePostCache = ({ uri, fn }) => {
@@ -121,7 +119,7 @@ export function Feed<K extends QueryKey>({
   }
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} style={style}>
       <InfiniteScroll
         pageStart={0}
         loadMore={() => !isFetchingNextPage && fetchNextPage()}
@@ -164,7 +162,7 @@ export function Feed<K extends QueryKey>({
         <Button
           size="sm"
           onClick={loadNewPosts}
-          className={styles.newItemBtn}
+          className={styles.newPostsBtn}
           startDecorator={<TbArrowUp />}
           {...isButtonLoading(isFetching && !isFetchingNextPage)}
         >

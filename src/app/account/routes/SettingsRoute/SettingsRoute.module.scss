@@ -1,4 +1,7 @@
 .container {
+  // FIXME: this just a temporary fix
+  --cmm-FormFieldLabel-font-weight: var(--cmm-font-weight-normal);
+
   padding-inline: var(--column-pad-inline);
   padding-block-start: 1rem;
   padding-block-end: 2rem;

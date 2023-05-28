@@ -98,7 +98,7 @@
     }
   },
   "feed": {
-    "load-new-posts": "新しい投稿を見る",
+    "load-new-posts": "新しい投稿",
     "filters": {
       "title": "表示オプション",
       "reply": {

@@ -20,7 +20,7 @@ export function useOnSwitchAccount(opt: Options) {
 
   const onSwitchAccount = (fnOpt: FnOptions) => {
     revalidator.revalidate();
-    queryClient.resetQueries(queryKeys.feed.home.$);
+    queryClient.resetQueries(queryKeys.feed.timeline.$);
     queryClient.resetQueries(queryKeys.notifications.$);
     if (fnOpt.isSignIn) {
       toast.success(t("auth.sign-in-success"));

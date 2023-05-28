@@ -13,7 +13,11 @@ import { config } from "@/src/config";
 
 import styles from "./DropdownMenu.module.scss";
 
-export default function DropdownMenu() {
+type Props = {
+  className?: string;
+};
+
+export default function DropdownMenu({ className }: Props) {
   const { t, i18n } = useTranslation();
   const { data: account } = useAccountQuery();
   const { x, y, reference, floating, strategy } = useFloating({
@@ -50,7 +54,7 @@ export default function DropdownMenu() {
   return (
     <Menu as="div" className={styles.menu}>
       <div>
-        <Menu.Button className={styles.button}>
+        <Menu.Button className={clsx(styles.button, className)}>
           <Avatar
             profile={account?.profile}
             size="sm"
@@ -62,7 +66,7 @@ export default function DropdownMenu() {
       </div>
       {account?.profile && (
         <Menu.Items
-          className={menuClassNames.menu}
+          className={clsx(menuClassNames.menu, styles.items)}
           ref={floating}
           style={{
             position: strategy,

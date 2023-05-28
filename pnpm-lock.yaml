@@ -5,8 +5,8 @@ overrides:
 
 dependencies:
   '@atproto/api':
-    specifier: ^0.2.11
-    version: 0.2.11
+    specifier: ^0.3.8
+    version: 0.3.8
   '@atproto/lexicon':
     specifier: ^0.1.0
     version: 0.1.0
@@ -28,6 +28,9 @@ dependencies:
   '@tanstack/react-query':
     specifier: ^4.29.1
     version: 4.29.1(react-dom@18.2.0)(react@18.2.0)
+  '@tanstack/react-query-devtools':
+    specifier: ^4.29.11
+    version: 4.29.11(@tanstack/react-query@4.29.1)(react-dom@18.2.0)(react@18.2.0)
   '@vercel/node':
     specifier: ^2.12.0
     version: 2.12.0
@@ -67,6 +70,12 @@ dependencies:
   match-sorter:
     specifier: ^6.3.1
     version: 6.3.1
+  overlayscrollbars:
+    specifier: ^2.1.1
+    version: 2.1.1
+  overlayscrollbars-react:
+    specifier: ^0.5.0
+    version: 0.5.0(overlayscrollbars@2.1.1)(react@18.2.0)
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -208,8 +217,8 @@ packages:
       leven: 3.1.0
     dev: true
 
-  /@atproto/api@0.2.11:
-    resolution: {integrity: sha512-5JY1Ii/81Bcy1ZTGRqALsaOdc8fIJTSlMNoSptpGH73uAPQE93weDrb8sc3KoxWi1G2ss3IIBSLPJWxALocJSQ==}
+  /@atproto/api@0.3.8:
+    resolution: {integrity: sha512-7qaIZGEP5J9FW4z8bXezzAmLRzHSXXHo6bWP9Jyu5MLp8tYt9vG6yR2N0QA7GvO0xSYqP87Q5vblPjYXGqtDKg==}
     dependencies:
       '@atproto/common-web': 0.1.0
       '@atproto/uri': 0.0.1
@@ -2876,8 +2885,30 @@ packages:
       defer-to-connect: 2.0.1
     dev: true
 
+  /@tanstack/match-sorter-utils@8.8.4:
+    resolution: {integrity: sha512-rKH8LjZiszWEvmi01NR72QWZ8m4xmXre0OOwlRGnjU01Eqz/QnN+cqpty2PJ0efHblq09+KilvyR7lsbzmXVEw==}
+    engines: {node: '>=12'}
+    dependencies:
+      remove-accents: 0.4.2
+    dev: false
+
   /@tanstack/query-core@4.29.1:
     resolution: {integrity: sha512-vkPewLEG8ua0efo3SsVT0BcBtkq5RZX8oPhDAyKL+k/rdOYSQTEocfGEXSaBwIwsXeOGBUpfKqI+UmHvNqdWXg==}
+    dev: false
+
+  /@tanstack/react-query-devtools@4.29.11(@tanstack/react-query@4.29.1)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-paOSRfNtUbeo3anTtKgRSaMGplAN2VilmzLR9a3lbVZVCF4EzvL1Xmp4Xv9cDN8kGuv2CZTvUP6lvyxPlKSpew==}
+    peerDependencies:
+      '@tanstack/react-query': 4.29.11
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@tanstack/match-sorter-utils': 8.8.4
+      '@tanstack/react-query': 4.29.1(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      superjson: 1.12.3
+      use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
 
   /@tanstack/react-query@4.29.1(react-dom@18.2.0)(react@18.2.0):
@@ -4237,6 +4268,13 @@ packages:
     resolution: {integrity: sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==}
     engines: {node: '>= 0.6'}
     dev: true
+
+  /copy-anything@3.0.5:
+    resolution: {integrity: sha512-yCEafptTtb4bk7GLEQoM8KVJpxAfdBJYaXyzQEgQQQgYrZiDp8SJmGKlYza6CYjEDNstAdNdKA3UuoULlEbS6w==}
+    engines: {node: '>=12.13'}
+    dependencies:
+      is-what: 4.1.11
+    dev: false
 
   /core-js-compat@3.30.0:
     resolution: {integrity: sha512-P5A2h/9mRYZFIAP+5Ab8ns6083IyVpSclU74UNvbGVQ8VM7n3n3/g2yF3AkKQ9NXz2O+ioxLbEWKnDtgsFamhg==}
@@ -6363,6 +6401,11 @@ packages:
       call-bind: 1.0.2
     dev: true
 
+  /is-what@4.1.11:
+    resolution: {integrity: sha512-gr9+qDrJvdwT4+N2TAACsZQIB4Ow9j2eefqlh3m9JUV41M1LoKhcE+/j+IVni/r6U8Jnc1PwhjdjVJr+Xmtb0A==}
+    engines: {node: '>=12.13'}
+    dev: false
+
   /is-wsl@2.2.0:
     resolution: {integrity: sha512-fKzAra0rGJUUBwGBgNkHZuToZcn+TtXHpeCgmkMJMMYx1sQDYaCSyjJBSCa2nH1DGm7s3n1oBnohoVTBaN7Lww==}
     engines: {node: '>=8'}
@@ -7513,6 +7556,20 @@ packages:
   /outdent@0.8.0:
     resolution: {integrity: sha512-KiOAIsdpUTcAXuykya5fnVVT+/5uS0Q1mrkRHcF89tpieSmY33O/tmc54CqwA+bfhbtEfZUNLHaPUiB9X3jt1A==}
     dev: true
+
+  /overlayscrollbars-react@0.5.0(overlayscrollbars@2.1.1)(react@18.2.0):
+    resolution: {integrity: sha512-uCNTnkfWW74veoiEv3kSwoLelKt4e8gTNv65D771X3il0x5g5Yo0fUbro7SpQzR9yNgi23cvB2mQHTTdQH96pA==}
+    peerDependencies:
+      overlayscrollbars: ^2.0.0
+      react: '>=16.8.0'
+    dependencies:
+      overlayscrollbars: 2.1.1
+      react: 18.2.0
+    dev: false
+
+  /overlayscrollbars@2.1.1:
+    resolution: {integrity: sha512-xvs2g8Tcq9+CZDpLEUchN3YUzjJhnTWw9kwqT/qcC53FIkOyP9mqnRMot5sW16tcsPT1KaMyzF0AMXw/7E4a8g==}
+    dev: false
 
   /p-cancelable@2.1.1:
     resolution: {integrity: sha512-BZOr3nRQHOntUjTrH8+Lh54smKHoHyur8We1V8DSMVrl5A2malOOwuJRnKRDjSnkoeBh4at6BwEnb5I7Jl31wg==}
@@ -8765,6 +8822,13 @@ packages:
     dependencies:
       inline-style-parser: 0.1.1
     dev: true
+
+  /superjson@1.12.3:
+    resolution: {integrity: sha512-0j+U70KUtP8+roVPbwfqkyQI7lBt7ETnuA7KXbTDX3mCKiD/4fXs2ldKSMdt0MCfpTwiMxo20yFU3vu6ewETpQ==}
+    engines: {node: '>=10'}
+    dependencies:
+      copy-anything: 3.0.5
+    dev: false
 
   /supports-color@5.5.0:
     resolution: {integrity: sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==}

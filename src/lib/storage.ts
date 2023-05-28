@@ -5,6 +5,9 @@ export const storageKeys = {
   settings: {
     $: "settings",
   },
+  currentFeed: {
+    $: "currentFeed",
+  },
 };
 
 // not clean but ok for now
