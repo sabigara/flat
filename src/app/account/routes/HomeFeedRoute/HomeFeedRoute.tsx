@@ -13,6 +13,9 @@ export function HomeFeedRoute() {
   const [feed, setFeed] = useAtom(currentFeedAtom);
   const handleChangeFeed = (newVal?: string) => {
     setFeed(newVal ?? "");
+    window.scrollTo({
+      top: 0,
+    });
   };
   const { queryKey, queryFn, fetchLatest, feedFilter } = useHomeFeedProps({
     feed,
