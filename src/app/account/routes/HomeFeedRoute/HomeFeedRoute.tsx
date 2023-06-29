@@ -39,7 +39,10 @@ export function HomeFeedRoute() {
           filter={feedFilter}
           staleTime={msInMinutes(60)}
           cacheTime={msInMinutes(60)}
-          aggregateThreads={inFeedThreadMode === "aggregate"}
+          aggregateThreads={
+            // Only aggregate if "following" is selected; aggregation breaks non-reverse-chronological feeds.
+            inFeedThreadMode === "aggregate" && !feed
+          }
         />
       </div>
     </>
