@@ -20,7 +20,7 @@ type Props = {
 export default function DropdownMenu({ className }: Props) {
   const { t, i18n } = useTranslation();
   const { data: account } = useAccountQuery();
-  const { refs, floatingStyles } = useFloating({
+  const { x, y, reference, floating, strategy } = useFloating({
     placement: "bottom-end",
     middleware: [offset(8), flip()],
   });
@@ -58,7 +58,7 @@ export default function DropdownMenu({ className }: Props) {
           <Avatar
             profile={account?.profile}
             size="sm"
-            innerRef={refs.setReference}
+            innerRef={reference}
             stopPropagation={false}
             className={styles.avatar}
           />
@@ -67,8 +67,12 @@ export default function DropdownMenu({ className }: Props) {
       {account?.profile && (
         <Menu.Items
           className={clsx(menuClassNames.menu, styles.items)}
-          ref={refs.setFloating}
-          style={floatingStyles}
+          ref={floating}
+          style={{
+            position: strategy,
+            top: y ?? 0,
+            left: x ?? 0,
+          }}
         >
           {links(account.profile.handle).map(({ href, label, external }) => (
             <Menu.Item

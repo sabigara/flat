@@ -26,7 +26,7 @@ export default function UserPopover({
 }: Props) {
   const location = useLocation();
   const isMobileSize = useMobileSize();
-  const { refs, floatingStyles, update } = useFloating({
+  const { x, y, reference, floating, strategy, update } = useFloating({
     placement,
     middleware: [offset(8), flip()],
   });
@@ -56,7 +56,7 @@ export default function UserPopover({
       <span
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        ref={refs.setReference}
+        ref={reference}
         className={styles.targetWrap}
       >
         {children}
@@ -90,9 +90,13 @@ export default function UserPopover({
                 },
               },
             }}
-            ref={refs.setFloating}
+            ref={floating}
             className={styles.content}
-            style={floatingStyles}
+            style={{
+              position: strategy,
+              left: x ?? 0,
+              top: y ?? 0,
+            }}
           >
             <Content identifier={identifier} onLoad={update} />
           </motion.div>

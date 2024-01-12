@@ -17,7 +17,7 @@ export type MenuProps = {
 };
 
 export default function Menu({ button, actions }: MenuProps) {
-  const { refs, floatingStyles } = useFloating({
+  const { x, y, reference, floating, strategy } = useFloating({
     placement: "bottom-end",
     middleware: [offset(8), flip()],
   });
@@ -26,13 +26,17 @@ export default function Menu({ button, actions }: MenuProps) {
 
   return (
     <HlMenu as="div" className={styles.menu}>
-      <HlMenu.Button as={React.Fragment} ref={refs.setReference}>
+      <HlMenu.Button as={React.Fragment} ref={reference}>
         {button}
       </HlMenu.Button>
       <HlMenu.Items
         className={clsx(menuClassNames.menu, styles.menu__items)}
-        ref={refs.setFloating}
-        style={floatingStyles}
+        ref={floating}
+        style={{
+          position: strategy,
+          top: y ?? 0,
+          left: x ?? 0,
+        }}
       >
         {actions.map(({ label, icon, onClick, danger }) => (
           <HlMenu.Item key={label} as={React.Fragment}>
