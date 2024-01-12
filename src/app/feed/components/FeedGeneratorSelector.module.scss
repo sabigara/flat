@@ -4,11 +4,11 @@
   --btn-block-size: 2em;
   --btn-font-size: 0.9rem;
   padding-block: 0.5rem;
-  display: flex;
-  align-items: center;
 
   &--mobile {
     overflow: auto;
+    display: flex;
+    align-items: center;
     gap: 0.25rem;
     padding-inline: 0.5rem;
   }
@@ -39,11 +39,6 @@
     background: var(--cmm-color-primary-soft-bg);
     color: var(--cmm-color-primary-soft-font);
   }
-}
-
-.skeltonList {
-  display: flex;
-  align-items: center;
 }
 
 .skelton {
