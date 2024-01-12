@@ -31,7 +31,7 @@ export default function Menu({ button, actions }: MenuProps) {
       </HlMenu.Button>
       <HlMenu.Items
         className={clsx(menuClassNames.menu, styles.menu__items)}
-        ref={refs.setReference}
+        ref={refs.setFloating}
         style={floatingStyles}
       >
         {actions.map(({ label, icon, onClick, danger }) => (
