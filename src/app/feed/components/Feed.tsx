@@ -122,7 +122,7 @@ export function Feed<K extends QueryKey>({
   };
 
   if (status === "loading") {
-    return customSkeleton ?? <FeedSkelton count={18} />;
+    return (customSkeleton as React.ReactElement) ?? <FeedSkelton count={18} />;
   } else if (status === "error") {
     return <span>Error: {(error as Error).message}</span>;
   }
@@ -162,7 +162,6 @@ export function Feed<K extends QueryKey>({
         loadMore={() => !isFetchingNextPage && fetchNextPage()}
         hasMore={hasNextPage}
         loader={<SpinnerFill key="__loader" />}
-        style={{ display: "flex", flexDirection: "column" }}
       >
         <>
           {renderedItems}
