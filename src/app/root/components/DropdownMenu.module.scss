@@ -6,6 +6,12 @@
   display: block;
 }
 
+.items {
+  &:focus {
+    outline: none;
+  }
+}
+
 .link {
   gap: 0.3rem !important;
 

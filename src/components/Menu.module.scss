@@ -6,6 +6,10 @@
 
   &__items {
     z-index: 50;
+
+    &:focus {
+      outline: none;
+    }
   }
 
   &__item {
