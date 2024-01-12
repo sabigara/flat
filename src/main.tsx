@@ -23,6 +23,7 @@ import { defaultSeo } from "@/src/app/seo/defaultSeo";
 import * as Followers from "@/src/app/user/routes/FollowersRoute";
 import * as Following from "@/src/app/user/routes/FollowingRoute";
 import * as ProfileFeedLikes from "@/src/app/user/routes/ProfileFeedLikesRoute";
+import * as ProfileFeedMedia from "@/src/app/user/routes/ProfileFeedMediaRoute";
 import * as ProfileFeedPosts from "@/src/app/user/routes/ProfileFeedPostsRoute";
 import * as ProfileFeedPostsWithReplies from "@/src/app/user/routes/ProfileFeedPostsWithRepliesRoute";
 import * as Profile from "@/src/app/user/routes/ProfileRoute";
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
           {
             path: "/:handle/likes",
             ...ProfileFeedLikes,
+          },
+          {
+            path: "/:handle/media",
+            ...ProfileFeedMedia,
           },
         ],
       },

@@ -1,0 +1,33 @@
+@use "mixins";
+
+.container {
+  display: grid;
+  gap: 4px;
+  grid-template-columns: repeat(4, 1fr);
+
+  @include mixins.mq(md) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.item {
+  aspect-ratio: 1;
+  position: relative;
+  background-color: var(--cmm-color-surface-2);
+}
+
+.img {
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.multiple {
+  position: absolute;
+  right: 0.25rem;
+  bottom: 0.25rem;
+  padding: 0.3rem;
+  font-size: 1.8rem;
+  color: white;
+  background: hsl(0deg 0% 0% / 50%);
+  border-radius: var(--cmm-radius-sm);
+}

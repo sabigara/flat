@@ -1,0 +1,17 @@
+@use "mixins";
+
+.container {
+  display: grid;
+  gap: 4px;
+
+  grid-template-columns: repeat(4, 1fr);
+
+  @include mixins.mq(md) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.item {
+  @include mixins.skelton;
+  aspect-ratio: 1;
+}

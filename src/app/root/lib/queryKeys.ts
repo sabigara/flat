@@ -12,6 +12,7 @@ export const queryKeys = {
     author: (handle: string) => ({
       $: ["feed", { authorId: handle }] as const,
       likes: ["feed", { authorId: handle }, "likes"] as const,
+      media: ["feed", { authorId: handle }, "media"] as const,
     }),
     custom: (feed: string) => ({
       $: ["feed", { feed }] as const,

@@ -15,6 +15,7 @@ export function ProfileTabLinks({ showLikes, className }: Props) {
     <ul className={clsx(styles.list, className)}>
       <Item to="." label={t("tabs.posts")} />
       <Item to="./with-replies" label={t("tabs.replies")} />
+      <Item to="./media" label={t("tabs.media")} />
       {showLikes && <Item to="./likes" label={t("tabs.likes")} />}
     </ul>
   );

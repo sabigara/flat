@@ -6,6 +6,7 @@ import {
   QueryKey,
 } from "@tanstack/react-query";
 import clsx from "clsx";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { TbArrowUp } from "react-icons/tb";
 import InfiniteScroll from "react-infinite-scroller";
@@ -32,10 +33,16 @@ import { isButtonLoading } from "@/src/components/isButtonLoading";
 
 import styles from "./Feed.module.scss";
 
+export type RenderFeedItems = (
+  items: AppBskyFeedDefs.FeedViewPost[],
+) => React.ReactNode;
+
 type Props<K extends QueryKey> = {
   queryKey: K;
   queryFn: FeedQueryFn<K>;
   fetchNewLatest?: () => Promise<AppBskyFeedDefs.FeedViewPost | undefined>;
+  renderItems?: RenderFeedItems;
+  skelton?: React.ReactNode;
   maxPages?: number;
   filter?: FeedFilterFn;
   staleTime?: number;
@@ -48,6 +55,8 @@ export function Feed<K extends QueryKey>({
   queryKey,
   queryFn,
   fetchNewLatest,
+  renderItems: customRenderItems,
+  skelton: customSkeleton,
   maxPages,
   filter = (posts) => posts,
   staleTime,
@@ -113,9 +122,37 @@ export function Feed<K extends QueryKey>({
   };
 
   if (status === "loading") {
-    return <FeedSkelton count={18} />;
+    return customSkeleton ?? <FeedSkelton count={18} />;
   } else if (status === "error") {
     return <span>Error: {(error as Error).message}</span>;
+  }
+
+  let renderedItems: React.ReactNode;
+
+  if (customRenderItems) {
+    renderedItems = customRenderItems(allItems);
+  } else {
+    renderedItems = (
+      aggregateThreads ? aggregateInFeedThreads(allItems, filter) : allItems
+    ).map((item) =>
+      Array.isArray(item) ? (
+        <InFeedThread
+          postViews={item}
+          revalidate={refetch}
+          mutatePostCache={mutatePostCache}
+          className={(idx) => clsx(idx === item.length - 1 && styles.post)}
+          key={item.map(feedItemToUniqueKey).join(",")}
+        />
+      ) : (
+        <Post
+          data={item}
+          key={feedItemToUniqueKey(item)}
+          revalidate={refetch}
+          mutatePostCache={mutatePostCache}
+          className={styles.post}
+        />
+      ),
+    );
   }
 
   return (
@@ -125,32 +162,10 @@ export function Feed<K extends QueryKey>({
         loadMore={() => !isFetchingNextPage && fetchNextPage()}
         hasMore={hasNextPage}
         loader={<SpinnerFill key="__loader" />}
+        style={{ display: "flex", flexDirection: "column" }}
       >
         <>
-          {(aggregateThreads
-            ? aggregateInFeedThreads(allItems, filter)
-            : allItems
-          ).map((item) =>
-            Array.isArray(item) ? (
-              <InFeedThread
-                postViews={item}
-                revalidate={refetch}
-                mutatePostCache={mutatePostCache}
-                className={(idx) =>
-                  clsx(idx === item.length - 1 && styles.post)
-                }
-                key={item.map(feedItemToUniqueKey).join(",")}
-              />
-            ) : (
-              <Post
-                data={item}
-                key={feedItemToUniqueKey(item)}
-                revalidate={refetch}
-                mutatePostCache={mutatePostCache}
-                className={styles.post}
-              />
-            ),
-          )}
+          {renderedItems}
           {!hasNextPage && (
             <div className={styles.noMore} key="__noMore">
               nothing more to say...
