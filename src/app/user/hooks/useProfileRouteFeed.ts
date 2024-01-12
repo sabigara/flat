@@ -40,7 +40,7 @@ export function useProfileRouteFeed({ withReply }: Params) {
         },
         {
           authorDid: profile.did,
-        }
+        },
       );
   const fetchLatest = React.useCallback(
     async () =>
@@ -50,9 +50,9 @@ export function useProfileRouteFeed({ withReply }: Params) {
             actor: profile.handle,
             limit: 1,
           })
-        ).data.feed
+        ).data.feed,
       ).at(0),
-    [feedFilter, profile.handle]
+    [feedFilter, profile.handle],
   );
 
   return {

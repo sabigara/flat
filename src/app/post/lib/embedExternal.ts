@@ -3,7 +3,7 @@ import { AppBskyEmbedExternal } from "@atproto/api";
 import { SiteMetadata } from "@/src/lib/siteMetadata";
 
 export function embedExternal(
-  external: SiteMetadata
+  external: SiteMetadata,
 ): AppBskyEmbedExternal.Main {
   return {
     $type: "app.bsky.embed.external",

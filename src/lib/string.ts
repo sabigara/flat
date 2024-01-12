@@ -5,7 +5,7 @@ type TruncateOptions = {
 
 export function truncate(
   postText: string,
-  { max, ellipsis = true }: TruncateOptions
+  { max, ellipsis = true }: TruncateOptions,
 ) {
   return (
     postText.slice(0, max) + (postText.length > max && ellipsis ? "…" : "")

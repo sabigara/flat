@@ -73,7 +73,7 @@ export async function drawImageToCanvas({
     0,
     0,
     image.naturalWidth,
-    image.naturalHeight
+    image.naturalHeight,
   );
 
   ctx.restore();

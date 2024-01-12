@@ -2,7 +2,7 @@ import { QueryClient, QueryKey } from "@tanstack/react-query";
 
 export function reloadFeedForNewPosts(
   queryClient: QueryClient,
-  queryKey: QueryKey
+  queryKey: QueryKey,
 ) {
   // must scroll to top to prevent refetch at the bottom.
   window.scrollTo({

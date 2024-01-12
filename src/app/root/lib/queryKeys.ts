@@ -22,7 +22,7 @@ export const queryKeys = {
         currentLatestId: string | undefined,
         fetchNewLatestOne?: () => Promise<
           AppBskyFeedDefs.FeedViewPost | undefined
-        >
+        >,
       ) => [key, { currentLatestId, fetchNewLatestOne }] as const,
     },
   },

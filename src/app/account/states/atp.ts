@@ -18,7 +18,7 @@ const storedSessions = localStorage.getItem(SESSION_KEY);
 
 export const sessionsAtom = atomWithStorage<Sessions>(
   SESSION_KEY,
-  storedSessions ? JSON.parse(storedSessions) : initialSessions
+  storedSessions ? JSON.parse(storedSessions) : initialSessions,
 );
 
 export function updateSessionsByMerge({
@@ -44,7 +44,7 @@ const resolvedAccountWithSessionAtom = atom<Account | undefined>((get) => {
   const accountValues = Object.values(accounts);
   const foundAccount = accountValues.find(
     (account) =>
-      account.did === current.did && account.service === current.service
+      account.did === current.did && account.service === current.service,
   );
   if (foundAccount && foundAccount.session) return foundAccount;
 
@@ -233,7 +233,7 @@ export function signOut({ service, did }: AccountKeys) {
         Object.values(draft.accounts)
           .filter(
             (account) =>
-              account.did !== did && account.service !== draft.current?.service
+              account.did !== did && account.service !== draft.current?.service,
           )
           .at(0) ?? null;
     }

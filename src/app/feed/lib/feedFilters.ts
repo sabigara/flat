@@ -18,7 +18,7 @@ type Options = {
 
 export function feedFiltersToFn(
   { reply, repost }: FeedFilers,
-  { authorDid, myDid }: Options
+  { authorDid, myDid }: Options,
 ): FeedFilterFn {
   const replyFilter: FeedFilterFn = (() => {
     switch (reply) {
@@ -94,7 +94,7 @@ function isQuoteOfMuted(view: AppBskyFeedDefs.FeedViewPost): boolean {
 
 function excludeRepliesToNonFollowing(
   posts: AppBskyFeedDefs.FeedViewPost[],
-  myDid: string
+  myDid: string,
 ) {
   return posts.filter((view) => {
     // FIXME: check if the root is also a following account.
@@ -114,7 +114,7 @@ function excludeRepliesToNonFollowing(
 
 function excludeRepliesToOthers(
   posts: AppBskyFeedDefs.FeedViewPost[],
-  authorDid: string
+  authorDid: string,
 ) {
   return posts.filter((view) => {
     if (!view.reply) return true;

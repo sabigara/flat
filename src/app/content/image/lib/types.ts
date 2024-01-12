@@ -1,4 +1,4 @@
-import { PixelCrop } from "react-image-crop";
+import { type PixelCrop } from "react-image-crop";
 
 export type Crop = PixelCrop & {
   rendered: {

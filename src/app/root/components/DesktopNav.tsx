@@ -96,7 +96,7 @@ export function DesktopNav() {
                   </span>
                 )}
               </IconButton>
-            )
+            ),
           )}
         </div>
         <div className={styles.lower}>

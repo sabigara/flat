@@ -4,7 +4,7 @@ import { Textarea } from "@camome/core/Textarea";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { TbArrowLeft } from "react-icons/tb";
-import ReactCrop, { Crop, PixelCrop } from "react-image-crop";
+import ReactCrop, { type Crop, type PixelCrop } from "react-image-crop";
 
 import {
   SelectedImage,
@@ -39,7 +39,7 @@ export function PostComposerImgEditor({
 
   const [alt, setAlt] = React.useState(defaultValues?.alt);
   const handleChangeAlt: React.ChangeEventHandler<HTMLTextAreaElement> = (
-    e
+    e,
   ) => {
     setAlt(e.target.value);
   };

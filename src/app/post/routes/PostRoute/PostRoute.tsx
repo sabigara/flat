@@ -1,6 +1,6 @@
 import { AppBskyFeedDefs, AppBskyFeedPost } from "@atproto/api";
 import { useQueryClient } from "@tanstack/react-query";
-import produce from "immer";
+import { produce } from "immer";
 import { useParams } from "react-router-dom";
 
 import { NotFoundErrorComponent } from "@/src/app/error/components/NotFoundErrorComponent";
@@ -46,7 +46,7 @@ export default function PostRoute() {
           if (!post) return;
           fn(post);
         });
-      }
+      },
     );
   };
 

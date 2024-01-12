@@ -6,6 +6,6 @@ export async function followUser({ repo, did }: { repo: string; did: string }) {
     {
       subject: did,
       createdAt: new Date().toISOString(),
-    }
+    },
   );
 }

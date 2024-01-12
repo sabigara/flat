@@ -12,7 +12,7 @@ export function useTheme(initialState: Theme): {
   const [settings, setSettings] = useImmerAtom(settingsAtom);
   const matches = useMatchMedia(
     "(prefers-color-scheme: dark)",
-    initialState === "dark"
+    initialState === "dark",
   );
   const resolvedTheme = (() => {
     if (settings.theme !== "system") return settings.theme;

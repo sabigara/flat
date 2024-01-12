@@ -31,7 +31,7 @@ export function useHomeFeedProps({ feed }: Params) {
 
   const fetchLatest = React.useCallback(async () => {
     return feedFilter(
-      (await fetchFeed({ feed: queryKey[1]?.feed, limit: 5 })).data.feed
+      (await fetchFeed({ feed: queryKey[1]?.feed, limit: 5 })).data.feed,
     ).at(0);
   }, [feedFilter, queryKey]);
 

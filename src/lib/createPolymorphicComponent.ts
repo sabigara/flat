@@ -35,12 +35,12 @@ type PolymorphicComponentProps<C, Props> = C extends React.ElementType
 export function createPolymorphicComponent<
   ComponentDefaultType,
   Props,
-  StaticComponents = Record<string, never>
+  StaticComponents = Record<string, never>,
 >(component: any) {
   type ComponentProps<C> = PolymorphicComponentProps<C, Props>;
 
   type _PolymorphicComponent = <C = ComponentDefaultType>(
-    props: ComponentProps<C>
+    props: ComponentProps<C>,
   ) => React.ReactElement;
 
   type ComponentProperties = Omit<

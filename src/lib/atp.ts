@@ -7,7 +7,7 @@ export function isRichTextValid(rt: RichText) {
 export function isPostValid(
   rt: RichText,
   imageLen: number,
-  hasExternal: boolean
+  hasExternal: boolean,
 ) {
   return (
     isRichTextValid(rt) &&

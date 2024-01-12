@@ -23,7 +23,7 @@ export async function fetchSiteMetadata(url: string) {
         ["content-type"]: "application/json",
       },
       body: JSON.stringify({ url }),
-    }
+    },
   );
   if (!resp.ok) throw new Error(`Couldn't fetch site metadata for: ${url}`);
   return (await resp.json()).metadata as SiteMetadata; // TODO: validation

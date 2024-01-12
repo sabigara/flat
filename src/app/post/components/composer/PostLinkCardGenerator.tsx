@@ -42,7 +42,7 @@ export function PostLinkCardGenerator({
         return acc;
       return [...acc, seg];
     },
-    []
+    [],
   );
 
   if (!links.length) return null;

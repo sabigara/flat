@@ -78,7 +78,7 @@ const Seo = React.memo(
           key="description"
           name="description"
           content={description.substr(0, maxDescriptionCharacters)}
-        />
+        />,
       );
     }
     if (canonical) {
@@ -87,22 +87,22 @@ const Seo = React.memo(
 
     if (twitter.card) {
       tags.push(
-        <meta key="twitter:card" name="twitter:card" content={twitter.card} />
+        <meta key="twitter:card" name="twitter:card" content={twitter.card} />,
       );
     }
     if (twitter.site) {
       tags.push(
-        <meta key="twitter:site" name="twitter:site" content={twitter.site} />
+        <meta key="twitter:site" name="twitter:site" content={twitter.site} />,
       );
     }
     if (og.url || canonical) {
       tags.push(
-        <meta key="og:url" property="og:url" content={og.url || canonical} />
+        <meta key="og:url" property="og:url" content={og.url || canonical} />,
       );
     }
     if (og.title || title) {
       tags.push(
-        <meta key="og:title" property="og:title" content={og.title || title} />
+        <meta key="og:title" property="og:title" content={og.title || title} />,
       );
     }
     if (og.image) {
@@ -115,9 +115,9 @@ const Seo = React.memo(
           property="og:description"
           content={(og.description || description)?.substr(
             0,
-            maxDescriptionCharacters
+            maxDescriptionCharacters,
           )}
-        />
+        />,
       );
     }
     if (og.type) {
@@ -129,7 +129,7 @@ const Seo = React.memo(
           key="og:site_name"
           property="og:site_name"
           content={og.siteName}
-        />
+        />,
       );
     }
 
@@ -137,19 +137,19 @@ const Seo = React.memo(
       tags.push(
         customMetaTags.map(({ key, ...tagProps }, i) => (
           <meta key={`meta-${key || i}`} {...tagProps} />
-        ))
+        )),
       );
     }
     if (customLinkTags.length > 0) {
       tags.push(
         customLinkTags.map(({ key, ...tagProps }, i) => (
           <link key={`link-${key || i}`} {...tagProps} />
-        ))
+        )),
       );
     }
 
     return <Helmet>{tags}</Helmet>;
-  }
+  },
 );
 
 Seo.displayName = "Seo";

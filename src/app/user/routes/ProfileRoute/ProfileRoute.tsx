@@ -43,7 +43,7 @@ export function ProfileRoute() {
       queryClient.invalidateQueries(
         queryKeys.users.single.$({
           identifier,
-        })
+        }),
       );
     invalidate(profile.handle);
     invalidate(profile.did);

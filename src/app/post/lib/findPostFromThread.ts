@@ -4,7 +4,7 @@ import { isNonNullish } from "@/src/lib/typing";
 
 export function findPostFromThread(
   thread: AppBskyFeedDefs.ThreadViewPost,
-  uri: string
+  uri: string,
 ): AppBskyFeedDefs.PostView | undefined {
   if (thread.post.uri === uri) return thread.post;
   if (AppBskyFeedDefs.isThreadViewPost(thread.parent)) {
@@ -15,7 +15,7 @@ export function findPostFromThread(
     thread.replies?.map((thread) =>
       AppBskyFeedDefs.isThreadViewPost(thread)
         ? findPostFromThread(thread, uri)
-        : undefined
+        : undefined,
     ) ?? []
   )
     .filter(isNonNullish)

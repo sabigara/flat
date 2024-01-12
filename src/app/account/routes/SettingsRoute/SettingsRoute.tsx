@@ -18,7 +18,7 @@ import styles from "./SettingsRoute.module.scss";
 
 type RegisterFeedFilter = (
   name: "reply" | "repost",
-  value: FeedFilterReply | FeedFilterRepost
+  value: FeedFilterReply | FeedFilterRepost,
 ) => {
   name: string;
   value: string;
@@ -39,7 +39,7 @@ export function SettingsRoute() {
   } = settings;
   const register: RegisterFeedFilter = (
     name: "reply" | "repost",
-    value: FeedFilterReply | FeedFilterRepost
+    value: FeedFilterReply | FeedFilterRepost,
   ) => {
     return {
       name,
@@ -112,7 +112,7 @@ export function SettingsRoute() {
               setSettings(
                 (draft) =>
                   void (draft.postImageLayout = e.target
-                    .value as PostImageLayout)
+                    .value as PostImageLayout),
               )
             }
           >
@@ -132,7 +132,7 @@ export function SettingsRoute() {
               setSettings(
                 (draft) =>
                   void (draft.inFeedThreadMode = e.target
-                    .value as InFeedThreadMode)
+                    .value as InFeedThreadMode),
               )
             }
           >
@@ -141,7 +141,7 @@ export function SettingsRoute() {
             </option>
             <option value="reverse-chronological">
               {settingsT(
-                "appearance.in-feed-thread.options.reverse-chronological"
+                "appearance.in-feed-thread.options.reverse-chronological",
               )}
             </option>
           </Select>

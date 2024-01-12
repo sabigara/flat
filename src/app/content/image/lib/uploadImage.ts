@@ -14,7 +14,7 @@ export async function uploadImage(blob: Blob) {
     new Uint8Array(await blob.arrayBuffer()),
     {
       encoding: blob.type,
-    }
+    },
   );
   if (!resp.success) throw new Error("Failed to upload image");
   return {

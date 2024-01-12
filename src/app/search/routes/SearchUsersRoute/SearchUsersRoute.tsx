@@ -42,7 +42,7 @@ export function SearchUsersRoute() {
       location.pathname + "?" + new URLSearchParams({ q: newVal }).toString(),
       {
         replace: true,
-      }
+      },
     );
   };
 

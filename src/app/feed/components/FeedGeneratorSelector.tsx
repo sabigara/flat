@@ -92,7 +92,7 @@ type ItemProps = React.ComponentProps<"button">;
 const Item = React.forwardRef<HTMLButtonElement, ItemProps>(
   ({ ...props }, forwardedRef) => {
     return <button className={styles.button} ref={forwardedRef} {...props} />;
-  }
+  },
 );
 
 Item.displayName = "Item";

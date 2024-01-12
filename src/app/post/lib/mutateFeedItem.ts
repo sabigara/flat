@@ -1,6 +1,6 @@
 import { AppBskyFeedGetTimeline, AppBskyFeedDefs } from "@atproto/api";
 import { InfiniteData } from "@tanstack/react-query";
-import produce, { Draft } from "immer";
+import { produce, Draft } from "immer";
 
 export type FeedInfiniteData =
   InfiniteData<AppBskyFeedGetTimeline.OutputSchema>;
@@ -8,7 +8,7 @@ export type FeedInfiniteData =
 export function mutateFeedItem(
   data: FeedInfiniteData | undefined,
   postUri: string,
-  fn: (draft: Draft<AppBskyFeedDefs.PostView>) => void
+  fn: (draft: Draft<AppBskyFeedDefs.PostView>) => void,
 ) {
   if (!data) return { pageParams: [], pages: [] };
   return produce(data, (draft) => {

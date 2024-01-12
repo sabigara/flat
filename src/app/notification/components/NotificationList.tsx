@@ -36,12 +36,12 @@ export default function NotificationList() {
     },
   });
   const allItems = (data?.pages.flatMap((p) => p.notifications) ?? []).filter(
-    (n) => !n.author.viewer?.muted
+    (n) => !n.author.viewer?.muted,
   );
   const revalidateOnPost: RevalidateOnPost = ({ replyTarget }) => {
     if (replyTarget) {
       queryClient.refetchQueries(
-        queryKeys.posts.single.$({ uri: replyTarget.post.uri })
+        queryKeys.posts.single.$({ uri: replyTarget.post.uri }),
       );
     }
   };

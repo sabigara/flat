@@ -34,7 +34,7 @@ const formatDistanceLocale = {
 
 function formatDistance(
   token: keyof typeof formatDistanceLocale,
-  count: number
+  count: number,
 ) {
   return formatDistanceLocale[token].replace("{{count}}", count.toString());
 }

@@ -46,7 +46,7 @@ export default function ProfileMoreMenu({
       toast.success(
         t(muted ? "graph.unmute-success" : "graph.mute-success", {
           actor: userToName(profile),
-        })
+        }),
       );
     },
   });
@@ -75,7 +75,7 @@ export default function ProfileMoreMenu({
           {
             subject: profile.did,
             createdAt: new Date().toISOString(),
-          }
+          },
         );
       }
     },
@@ -84,7 +84,7 @@ export default function ProfileMoreMenu({
       toast.success(
         t(muted ? "graph.unblock-success" : "graph.block-success", {
           actor: userToName(profile),
-        })
+        }),
       );
     },
   });
@@ -104,7 +104,7 @@ export default function ProfileMoreMenu({
         icon: isBlocking ? <TbCircleCheck /> : <TbBan />,
         onClick: () =>
           blockMutation({ profile, blocking: profile.viewer?.blocking }),
-      }
+      },
     );
   }
 

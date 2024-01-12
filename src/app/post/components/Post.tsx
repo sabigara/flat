@@ -98,7 +98,7 @@ export default function Post({
               uri: post.uri,
             },
             createdAt: new Date().toISOString(),
-          }
+          },
         );
         repostUri = resp.uri;
       }
@@ -125,7 +125,7 @@ export default function Post({
         setOptimisticallyReposted(undefined);
         revalidate?.();
       },
-    }
+    },
   );
 
   const { mutate: mutateVote, isLoading: isMutatingLike } = useMutation(
@@ -148,7 +148,7 @@ export default function Post({
               uri: post.uri,
             },
             createdAt: new Date().toISOString(),
-          }
+          },
         );
         likeUri = resp.uri;
       }
@@ -175,7 +175,7 @@ export default function Post({
         });
         setOptimisticallyLiked(undefined);
       },
-    }
+    },
   );
 
   // TODO: consider about encoding

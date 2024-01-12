@@ -4,7 +4,7 @@ import {
   AppBskyNotificationListNotifications,
 } from "@atproto/api";
 import { useQueryClient } from "@tanstack/react-query";
-import produce from "immer";
+import { produce } from "immer";
 import { Link } from "react-router-dom";
 
 import Post from "@/src/app/post/components/Post";
@@ -100,7 +100,7 @@ function NonSubjectPost({
       (data) => {
         if (!data) throw new Error("Shouldn't reach here");
         return produce(data, (draft) => fn(draft.post));
-      }
+      },
     );
   };
 

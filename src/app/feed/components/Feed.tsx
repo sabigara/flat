@@ -93,7 +93,7 @@ export function Feed<K extends QueryKey>({
       refetchInterval: 15 * 1000, // 15 seconds; the same as the official web app
       refetchOnWindowFocus: import.meta.env.PROD,
       enabled: !!fetchNewLatest,
-    }
+    },
   );
 
   const loadNewPosts = () => {
@@ -108,7 +108,7 @@ export function Feed<K extends QueryKey>({
 
   const mutatePostCache: MutatePostCache = ({ uri, fn }) => {
     queryClient.setQueryData<FeedInfiniteData>(queryKey, (data) =>
-      mutateFeedItem(data, uri, fn)
+      mutateFeedItem(data, uri, fn),
     );
   };
 
@@ -149,7 +149,7 @@ export function Feed<K extends QueryKey>({
                 mutatePostCache={mutatePostCache}
                 className={styles.post}
               />
-            )
+            ),
           )}
           {!hasNextPage && (
             <div className={styles.noMore} key="__noMore">

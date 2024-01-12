@@ -3,7 +3,7 @@ import { AppBskyFeedDefs } from "@atproto/api";
 export function sortFeedViewPosts(
   a: AppBskyFeedDefs.FeedViewPost,
   b: AppBskyFeedDefs.FeedViewPost,
-  reverse = true
+  reverse = true,
 ) {
   const indexedAtA = AppBskyFeedDefs.isReasonRepost(a.reason)
     ? a.reason.indexedAt

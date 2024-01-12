@@ -6,7 +6,7 @@ import { storageKeys } from "@/src/lib/storage";
 function createMergedJsonStorage(initialState: Settings) {
   const storage = createJSONStorage<Settings>(() => localStorage);
   const getItem = (key: string) => {
-    const value = storage.getItem(key);
+    const value = storage.getItem(key, initialState);
     return { ...initialState, ...(typeof value === "symbol" ? {} : value) };
   };
   return { ...storage, getItem };
@@ -26,5 +26,5 @@ const initialState: Settings = {
 export const settingsAtom = atomWithStorage(
   storageKeys.settings.$,
   initialState,
-  createMergedJsonStorage(initialState)
+  createMergedJsonStorage(initialState),
 );

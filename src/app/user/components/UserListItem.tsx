@@ -36,7 +36,7 @@ export default function UserListItem({ user, revalidate, className }: Props) {
         await unfollowUser({ uri: user.viewer.following });
       }
       revalidate?.(user.handle);
-    }
+    },
   );
 
   const loading = isMutating;

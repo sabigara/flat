@@ -25,8 +25,8 @@ class JsonCache<T> {
     return JSON.stringify(
       Array.from(this.cache.entries()).reduce(
         (acc, [key, value]) => ({ ...acc, [key]: value }),
-        {} as Record<string, T>
-      )
+        {} as Record<string, T>,
+      ),
     );
   }
 
@@ -82,7 +82,7 @@ async function getSiteMetadata(url: string): Promise<SiteMetadata> {
     throw new Error(
       `Failed to fetch ${url}. Status: ${
         resp.status
-      }. Body: ${await resp.text()}`
+      }. Body: ${await resp.text()}`,
     );
   }
   const htmlStr = await resp.text();
@@ -97,7 +97,7 @@ async function getSiteMetadata(url: string): Promise<SiteMetadata> {
     .filter(
       (element) =>
         element.hasAttribute("property") &&
-        element.getAttribute("property")!.startsWith("og:")
+        element.getAttribute("property")!.startsWith("og:"),
     )
     .reduce((acc, ogp) => {
       const property = ogp.getAttribute("property")!.trim().replace("og:", "");

@@ -79,7 +79,7 @@ export default function ImagePicker({
                         <button
                           onClick={() => void onClickPreview(idx)}
                           aria-label={t(
-                            "post.composer.image-editor.crop-image-or-edit-alt"
+                            "post.composer.image-editor.crop-image-or-edit-alt",
                           )}
                           className={styles.preview__button}
                         >
@@ -109,7 +109,7 @@ export default function ImagePicker({
                     </div>
                   ))}
                 </div>,
-                previewContainer
+                previewContainer,
               )}
           </div>
         )}

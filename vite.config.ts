@@ -1,4 +1,3 @@
-import fs from "fs";
 import path from "path";
 
 import { generateScopedName, hash } from "@camome/utils";
@@ -13,8 +12,12 @@ export default defineConfig({
   plugins: [
     tsconfigPaths(),
     react(),
-    dotPathFixPlugin(),
-    svgr({ exportAsDefault: true }),
+    svgr({
+      include: ["**/*.svg"],
+      svgrOptions: {
+        exportType: "default",
+      },
+    }),
     VitePWA({
       registerType: "autoUpdate",
       includeAssets: ["favicon.ico", "apple-touch-icon.png"],
@@ -57,21 +60,3 @@ export default defineConfig({
     },
   },
 });
-
-// fixes 404 on paths containing dots (only dev).
-// e.g.: /sabigara.bsky.social
-// borrowed from: https://github.com/vitejs/vite/issues/2415#issuecomment-1381196720
-function dotPathFixPlugin() {
-  return {
-    name: "dot-path-fix-plugin",
-    configureServer: (server) => {
-      server.middlewares.use((req, _, next) => {
-        const reqPath = req.url.split("?", 2)[0];
-        if (!req.url.startsWith("/@") && !fs.existsSync(`.${reqPath}`)) {
-          req.url = "/";
-        }
-        next();
-      });
-    },
-  };
-}

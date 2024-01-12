@@ -36,7 +36,7 @@ export function Foldable({ lines = 5, enabled = true, children }: Props) {
   return (
     <div
       className={clsx(
-        folded ? styles["container--folded"] : styles["container--revealed"]
+        folded ? styles["container--folded"] : styles["container--revealed"],
       )}
       style={{ ["--lines"]: lines } as React.CSSProperties}
       ref={setOuter}

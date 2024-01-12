@@ -109,7 +109,7 @@ const knownReasons = [
 ];
 
 function isKnownReason(
-  reason: Reason
+  reason: Reason,
   // eslint-disable-next-line @typescript-eslint/ban-types
 ): reason is Exclude<Reason, string & {}> {
   return knownReasons.includes(reason);

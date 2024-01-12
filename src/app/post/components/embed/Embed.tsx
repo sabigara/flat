@@ -26,7 +26,7 @@ type Props = {
 export default function Embed({ embed, isLink, className }: Props) {
   const makeEmbeddedRecord = (
     embed: AppBskyEmbedRecord.View,
-    className?: string
+    className?: string,
   ) => {
     // TODO: support not found?
     if (AppBskyEmbedRecord.isViewNotFound(embed)) return null;

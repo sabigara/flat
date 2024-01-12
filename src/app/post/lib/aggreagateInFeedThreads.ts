@@ -8,7 +8,7 @@ const isPostView = AppBskyFeedDefs.isPostView;
 
 export function aggregateInFeedThreads(
   posts: FeedViewPost[],
-  filter: FeedFilterFn
+  filter: FeedFilterFn,
 ): (FeedViewPost | FeedViewPost[])[] {
   const threads = new Map<string, FeedViewPost[]>();
   const ret: (FeedViewPost | FeedViewPost[])[] = [];
@@ -39,7 +39,7 @@ export function aggregateInFeedThreads(
 const makeSort = (reverse = true) => {
   return (
     a: FeedViewPost | FeedViewPost[],
-    b: FeedViewPost | FeedViewPost[]
+    b: FeedViewPost | FeedViewPost[],
   ) => {
     const itemA = Array.isArray(a) ? a.at(-1) : a;
     const itemB = Array.isArray(b) ? b.at(-1) : b;

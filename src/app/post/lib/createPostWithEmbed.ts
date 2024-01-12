@@ -52,7 +52,7 @@ export async function createPostWithEmbed({
         quoteTarget,
       }),
       createdAt: new Date().toISOString(),
-    }
+    },
   );
 }
 
@@ -87,7 +87,7 @@ async function getEmbed({
 
 const uploadAndEmbedImages = async (
   images: SelectedImage[],
-  edits: SelectedImageEdit[]
+  edits: SelectedImageEdit[],
 ) => {
   const res = await uploadImageBulk(images, edits);
   return res.length ? embedImages(res) : undefined;
@@ -96,7 +96,7 @@ const uploadAndEmbedImages = async (
 const uploadAndEmbedRecordWithImages = async (
   record: AppBskyFeedDefs.PostView,
   images: SelectedImage[],
-  edits: SelectedImageEdit[]
+  edits: SelectedImageEdit[],
 ) => {
   const res = await uploadImageBulk(images, edits);
   return res.length
@@ -109,7 +109,7 @@ const uploadAndEmbedRecordWithImages = async (
 
 const uploadImageBulk = async (
   images: SelectedImage[],
-  edits: SelectedImageEdit[]
+  edits: SelectedImageEdit[],
 ) => {
   const results: { blobRef: BlobRef; alt?: string }[] = [];
   for (const [i, img] of images.entries()) {
