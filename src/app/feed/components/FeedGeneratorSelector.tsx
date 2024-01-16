@@ -97,9 +97,18 @@ type ItemProps = Omit<React.ComponentProps<"button">, "onClick"> & {
 const Item = React.forwardRef<HTMLButtonElement, ItemProps>(
   ({ index, ...props }, forwardedRef) => {
     const number = index + 1;
-    useHotkeys(`${number}`, () => {
-      props.onClick();
-    });
+    const enableKey = number <= 9;
+
+    useHotkeys(`${number}`, () => void props.onClick(), { enabled: enableKey });
+
+    const button = (
+      <button className={styles.button} ref={forwardedRef} {...props} />
+    );
+
+    if (!enableKey) {
+      return button;
+    }
+
     return (
       <Keybinding kbd={number.toString()} side="bottom">
         <button className={styles.button} ref={forwardedRef} {...props} />
