@@ -6,6 +6,7 @@ import clsx from "clsx";
 import { Draft } from "immer";
 import { useAtomValue } from "jotai";
 import React from "react";
+import { useHotkeys } from "react-hotkeys-hook";
 import { Trans, useTranslation } from "react-i18next";
 import { BsReplyFill } from "react-icons/bs";
 import { FaRetweet } from "react-icons/fa";
@@ -68,6 +69,8 @@ export default function Post({
     boolean | undefined
   >(undefined);
   const navigate = useNavigate();
+  const authorId = React.useId();
+  const contentId = React.useId();
 
   const reposted =
     optimisticallyReposted === undefined
@@ -247,6 +250,10 @@ export default function Post({
     }
   };
 
+  const hotkeyRef = useHotkeys("Enter", () => {
+    navigate(postUrl);
+  });
+
   if (post.author.viewer?.muted) {
     return (
       <article className={clsx(styles.container, styles.muted, className)}>
@@ -260,10 +267,11 @@ export default function Post({
       className={clsx(styles.container, { [styles.link]: isLink }, className)}
       onClick={isLink ? handleClickBackground : undefined}
       id={id}
+      aria-labelledby={[authorId, contentId].join(" ")}
+      tabIndex={0}
+      ref={hotkeyRef}
+      data-post
     >
-      <Link to={postUrl} className={styles.focusLink}>
-        {t("post.view-thread")}
-      </Link>
       {!contentOnly &&
         reason &&
         AppBskyFeedDefs.isReasonRepost(reason) &&
@@ -311,6 +319,7 @@ export default function Post({
                 to={profileHref(post.author.handle)}
                 onClick={(e) => e.stopPropagation()}
                 className={styles.usernameLink}
+                id={authorId}
               >
                 <div className={styles.usernameInner}>
                   {post.author.displayName && (
@@ -349,7 +358,7 @@ export default function Post({
           )}
           <div className={styles.content}>
             {AppBskyFeedPost.isRecord(post.record) && post.record.text && (
-              <div className={styles.prose}>
+              <div className={styles.prose} id={contentId}>
                 <Foldable lines={7} enabled={foldable}>
                   <RichTextRenderer {...post.record} />
                 </Foldable>

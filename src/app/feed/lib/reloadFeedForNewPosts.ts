@@ -23,6 +23,9 @@ export function reloadFeedForNewPosts(
     queryClient.invalidateQueries(queryKey, {
       exact: true,
     });
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
   };
   window.requestAnimationFrame(refetchOnTop);
 }

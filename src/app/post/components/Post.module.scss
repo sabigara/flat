@@ -4,6 +4,11 @@
 .container {
   @include postMixins.container;
 
+  &:focus-visible {
+    outline: 2px solid var(--cmm-outline-color-primary);
+    outline-offset: -2px;
+  }
+
   &.link:hover {
     background: var(--cmm-color-surface-1);
     cursor: pointer;

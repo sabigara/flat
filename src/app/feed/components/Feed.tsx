@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-query";
 import clsx from "clsx";
 import React from "react";
+import { useHotkeys } from "react-hotkeys-hook";
 import InfiniteScroll from "react-infinite-scroller";
 
 import type { AppBskyFeedDefs } from "@atproto/api";
@@ -81,6 +82,7 @@ export function Feed<K extends QueryKey>({
     cacheTime,
   });
   const queryClient = useQueryClient();
+  const containerRef = React.useRef<HTMLDivElement>(null);
 
   const allItems = filter(data?.pages.flatMap((p) => p.feed) ?? []);
   const currentLatestUri = allItems.at(0)?.post.uri;
@@ -111,6 +113,46 @@ export function Feed<K extends QueryKey>({
       mutateFeedItem(data, uri, fn),
     );
   };
+
+  const findPostElements = () => {
+    return Array.from(
+      containerRef.current?.querySelectorAll("[data-post") ?? [],
+    ) as HTMLElement[];
+  };
+
+  const findNextFocusElement = (
+    elements: HTMLElement[],
+    direction: "prev" | "next",
+  ): HTMLElement | null => {
+    const currentFocusElement = document.activeElement;
+    if (!currentFocusElement) return null;
+    // 要素自身がfocusされているか、要素の子孫がfocusされている
+    const currentFocusIndex = elements.findIndex((elm) => {
+      return elm === currentFocusElement || elm.contains(currentFocusElement);
+    });
+
+    if (currentFocusIndex === -1) {
+      return elements[0];
+    }
+    const nextFocusIndex =
+      direction === "next" ? currentFocusIndex + 1 : currentFocusIndex - 1;
+    if (nextFocusIndex < 0 || nextFocusIndex >= elements.length) {
+      return currentFocusElement as HTMLElement;
+    }
+    return elements[nextFocusIndex];
+  };
+
+  useHotkeys("j", () => {
+    const elements = findPostElements();
+    const nextElm = findNextFocusElement(elements, "next");
+    nextElm?.focus();
+  });
+
+  useHotkeys("k", () => {
+    const elements = findPostElements();
+    const nextElm = findNextFocusElement(elements, "prev");
+    nextElm?.focus();
+  });
 
   if (status === "loading") {
     return (customSkeleton as React.ReactElement) ?? <FeedSkelton count={18} />;
@@ -147,7 +189,7 @@ export function Feed<K extends QueryKey>({
   }
 
   return (
-    <div className={styles.container} style={style}>
+    <div className={styles.container} style={style} ref={containerRef}>
       <InfiniteScroll
         pageStart={0}
         loadMore={() => !isFetchingNextPage && fetchNextPage()}
