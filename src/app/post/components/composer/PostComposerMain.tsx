@@ -137,7 +137,10 @@ export default function PostComposerMain({
   const handleKeyDown: React.KeyboardEventHandler<HTMLTextAreaElement> = (
     e,
   ) => {
-    console.log(e.key);
+    if (e.key === "Escape") {
+      setOpen(false);
+      return;
+    }
     if (!(isModKey(e.nativeEvent) && e.key === "Enter")) return;
     if (!isPostValid(rt, images.length, !!linkCard.siteMetadata) || isLoading)
       return;
