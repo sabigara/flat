@@ -1,4 +1,3 @@
-import { Button } from "@camome/core/Button";
 import {
   useInfiniteQuery,
   useQueryClient,
@@ -7,16 +6,14 @@ import {
 } from "@tanstack/react-query";
 import clsx from "clsx";
 import React from "react";
-import { useTranslation } from "react-i18next";
-import { TbArrowUp } from "react-icons/tb";
 import InfiniteScroll from "react-infinite-scroller";
 
 import type { AppBskyFeedDefs } from "@atproto/api";
 
 import { FeedSkelton } from "@/src/app/feed/components/FeedSkelton";
+import LoadNewPost from "@/src/app/feed/components/LoadNewPost";
 import { FeedFilterFn } from "@/src/app/feed/lib/feedFilters";
 import { FeedQueryFn } from "@/src/app/feed/lib/feedQuery";
-import { reloadFeedForNewPosts } from "@/src/app/feed/lib/reloadFeedForNewPosts";
 import InFeedThread from "@/src/app/post/components/InFeedThread";
 import Post from "@/src/app/post/components/Post";
 import PostComposer from "@/src/app/post/components/composer/PostComposer";
@@ -29,7 +26,6 @@ import {
 import { MutatePostCache } from "@/src/app/post/lib/types";
 import { queryKeys } from "@/src/app/root/lib/queryKeys";
 import SpinnerFill from "@/src/components/SpinnerFill";
-import { isButtonLoading } from "@/src/components/isButtonLoading";
 
 import styles from "./Feed.module.scss";
 
@@ -64,7 +60,6 @@ export function Feed<K extends QueryKey>({
   aggregateThreads = true,
   style,
 }: Props<K>) {
-  const { t } = useTranslation();
   const {
     status,
     data,
@@ -104,10 +99,6 @@ export function Feed<K extends QueryKey>({
       enabled: !!fetchNewLatest,
     },
   );
-
-  const loadNewPosts = () => {
-    reloadFeedForNewPosts(queryClient, queryKey);
-  };
 
   const revalidateOnPost = () => {
     queryClient.invalidateQueries(queryKey, {
@@ -173,15 +164,10 @@ export function Feed<K extends QueryKey>({
         </>
       </InfiniteScroll>
       {isNewAvailable && (
-        <Button
-          size="sm"
-          onClick={loadNewPosts}
-          className={styles.newPostsBtn}
-          startDecorator={<TbArrowUp />}
-          {...isButtonLoading(isFetching && !isFetchingNextPage)}
-        >
-          {t("feed.load-new-posts")}
-        </Button>
+        <LoadNewPost
+          queryKey={queryKey}
+          isLoading={isFetching && !isFetchingNextPage}
+        />
       )}
       <PostComposer revalidate={revalidateOnPost} />
     </div>

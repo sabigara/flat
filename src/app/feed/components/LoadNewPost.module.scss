@@ -1,0 +1,35 @@
+@use "mixins";
+
+.newPostsBtn {
+  --cmm-Button-icon-margin: 0.25rem;
+  position: fixed;
+  z-index: 60;
+  color: var(--cmm-color-primary-font);
+  background: var(--cmm-color-surface-0);
+  border: 1px solid var(--cmm-color-border-base);
+  box-shadow: var(--cmm-shadow-lg);
+  block-size: 2rem;
+  translate: -50%;
+  inset-inline-start: 50%;
+  inset-block-start: var(
+    --new-posts-btn-inset-block-start,
+    calc(var(--mobile-nav-block-size) + 0.5rem)
+  );
+
+  &:hover {
+    background: var(--cmm-color-surface-2);
+  }
+
+  &:disabled {
+    opacity: 1;
+  }
+
+  @include mixins.mq(md) {
+    translate: unset;
+    inset-block-start: unset;
+    inset-inline-start: 1rem;
+    inset-block-end: 1rem;
+    block-size: 2.5rem;
+    padding-inline: 0.75rem;
+  }
+}

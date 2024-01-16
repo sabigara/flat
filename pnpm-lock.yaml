@@ -92,6 +92,9 @@ dependencies:
   react-hot-toast:
     specifier: ^2.4.1
     version: 2.4.1(csstype@3.1.3)(react-dom@18.2.0)(react@18.2.0)
+  react-hotkeys-hook:
+    specifier: ^4.4.4
+    version: 4.4.4(react-dom@18.2.0)(react@18.2.0)
   react-i18next:
     specifier: ^14.0.0
     version: 14.0.0(i18next@23.7.16)(react-dom@18.2.0)(react@18.2.0)
@@ -5819,6 +5822,16 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     transitivePeerDependencies:
       - csstype
+    dev: false
+
+  /react-hotkeys-hook@4.4.4(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-wzZmqb/Obr0ds9Myc1sIFPJ52GA/Eeg/vXBWV0HA1LvHlVAW5Va3KB0q6EZNlNSHQWscWZ2K8+6w0GYSie2o7A==}
+    peerDependencies:
+      react: '>=16.8.1'
+      react-dom: '>=16.8.1'
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /react-i18next@14.0.0(i18next@23.7.16)(react-dom@18.2.0)(react@18.2.0):

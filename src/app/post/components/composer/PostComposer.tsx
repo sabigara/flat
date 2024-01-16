@@ -1,4 +1,5 @@
 import React from "react";
+import { useHotkeys } from 'react-hotkeys-hook';
 
 import { PostComposerButton } from "@/src/app/post/components/composer/PostComposerButton";
 import { PostComposerImgEditor } from "@/src/app/post/components/composer/PostComposerImgEditor";
@@ -35,6 +36,7 @@ export default function PostComposer({
   const selectedImgEdit = imageEdits[selectedImgIdx];
   const innerOpen = selectedImgIdx >= 0;
 
+
   const handleOuterClose = () => {
     setComposer((draft) => void (draft.open = false));
   };
@@ -59,6 +61,14 @@ export default function PostComposer({
       outerPanelRef.current.classList.remove(styles.panelHidden);
     }
   };
+
+  useHotkeys("n", () => {
+    if (outerOpen) return;
+    setComposer((draft) => void (draft.open = true));
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+    }
+  })
 
   return (
     <>
