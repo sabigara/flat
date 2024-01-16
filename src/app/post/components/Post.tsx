@@ -250,9 +250,19 @@ export default function Post({
     }
   };
 
-  const hotkeyRef = useHotkeys("Enter", () => {
-    navigate(postUrl);
-  });
+  const hotkeyRef = useHotkeys(
+    "Enter, l",
+    () => {
+      navigate(postUrl);
+    },
+    {
+      ignoreEventWhen: (e) => {
+        return !(
+          e.target instanceof HTMLElement && e.target.dataset.post === "true"
+        );
+      },
+    },
+  );
 
   if (post.author.viewer?.muted) {
     return (
