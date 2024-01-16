@@ -10,6 +10,7 @@ import { useAccountQuery } from "@/src/app/account/hooks/useAccountQuery";
 import { useUnreadCountQuery } from "@/src/app/notification/hooks/useUnreadCountQuery";
 import Avatar from "@/src/app/user/components/Avatar";
 import LogoIcon from "@/src/assets/icon.svg";
+import { Tooltip } from "@/src/components/Tooltip";
 import { config } from "@/src/config";
 import { externalLinkAttrs } from "@/src/lib/html";
 
@@ -79,23 +80,26 @@ export function DesktopNav() {
               isCurrent,
               className,
             }) => (
-              <IconButton
-                aria-label={label}
-                component={Link}
-                to={to}
-                colorScheme="neutral"
-                variant="ghost"
-                aria-current={isCurrent ? isCurrent(pathname) : pathname === to}
-                className={clsx(styles.button, className)}
-                key={to}
-              >
-                {icon}
-                {showBadge && (
-                  <span className={styles.badge}>
-                    <span className="visually-hidden">{badgeLabel}</span>
-                  </span>
-                )}
-              </IconButton>
+              <Tooltip title={label} side="right" key={to}>
+                <IconButton
+                  aria-label={label}
+                  component={Link}
+                  to={to}
+                  colorScheme="neutral"
+                  variant="ghost"
+                  aria-current={
+                    isCurrent ? isCurrent(pathname) : pathname === to
+                  }
+                  className={clsx(styles.button, className)}
+                >
+                  {icon}
+                  {showBadge && (
+                    <span className={styles.badge}>
+                      <span className="visually-hidden">{badgeLabel}</span>
+                    </span>
+                  )}
+                </IconButton>
+              </Tooltip>
             ),
           )}
         </div>

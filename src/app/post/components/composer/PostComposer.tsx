@@ -1,5 +1,5 @@
 import React from "react";
-import { useHotkeys } from 'react-hotkeys-hook';
+import { useHotkeys } from "react-hotkeys-hook";
 
 import { PostComposerButton } from "@/src/app/post/components/composer/PostComposerButton";
 import { PostComposerImgEditor } from "@/src/app/post/components/composer/PostComposerImgEditor";
@@ -8,6 +8,7 @@ import { usePostComposer } from "@/src/app/post/hooks/usePostComposer";
 import { RevalidateOnPost } from "@/src/app/post/lib/types";
 import { SelectedImageEdit } from "@/src/app/post/states/postComposerAtom";
 import Dialog from "@/src/components/Dialog";
+import { Keybinding } from "@/src/components/Keybinding";
 import { isIOS } from "@/src/lib/platform";
 
 import styles from "./PostComposer.module.scss";
@@ -35,7 +36,6 @@ export default function PostComposer({
   const selectedImg = images[selectedImgIdx];
   const selectedImgEdit = imageEdits[selectedImgIdx];
   const innerOpen = selectedImgIdx >= 0;
-
 
   const handleOuterClose = () => {
     setComposer((draft) => void (draft.open = false));
@@ -68,11 +68,21 @@ export default function PostComposer({
     if (textareaRef.current) {
       textareaRef.current.focus();
     }
-  })
+  });
+
+  useHotkeys("esc", () => {
+    if (!outerOpen) return;
+    handleOuterClose();
+  });
 
   return (
     <>
-      {showButton && <PostComposerButton />}
+      {showButton && (
+        <Keybinding kbd="N" side="top">
+          <PostComposerButton />
+        </Keybinding>
+      )}
+
       <Dialog
         open={outerOpen}
         onClose={handleOuterClose}

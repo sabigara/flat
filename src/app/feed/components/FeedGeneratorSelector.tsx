@@ -3,8 +3,10 @@ import clsx from "clsx";
 import { motion } from "framer-motion";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import React from "react";
+import { useHotkeys } from "react-hotkeys-hook";
 
 import { useCustomFeedsQuery } from "@/src/app/feed/hooks/useCustomFeeds";
+import { Keybinding } from "@/src/components/Keybinding";
 import { useScrollEvent } from "@/src/hooks/useScrollEvent";
 import { isMobile } from "@/src/lib/platform";
 
@@ -19,12 +21,11 @@ type Props = {
 
 export function FeedGeneratorSelector({ value, onChange, className }: Props) {
   const { data, status } = useCustomFeedsQuery();
-  const makeHandleClick: (newVal?: string) => React.MouseEventHandler =
-    (newVal) => () => {
-      if (newVal !== value) {
-        onChange?.(newVal);
-      }
-    };
+  const makeHandleClick: (newVal?: string) => () => void = (newVal) => () => {
+    if (newVal !== value) {
+      onChange?.(newVal);
+    }
+  };
   const wrapperRef = React.useRef<HTMLDivElement>(null);
 
   const feeds = (() => {
@@ -47,11 +48,12 @@ export function FeedGeneratorSelector({ value, onChange, className }: Props) {
     }
     return (
       <>
-        {data?.map((feed) => (
+        {data?.map((feed, i) => (
           <Item
             key={feed.uri}
             onClick={makeHandleClick(feed.uri)}
             aria-pressed={value === feed.uri}
+            index={i + 1} // +1 for following
           >
             {feed.displayName}
           </Item>
@@ -79,7 +81,7 @@ export function FeedGeneratorSelector({ value, onChange, className }: Props) {
 
   return (
     <Wrapper className={className} ref={wrapperRef}>
-      <Item onClick={makeHandleClick()} aria-pressed={!value}>
+      <Item onClick={makeHandleClick()} aria-pressed={!value} index={0}>
         Following
       </Item>
       {feeds}
@@ -87,11 +89,22 @@ export function FeedGeneratorSelector({ value, onChange, className }: Props) {
   );
 }
 
-type ItemProps = React.ComponentProps<"button">;
+type ItemProps = Omit<React.ComponentProps<"button">, "onClick"> & {
+  index: number;
+  onClick: () => void;
+};
 
 const Item = React.forwardRef<HTMLButtonElement, ItemProps>(
-  ({ ...props }, forwardedRef) => {
-    return <button className={styles.button} ref={forwardedRef} {...props} />;
+  ({ index, ...props }, forwardedRef) => {
+    const number = index + 1;
+    useHotkeys(`${number}`, () => {
+      props.onClick();
+    });
+    return (
+      <Keybinding kbd={number.toString()} side="bottom">
+        <button className={styles.button} ref={forwardedRef} {...props} />
+      </Keybinding>
+    );
   },
 );
 

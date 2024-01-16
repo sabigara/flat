@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { TbArrowUp } from "react-icons/tb";
 
 import { reloadFeedForNewPosts } from "@/src/app/feed/lib/reloadFeedForNewPosts";
+import { Keybinding } from "@/src/components/Keybinding";
 import { isButtonLoading } from "@/src/components/isButtonLoading";
 
 import styles from "./LoadNewPost.module.scss";
@@ -24,15 +25,23 @@ export default function LoadNewPost({ queryKey, isLoading }: Props) {
 
   useHotkeys("r", handleClick);
 
+  const loading = isButtonLoading(isLoading);
+
   return (
-    <Button
-      size="sm"
-      onClick={handleClick}
-      className={styles.newPostsBtn}
-      startDecorator={<TbArrowUp />}
-      {...isButtonLoading(isLoading)}
-    >
-      {t("feed.load-new-posts")}
-    </Button>
+    <Keybinding kbd="R" side="bottom">
+      <Button
+        size="sm"
+        onClick={handleClick}
+        className={styles.newPostsBtn}
+        startDecorator={
+          <div className={styles.decor}>
+            {loading.startDecorator || <TbArrowUp />}
+          </div>
+        }
+        disabled={loading.disabled}
+      >
+        {t("feed.load-new-posts")}
+      </Button>
+    </Keybinding>
   );
 }

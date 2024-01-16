@@ -1,0 +1,20 @@
+.container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--cmm-font-size-sm);
+  gap: 1em;
+  line-height: 1.5;
+}
+
+.label {
+}
+
+.kbd {
+  border: 1px solid var(--cmm-color-border-emphasis);
+  background: var(--cmm-color-surface-2);
+  border-radius: var(--cmm-radius-sm);
+  font-family: var(--cmm-font-family-code);
+  padding-inline: 0.5em;
+  text-transform: uppercase;
+}
