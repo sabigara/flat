@@ -7,7 +7,7 @@ export function postToReply(
   const parent = { cid: replyTarget.post.cid, uri: replyTarget.post.uri };
   const root =
     replyTarget.reply && AppBskyFeedDefs.isPostView(replyTarget.reply.root)
-      ? replyTarget.reply.root : ((replyTarget.post.record as PostView)?.reply as AppBskyFeedPost.ReplyRef).root ?? parent;
+      ? replyTarget.reply.root : ((replyTarget.post.record as PostView)?.reply as AppBskyFeedPost.ReplyRef)?.root ?? parent;
   return {
     handle: replyTarget.post.author.handle,
     parent,
