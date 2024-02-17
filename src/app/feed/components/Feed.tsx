@@ -120,6 +120,14 @@ export function Feed<K extends QueryKey>({
     ) as HTMLElement[];
   };
 
+  // 一部分でもviewportに入っているかどうかチェック
+  const inViewport = (element: HTMLElement) => {
+    return (
+      element.getBoundingClientRect().top < window.innerHeight &&
+      element.getBoundingClientRect().bottom > 0
+    );
+  };
+
   const findNextFocusElement = (
     elements: HTMLElement[],
     direction: "prev" | "next",
@@ -131,8 +139,14 @@ export function Feed<K extends QueryKey>({
       return elm === currentFocusElement || elm.contains(currentFocusElement);
     });
 
+    // 何にもfocusされていない場合、画面内の最初/最後の要素にfocusする
     if (currentFocusIndex === -1) {
-      return elements[0];
+      const elementsInViewport = elements.filter(inViewport);
+      return (
+        (direction === "next"
+          ? elementsInViewport.at(0)
+          : elementsInViewport.at(-1)) ?? null
+      );
     }
     const nextFocusIndex =
       direction === "next" ? currentFocusIndex + 1 : currentFocusIndex - 1;
